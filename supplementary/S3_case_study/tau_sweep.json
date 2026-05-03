@@ -1,0 +1,10 @@
+{
+  "description": "Tolerance sensitivity sweep for cat-(iii) precision-degradation MR detection (manuscript §6.6).",
+  "method": "For each tau in {1e-3, 1e-4, 1e-5}, recompute rho_rot detection on baseline vs each cat-iii mutation, using the strict-transition criterion (base=True, mutated=False).",
+  "results": {
+    "tau_1e-3": {"cat_iii_detected": 0, "cat_iii_total": 5, "baseline_false_positives_per_input": 0.0},
+    "tau_1e-4": {"cat_iii_detected": 0, "cat_iii_total": 5, "baseline_false_positives_per_input": 0.0},
+    "tau_1e-5": {"cat_iii_detected": 0, "cat_iii_total": 5, "baseline_false_positives_per_input": 0.125}
+  },
+  "interpretation": "Tightening tau to 1e-5 introduces baseline false positives (~12.5% of inputs flag rho_rot violation under fp32 numerical noise) without surfacing additional cat-(iii) detections. This indicates that cat-(iii) precision-degradation mutations are not an MR-tolerance issue but an MR-scope issue: the seven NOETHER blocks of A_equi probe invariances (G/O_le/T*/T_rev*/L*) and a precision-only head perturbation preserves all five invariances simultaneously. Detecting cat-(iii) would require an absolute-output MR (against a reference checkpoint), which falls outside the algebra-induced MR space of Definition (Algebra-induced MR). This is the tolerance-vs-scope distinction the manuscript foregrounds."
+}

@@ -1,0 +1,72 @@
+NOETHER repository — Dual License
+==================================
+
+This repository contains both a manuscript (and figures, corpora, written
+analyses) and source code. They are released under different licences.
+
+--------------------------------------------------------------------------
+PART A — Manuscript and other written / dataset works
+--------------------------------------------------------------------------
+
+Scope (non-exhaustive):
+  - NOETHER_paper.tex, NOETHER_paper.bib, NOETHER_paper.pdf
+  - arxiv/NOETHER_paper_arxiv.tex, arxiv/NOETHER_paper.bib
+  - supplementary/S2_pwr_corpus/*.csv
+  - supplementary/**/README.md, supplementary/**/*.md
+  - All other .md / .tex / .bib / .csv files describing the framework,
+    the corpus, or the methodology.
+
+Licence:  Creative Commons Attribution 4.0 International (CC-BY 4.0)
+URL:      https://creativecommons.org/licenses/by/4.0/legalcode
+
+You are free to share and adapt the manuscript and accompanying written
+materials, including for commercial use, provided you give appropriate
+credit, provide a link to the licence, and indicate if changes were
+made. The full legal text is available at the URL above.
+
+--------------------------------------------------------------------------
+PART B — Source code
+--------------------------------------------------------------------------
+
+Scope (non-exhaustive):
+  - supplementary/S1_construct_mp/**/*.py
+  - supplementary/S3_case_study/**/*.py
+  - supplementary/S4_reproducibility/*.yml
+  - arxiv/build_arxiv.sh
+  - All other *.py / *.sh / *.yml files providing executable artefacts.
+
+Licence:  MIT
+
+MIT License
+
+Copyright (c) 2026 NOETHER Authors
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+--------------------------------------------------------------------------
+PART C — Third-party materials
+--------------------------------------------------------------------------
+
+The repository may include or reference third-party materials (LaTeX
+class files, fonts, library code, dataset references) which retain their
+own licences. See the corresponding upstream sources.
+
+The "已有论文/" directory, if present locally, contains third-party PDFs
+that are NOT redistributed via this repository (they are excluded by
+.gitignore).

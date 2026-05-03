@@ -1,0 +1,13 @@
+mr_id,plain_text_en,prior_pattern,noether_block,noether_metapattern,selection_reason
+Bur-Phy-01,Constant-flux step-splitting invariance,P1,G,m_inv,most-frequent canonical form in its block (protocol step ii)
+Bol-Phy-02,Geometric mirror-flip invariance,P1,G,m_inv,most-frequent canonical form in its block (protocol step ii)
+Bol-Phy-11,Absorption-cross-section up -> k down,P2,O_le,m_mono,most-frequent canonical form in its block (protocol step ii)
+Bol-Phy-12,Fission-yield up -> k up,P2,O_le,m_mono,most-frequent canonical form in its block (protocol step ii)
+Dif-Alg-01,Nodal refinement convergence,P3,L*,m_conv,most-frequent canonical form in its block (protocol step ii)
+Bur-Alg-01,CRAM order convergence,P3,L*,m_conv,most-frequent canonical form in its block (protocol step ii)
+Bur-Phy-08b,Iodine-pit overshoot,P4,D*,m_dyn,most-frequent canonical form in its block (protocol step ii)
+Cpl-App-06,Gd self-shielding S-curve,P4,D*,m_dyn,most-frequent canonical form in its block (protocol step ii)
+Bur-Alg-04,CRAM vs MATREX deviation localisation,P5,E*,m_cmp,most-frequent canonical form in its block (protocol step ii)
+Bol-Alg-04,P0 over-estimates keff in H-systems,P2,E*,m_cmp,most-frequent canonical form in its block (protocol step ii)
+(predicted),Adjoint reciprocity,---,T*,m_adj,predicted from T* block; no canonical instance in 84-MR corpus
+(predicted),Collisionless reversibility,---,T_rev*,m_rev,predicted from T_rev* block; no instance in 84-MR corpus

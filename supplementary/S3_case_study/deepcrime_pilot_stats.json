@@ -1,0 +1,40 @@
+{
+  "N": {
+    "detected": 2,
+    "total": 5,
+    "wilson95": [
+      0.118,
+      0.769
+    ]
+  },
+  "L": {
+    "detected": 0,
+    "total": 5,
+    "wilson95": [
+      0.0,
+      0.434
+    ]
+  },
+  "B": {
+    "detected": 0,
+    "total": 5,
+    "wilson95": [
+      0.0,
+      0.434
+    ]
+  },
+  "fisher_NvsB": {
+    "a_both": 0,
+    "b_N_only": 2,
+    "c_B_only": 0,
+    "d_neither": 3,
+    "p_value": 1.0
+  },
+  "fisher_NvsL": {
+    "a_both": 0,
+    "b_N_only": 2,
+    "c_L_only": 0,
+    "d_neither": 3,
+    "p_value": 1.0
+  }
+}

@@ -1,0 +1,59 @@
+name: noether-equivariant
+
+# Two installation modes are supported. Pick one block below.
+#
+# (A) Apple Silicon (the manuscript's actual reproduction platform).
+#     Uses the MPS backend; no cudatoolkit. Tested on M1 Pro / 32 GB.
+#
+# (B) CUDA host (referenced as a higher-performance alternative).
+#     Uses cudatoolkit 12.1; requires a CUDA-capable GPU.
+
+# ============================================================================
+# (A) Apple Silicon (default for our submission)
+# ============================================================================
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - python=3.11
+  - pytorch=2.4.*
+  - pip
+  - pip:
+      - e3nn==0.5.1
+      - numpy==1.26.4
+      - scipy==1.13.1
+      - scikit-learn==1.5.1
+      - tqdm==4.66.4
+      - pyyaml==6.0.1
+      - pandas==2.2.2
+      - pytest==8.3.2
+      - matplotlib==3.9.1
+
+# ============================================================================
+# (B) CUDA host — replace the dependencies block above with this block:
+# ============================================================================
+# dependencies:
+#   - python=3.11
+#   - pytorch=2.4.*
+#   - cudatoolkit=12.1
+#   - pip
+#   - pip:
+#       - e3nn==0.5.1
+#       - numpy==1.26.4
+#       - scipy==1.13.1
+#       - scikit-learn==1.5.1
+#       - tqdm==4.66.4
+#       - pyyaml==6.0.1
+#       - pandas==2.2.2
+#       - pytest==8.3.2
+#       - matplotlib==3.9.1
+
+# Notes for Apple Silicon users:
+#   - PyTorch's MPS backend is enabled by default with `torch>=2.0`. No
+#     cudatoolkit is needed.
+#   - Some e3nn ops (e.g. spherical-harmonics tensor products) fall back
+#     to CPU on MPS in torch 2.4. To force CPU fallback for any op
+#     unsupported on MPS, set the env var:
+#       export PYTORCH_ENABLE_MPS_FALLBACK=1
+#   - Expect roughly 3-5x slower training vs a CUDA A100; the §6.6 case
+#     study runner itself remains in the minutes range on M1 Pro.

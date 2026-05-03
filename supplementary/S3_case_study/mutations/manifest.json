@@ -1,0 +1,171 @@
+{
+  "mutations": [
+    {
+      "id": "cat_i_01",
+      "category": "i",
+      "label": "full_head_negation",
+      "description": "negate entire classification head weight",
+      "sources_p2": true,
+      "apply_module": "mutations.cat_i_*"
+    },
+    {
+      "id": "cat_i_02",
+      "category": "i",
+      "label": "bias_negation",
+      "description": "negate classification bias vector",
+      "sources_p2": true,
+      "apply_module": "mutations.cat_i_*"
+    },
+    {
+      "id": "cat_i_03",
+      "category": "i",
+      "label": "half_block_flip",
+      "description": "flip sign on first half of head weight columns",
+      "sources_p2": true,
+      "apply_module": "mutations.cat_i_*"
+    },
+    {
+      "id": "cat_i_04",
+      "category": "i",
+      "label": "sign_flip_with_noise",
+      "description": "negate head + add 1% Gaussian noise",
+      "sources_p2": true,
+      "apply_module": "mutations.cat_i_*"
+    },
+    {
+      "id": "cat_i_05",
+      "category": "i",
+      "label": "negation_2x_magnitude",
+      "description": "multiply head by -2 (sign + magnitude)",
+      "sources_p2": true,
+      "apply_module": "mutations.cat_i_*"
+    },
+    {
+      "id": "cat_ii_01",
+      "category": "ii",
+      "label": "equivariant_flag_off",
+      "description": "enable equivariant_break flag in StubModel",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_ii_*"
+    },
+    {
+      "id": "cat_ii_02",
+      "category": "ii",
+      "label": "axis_dependent_postproc",
+      "description": "rescale output by first-axis mean",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_ii_*"
+    },
+    {
+      "id": "cat_ii_03",
+      "category": "ii",
+      "label": "frame_dependent_boost",
+      "description": "boost class 1 when x-axis mean > 0",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_ii_*"
+    },
+    {
+      "id": "cat_ii_04",
+      "category": "ii",
+      "label": "z_axis_asymmetry",
+      "description": "hard-coded 1.5x Z-axis pre-scaling",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_ii_*"
+    },
+    {
+      "id": "cat_ii_05",
+      "category": "ii",
+      "label": "argmax_swap_on_x_sign",
+      "description": "swap first and last class probs when x[0,0]>0",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_ii_*"
+    },
+    {
+      "id": "cat_iii_01",
+      "category": "iii",
+      "label": "fp16_round_trip",
+      "description": "cast head to fp16 and back to fp64",
+      "sources_p2": true,
+      "apply_module": "mutations.cat_iii_*"
+    },
+    {
+      "id": "cat_iii_02",
+      "category": "iii",
+      "label": "truncate_4dp",
+      "description": "round head to 4 decimal places",
+      "sources_p2": true,
+      "apply_module": "mutations.cat_iii_*"
+    },
+    {
+      "id": "cat_iii_03",
+      "category": "iii",
+      "label": "int8_quantize",
+      "description": "symmetric int8 quantisation of head",
+      "sources_p2": true,
+      "apply_module": "mutations.cat_iii_*"
+    },
+    {
+      "id": "cat_iii_04",
+      "category": "iii",
+      "label": "nan_injection",
+      "description": "set head[0,0] = NaN",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_iii_*"
+    },
+    {
+      "id": "cat_iii_05",
+      "category": "iii",
+      "label": "denormal_flush",
+      "description": "zero out head entries with |w|<1e-3",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_iii_*"
+    },
+    {
+      "id": "cat_iv_01",
+      "category": "iv",
+      "label": "abs_eta_inverse",
+      "description": "reverse SGD step uses |eta| instead of -eta",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_iv_*"
+    },
+    {
+      "id": "cat_iv_02",
+      "category": "iv",
+      "label": "half_magnitude_inverse",
+      "description": "reverse step uses 0.5*eta",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_iv_*"
+    },
+    {
+      "id": "cat_iv_03",
+      "category": "iv",
+      "label": "swapped_grad_inverse",
+      "description": "reverse step swaps weight/bias gradients",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_iv_*"
+    },
+    {
+      "id": "cat_iv_04",
+      "category": "iv",
+      "label": "silent_inverse_noop",
+      "description": "reverse step silently does nothing",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_iv_*"
+    },
+    {
+      "id": "cat_iv_05",
+      "category": "iv",
+      "label": "lookahead_inverse",
+      "description": "reverse uses previous batch instead of current",
+      "sources_p2": false,
+      "apply_module": "mutations.cat_iv_*"
+    }
+  ],
+  "count": 20,
+  "categories": {
+    "i": 5,
+    "ii": 5,
+    "iii": 5,
+    "iv": 5
+  }
+}

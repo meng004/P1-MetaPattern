@@ -1,0 +1,21 @@
+{
+  "H1": {
+    "noether_coverage_eq_1": true,
+    "llm_coverage_lt_1": true,
+    "literature_coverage_lt_1": true,
+    "holds": true
+  },
+  "H2": {
+    "n_has_unique_cat_iv": true,
+    "via_rho_train_rev": true,
+    "cat_iv_uniquely_detected": [
+      "cat_iv_01",
+      "cat_iv_04",
+      "cat_iv_03",
+      "cat_iv_05",
+      "cat_iv_02"
+    ],
+    "rho_train_rev_detected_count": 5,
+    "holds": true
+  }
+}

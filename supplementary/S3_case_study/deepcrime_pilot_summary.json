@@ -1,0 +1,20 @@
+{
+  "N": {
+    "detected": 2,
+    "total": 5,
+    "mutations": [
+      "cat_v_01",
+      "cat_v_03"
+    ]
+  },
+  "L": {
+    "detected": 0,
+    "total": 5,
+    "mutations": []
+  },
+  "B": {
+    "detected": 0,
+    "total": 5,
+    "mutations": []
+  }
+}

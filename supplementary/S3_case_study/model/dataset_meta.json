@@ -1,0 +1,13 @@
+{
+  "n_classes": 5,
+  "n_points": 64,
+  "shape_classes": [
+    "sphere",
+    "cube_surface",
+    "torus",
+    "cone",
+    "helix"
+  ],
+  "rotation_augmentation": true,
+  "training_seed": 20260501
+}

@@ -1,0 +1,10 @@
+# Random seeds used in the §6.6 case study.
+# All experiments use a single global seed; per-experiment seeds are derived
+# deterministically from this base.
+
+GLOBAL_SEED=20260501
+ROTATION_SAMPLE_SEED=4242     # used in rho_rot's random-rotation enumeration
+PERM_SAMPLE_SEED=4243          # used in rho_perm
+TRAIN_SHUFFLE_SEED=4244        # used in SGD reproducibility
+MUTATION_SHUFFLE_SEED=4245     # used in mutation injection ordering
+LLM_PROMPT_SEED=4246            # passed to GPT-4 as request id; OpenAI seeded sampling

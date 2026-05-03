@@ -1,0 +1,85 @@
+mr_id,plain_text_en,plain_text_zh,source,prior_pattern,noether_block,noether_metapattern,triviality,notes
+Bur-Phy-01,Constant-flux step-splitting invariance,恒通量步长拆分不变性,General,P1,G,m_inv,semi-trivial,
+Bur-Phy-03,Initial-condition linear superposition,初始条件线性叠加,General,P1,O_le,m_mono,non-trivial,Linearity rather than pure invariance; reassigned to O_le by canonical ordering G>O_le on this MR's specific structure
+Bur-Phy-04,Independent-nuclide causal isolation,无关核素因果隔离,General,P1,G,m_inv,non-trivial,Permutation-equivariance over nuclide indexing
+Bur-Phy-05,Nuclide permutation invariance,核素排列不变性,General,P1,G,m_inv,semi-trivial,
+Bur-Phy-13,Pu241+Am241 shutdown conservation,²⁴¹Pu+²⁴¹Am停堆守恒,General,P1,G,m_inv,semi-trivial,
+Bur-App-08,Cs137 post-processing invariance,¹³⁷Cs后处理不变性,General,P1,G,m_inv,non-trivial,
+Bol-Phy-01,Power-normalisation independence,功率归一化无关性,General,P1,G,m_inv,trivial,
+Bol-Phy-02,Geometric mirror-flip invariance,几何镜面翻转不变性,General,P1,G,m_inv,semi-trivial,
+Bol-Phy-03,Source-detector reciprocity,源-探测器互易性,General,P1,T*,m_adj,non-trivial,REASSIGNED from P1 to m_adj per NOETHER §5.3: this is self-adjoint reciprocity not symmetry-derived conservation
+Bol-Phy-04,Source-strength multiplication,源强倍增,General,P1,O_le,m_mono,non-trivial,Linearity in source magnitude
+Bol-Phy-05,Two-source superposition,双源叠加,General,P1,O_le,m_mono,non-trivial,Linearity (additivity)
+Bol-App-04,Scattering-vs-pure-absorption ordering,含散射vs纯吸收偏序,General,P1,E*,m_cmp,semi-trivial,REASSIGNED to m_cmp: this is method-comparison ordering not invariance
+Dif-Phy-09,Loading-symmetry to power-symmetry,装载对称→功率对称,PWR,P1,G,m_inv,trivial,
+Dif-Phy-14,Diffusion adjoint-flux reciprocity,扩散方程自伴随互易性,PWR,P1,T*,m_adj,non-trivial,REASSIGNED to m_adj per NOETHER §5.3: canonical adjoint reciprocity case
+Dif-Alg-05,CMFD does not change converged solution,CMFD不改变收敛解,PWR,P1,G,m_inv,non-trivial,
+Res-Phy-01,Elastic-scattering energy conservation (new),弹性散射能量守恒（新）,PWR,P1,G,m_inv,semi-trivial,
+Bur-Phy-02,Variable-flux step sensitivity,变通量步长应敏感,General,P2,O_le,m_mono,non-trivial,
+Bur-Phy-08,Iodine-pit peak monotonic dependence,碘坑峰值单调依赖,General,P2,O_le,m_mono,trivial,Note: also counted in P4 trajectory (overshoot shape)
+Bur-Phy-12,Chain-end nuclide superlinear flux sensitivity,链端核素超线性通量敏感性,General,P2,O_le,m_mono,non-trivial,
+Bur-App-01,Pu239 density curve concavity,²³⁹Pu密度曲线凹性,General,P2,O_le,m_mono,semi-trivial,
+Bur-App-02,Pu240/Pu239 strict monotonicity,²⁴⁰Pu/²³⁹Pu严格单调,General,P2,O_le,m_mono,semi-trivial,
+Bur-App-03,U235/U238 strictly decreasing,²³⁵U/²³⁸U严格递减,General,P2,O_le,m_mono,trivial,
+Bur-App-04,Stable fission products strictly accumulating,稳定裂变产物严格累积,General,P2,O_le,m_mono,trivial,
+Bur-App-07,Same burnup different power -> different Cm244,同燃耗不同功率→不同²⁴⁴Cm,General,P2,O_le,m_mono,non-trivial,
+Bur-App-09,Cs134/Cs137 high-order burnup dependence,¹³⁴Cs/¹³⁷Cs与燃耗高阶依赖,General,P2,O_le,m_mono,semi-trivial,
+Bol-Phy-06,Boundary-condition keff partial-order chain,边界条件keff偏序链,General,P2,O_le,m_mono,semi-trivial,
+Bol-Phy-07,Albedo monotonicity,albedo单调性,General,P2,O_le,m_mono,semi-trivial,
+Bol-Phy-08,Size scaling -> keff increase,尺寸放大keff增大,General,P2,O_le,m_mono,trivial,
+Bol-Phy-10,Reflector marginal-return diminishing,反射层边际效益递减,General,P2,O_le,m_mono,semi-trivial,
+Bol-Phy-11,Absorption-cross-section up -> k down,吸收截面增大→k降,General,P2,O_le,m_mono,trivial,
+Bol-Phy-12,Fission-yield up -> k up,裂变产额增大→k增,General,P2,O_le,m_mono,trivial,
+Bol-App-01,Uniform thickness up -> flux down,均匀材料厚度增→通量降,General,P2,O_le,m_mono,trivial,
+Bol-App-02,Deep-penetration angular flux forward concentration,深穿透后角通量前向集中,General,P2,O_le,m_mono,semi-trivial,
+Bol-App-07,Neutron-generation time -> response rate,中子代时间→响应速率,General,P2,O_le,m_mono,semi-trivial,
+Bol-Alg-04,P0 over-estimates keff in H-systems,含氢系统P₀高估keff,General,P2,E*,m_cmp,non-trivial,REASSIGNED to m_cmp: this is method-comparison error bound
+Bol-Alg-06,Neglecting up-scattering under-estimates thermal flux,忽略上散射低估热中子,General,P2,E*,m_cmp,non-trivial,REASSIGNED to m_cmp: method-error ordering
+Dif-Phy-01,Boron concentration -> keff strict monotonic decrease,硼浓度单调→keff单调降,PWR,P2,O_le,m_mono,trivial,
+Dif-Phy-02,Differential boron worth approximately constant,微分硼价值近似恒定,PWR,P2,O_le,m_mono,semi-trivial,
+Dif-Phy-10,High-leakage position -> low power,高泄漏位置低功率,PWR,P2,O_le,m_mono,trivial,
+Dif-Phy-11,Control-rod worth positive-definite,控制棒价值正定,PWR,P2,O_le,m_mono,trivial,
+Dif-Phy-13,Control-rod shadowing effect,控制棒遮蔽效应,PWR,P2,O_le,m_mono,non-trivial,
+Dif-Alg-04,Coarse-FDM keff biased low,粗网格FDM keff偏低,PWR,P2,E*,m_cmp,semi-trivial,REASSIGNED to m_cmp
+Res-Alg-02,Dilution-cross-section monotonicity,稀释截面单调性,PWR,P2,O_le,m_mono,non-trivial,
+Res-Alg-03,Dancoff factor range constraint,Dancoff因子范围约束,PWR,P2,O_le,m_mono,semi-trivial,
+Res-Alg-04,Temperature up -> resonance broadening -> k down,温度升高→共振展宽→k降,PWR,P2,O_le,m_mono,trivial,
+Cpl-App-01,Negative Doppler feedback coefficient,负多普勒反馈系数,PWR,P2,O_le,m_mono,trivial,
+Cpl-App-02,Negative moderator-temperature coefficient,负慢化剂温度系数,PWR,P2,O_le,m_mono,semi-trivial,
+Bur-Phy-06,Short-step linear-flux approximation,短步长通量线性近似,General,P3,L*,m_conv,non-trivial,
+Bur-Phy-07,Constant-flux long-time equilibrium,恒通量长时平衡,General,P3,L*,m_conv,semi-trivial,
+Bur-Alg-01,CRAM order convergence,CRAM阶数收敛,General,P3,L*,m_conv,semi-trivial,
+Bur-Alg-02,Step refinement convergence,步长精化收敛,General,P3,L*,m_conv,trivial,
+Bol-Phy-09,Vacuum -> infinite degeneracy,真空→无穷大退化,General,P3,L*,m_conv,semi-trivial,
+Bol-Alg-01,PN order convergence,PN阶数收敛,General,P3,L*,m_conv,trivial,
+Bol-Alg-02,Energy-group count convergence,能群数收敛,General,P3,L*,m_conv,trivial,
+Bol-Alg-03,Spatial mesh convergence,空间网格收敛,General,P3,L*,m_conv,trivial,
+Bol-Alg-05,SN order convergence,SN阶数收敛,General,P3,L*,m_conv,trivial,
+Bol-Alg-07,MOC ray-density convergence,MOC特征线密度收敛,General,P3,L*,m_conv,semi-trivial,
+Bol-Alg-08,MC statistical convergence,MC统计收敛,General,P3,L*,m_conv,trivial,
+Bol-App-05,Long-time transient -> steady-state,瞬态长时→稳态,General,P3,L*,m_conv,semi-trivial,
+Bol-App-06,Prompt supercritical degeneracy,瞬发超临界退化,General,P3,L*,m_conv,non-trivial,
+Dif-Alg-01,Nodal refinement convergence,节块细化收敛,PWR,P3,L*,m_conv,trivial,
+Dif-Alg-02,NEM order convergence,NEM阶数收敛,PWR,P3,L*,m_conv,semi-trivial,
+Res-Alg-01,Subgroup count convergence,子群数收敛,PWR,P3,L*,m_conv,semi-trivial,
+Cpl-App-07,Gd burnout keff convergence,Gd燃尽后keff收敛,PWR,P3,L*,m_conv,non-trivial,
+Dif-Phy-14b,Rayleigh quotient upper bound (new),Rayleigh商上界（新）,PWR,P3,L*,m_conv,non-trivial,Distinct from Dif-Phy-14 (adjoint reciprocity); convergence aspect of same operator
+Bur-Phy-08b,Iodine-pit overshoot,碘坑超调,General,P4,D*,m_dyn,trivial,Same MR ID as Bur-Phy-08 (P2 row); appears here as the qualitative-shape (overshoot) reading rather than monotone-dependence reading
+Bur-Phy-09,Xe equilibrium then power-down rise-fall,Xe平衡后降功率先升后降,General,P4,D*,m_dyn,semi-trivial,
+Bur-Phy-10,Sm rise-then-flat after shutdown,Sm停堆后先增后平,General,P4,D*,m_dyn,semi-trivial,
+Bur-App-05,Pu239 saturation at high burnup,²³⁹Pu高燃耗后饱和,General,P4,D*,m_dyn,semi-trivial,
+Bur-App-06,Pu238 rise-then-fall after shutdown,²³⁸Pu停堆后先增后降,General,P4,D*,m_dyn,non-trivial,
+Bol-App-08,Negative-feedback damped oscillation,负反馈衰减振荡,General,P4,D*,m_dyn,semi-trivial,
+Dif-Phy-12,Control-rod differential-worth curve,控制棒微分价值曲线,PWR,P4,D*,m_dyn,semi-trivial,
+Cpl-App-04,ITC boron-concentration dependence,ITC硼浓度依赖,PWR,P4,D*,m_dyn,non-trivial,
+Cpl-App-05,Shutdown-margin burnup variation,停堆裕度随燃耗变化,PWR,P4,D*,m_dyn,semi-trivial,
+Cpl-App-06,Gd self-shielding S-curve,Gd自屏蔽S形曲线,PWR,P4,D*,m_dyn,non-trivial,
+Bur-Alg-03,TTA truncation under-estimates closed-loop nuclides,TTA截断低估闭环核素,General,P5,E*,m_cmp,non-trivial,
+Bur-Alg-04,CRAM vs MATREX deviation localisation,CRAM vs MATREX偏差定位,General,P5,E*,m_cmp,non-trivial,
+Bol-Alg-09,MC-deterministic consistency,MC-确定论一致性,General,P5,E*,m_cmp,semi-trivial,
+Bol-App-03,Multi-layer moderation peak,多层慢化峰,General,P5,D*,m_dyn,non-trivial,REASSIGNED to m_dyn: qualitative-shape phenomenon under canonical ordering D*>E*
+Bol-App-09,Positive-feedback growth ordering,正反馈增长偏序,General,P5,E*,m_cmp,semi-trivial,
+Dif-Alg-03,NEM-FDM limit consistency,NEM-FDM极限一致性,PWR,P5,L*,m_conv,semi-trivial,REASSIGNED to m_conv: limit-consistency under canonical ordering L*>E*
+Cpl-App-08,Gd rod count vs concentration,Gd棒数vs浓度,PWR,P5,E*,m_cmp,non-trivial,
+Cpl-App-10,Low-leakage loading ordering,Low-leakage装载偏序,PWR,P5,E*,m_cmp,semi-trivial,
+Kin-Alg-01,Stiff-solver accuracy ordering (new),刚性求解器精度偏序（新）,PWR,P5,E*,m_cmp,non-trivial,

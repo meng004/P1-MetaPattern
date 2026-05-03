@@ -1,0 +1,148 @@
+{
+  "sets": {
+    "N": {
+      "detected": 7,
+      "mutations_total": 20,
+      "coverage_noether": 1.0,
+      "per_cat": {
+        "i": [
+          0,
+          5
+        ],
+        "ii": [
+          2,
+          5
+        ],
+        "iii": [
+          0,
+          5
+        ],
+        "iv": [
+          5,
+          5
+        ]
+      },
+      "unique": 5,
+      "unique_details": {
+        "cat_iv_01": [
+          "rho_train_rev"
+        ],
+        "cat_iv_04": [
+          "rho_train_rev"
+        ],
+        "cat_iv_03": [
+          "rho_train_rev"
+        ],
+        "cat_iv_05": [
+          "rho_train_rev"
+        ],
+        "cat_iv_02": [
+          "rho_train_rev"
+        ]
+      },
+      "wilson_ci_95": [
+        0.181,
+        0.567
+      ]
+    },
+    "L": {
+      "detected": 2,
+      "mutations_total": 20,
+      "coverage_noether": 0.4,
+      "per_cat": {
+        "i": [
+          0,
+          5
+        ],
+        "ii": [
+          2,
+          5
+        ],
+        "iii": [
+          0,
+          5
+        ],
+        "iv": [
+          0,
+          5
+        ]
+      },
+      "unique": 0,
+      "unique_details": {},
+      "wilson_ci_95": [
+        0.028,
+        0.301
+      ]
+    },
+    "B": {
+      "detected": 0,
+      "mutations_total": 20,
+      "coverage_noether": 0.2,
+      "per_cat": {
+        "i": [
+          0,
+          5
+        ],
+        "ii": [
+          0,
+          5
+        ],
+        "iii": [
+          0,
+          5
+        ],
+        "iv": [
+          0,
+          5
+        ]
+      },
+      "unique": 0,
+      "unique_details": {},
+      "wilson_ci_95": [
+        0.0,
+        0.161
+      ]
+    }
+  },
+  "pairwise_stats": {
+    "N_vs_L": {
+      "set_a": "N",
+      "set_b": "L",
+      "detected_a": 7,
+      "detected_b": 2,
+      "both": 2,
+      "only_a": 5,
+      "only_b": 0,
+      "neither": 13,
+      "n_mutations": 20,
+      "p_mcnemar_two_sided": 0.0625,
+      "p_fisher_two_sided": 0.1273861273861274
+    },
+    "N_vs_B": {
+      "set_a": "N",
+      "set_b": "B",
+      "detected_a": 7,
+      "detected_b": 0,
+      "both": 0,
+      "only_a": 7,
+      "only_b": 0,
+      "neither": 13,
+      "n_mutations": 20,
+      "p_mcnemar_two_sided": 0.015625,
+      "p_fisher_two_sided": 0.008316008316008316
+    },
+    "L_vs_B": {
+      "set_a": "L",
+      "set_b": "B",
+      "detected_a": 2,
+      "detected_b": 0,
+      "both": 0,
+      "only_a": 2,
+      "only_b": 0,
+      "neither": 18,
+      "n_mutations": 20,
+      "p_mcnemar_two_sided": 0.5,
+      "p_fisher_two_sided": 0.48717948717948717
+    }
+  }
+}
