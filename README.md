@@ -5,6 +5,12 @@ the NOETHER paper's §6.6 protocol: Set N (NOETHER algebra-derived MRs) versus
 Set G (GenMorph GP-evolved MRs) on the **full 23-subject GenMorph benchmark**,
 holding every other variable fixed to GenMorph upstream's exact toolchain.
 
+> **Before contributing — read [`CLAUDE.md`](./CLAUDE.md).** It contains the
+> 8 collaboration rules: issue/plan-first workflow, branch-per-task, no-test
+> no-merge gate, web/local secret boundary, and where heavy compute (Stage 1)
+> is allowed to run. Templates live under `ISSUES/` and `PLANS/`; the test
+> gate is `bash tests/run.sh`.
+
 ## 1. Single-variable design
 
 | Substrate | Held constant for both Set N and Set G |
@@ -25,11 +31,18 @@ holding every other variable fixed to GenMorph upstream's exact toolchain.
 
 ```
 S5_aligned_experiment/
+├── CLAUDE.md                      # 8 collaboration rules (read first)
 ├── .env                           # local env vars (gitignored on cloud)
-├── .env.example                   # template
+├── .env.example                   # template (paths only, no secrets)
 ├── .gitignore
 ├── setup.sh                       # one-shot Ubuntu setup (idempotent)
 ├── README.md                      # this file
+├── ISSUES/                        # issue tracker (rule 2)
+│   ├── TEMPLATE.md
+│   └── 001-extend-23-subjects.md
+├── PLANS/                         # implementation plans (rule 4)
+│   ├── TEMPLATE.md
+│   └── 001-extend-23-subjects.md
 ├── set_n_mrs/                     # 71 NOETHER-derived MRs as (jir, jor) pairs
 │   ├── MathClass?gcd?0/
 │   │   ├── MathClass?gcd?0@rho_perm.jir.txt
@@ -44,6 +57,12 @@ S5_aligned_experiment/
 │   ├── run_all.sh                # main orchestrator (Stage 1 + Stage 2)
 │   ├── parse_results.py          # per-subject metric extraction
 │   └── aggregate_metrics.py      # cross-subject pooled stats
+├── tests/                         # rule-6 gate
+│   ├── run.sh                    # entry point: bash tests/run.sh
+│   ├── test_generate_mrs.py
+│   ├── test_parse_results.py
+│   ├── test_aggregate_metrics.py
+│   └── fixtures/
 └── results/                       # gitignored output
     ├── seed11/<subject>/{aligned_metrics.json, mutants_killed.csv, mrs_status.csv}
     └── aligned_summary.json       # cross-subject summary
@@ -101,20 +120,23 @@ paper).
 git clone <local-or-remote> S5_aligned_experiment
 cd S5_aligned_experiment
 
-# 2. One-shot environment setup
+# 2. Verify rule-6 test gate before anything else
+bash tests/run.sh                        # must exit 0
+
+# 3. One-shot environment setup
 bash setup.sh
 # Installs: openjdk-8, openjdk-11, maven, python3 + pandas/numpy/scipy/statsmodels
 # Downloads: GenMorph Zenodo replication package (~80 MB) into /tmp/genmorph_pilot/
 # Builds: GAssert fat-jar from upstream sources
 
-# 3. Run the experiment
+# 4. Run the experiment
 bash scripts/run_all.sh                  # full pipeline (Stage 1 + Stage 2)
 # OR:
-bash scripts/run_all.sh --reproduce      # just Randoop + PIT (slow, ~4-7 h)
+bash scripts/run_all.sh --reproduce      # just Randoop + PIT (slow, ~4-7 h)  -- LOCAL ONLY (rule 8)
 bash scripts/run_all.sh --evaluate       # just inject Set N + evaluate (~30 min)
 bash scripts/run_all.sh --subject 'MathClass?gcd?0'   # single subject
 
-# 4. Inspect results
+# 5. Inspect results
 cat results/aligned_summary.json
 ls results/seed11/MathClass?gcd?0/
 ```

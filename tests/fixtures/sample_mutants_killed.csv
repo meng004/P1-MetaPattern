@@ -1,0 +1,8 @@
+EXPERIMENT,MR,M1,M2,M3,M4,M5,COUNT
+assertions_seed11,MR0,1,0,1,0,0,2
+assertions_seed11,MR1,0,1,1,0,0,2
+assertions_seed11,MR2,0,0,0,1,0,1
+assertions_seed11,MR3,0,0,1,1,0,2
+assertions_seed11,rho_perm,1,0,0,0,1,2
+assertions_seed11,rho_scale,0,1,0,0,1,2
+assertions_seed11,rho_mono,0,0,1,0,0,1
