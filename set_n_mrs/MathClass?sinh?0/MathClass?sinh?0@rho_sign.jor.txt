@@ -1,0 +1,1 @@
+(((((double) i_x_s) >= 0.0) && (((double) o_return_s) >= 0.0)) || ((((double) i_x_s) <= 0.0) && (((double) o_return_s) <= 0.0)))

@@ -1,0 +1,1 @@
+((ch.usi.gassert.data.types.Sequence.fromValue(o_return_f)).equals((ch.usi.gassert.data.types.Sequence.fromValue(o_return_s)), 1.0E-4))

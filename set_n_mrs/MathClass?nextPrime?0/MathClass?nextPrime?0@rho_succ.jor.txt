@@ -1,0 +1,1 @@
+(((double) o_return_f) >= ((double) o_return_s))

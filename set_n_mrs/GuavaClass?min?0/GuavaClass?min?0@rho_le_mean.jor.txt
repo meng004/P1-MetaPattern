@@ -1,0 +1,1 @@
+(((ch.usi.gassert.data.types.Sequence.fromValue(i_array_s)).length() == 0) || ((((double) o_return_s) * ((double) (ch.usi.gassert.data.types.Sequence.fromValue(i_array_s)).length())) <= ((double) (ch.usi.gassert.data.types.Sequence.fromValue(i_array_s)).sum())))

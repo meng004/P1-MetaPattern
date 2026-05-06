@@ -1,0 +1,1 @@
+((Math.abs(((double) i_n_f) - ((double) i_n_s)) < 1.0E-4) && (Math.abs(((double) i_k_f) - ((double) i_k_s)) < 1.0E-4))

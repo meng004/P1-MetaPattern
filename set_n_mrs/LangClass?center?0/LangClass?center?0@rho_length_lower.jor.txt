@@ -1,0 +1,1 @@
+(((double) (ch.usi.gassert.data.types.Sequence.fromValue(o_return_s)).length()) >= ((double) (ch.usi.gassert.data.types.Sequence.fromValue(i_str_s)).length()))

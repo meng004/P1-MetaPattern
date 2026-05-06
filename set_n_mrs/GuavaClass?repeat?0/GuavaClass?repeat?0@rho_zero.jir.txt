@@ -1,0 +1,1 @@
+(((ch.usi.gassert.data.types.Sequence.fromValue(i_string_f)).equals((ch.usi.gassert.data.types.Sequence.fromValue(i_string_s)), 1.0E-4)) && (Math.abs(((double) i_count_f) - ((double) i_count_s)) < 1.0E-4))

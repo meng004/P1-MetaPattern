@@ -1,0 +1,1 @@
+(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)

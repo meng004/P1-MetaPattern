@@ -1,0 +1,1 @@
+((Math.abs(((double) i_n_s) - 0.0) >= 1.0E-4) || (!o_return_s))

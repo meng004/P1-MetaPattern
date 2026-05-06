@@ -1,0 +1,1 @@
+(((ch.usi.gassert.data.types.Sequence.fromValue(i_values_s)).length() == 0) || (((double) o_return_s) <= ((Math.abs((ch.usi.gassert.data.types.Sequence.fromValue(i_values_s)).length()) < 1.0E-4) ? 1.0 : ((ch.usi.gassert.data.types.Sequence.fromValue(i_values_s)).sum()))))

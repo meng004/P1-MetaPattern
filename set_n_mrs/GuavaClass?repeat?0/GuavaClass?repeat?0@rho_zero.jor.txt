@@ -1,0 +1,1 @@
+((((double) i_count_s) > 0.0) || ((ch.usi.gassert.data.types.Sequence.fromValue(o_return_s)).length() == 0))

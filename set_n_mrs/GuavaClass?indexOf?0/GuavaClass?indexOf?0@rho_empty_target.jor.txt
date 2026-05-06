@@ -1,0 +1,1 @@
+(((ch.usi.gassert.data.types.Sequence.fromValue(i_target_s)).length() > 0) || (Math.abs(((double) o_return_s) - 0.0) < 1.0E-4))

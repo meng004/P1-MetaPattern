@@ -1,0 +1,1 @@
+(Math.abs(((double) (ch.usi.gassert.data.types.Sequence.fromValue(o_array_s)).sum()) - ((double) (ch.usi.gassert.data.types.Sequence.fromValue(i_array_s)).sum())) < 1.0E-4)

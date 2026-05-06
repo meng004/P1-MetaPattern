@@ -1,0 +1,1 @@
+(((ch.usi.gassert.data.types.Sequence.fromValue(i_array_f)).equals((ch.usi.gassert.data.types.Sequence.fromValue(i_array_s)), 1.0E-4)) && ((ch.usi.gassert.data.types.Sequence.fromValue(i_target_f)).equals((ch.usi.gassert.data.types.Sequence.fromValue(i_target_s)), 1.0E-4)))

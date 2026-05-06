@@ -1,0 +1,1 @@
+((Math.abs(((double) i_x_f) - (((double) i_x_s) * (0.0 - 1.0))) < 1.0E-4) && (Math.abs(((double) i_this_f.PI) - ((double) i_this_s.PI)) < 1.0E-4) && (Math.abs(((double) i_this_f.E) - ((double) i_this_s.E)) < 1.0E-4))
