@@ -1,0 +1,35 @@
+{
+  "subject": "MathClass?sin?0",
+  "seed_row": "assertions_seed11",
+  "tolerance": 0.1,
+  "n_mutants_ours": 26,
+  "n_mutants_genmorph": 26,
+  "our_set_g_kill_rate": 0.0769,
+  "genmorph_union_kill_rate": 0.6154,
+  "delta": -0.5385,
+  "verdict": "UNDERPERFORMING",
+  "passes_tolerance": false,
+  "per_mr_genmorph": {
+    "MR20": {
+      "killed": 14,
+      "total_mutants": 26,
+      "kill_rate": 0.5384615384615384
+    },
+    "MR22": {
+      "killed": 13,
+      "total_mutants": 26,
+      "kill_rate": 0.5
+    },
+    "MR23": {
+      "killed": 13,
+      "total_mutants": 26,
+      "kill_rate": 0.5
+    },
+    "*": {
+      "killed": 16,
+      "total_mutants": 26,
+      "kill_rate": 0.6153846153846154
+    }
+  },
+  "interpretation": "Set G kills 7.7% vs GenMorph's published 61.5% (-53.8 pp). The negative delta has at least three non-mutually-exclusive causes: (a) transcription weakness (some jor branches under-fire on our inputs); (b) test inputs miss the regions where GenMorph's evolved jor was tuned to fire; (c) PIT 1.15 mutants differ from upstream PIT 1.7 mutants in non-equivalent ways. The audit cannot disambiguate; FP=0 baseline rules out systematic over-firing but not under-firing on specific mutant patterns."
+}

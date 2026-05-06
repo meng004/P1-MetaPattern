@@ -1,0 +1,66 @@
+{
+  "subject": "sin",
+  "n_mutations": 26,
+  "set_n": {
+    "detected": 11,
+    "n": 26,
+    "rate": 0.4231,
+    "wilson_95ci": [
+      0.2554,
+      0.6105
+    ]
+  },
+  "set_g": {
+    "detected": 2,
+    "n": 26,
+    "rate": 0.0769,
+    "wilson_95ci": [
+      0.0214,
+      0.2414
+    ]
+  },
+  "set_b": {
+    "detected": 0,
+    "n": 26,
+    "rate": 0.0,
+    "wilson_95ci": [
+      0.0,
+      0.1287
+    ]
+  },
+  "pairwise": {
+    "n_vs_g": {
+      "both": 0,
+      "set_n_detected_only": 11,
+      "set_g_detected_only": 2,
+      "neither": 13,
+      "mcnemar_p": 0.0225,
+      "fisher_p": 0.0087
+    },
+    "n_vs_b": {
+      "both": 0,
+      "set_n_detected_only": 11,
+      "set_b_detected_only": 0,
+      "neither": 15,
+      "mcnemar_p": 0.001,
+      "fisher_p": 0.0003
+    },
+    "g_vs_b": {
+      "both": 0,
+      "set_g_detected_only": 2,
+      "set_b_detected_only": 0,
+      "neither": 24,
+      "mcnemar_p": 0.5,
+      "fisher_p": 0.4902
+    }
+  },
+  "union_n_g": {
+    "detected": 13,
+    "n": 26,
+    "rate": 0.5,
+    "wilson_95ci": [
+      0.3206,
+      0.6794
+    ]
+  }
+}

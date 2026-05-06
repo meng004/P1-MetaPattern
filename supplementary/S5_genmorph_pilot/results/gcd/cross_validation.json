@@ -1,0 +1,30 @@
+{
+  "subject": "MathClass?gcd?0",
+  "seed_row": "assertions_seed11",
+  "tolerance": 0.1,
+  "n_mutants_ours": 25,
+  "n_mutants_genmorph": 25,
+  "our_set_g_kill_rate": 0.68,
+  "genmorph_union_kill_rate": 0.44,
+  "delta": 0.24,
+  "verdict": "EXCEEDING",
+  "passes_tolerance": false,
+  "per_mr_genmorph": {
+    "MR0": {
+      "killed": 11,
+      "total_mutants": 25,
+      "kill_rate": 0.44
+    },
+    "MR3": {
+      "killed": 7,
+      "total_mutants": 25,
+      "kill_rate": 0.28
+    },
+    "*": {
+      "killed": 11,
+      "total_mutants": 25,
+      "kill_rate": 0.44
+    }
+  },
+  "interpretation": "Set G kills 68.0% vs GenMorph's published 44.0% (+24.0 pp). Three non-mutually-exclusive causes: (a) PIT 1.15 mutants are a different \u2014 possibly easier \u2014 set than upstream PIT 1.7; (b) our boundary inputs (MIN/MAX_VALUE, both-negative pairs, \u00b1\u03c0/2, \u00b1\u03c0) reach code paths Randoop's value seeding may have missed; (c) transcription has accidental over-firing on certain input patterns (FP=0 baseline rules out systematic over-firing on the original SUT but does not rule out per-mutant over-firing). The audit cannot disambiguate; the +delta should NOT be read as 'NOETHER beats GenMorph' nor 'transcription is perfectly faithful'."
+}

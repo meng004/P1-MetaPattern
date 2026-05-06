@@ -1,0 +1,66 @@
+{
+  "subject": "gcd",
+  "n_mutations": 25,
+  "set_n": {
+    "detected": 5,
+    "n": 25,
+    "rate": 0.2,
+    "wilson_95ci": [
+      0.0886,
+      0.3913
+    ]
+  },
+  "set_g": {
+    "detected": 17,
+    "n": 25,
+    "rate": 0.68,
+    "wilson_95ci": [
+      0.4841,
+      0.8279
+    ]
+  },
+  "set_b": {
+    "detected": 4,
+    "n": 25,
+    "rate": 0.16,
+    "wilson_95ci": [
+      0.064,
+      0.3465
+    ]
+  },
+  "pairwise": {
+    "n_vs_g": {
+      "both": 4,
+      "set_n_detected_only": 1,
+      "set_g_detected_only": 13,
+      "neither": 7,
+      "mcnemar_p": 0.0018,
+      "fisher_p": 0.0014
+    },
+    "n_vs_b": {
+      "both": 4,
+      "set_n_detected_only": 1,
+      "set_b_detected_only": 0,
+      "neither": 20,
+      "mcnemar_p": 1.0,
+      "fisher_p": 1.0
+    },
+    "g_vs_b": {
+      "both": 4,
+      "set_g_detected_only": 13,
+      "set_b_detected_only": 0,
+      "neither": 8,
+      "mcnemar_p": 0.0002,
+      "fisher_p": 0.0004
+    }
+  },
+  "union_n_g": {
+    "detected": 18,
+    "n": 25,
+    "rate": 0.72,
+    "wilson_95ci": [
+      0.5242,
+      0.8572
+    ]
+  }
+}

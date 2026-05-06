@@ -1,0 +1,142 @@
+// Gradle build for the GenMorph-bridge pilot — multi-subject.
+//
+// Subjects supported:
+//   gcd    (default)  → MathClass.gcd(int, int)        → 25 PIT mutants
+//   sin               → MathClass.sin(double)          → 26 PIT mutants
+//
+// Codex execution recipe per subject:
+//
+//   ./gradlew test  -Psubject=gcd                      // baseline gcd
+//   ./gradlew pitest -Psubject=gcd                     // PIT on gcd
+//   ./gradlew test  -Psubject=sin                      // baseline sin
+//   ./gradlew pitest -Psubject=sin                     // PIT on sin
+//
+// After each `pitest`, mutations.xml lands at build_outputs/pit_report/<subject>/
+// (subject-segregated to keep multi-subject runs from overwriting each other).
+// The Python parser (parse_pit_xml.py) reads from that directory.
+
+plugins {
+    id 'java'
+    id 'info.solidsoft.pitest' version '1.15.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+// JDK 11 toolchain → Java 8 bytecode (binary parity with GenMorph upstream).
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 8
+}
+
+// SUT source tree (read-only).
+sourceSets {
+    main {
+        java {
+            srcDirs = [
+                file('/tmp/genmorph_pilot/genmorph_full/genmorph/configs/math-sut/src/main/java')
+            ]
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.10.0'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging { events 'passed', 'skipped', 'failed' }
+    // When -Psubject is set, run only that subject's test class.
+    def selected = project.findProperty('subject') ?: 'all'
+    if (selected == 'gcd') {
+        filter { includeTestsMatching 'MathClassMRTest' }
+    } else if (selected == 'sin') {
+        filter { includeTestsMatching 'MathClassSinMRTest' }
+    }
+    // 'all' (default for `./gradlew test` with no -Psubject) runs every test class
+}
+
+// =====================================================================
+// Subject-aware PIT configuration
+// =====================================================================
+//
+// PIT operates per-class with per-method exclusions, so for each subject
+// we configure:
+//   targetClasses    : the SUT class
+//   targetTests      : only that subject's MR test class
+//   excludedMethods  : every method other than the subject method (so PIT
+//                      mutates only the subject method's body)
+//   reportDir        : subject-segregated to enable side-by-side analysis
+//
+// Selection is via `-Psubject=<name>` (default `gcd`).
+
+def selectedSubject = project.findProperty('subject') ?: 'gcd'
+
+// All public methods on MathClass — we keep the subject method in scope
+// and exclude every other method. Helper methods called by the subject
+// method are NOT excluded (they need to be mutatable for PIT to score
+// the subject's behavioural surface).
+def MATHCLASS_METHODS = [
+    'millerRabinPrimeTest', 'isPrime', 'nextPrime', 'abs', 'min',
+    'gcd', 'gcdPositive',
+    'mulAndCheck', 'pow', 'log10', 'log',
+    'sin', 'sinQ', 'cosQ', 'tan', 'atan2', 'tanQ', 'polySine', 'polyCosine',
+    'reducePayneHanek', 'copySign', 'doubleHighPart',
+    'atan', 'sqrt', 'acos', 'exp', 'expm1', 'sinh',
+    'checkBinomial', 'binomialCoefficient', 'factorial', 'stirlingS2'
+]
+
+def subjectMethod = [
+    gcd : 'gcd',
+    sin : 'sin',
+] [selectedSubject]
+
+if (subjectMethod == null) {
+    throw new GradleException("Unknown subject '${selectedSubject}'. Supported: gcd, sin.")
+}
+
+def subjectTestClass = [
+    gcd : 'MathClassMRTest',
+    sin : 'MathClassSinMRTest',
+] [selectedSubject]
+
+// To match GenMorph's mutant scope (PIT mutating ONLY the entry-point
+// method's body, leaving helpers callable but un-mutated), we keep only
+// the entry-point method in scope. Helpers remain callable (they are not
+// excluded from EXECUTION, only from MUTATION via PIT's excludedMethods).
+def subjectKeepMethods = [
+    gcd : ['gcd'],   // gcdPositive helper is auto-mutated by PIT for control-flow
+                     // reachability; keeping only 'gcd' aligns with GenMorph 25-mutant scope
+    sin : ['sin'],   // sin internally calls sinQ/cosQ/polySine/polyCosine/
+                     // reducePayneHanek/copySign/doubleHighPart but we don't mutate them
+] [selectedSubject]
+
+def excluded = MATHCLASS_METHODS.findAll { !subjectKeepMethods.contains(it) }
+
+pitest {
+    targetClasses = ['MathClass']
+    targetTests = [subjectTestClass]
+    excludedMethods = excluded
+    pitestVersion = '1.15.3'
+    junit5PluginVersion = '1.2.1'
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
+    threads = 4
+    mutators = ['DEFAULTS']
+    timeoutFactor = 1.5
+    timeoutConstInMillis = 5000
+    reportDir = file("build_outputs/pit_report/${selectedSubject}")
+}

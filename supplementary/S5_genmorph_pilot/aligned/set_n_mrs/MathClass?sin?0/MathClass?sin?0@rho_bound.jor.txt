@@ -1,0 +1,1 @@
+((((double) o_return_s) <= 1.0) && (((double) o_return_s) >= (0.0 - 1.0)))

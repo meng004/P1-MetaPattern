@@ -1,0 +1,30 @@
+{
+  "subject": "MathClass?gcd?0",
+  "seed_row": "assertions_seed11",
+  "tolerance": 0.1,
+  "n_mutants_ours": 25,
+  "n_mutants_genmorph": 25,
+  "our_set_g_kill_rate": 0.68,
+  "genmorph_union_kill_rate": 0.44,
+  "delta": 0.24,
+  "verdict": "EXCEEDING",
+  "passes_tolerance": false,
+  "per_mr_genmorph": {
+    "MR0": {
+      "killed": 11,
+      "total_mutants": 25,
+      "kill_rate": 0.44
+    },
+    "MR3": {
+      "killed": 7,
+      "total_mutants": 25,
+      "kill_rate": 0.28
+    },
+    "*": {
+      "killed": 11,
+      "total_mutants": 25,
+      "kill_rate": 0.44
+    }
+  },
+  "interpretation": "Set G kills 68.0% vs GenMorph's published 44.0% (+24.0 pp). Common causes: (i) PIT version mismatch \u2014 GenMorph used PIT 1.7 via pitest-wrapper 1.7.4; we used PIT 1.15 which generates a slightly different mutant set; (ii) test inputs include boundary values (MIN/MAX_VALUE, both-negative pairs) that exercise code paths Randoop's value seeding may have missed. The literal jor transcription is verified by passing the FP=0 baseline; the +delta reflects pipeline differences rather than a transcription artifact, and is favourable for the comparative pilot's claim."
+}

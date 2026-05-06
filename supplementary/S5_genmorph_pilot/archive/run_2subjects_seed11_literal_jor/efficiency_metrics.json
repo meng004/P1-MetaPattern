@@ -1,0 +1,307 @@
+{
+  "per_subject": [
+    {
+      "subject": "gcd",
+      "n_mutants": 25,
+      "set_n": {
+        "per_mr_kills": {
+          "testRhoScale": 0,
+          "testRhoPerm": 0,
+          "testRhoEqRef": 0,
+          "testRhoMono": 1
+        },
+        "total_real_kills": 1,
+        "kill_rate_with_infra": 0.2,
+        "M1_emr_1.0": {
+          "emr": 0.25,
+          "k": 1,
+          "m": 4,
+          "covered_fraction": 1.0
+        },
+        "M1_emr_0.8": {
+          "emr": 0.25,
+          "k": 1,
+          "m": 4,
+          "covered_fraction": 1.0
+        },
+        "M2_wdp": {
+          "workhorse": "testRhoMono",
+          "kills": 1,
+          "wdp": 0.04
+        },
+        "M3_gce": {
+          "set": "set_n",
+          "total_cost_sec": 600,
+          "n_effective_mrs": 1,
+          "cost_per_effective_mr_sec": 600.0
+        },
+        "M4_mcd": {
+          "testRhoScale": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testRhoPerm": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testRhoEqRef": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testRhoMono": {
+            "kills": 1,
+            "n_mutator_classes": 1,
+            "mutator_classes": [
+              "RemoveConditionalMutator_EQUAL_ELSE"
+            ]
+          }
+        }
+      },
+      "set_g": {
+        "per_mr_kills": {
+          "testGenMorphMR1": 0,
+          "testGenMorphMR2": 13,
+          "testGenMorphMR3": 0,
+          "testGenMorphMR0": 0
+        },
+        "total_real_kills": 13,
+        "kill_rate_with_infra": 0.68,
+        "M1_emr_1.0": {
+          "emr": 0.25,
+          "k": 1,
+          "m": 4,
+          "covered_fraction": 1.0
+        },
+        "M1_emr_0.8": {
+          "emr": 0.25,
+          "k": 1,
+          "m": 4,
+          "covered_fraction": 1.0
+        },
+        "M2_wdp": {
+          "workhorse": "testGenMorphMR2",
+          "kills": 13,
+          "wdp": 0.52
+        },
+        "M3_gce": {
+          "set": "set_g",
+          "total_cost_sec": 3600,
+          "n_effective_mrs": 1,
+          "cost_per_effective_mr_sec": 3600.0
+        },
+        "M4_mcd": {
+          "testGenMorphMR1": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testGenMorphMR2": {
+            "kills": 13,
+            "n_mutator_classes": 5,
+            "mutator_classes": [
+              "ConditionalsBoundaryMutator",
+              "InvertNegsMutator",
+              "MathMutator",
+              "PrimitiveReturnsMutator",
+              "RemoveConditionalMutator_EQUAL_ELSE"
+            ]
+          },
+          "testGenMorphMR3": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testGenMorphMR0": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          }
+        }
+      }
+    },
+    {
+      "subject": "sin",
+      "n_mutants": 26,
+      "set_n": {
+        "per_mr_kills": {
+          "testRhoOddSym": 2,
+          "testRhoPeriod": 0,
+          "testRhoBound": 0,
+          "testRhoComplement": 9
+        },
+        "total_real_kills": 11,
+        "kill_rate_with_infra": 0.4231,
+        "M1_emr_1.0": {
+          "emr": 0.5,
+          "k": 2,
+          "m": 4,
+          "covered_fraction": 1.0
+        },
+        "M1_emr_0.8": {
+          "emr": 0.25,
+          "k": 1,
+          "m": 4,
+          "covered_fraction": 0.8182
+        },
+        "M2_wdp": {
+          "workhorse": "testRhoComplement",
+          "kills": 9,
+          "wdp": 0.3462
+        },
+        "M3_gce": {
+          "set": "set_n",
+          "total_cost_sec": 600,
+          "n_effective_mrs": 2,
+          "cost_per_effective_mr_sec": 300.0
+        },
+        "M4_mcd": {
+          "testRhoOddSym": {
+            "kills": 2,
+            "n_mutator_classes": 1,
+            "mutator_classes": [
+              "InvertNegsMutator"
+            ]
+          },
+          "testRhoPeriod": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testRhoBound": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testRhoComplement": {
+            "kills": 9,
+            "n_mutator_classes": 5,
+            "mutator_classes": [
+              "InvertNegsMutator",
+              "MathMutator",
+              "PrimitiveReturnsMutator",
+              "RemoveConditionalMutator_EQUAL_ELSE",
+              "RemoveConditionalMutator_ORDER_ELSE"
+            ]
+          }
+        }
+      },
+      "set_g": {
+        "per_mr_kills": {
+          "testGenMorphMR23": 0,
+          "testGenMorphMR20": 0,
+          "testGenMorphMR21": 0,
+          "testGenMorphMR22": 2
+        },
+        "total_real_kills": 2,
+        "kill_rate_with_infra": 0.0769,
+        "M1_emr_1.0": {
+          "emr": 0.25,
+          "k": 1,
+          "m": 4,
+          "covered_fraction": 1.0
+        },
+        "M1_emr_0.8": {
+          "emr": 0.25,
+          "k": 1,
+          "m": 4,
+          "covered_fraction": 1.0
+        },
+        "M2_wdp": {
+          "workhorse": "testGenMorphMR22",
+          "kills": 2,
+          "wdp": 0.0769
+        },
+        "M3_gce": {
+          "set": "set_g",
+          "total_cost_sec": 3600,
+          "n_effective_mrs": 1,
+          "cost_per_effective_mr_sec": 3600.0
+        },
+        "M4_mcd": {
+          "testGenMorphMR23": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testGenMorphMR20": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testGenMorphMR21": {
+            "kills": 0,
+            "n_mutator_classes": 0,
+            "mutator_classes": []
+          },
+          "testGenMorphMR22": {
+            "kills": 2,
+            "n_mutator_classes": 1,
+            "mutator_classes": [
+              "PrimitiveReturnsMutator"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "pooled": {
+    "n_subjects": 2,
+    "pooled_n_mutants": 51,
+    "pooled_set_n_real_kills": 12,
+    "pooled_set_g_real_kills": 15,
+    "pooled_set_n_rate": 0.2353,
+    "pooled_set_g_rate": 0.2941,
+    "pareto_points": [
+      {
+        "subject": "gcd",
+        "set": "set_n",
+        "kill_rate": 0.2,
+        "generation_cost_sec": 600
+      },
+      {
+        "subject": "gcd",
+        "set": "set_g",
+        "kill_rate": 0.68,
+        "generation_cost_sec": 3600
+      },
+      {
+        "subject": "sin",
+        "set": "set_n",
+        "kill_rate": 0.4231,
+        "generation_cost_sec": 600
+      },
+      {
+        "subject": "sin",
+        "set": "set_g",
+        "kill_rate": 0.0769,
+        "generation_cost_sec": 3600
+      }
+    ],
+    "transfer_cost_ratio_for_n_subjects": {
+      "n": 2,
+      "noether_total_sec": 1200,
+      "genmorph_total_sec": 7200,
+      "ratio": 6.0
+    }
+  },
+  "metric_definitions": {
+    "M1_emr": "Effective MR Ratio: smallest fraction of MRs covering threshold \u03c4 of total kills (real KILLED status only).",
+    "M2_wdp": "Workhorse Detection Power: best single MR's kill rate over the full mutant set.",
+    "M3_gce": "Generation Cost per Effective MR: total set generation cost / number of effective MRs.",
+    "M4_mcd": "Mutator-Class Diversity: distinct PIT mutator classes among each MR's kills.",
+    "M5_pareto": "Multi-objective points (kill_rate, generation_cost) for Pareto-frontier analysis."
+  },
+  "cost_assumptions": {
+    "set_n": 600,
+    "set_g": 3600,
+    "set_b": 60
+  },
+  "notes": [
+    "Real kills exclude PIT TIMED_OUT/MEMORY_ERROR/RUN_ERROR (those are infrastructure-attributed to all sets).",
+    "GenMorph generation cost (3600s = 1h per subject) is from upstream paper estimation; replace with measured runtime if available.",
+    "Pareto comparison should be plotted in 2D (kill_rate vs cost); on a log-cost axis the trade-off is clearer."
+  ]
+}
