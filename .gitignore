@@ -73,6 +73,11 @@ Thumbs.db
 *.tar.gz
 *.zip
 
+# Gradle / Java build outputs
+build/
+.gradle/
+*.class
+
 # Backup files (one-off snapshots not for version control)
 *.bak
 *.backup
