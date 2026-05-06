@@ -1,0 +1,302 @@
+[
+  {
+    "pair_id": "testAggregateDynamicFunction",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove6",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove8",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateMerge2",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAntiJoinProjectTranspose",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAnyInProjectNonNullable",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAnyInProjectNullable",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testBitOrReuseDistinctAttrWithMixedOptionality",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testCasePushIsAlwaysWorking",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctWithMultipleInputs",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptySort2",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptySortLimitZero",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterConstantInWithTwoSubQueries",
+    "complexity": "hard",
+    "n_nodes_total": 23,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterInComposite",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFullOuterJoinSimplificationToInner",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinDeriveIsNotNullFilterRule1",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMergeIntersect",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughAggregatePermuted",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateSumThroughJoin",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin13",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin2",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin4",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAvgThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushBoolAndBoolOrThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushCountStarGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterPastAggWithGroupingSets2",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushJoinThroughUnionOnLeft",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastInnerJoinStrong",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastLeftJoin",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastLeftJoinSwap",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastSetOp",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSemiJoinPastFilter",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumConstantGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumNullableGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceAllAggregateFunctions",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceCase",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstants3",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDup3Null",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsIsNull",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsProjectNullable",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsRequiresExecutor",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightEmptySemiJoin",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinRuleWithJoinOnUniqueInput",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinTranspose6",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortProjectTranspose1",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSumAndDistinctSumWithExpandSumType",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceComplexPredicate",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceUnion",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceUnion3way",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereNotInCorrelated",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  }
+]

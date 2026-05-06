@@ -1,0 +1,65 @@
+{
+  "subject": "Calcite_QED_50pair",
+  "n_pairs": 50,
+  "stratification": {
+    "easy": 20,
+    "medium": 20,
+    "hard": 10
+  },
+  "set_n": {
+    "n_applicable": 7,
+    "detected": 6,
+    "n": 50,
+    "rate_overall": 0.12,
+    "rate_when_applicable": 0.8571,
+    "wilson_95ci_overall": [
+      0.0562,
+      0.238
+    ]
+  },
+  "set_segura": {
+    "n_applicable": 18,
+    "detected": 2,
+    "n": 50,
+    "rate_overall": 0.04,
+    "rate_when_applicable": 0.1111,
+    "wilson_95ci_overall": [
+      0.011,
+      0.1346
+    ]
+  },
+  "union_n_segura": {
+    "detected": 7,
+    "n": 50,
+    "rate": 0.14,
+    "wilson_95ci": [
+      0.0695,
+      0.2619
+    ]
+  },
+  "complementary_value": {
+    "both": 1,
+    "n_only": 5,
+    "segura_only": 1,
+    "neither": 43,
+    "mcnemar_p": 0.2188,
+    "fisher_p_n_vs_segura": 0.2687
+  },
+  "by_complexity": {
+    "easy": {
+      "n": 20,
+      "set_n_rate": 0.0,
+      "set_segura_rate": 0.0
+    },
+    "medium": {
+      "n": 20,
+      "set_n_rate": 0.2,
+      "set_segura_rate": 0.1
+    },
+    "hard": {
+      "n": 10,
+      "set_n_rate": 0.2,
+      "set_segura_rate": 0.0
+    }
+  }
+}

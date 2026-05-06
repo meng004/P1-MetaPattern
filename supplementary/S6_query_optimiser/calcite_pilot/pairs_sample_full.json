@@ -1,0 +1,2666 @@
+[
+  {
+    "pair_id": "testAddRedundantSemiJoinRule",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateCaseToFilter",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateConstantKeyRule",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateConstantKeyRule3",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateDynamicFunction",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateExtractProjectRule",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateExtractProjectRuleWithGroupingSets",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateExtractProjectRuleWithGroupingSets2",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateGroupingSetsProjectMerge",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove1",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove10",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove11",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove2",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove3",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove4",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove5",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove6",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove7",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove8",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateJoinRemove9",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateMerge1",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateMerge2",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateMerge8",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateMergeSum0",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateProjectMerge",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateProjectPullUpConstants",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateProjectPullUpConstants2",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateRemove1",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateRemove2",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateRemove3",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateRemove7",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateUnionTransposeWithOneInputUnique",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAggregateUnionTransposeWithTopLevelGroupSetRemapping",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAll",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAlreadyFalseEliminatesFilter",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAntiCorrelateWithLeftEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAntiCorrelateWithRightEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAntiJoinProjectTranspose",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAnyInProjectNonNullable",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testAnyInProjectNullable",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testBitAndReuseDistinctAttrWithMixedOptionality",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testBitOrReuseDistinctAttrWithMixedOptionality",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testCasePushIsAlwaysWorking",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testCastInAggregateExpandDistinctAggregatesRule",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testCastInAggregateReduceFunctions",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testCorrelateWithoutCorrelationToEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testCustomColumnResolvingInCorrelatedSubQuery",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testCustomColumnResolvingInCorrelatedSubQuery2",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testCustomColumnResolvingInNonCorrelatedSubQuery",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDecorrelateAggWithConstantGroupKey",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDecorrelateExists",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDecorrelateTwoExists",
+    "complexity": "hard",
+    "n_nodes_total": 17,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDecorrelateTwoIn",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDecorrelateUncorrelatedInAndCorrelatedExists",
+    "complexity": "hard",
+    "n_nodes_total": 15,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDigestOfApproximateDistinctAggregateCall",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCount1",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCount2",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCount3",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountGroupingSets1",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountGroupingSets2",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountMixed",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountMixed2",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountMixedJoin",
+    "complexity": "hard",
+    "n_nodes_total": 18,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountMultiple",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountMultipleNoGroup",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountMultipleViaJoin",
+    "complexity": "hard",
+    "n_nodes_total": 18,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountWithExpandSumType",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctCountWithoutGroupBy",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctNonDistinctAggregates",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctNonDistinctAggregatesWithGrouping1",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctNonDistinctAggregatesWithGrouping2",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctNonDistinctTwoAggregatesWithGrouping",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctWithDiffFiltersAndSameGroupSet",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctWithFilterAndGroupBy",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctWithFilterWithoutGroupBy",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctWithGrouping",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctWithMultipleInputs",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testDistinctWithMultipleInputsAndGroupby",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyAggregate",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyAggregateEmptyKeyWithAggregateValuesRule",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyFilterProjectUnion",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyIntersect",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyMinus",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyMinus2",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyProject",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyProject2",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptySort",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptySort2",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptySortLimitZero",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyTable",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testEmptyTableTransformsComplexQueryToSingleTableScan",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExistsWithAtLeastOneRowSubQuery",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExistsWithNoRowSubQuery",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterConstantInCorrelatedWithTwoSubQueries",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterConstantInWithTwoSubQueries",
+    "complexity": "hard",
+    "n_nodes_total": 23,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterExists",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterExistsSimple",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterExistsSimpleAnd",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterIn",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterIn3Value",
+    "complexity": "hard",
+    "n_nodes_total": 17,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterInComposite",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterInCorrelatedWithTwoSubQueries",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterInWithTwoSubQueries",
+    "complexity": "hard",
+    "n_nodes_total": 27,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandFilterScalar",
+    "complexity": "hard",
+    "n_nodes_total": 17,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandJoinExists",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandJoinScalar",
+    "complexity": "hard",
+    "n_nodes_total": 20,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandProjectExists",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandProjectIn",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandProjectInComposite",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandProjectInNullable",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandProjectInWithTwoSubQueries",
+    "complexity": "hard",
+    "n_nodes_total": 22,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandProjectScalar",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpandWhereComparisonCorrelated",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpressionSimplification1",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExpressionSimplification2",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExtractJoinFilterRule",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExtractYearMonthToRange",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testExtractYearToRange",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFilterJoinRuleAndIsNotNull",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFilterJoinRuleOrIsNotNull",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFilterProjectTranspose",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFilterRemoveIsNotDistinctFromRule",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFlattenUncorrelatedCallBelowEquals",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFlattenUncorrelatedTwoLevelCallBelowEqualsSucceeds",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFullOuterJoinSimplificationToInner",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFullOuterJoinSimplificationToLeftOuter",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testFullOuterJoinSimplificationToRightOuter",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testGroupByBooleanLiteralSimple",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testGroupByDateLiteralSimple",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testGroupByMultipleLiterals",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testInferringPredicatesWithNotOperatorInJoinCondition",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testInnerCorrelateWithLeftEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testInnerCorrelateWithRightEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testIntersectToDistinct",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinAssociateRuleWithBottomAlwaysTrueConditionAllowed",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinAssociateRuleWithTopAlwaysTrueConditionAllowed",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinCommuteRuleWithAlwaysTrueConditionAllowed",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinConditionPushdown1",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinConditionPushdown2",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinConditionPushdown4",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinConditionPushdown6",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinDeriveIsNotNullFilterRule1",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinDeriveIsNotNullFilterRule12",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinDeriveIsNotNullFilterRule15",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinDeriveIsNotNullFilterRule2",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinDeriveIsNotNullFilterRule3",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinDeriveIsNotNullFilterRule4",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinDeriveIsNotNullFilterRule5",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinProjectTranspose1",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinProjectTranspose7",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinProjectTranspose8",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinProjectTransposeWindow",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testJoinPushTransitivePredicatesRule2",
+    "complexity": "hard",
+    "n_nodes_total": 33,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftCorrelateWithBothEmpty1",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftCorrelateWithBothEmpty2",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftCorrelateWithBothEmpty3",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftCorrelateWithLeftEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftCorrelateWithRightEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftEmptyAntiJoin",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftEmptyFullJoin",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftEmptyInnerJoin",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftEmptyLeftJoin",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftEmptyRightJoin",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftEmptySemiJoin",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testLeftOuterJoinSimplificationToInner",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMaxReuseDistinctAttrWithMixedOptionality",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMergeFilter",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMergeIntersect",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMergeJoinFilter",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMergeMinus",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMergeUnionAll",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMergeUnionDistinct",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMergeUnionMixed2",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMinReuseDistinctAttrWithMixedOptionality",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testMultipleDistinctWithGrouping",
+    "complexity": "hard",
+    "n_nodes_total": 18,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testNoOversimplificationBelowIsNull",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testOrAlwaysTrue",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testOrAlwaysTrue2",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testOversimplifiedCaseStatement",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectAggregateMerge",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectAggregateMergeSum0",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectAggregateMergeSum0AndSum",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectCorrelateTransposeRuleAntiCorrelate",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectCorrelateTransposeRuleLeftCorrelate",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectCorrelateTransposeRuleSemiCorrelate",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectFilterTransposeRuleOnEmptyRowType",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectJoinRemove1",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectJoinRemove10",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectJoinRemove4",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectJoinRemove7",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectJoinTransposeItem",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testProjectSetOpTranspose",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullAggregateThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullAggregateThroughUnion2",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullAggregateThroughUnionAndAddProjects",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullAggregateThroughUnionWithAlias",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantIntoFilter",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantIntoJoin",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantIntoJoin2",
+    "complexity": "hard",
+    "n_nodes_total": 15,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantIntoProject",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantIntoProjectWithIsNotDistinctFrom",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantIntoProjectWithIsNotDistinctFromDate",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantIntoProjectWithIsNotDistinctFromForNull",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughAggregateAllConst",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughAggregateAllLiterals",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughAggregateConstGroupBy",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughAggregatePermuted",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughAggregatePermutedConstFirst",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughAggregatePermutedConstGroupBy",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughAggregateSimpleNonNullable",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughConstLast",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughUnion3",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullConstantThroughUnionSameTypeNullableField",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullFilterThroughAggregate",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullFilterThroughAggregateGroupingSets",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPullNull",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAboveFiltersIntoInnerJoinCondition",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateFunctionsThroughJoin",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateSumNoGroup",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateSumThroughJoin",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateSumThroughJoinAfterAggregateReduce",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateSumWithoutGroupKeyThroughJoin",
+    "complexity": "hard",
+    "n_nodes_total": 15,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoin1",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoin2",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoin4",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoin5",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoin6",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoin7",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoin8",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoinDistinct",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoinOnEmptyLogicalValues",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughJoinWithUniqueInput",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin1",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin12",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin13",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin14",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin15",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin16",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin2",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin3",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin4",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin5",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin6",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin7",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin8",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAggregateThroughOuterJoin9",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAvgGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushAvgThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushBoolAndBoolOrThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushCountFilterThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushCountNullableGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushCountNullableThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushCountStarGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushCountStarThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterPastAgg",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterPastAggFour",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterPastAggTwo",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterPastAggWithGroupingSets2",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterPastProject",
+    "complexity": "hard",
+    "n_nodes_total": 19,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterSemijoin",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterThroughSemiJoin",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushFilterWithIsNotDistinctFromPastJoin",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushJoinCondDownToProject",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushJoinThroughUnionOnLeft",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushJoinThroughUnionOnRight",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushMaxNullableGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushMaxNullableThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushMinGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushMinThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastFilter",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastFilter2",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastFilter3b",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastFilter3c",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastFullJoin",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastFullJoinStrong",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastInnerJoin",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastInnerJoinStrong",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastJoin",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastLeftJoin",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastLeftJoinSwap",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastLeftJoinSwapStrong",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastOutJoinWithCastNonNullExpr",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastRightJoin",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastRightJoinStrong",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastRightJoinSwap",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastRightJoinSwapStrong",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectPastSetOp",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectWithIsNotDistinctFromPastJoin",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectWithOverPastJoin1",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectWithOverPastJoin2",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushProjectWithOverPastJoin3",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSemiJoinConditions",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSemiJoinPastFilter",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSemiJoinPastJoinRuleLeft",
+    "complexity": "hard",
+    "n_nodes_total": 17,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSemiJoinPastJoinRuleNotHappensJoinKeysDifferentOrigin",
+    "complexity": "hard",
+    "n_nodes_total": 17,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSemiJoinPastJoinRuleRight",
+    "complexity": "hard",
+    "n_nodes_total": 17,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSemiJoinPastProject",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumConstantGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumConstantThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumCountStarGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumCountStarThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumNullConstantGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumNullConstantThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumNullableGroupingSetsThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumNullableNOGBYThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testPushSumNullableThroughUnion",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceAggregateFunctionsByGroup",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceAllAggregateFunctions",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceAverage",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceAverageAndSumWithNoReduceStddevAndVar",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceAverageAndVarWithNoReduceStddev",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceAverageWithNoReduceSum",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceCase",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceCaseNullabilityChange",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceCastAndConsts",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceCasts",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceCompositeInSubQuery",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstants",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstants3",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsCaseEquals",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsCaseEquals2",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsCaseEquals3",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDup",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDup2",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDup3",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDup3Null",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDupNot",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDupNot2",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDupNot2Null",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsDupNotNull",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsEliminatesFilter",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsIsNotNull",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsIsNull",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsNegated",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsNegatedInverted",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsNull",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsNullEqualsOne",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsProjectNullable",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceConstantsRequiresExecutor",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceDynamic",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceNestedCaseWhen",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceNullableToNotNull",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceNullableToNotNull2",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceOrCaseWhen",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceValuesToEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceValuesUnderFilter",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceValuesUnderProject",
+    "complexity": "easy",
+    "n_nodes_total": 1,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceValuesUnderProjectFilter",
+    "complexity": "easy",
+    "n_nodes_total": 2,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testReduceWithNonTypePredicate",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRemoveDistinctOnAgg",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRemoveSemiJoin",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRemoveSemiJoinRight",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRemoveSemiJoinRightWithFilter",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRemoveSemiJoinWithFilter",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightEmptyAntiJoin",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightEmptyAntiJoinNonEqui",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightEmptyFullJoin",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightEmptyInnerJoin",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightEmptyLeftJoin",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightEmptyRightJoin",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightEmptySemiJoin",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testRightOuterJoinSimplificationToInner",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSelectAnyCorrelated",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSelectNotInCorrelated",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiCorrelateWithLeftEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiCorrelateWithRightEmpty",
+    "complexity": "easy",
+    "n_nodes_total": 0,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinProjectTranspose",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinReduceConstants",
+    "complexity": "hard",
+    "n_nodes_total": 18,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinRule",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinRuleExists",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinRuleLeft",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinRuleWithHint",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinRuleWithJoinOnUniqueInput",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinRuleWithJoinOnUniqueInputWithAlias",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSemiJoinTrim",
+    "complexity": "hard",
+    "n_nodes_total": 19,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSimplifyFilter",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSkipReduceConstantsCaseEquals",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSome",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSomeWithEquality",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSomeWithEquality2",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSomeWithNotEquality",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": false
+  },
+  {
+    "pair_id": "testSomeWithTwoCorrelatedSubQueries",
+    "complexity": "easy",
+    "n_nodes_total": 7,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSomeWithTwoSubQueries",
+    "complexity": "hard",
+    "n_nodes_total": 19,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinCopyInnerJoinOrderBy",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinCopyInnerJoinOrderByLimit",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinCopyInnerJoinOrderByTwoFields",
+    "complexity": "medium",
+    "n_nodes_total": 12,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinCopySemiJoinOrderBy",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinCopySemiJoinOrderByLimitOffset",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinCopySemiJoinOrderByOffset",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinTranspose1",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinTranspose2",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinTranspose4",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortJoinTranspose6",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortProjectTranspose1",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortProjectTranspose2",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortRemovalAllKeysConstant",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortRemovalOneKeyConstant",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortUnionTranspose",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortUnionTranspose2",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSortUnionTranspose3",
+    "complexity": "easy",
+    "n_nodes_total": 5,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSpatialContainsPoint",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSpatialDWithinLine",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSpatialDWithinReversed",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSpatialDWithinToHilbert",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSpatialDWithinToHilbertNegative",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": false
+  },
+  {
+    "pair_id": "testSpatialDWithinToHilbertZero",
+    "complexity": "easy",
+    "n_nodes_total": 6,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSpatialReduce",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testStrengthenJoinType",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSumAndDistinctSumWithExpandSumType",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testSwapOuterJoin",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceAggregate",
+    "complexity": "hard",
+    "n_nodes_total": 15,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceComplexPredicate",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceConjunctInPullUp",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceJoin",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceJoin3way",
+    "complexity": "hard",
+    "n_nodes_total": 16,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceJoin3wayAgg",
+    "complexity": "hard",
+    "n_nodes_total": 20,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceLeftOuterJoin",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceProject",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferencePullUpThruAlias",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceRightOuterJoin",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceUnion",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceUnion3way",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testTransitiveInferenceUnionAlwaysTrue",
+    "complexity": "medium",
+    "n_nodes_total": 13,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testUncorrelatedCallInConjunctionIsFlattenedOnlyIfSiblingOfCorrelation",
+    "complexity": "easy",
+    "n_nodes_total": 4,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testUnionMergeRule",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testUnionToDistinctRule",
+    "complexity": "easy",
+    "n_nodes_total": 3,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereAnyCorrelatedInSelect",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereExpressionInCorrelated",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereExpressionInCorrelated2",
+    "complexity": "medium",
+    "n_nodes_total": 11,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereInCorrelated",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereInJoinCorrelated",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereNotInCorrelated",
+    "complexity": "hard",
+    "n_nodes_total": 14,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereNotInCorrelated2",
+    "complexity": "hard",
+    "n_nodes_total": 18,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWhereOrSubQuery",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinct",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinctCountDistinct",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinctFilteredAggs",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinctFilteredAggsSameFilter",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinctFilteredAggsUniformDistinctKeys",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinctFilteredAggsUniformDistinctKeysNoThrow",
+    "complexity": "medium",
+    "n_nodes_total": 10,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinctNoThrow",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinctUniformDistinctKeys",
+    "complexity": "medium",
+    "n_nodes_total": 9,
+    "is_equivalent": true
+  },
+  {
+    "pair_id": "testWithinDistinctUniformDistinctKeysNoThrow",
+    "complexity": "medium",
+    "n_nodes_total": 8,
+    "is_equivalent": true
+  }
+]
