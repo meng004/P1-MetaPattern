@@ -22,6 +22,12 @@ cd "$REPO_ROOT"
 # 1. System packages
 # ----------------------------------------------------------------------------
 echo "[1/5] Installing system packages..."
+
+# 移除已知失效的 PPA，防止 apt-get update 报错退出
+
+sudo rm -f /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-*.list \
+           /etc/apt/sources.list.d/ondrej-ubuntu-php-*.list 2>/dev/null || true
+
 sudo apt-get update -y -qq
 sudo apt-get install -y -qq \
     openjdk-8-jdk \
