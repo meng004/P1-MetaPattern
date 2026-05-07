@@ -16,8 +16,16 @@
 #   bash run_all.sh --evaluate       # only Stage 2 (assumes Stage 1 done)
 #   bash run_all.sh --subject 'MathClass?gcd?0'   # single subject
 #
+# Long cloud runs (Stage 1 ~4–7 h): launch with nohup so it survives session
+# disconnects, e.g.:
+#   nohup bash scripts/run_all.sh --reproduce > results/seed11/_logs/run.log 2>&1 &
+#
+# Resume after a crash: just re-run; per-subject artifacts are cached
+# (Randoop states + PIT mutants_killed.csv are checked before regenerating).
+#
 # Output: results/seed11/<subject>/{aligned_metrics.json, mutants_killed.csv}
-#         results/aggregate/aligned_summary.json (cross-subject)
+#         results/seed11/_logs/{stage1_*,stage2_*}.log  (per-subject logs)
+#         results/aligned_summary.json                  (cross-subject)
 
 set -euo pipefail
 
@@ -84,44 +92,58 @@ subject_library() {
     esac
 }
 
-mkdir -p "$REPO_ROOT/results/seed${SEED}"
+RESULTS_DIR="$REPO_ROOT/results/seed${SEED}"
+LOG_DIR="$RESULTS_DIR/_logs"
+mkdir -p "$RESULTS_DIR" "$LOG_DIR"
+
+# Sanitize subject name to a filesystem-safe slug for log files.
+# GenMorph subjects contain '?' (e.g. MathClass?gcd?0); fine on Linux but
+# noisy for tab-completion / glob, so log files use '_' instead.
+slug() { echo "$1" | tr '?' '_'; }
 
 # ----------------------------------------------------------------------------
 # Stage 1: Reproduce upstream's pipeline state (Randoop + PIT)
 # ----------------------------------------------------------------------------
 if [[ $DO_REPRODUCE -eq 1 ]]; then
     echo ""
-    echo "=== Stage 1: Reproduce upstream pipeline (Randoop + PIT 1.7.4) ==="
+    echo "=== [$(date +%Y-%m-%dT%H:%M:%S)] Stage 1: Reproduce upstream pipeline (Randoop + PIT 1.7.4) ==="
     cd "$GENMORPH"
     for subject in "${SUBJECTS[@]}"; do
         lib=$(subject_library "$subject")
         config="configs/evaluation-config-${lib}.json"
+        s=$(slug "$subject")
         echo ""
-        echo "--- Subject: $subject (lib=$lib) ---"
+        echo "--- [$(date +%H:%M:%S)] Subject: $subject (lib=$lib) ---"
         # Randoop test generation + state capture
         if [[ -d "$GENMORPH/output_dir_${lib}/states_seed${SEED}/source/${subject}" ]]; then
             echo "  Randoop states already present, skip"
         else
-            echo "  Running Randoop (seed=${SEED})..."
+            randoop_log="$LOG_DIR/stage1_randoop_${s}.log"
+            echo "  Running Randoop (seed=${SEED}); full log → $randoop_log"
             python3 scripts/run/randoop.py \
                 --config "$config" \
                 --seed  "$SEED" \
-                --subject "$subject" 2>&1 | tail -5 || \
-                echo "  WARN: Randoop failed for $subject"
+                --subject "$subject" 2>&1 \
+                | tee "$randoop_log" | tail -5 || \
+                echo "  WARN: Randoop failed for $subject (see $randoop_log)"
         fi
         # PIT mutation testing
         if [[ -f "$GENMORPH/output_dir_${lib}/pitest_seed${SEED}/${subject}/mutants_killed.csv" ]]; then
             echo "  PIT mutants already present, skip"
         else
-            echo "  Running PIT 1.7.4 (seed=${SEED})..."
+            pit_log="$LOG_DIR/stage1_pit_${s}.log"
+            echo "  Running PIT 1.7.4 (seed=${SEED}); full log → $pit_log"
             python3 scripts/run/pitest.py \
                 --config "$config" \
                 --seed  "$SEED" \
-                --subject "$subject" 2>&1 | tail -5 || \
-                echo "  WARN: PIT failed for $subject"
+                --subject "$subject" 2>&1 \
+                | tee "$pit_log" | tail -5 || \
+                echo "  WARN: PIT failed for $subject (see $pit_log)"
         fi
     done
     cd "$REPO_ROOT"
+    echo ""
+    echo "=== [$(date +%Y-%m-%dT%H:%M:%S)] Stage 1 done ==="
 fi
 
 # ----------------------------------------------------------------------------
@@ -129,12 +151,13 @@ fi
 # ----------------------------------------------------------------------------
 if [[ $DO_EVALUATE -eq 1 ]]; then
     echo ""
-    echo "=== Stage 2: Inject Set N MRs + re-run EvaluateMRs ==="
+    echo "=== [$(date +%Y-%m-%dT%H:%M:%S)] Stage 2: Inject Set N MRs + re-run EvaluateMRs ==="
 
     for subject in "${SUBJECTS[@]}"; do
         lib=$(subject_library "$subject")
+        s=$(slug "$subject")
         echo ""
-        echo "--- Subject: $subject ---"
+        echo "--- [$(date +%H:%M:%S)] Subject: $subject ---"
 
         # Locate upstream MR directory + state directories
         UPSTREAM_MRS_DIR="$GENMORPH/output_dir_${lib}/assertions_seed${SEED}/${subject}"
@@ -168,15 +191,17 @@ if [[ $DO_EVALUATE -eq 1 ]]; then
         mkdir -p "$OUT_DIR"
 
         # Invoke EvaluateMRs
-        echo "  Running EvaluateMRs..."
+        eval_log="$LOG_DIR/stage2_evaluate_${s}.log"
+        echo "  Running EvaluateMRs; full log → $eval_log"
         java -cp "$GASSERT_JAR" \
              ch.usi.gassert.EvaluateMRs \
              "$UPSTREAM_MRS_DIR" \
              "$STATES_SRC" "$STATES_FOL" \
              "$CLS_SRC" "$CLS_FOL" \
              "$SRC_CLASS" \
-             "$OUT_DIR/" 2>&1 | tail -3 || \
-             echo "  WARN: EvaluateMRs failed for $subject"
+             "$OUT_DIR/" 2>&1 \
+             | tee "$eval_log" | tail -3 || \
+             echo "  WARN: EvaluateMRs failed for $subject (see $eval_log)"
 
         # Parse per-subject metrics
         if [[ -f "$OUT_DIR/mutants_killed.csv" ]]; then

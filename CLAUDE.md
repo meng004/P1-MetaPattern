@@ -110,19 +110,25 @@ Hard rules:
    # Must return no output.
    ```
 
-### Rule 8 — Heavy compute stays local
+### Rule 8 — Workload locality
 
 | Workload | Cost | Where |
 |---|---|---|
 | `setup.sh` (apt + pip + Zenodo download + GAssert build) | ~10 min, ~80 MB | local or remote |
-| Stage 1 of `run_all.sh` (Randoop + PIT for 23 subjects) | ~4–7 h, ~10 GB | **local only** |
+| Stage 1 of `run_all.sh` (Randoop + PIT for 23 subjects) | ~4–7 h, ~10 GB | local or remote |
 | Stage 2 of `run_all.sh` (EvaluateMRs re-run after Set N injection) | ~30 min, ~50 MB | local or remote |
 | `scripts/aggregate_metrics.py` | <1 sec | anywhere |
 | Re-derive Set N MRs (`scripts/generate_set_n_mrs.py`) | <1 sec | anywhere |
 
-Local-only workloads (Stage 1, plus any future on-device LLM inference,
-private inference services, or proprietary data) **must never** be triggered
-from claude.ai web or Claude Code Remote.
+Stage 1 was originally local-only out of caution about session timeouts
+and disk quota; the Claude Remote environment in use has ≥30 GB persistent
+disk and tolerates long-running sessions, so cloud runs are now permitted.
+For long Stage 1 runs, launch with `nohup … &` so the job survives a
+session disconnect — `run_all.sh` is resumable (per-subject Randoop and PIT
+artifacts are cached, so a re-run skips finished subjects).
+
+Future on-device LLM inference, private inference services, or proprietary
+data **must never** be triggered from claude.ai web or Claude Code Remote.
 
 ---
 

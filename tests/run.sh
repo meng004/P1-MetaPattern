@@ -30,6 +30,13 @@ run_test "test_generate_mrs"     python3 tests/test_generate_mrs.py
 run_test "test_parse_results"    python3 tests/test_parse_results.py
 run_test "test_aggregate_metrics" python3 tests/test_aggregate_metrics.py
 
+# 1a. Shell syntax check for orchestration scripts
+echo ""
+echo "--- Shell syntax (bash -n) ---"
+run_test "setup.sh syntax"          bash -n setup.sh
+run_test "scripts/run_all.sh syntax" bash -n scripts/run_all.sh
+run_test "tests/run.sh syntax"      bash -n tests/run.sh
+
 # 2. Secret/path leak grep (rule 7)
 # Pattern requires actual path/token characters (alphanum + underscore/dot/dash);
 # documentation that uses placeholders like /Users/<name>/... is correctly skipped.
