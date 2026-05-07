@@ -23,10 +23,13 @@ cd "$REPO_ROOT"
 # ----------------------------------------------------------------------------
 echo "[1/5] Installing system packages..."
 
-# 移除已知失效的 PPA，防止 apt-get update 报错退出
-
-sudo rm -f /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-*.list \
-           /etc/apt/sources.list.d/ondrej-ubuntu-php-*.list 2>/dev/null || true
+# 移除已知失效的 PPA（deadsnakes / ondrej-php），防止 apt-get update 报错退出。
+# 按 URL 内容匹配，覆盖 .list 与 .sources 两种格式以及任意命名。
+for pat in 'ppa.launchpadcontent.net/deadsnakes' 'ppa.launchpad.net/deadsnakes' \
+           'ppa.launchpadcontent.net/ondrej/php' 'ppa.launchpad.net/ondrej/php'; do
+    sudo grep -rl --include='*.list' --include='*.sources' "$pat" /etc/apt/ 2>/dev/null \
+        | xargs -r sudo rm -f
+done
 
 sudo apt-get update -y -qq
 sudo apt-get install -y -qq \
