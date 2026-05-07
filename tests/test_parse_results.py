@@ -6,7 +6,9 @@ Runs scripts/parse_results.py against a fixture mutants_killed.csv and
 asserts the output JSON has correct kill counts, set assignment, and
 M-metric values.
 
-Fixture has 7 MRs (4 GenMorph MR0-3, 3 NOETHER rho_*) over 5 mutants.
+Fixture has 8 MRs (4 GenMorph MR0-3 + 1 zero-kill MR4, 3 NOETHER rho_*)
+over 5 mutants. The MR4 row exists to exercise the Effective-MR Ratio's
+non-trivial branch (ER_G < 1.0).
 """
 
 import json
@@ -53,12 +55,12 @@ def main():
     # Assertions
     if result["n_mutants"] != 5:
         fail(f"n_mutants = {result['n_mutants']}, expected 5")
-    if result["n_total_mrs"] != 7:
-        fail(f"n_total_mrs = {result['n_total_mrs']}, expected 7")
+    if result["n_total_mrs"] != 8:
+        fail(f"n_total_mrs = {result['n_total_mrs']}, expected 8")
     if result["set_n"]["n_mrs"] != 3:
         fail(f"set_n.n_mrs = {result['set_n']['n_mrs']}, expected 3")
-    if result["set_g"]["n_mrs"] != 4:
-        fail(f"set_g.n_mrs = {result['set_g']['n_mrs']}, expected 4")
+    if result["set_g"]["n_mrs"] != 5:
+        fail(f"set_g.n_mrs = {result['set_g']['n_mrs']}, expected 5")
 
     # Set N union: rho_perm kills M1+M5, rho_scale kills M2+M5, rho_mono kills M3
     # Union = {M1, M2, M3, M5} → 4 kills
@@ -68,13 +70,24 @@ def main():
     if result["set_n"]["kill_vector"] != expected_n_vec:
         fail(f"set_n.kill_vector = {result['set_n']['kill_vector']}, expected {expected_n_vec}")
 
-    # Set G union: MR0 kills M1+M3, MR1 kills M2+M3, MR2 kills M4, MR3 kills M3+M4
-    # Union = {M1, M2, M3, M4} → 4 kills
+    # Set G union: MR0 kills M1+M3, MR1 kills M2+M3, MR2 kills M4, MR3 kills M3+M4,
+    # MR4 kills nothing (dead-weight).  Union = {M1, M2, M3, M4} → 4 kills.
     if result["set_g"]["n_killed"] != 4:
         fail(f"set_g.n_killed = {result['set_g']['n_killed']}, expected 4")
     expected_g_vec = [1, 1, 1, 1, 0]
     if result["set_g"]["kill_vector"] != expected_g_vec:
         fail(f"set_g.kill_vector = {result['set_g']['kill_vector']}, expected {expected_g_vec}")
+
+    # Effective-MR Ratio: all 3 Set N MRs fire → ER_N = 3/3 = 1.0;
+    # 4 of 5 Set G MRs fire (MR4 is dead) → ER_G = 4/5 = 0.8.
+    if result["set_n"]["n_effective_mrs"] != 3:
+        fail(f"set_n.n_effective_mrs = {result['set_n']['n_effective_mrs']}, expected 3")
+    if abs(result["set_n"]["effective_mr_ratio"] - 1.0) > 1e-9:
+        fail(f"set_n.effective_mr_ratio = {result['set_n']['effective_mr_ratio']}, expected 1.0")
+    if result["set_g"]["n_effective_mrs"] != 4:
+        fail(f"set_g.n_effective_mrs = {result['set_g']['n_effective_mrs']}, expected 4")
+    if abs(result["set_g"]["effective_mr_ratio"] - 0.8) > 1e-9:
+        fail(f"set_g.effective_mr_ratio = {result['set_g']['effective_mr_ratio']}, expected 0.8")
 
     # M3_unique_to_N: mutants only N kills = {M5} → 1
     # M3_unique_to_G: mutants only G kills = {M4} → 1
@@ -97,7 +110,7 @@ def main():
         for f in failures:
             print(f"  {f}")
         sys.exit(1)
-    print("OK: parse_results.py correctly classifies sets, computes kills, M3 metrics")
+    print("OK: parse_results.py correctly classifies sets, computes kills, M3 metrics, effective-MR ratio")
 
 
 if __name__ == "__main__":

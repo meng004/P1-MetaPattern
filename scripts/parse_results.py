@@ -14,14 +14,18 @@ Inputs:
 Output JSON:
   {
     "subject":          "<subject>",
-    "seed":             11,
     "n_mutants":        25,
-    "set_n":  {"n_mrs": 4, "n_valid_mrs": 3, "killed_mutants": [..], "kill_rate": 0.20, "ms": ...},
-    "set_g":  {"n_mrs": 4, "n_valid_mrs": 3, "killed_mutants": [..], "kill_rate": 0.68, "ms": ...},
-    "joint":  {"killed_mutants": [..], "kill_rate": 0.72},
-    "per_mr":  [{"mr": "rho_perm", "set": "N", "fp": 0.0, "killed": [...]}, ...],
-    "m_metrics": {"M1": ..., "M2": ..., "M3": ..., "M4": ..., "M5": ...}
+    "n_total_mrs":      8,
+    "set_n":  {"n_mrs": 4, "n_effective_mrs": 3, "effective_mr_ratio": 0.75,
+               "kill_vector": [..], "n_killed": 5},
+    "set_g":  {"n_mrs": 4, "n_effective_mrs": 2, "effective_mr_ratio": 0.50,
+               "kill_vector": [..], "n_killed": 17},
+    "per_mr":  [{"mr": "rho_perm", "set": "N", "fp": 0.0, "n_killed": 2,
+                 "killed_indices": [4, 12]}, ...],
+    "m_metrics": {"M1_kill_rate_N": ..., ..., "M5_complementarity_lift": ...}
   }
+
+See docs/METRICS.md for the full definition of each field.
 """
 
 import argparse
@@ -114,6 +118,15 @@ def kill_count(vec):
     return sum(1 for k in vec if k)
 
 
+def n_effective_mrs(rows):
+    """Count MRs in `rows` that kill at least one mutant.
+
+    Effective-MR Ratio (docs/METRICS.md §"Effective-MR Ratio") = this
+    count / len(rows). Captures MR-level utilization, complementing M2.
+    """
+    return sum(1 for r in rows if any(r["kills"]))
+
+
 def m_metrics(set_n_rows, set_g_rows, n_mutants):
     """Compute M1-M5 efficiency metrics (per the paper's protocol)."""
     n_kills = union_kills(set_n_rows, n_mutants)
@@ -168,17 +181,23 @@ def main():
     # Subject from output path heuristic
     subject = Path(args.csv).parent.name
 
+    n_eff_n = n_effective_mrs(set_n_rows)
+    n_eff_g = n_effective_mrs(set_g_rows)
     out = {
         "subject": subject,
         "n_mutants": n_mutants,
         "n_total_mrs": len(rows),
         "set_n": {
             "n_mrs": len(set_n_rows),
+            "n_effective_mrs": n_eff_n,
+            "effective_mr_ratio": n_eff_n / max(1, len(set_n_rows)),
             "kill_vector": union_kills(set_n_rows, n_mutants),
             "n_killed": kill_count(union_kills(set_n_rows, n_mutants)),
         },
         "set_g": {
             "n_mrs": len(set_g_rows),
+            "n_effective_mrs": n_eff_g,
+            "effective_mr_ratio": n_eff_g / max(1, len(set_g_rows)),
             "kill_vector": union_kills(set_g_rows, n_mutants),
             "n_killed": kill_count(union_kills(set_g_rows, n_mutants)),
         },

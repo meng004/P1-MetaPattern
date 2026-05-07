@@ -27,25 +27,31 @@ def main():
         results = Path(tmp) / "results"
         results.mkdir()
 
-        # Subject A: 10 mutants; N kills 3, G kills 5; overlap 2; N-only=1 G-only=3
+        # Subject A: 10 mutants; N kills 3, G kills 5; overlap 2; N-only=1 G-only=3.
+        # Set N has 3 MRs all effective; Set G has 4 MRs but only 3 fire (1 dead).
         (results / "subjA").mkdir()
         with open(results / "subjA" / "aligned_metrics.json", "w") as f:
             json.dump({
                 "subject": "subjA",
                 "n_mutants": 10,
-                "set_n": {"n_mrs": 3, "kill_vector": [1, 1, 1, 0, 0, 0, 0, 0, 0, 0], "n_killed": 3},
-                "set_g": {"n_mrs": 4, "kill_vector": [0, 1, 1, 1, 1, 1, 0, 0, 0, 0], "n_killed": 5},
+                "set_n": {"n_mrs": 3, "n_effective_mrs": 3, "effective_mr_ratio": 1.0,
+                          "kill_vector": [1, 1, 1, 0, 0, 0, 0, 0, 0, 0], "n_killed": 3},
+                "set_g": {"n_mrs": 4, "n_effective_mrs": 3, "effective_mr_ratio": 0.75,
+                          "kill_vector": [0, 1, 1, 1, 1, 1, 0, 0, 0, 0], "n_killed": 5},
                 "m_metrics": {"M1_kill_rate_N": 0.3, "M1_kill_rate_G": 0.5,
                               "M3_unique_to_N": 1, "M3_unique_to_G": 3, "M3_overlap": 2},
             }, f)
-        # Subject B: 8 mutants; N kills 4, G kills 2; overlap 1; N-only=3 G-only=1
+        # Subject B: 8 mutants; N kills 4, G kills 2; overlap 1; N-only=3 G-only=1.
+        # Set N has 2 MRs both effective; Set G has 3 MRs but only 2 fire (1 dead).
         (results / "subjB").mkdir()
         with open(results / "subjB" / "aligned_metrics.json", "w") as f:
             json.dump({
                 "subject": "subjB",
                 "n_mutants": 8,
-                "set_n": {"n_mrs": 2, "kill_vector": [1, 1, 1, 1, 0, 0, 0, 0], "n_killed": 4},
-                "set_g": {"n_mrs": 3, "kill_vector": [1, 0, 0, 0, 1, 0, 0, 0], "n_killed": 2},
+                "set_n": {"n_mrs": 2, "n_effective_mrs": 2, "effective_mr_ratio": 1.0,
+                          "kill_vector": [1, 1, 1, 1, 0, 0, 0, 0], "n_killed": 4},
+                "set_g": {"n_mrs": 3, "n_effective_mrs": 2, "effective_mr_ratio": 2 / 3,
+                          "kill_vector": [1, 0, 0, 0, 1, 0, 0, 0], "n_killed": 2},
                 "m_metrics": {"M1_kill_rate_N": 0.5, "M1_kill_rate_G": 0.25,
                               "M3_unique_to_N": 3, "M3_unique_to_G": 1, "M3_overlap": 1},
             }, f)
@@ -92,12 +98,28 @@ def main():
     if len(summary["per_subject"]) != 2:
         fail(f"per_subject count = {len(summary['per_subject'])}, expected 2")
 
+    # Pooled Effective-MR Ratio:
+    # Set N: total_mrs = 3 + 2 = 5; effective_mrs = 3 + 2 = 5; ER = 5/5 = 1.0
+    # Set G: total_mrs = 4 + 3 = 7; effective_mrs = 3 + 2 = 5; ER = 5/7
+    if summary["set_n"]["total_mrs"] != 5:
+        fail(f"set_n.total_mrs = {summary['set_n']['total_mrs']}, expected 5")
+    if summary["set_n"]["effective_mrs"] != 5:
+        fail(f"set_n.effective_mrs = {summary['set_n']['effective_mrs']}, expected 5")
+    if abs(summary["set_n"]["effective_mr_ratio"] - 1.0) > 1e-9:
+        fail(f"set_n.effective_mr_ratio = {summary['set_n']['effective_mr_ratio']}, expected 1.0")
+    if summary["set_g"]["total_mrs"] != 7:
+        fail(f"set_g.total_mrs = {summary['set_g']['total_mrs']}, expected 7")
+    if summary["set_g"]["effective_mrs"] != 5:
+        fail(f"set_g.effective_mrs = {summary['set_g']['effective_mrs']}, expected 5")
+    if abs(summary["set_g"]["effective_mr_ratio"] - 5 / 7) > 1e-9:
+        fail(f"set_g.effective_mr_ratio = {summary['set_g']['effective_mr_ratio']}, expected {5/7}")
+
     if failures:
         print(f"FAIL ({len(failures)}):")
         for f in failures:
             print(f"  {f}")
         sys.exit(1)
-    print("OK: aggregate_metrics.py pools correctly, Wilson CI brackets rate, McNemar pairs counted")
+    print("OK: aggregate_metrics.py pools correctly, Wilson CI brackets rate, McNemar pairs counted, ER pooled")
 
 
 if __name__ == "__main__":

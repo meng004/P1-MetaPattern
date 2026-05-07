@@ -80,6 +80,14 @@ def main():
     total_n_kills = sum(s["set_n"]["n_killed"] for s in per_subject)
     total_g_kills = sum(s["set_g"]["n_killed"] for s in per_subject)
 
+    # Effective-MR pool (see docs/METRICS.md §"Pooled Effective-MR Ratio").
+    # `.get(..., 0)` keeps backward compatibility with per-subject JSONs
+    # written before the field existed.
+    total_n_mrs = sum(s["set_n"].get("n_mrs", 0) for s in per_subject)
+    total_g_mrs = sum(s["set_g"].get("n_mrs", 0) for s in per_subject)
+    total_n_eff = sum(s["set_n"].get("n_effective_mrs", 0) for s in per_subject)
+    total_g_eff = sum(s["set_g"].get("n_effective_mrs", 0) for s in per_subject)
+
     # Per-mutant paired comparison (across all subjects)
     pair_b = pair_c = 0
     for s in per_subject:
@@ -113,11 +121,17 @@ def main():
             "kills": total_n_kills,
             "kill_rate": total_n_kills / max(1, total_mutants),
             "wilson_95_ci": wilson_ci(total_n_kills, total_mutants),
+            "total_mrs": total_n_mrs,
+            "effective_mrs": total_n_eff,
+            "effective_mr_ratio": total_n_eff / max(1, total_n_mrs),
         },
         "set_g": {
             "kills": total_g_kills,
             "kill_rate": total_g_kills / max(1, total_mutants),
             "wilson_95_ci": wilson_ci(total_g_kills, total_mutants),
+            "total_mrs": total_g_mrs,
+            "effective_mrs": total_g_eff,
+            "effective_mr_ratio": total_g_eff / max(1, total_g_mrs),
         },
         "paired_mcnemar": {
             "n_only_kills": pair_b,
@@ -135,9 +149,11 @@ def main():
         json.dump(summary, f, indent=2)
     print(f"\nCross-subject summary written to {args.output}")
     print(f"  Set N: {total_n_kills}/{total_mutants} = {summary['set_n']['kill_rate']:.3f} "
-          f"(95% CI: [{summary['set_n']['wilson_95_ci'][0]:.3f}, {summary['set_n']['wilson_95_ci'][1]:.3f}])")
+          f"(95% CI: [{summary['set_n']['wilson_95_ci'][0]:.3f}, {summary['set_n']['wilson_95_ci'][1]:.3f}]) "
+          f"| ER {total_n_eff}/{total_n_mrs} = {summary['set_n']['effective_mr_ratio']:.3f}")
     print(f"  Set G: {total_g_kills}/{total_mutants} = {summary['set_g']['kill_rate']:.3f} "
-          f"(95% CI: [{summary['set_g']['wilson_95_ci'][0]:.3f}, {summary['set_g']['wilson_95_ci'][1]:.3f}])")
+          f"(95% CI: [{summary['set_g']['wilson_95_ci'][0]:.3f}, {summary['set_g']['wilson_95_ci'][1]:.3f}]) "
+          f"| ER {total_g_eff}/{total_g_mrs} = {summary['set_g']['effective_mr_ratio']:.3f}")
     print(f"  McNemar exact p = {summary['paired_mcnemar']['p_value_two_sided']:.4f}")
 
 
