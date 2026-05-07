@@ -25,11 +25,14 @@ echo "[1/5] Installing system packages..."
 
 # 移除已知失效的 PPA（deadsnakes / ondrej-php），防止 apt-get update 报错退出。
 # 按 URL 内容匹配，覆盖 .list 与 .sources 两种格式以及任意命名。
-for pat in 'ppa.launchpadcontent.net/deadsnakes' 'ppa.launchpad.net/deadsnakes' \
-           'ppa.launchpadcontent.net/ondrej/php' 'ppa.launchpad.net/ondrej/php'; do
-    sudo grep -rl --include='*.list' --include='*.sources' "$pat" /etc/apt/ 2>/dev/null \
-        | xargs -r sudo rm -f
-done
+# 用 `|| true` 兜住 grep 没匹配时的退出码 1，避免 set -euo pipefail 触发。
+{ sudo grep -rl --include='*.list' --include='*.sources' \
+      -e 'ppa.launchpadcontent.net/deadsnakes' \
+      -e 'ppa.launchpad.net/deadsnakes' \
+      -e 'ppa.launchpadcontent.net/ondrej/php' \
+      -e 'ppa.launchpad.net/ondrej/php' \
+      /etc/apt/ 2>/dev/null || true; } \
+    | xargs -r sudo rm -f
 
 sudo apt-get update -y -qq
 sudo apt-get install -y -qq \
