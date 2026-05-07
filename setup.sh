@@ -92,7 +92,9 @@ for ZIP in evaluation.zip mrs.zip genmorph.zip; do
         echo "  $ZIP cached, skip"
     else
         echo "  fetching $ZIP..."
-        wget -q --no-check-certificate "$ZENODO/$ZIP"
+        # curl -fSL：失败时打印 HTTP 状态码（不像 wget -q 会吞掉），方便定位
+        # 是 egress 白名单拦截还是 Zenodo 真返回错误。
+        curl -fSL --retry 3 --retry-delay 2 -o "$ZIP" "$ZENODO/$ZIP"
     fi
 done
 [[ -d evaluation    ]] || unzip -q evaluation.zip
