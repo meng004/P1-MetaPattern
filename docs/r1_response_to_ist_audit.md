@@ -274,8 +274,8 @@ on $\mathcal{A}_P$ distillation" subsection at the end of §4 (after
    propose using one of the §7 algebra-rich SUTs (e.g.,
    \texttt{midpoint}) where the distillation is short enough to fit
    in 1 page but non-trivial.
-3. A short discussion of failure modes (when distillation fails —
-   the §6.8 PWR case is one — and what a practitioner does when
+3. A short discussion of failure modes (when distillation fails
+   the §6.8 PWR case is one, and what a practitioner does when
    that happens).
 
 The audience for this subsection is IST's practitioner-oriented
@@ -508,14 +508,14 @@ relative to the audit-time head `7060ba1`:
 
 ### What R1 does not deliver
 
-* (S4 alternative path) reactor-simulator 3-MR pilot — committed
+* (S4 alternative path) reactor-simulator 3-MR pilot, committed
   future work, ~3-5 days
-* (M1) full 38-SUT algebra-rich extension — committed future work,
+* (M1) full 38-SUT algebra-rich extension, committed future work,
   ~10 days human + 30 min compute
-* (M3 alternative path) real-bug evaluation pilot — committed future
+* (M3 alternative path) real-bug evaluation pilot, committed future
   work, ~1 week
-* (S2 alternatives) Set M (MR-Scout) — substrate-N/A on inlined
-  utility methods; Set B (literature) — substrate-N/A given absent
+* (S2 alternatives) Set M (MR-Scout), substrate-N/A on inlined
+  utility methods; Set B (literature), substrate-N/A given absent
   literature MRs at this granularity
 
 ### Estimated R1 wall-time
