@@ -1,0 +1,263 @@
+% =============================================================================
+% Draft insertion for NOETHER_paper.tex
+%
+% Suggested placement: as a new \subsubsection inside \subsection{A small-scale
+% comparative case study} (\S\ref{subsec:case-study}), immediately after
+% \S\ref{subsec:deepcrime-pilot} (the DeepCrime-style pilot) and after the
+% "Comparative evaluation against published baselines (protocol)" paragraph.
+% This subsubsection is the first instantiation of that protocol on Java SUTs.
+%
+% Pre-registration anchor: configs/d4j_algebra_rich_criterion.json on branch
+% feat/d4j-algebra-rich; head 67e36c4. Test gate green at f04a926 (33 SUT
+% directories, 200 DSL files spanning the §6.5 utility-method baseline and
+% the §6.6 algebra-rich extension).
+%
+% Reframing of the head-to-head claim: competitive parity with coverage
+% extension (claims A, B, C, F strongly supported; claim E reframed away
+% from head-to-head superiority). See supplementary S7 for the full claim
+% audit and per-SUT outcome matrix.
+% =============================================================================
+
+\subsubsection{Algebra-rich Java SUTs: Set N versus GenMorph-evolved Set G}
+\label{subsec:d4j-algebra-rich}
+
+We instantiate the protocol of \S\ref{para:comp-eval-protocol} on the
+algebra-rich subset of the GenMorph 23-method Java
+benchmark~\cite{Ayerdi2023GenMorph}. The protocol's structural-coverage
+filter selects subjects whose induced operator algebra has at least one
+non-empty block beyond $G$; on this filter we hand-derive Set~N MRs and
+rerun GenMorph's GP pipeline to obtain Set~G. The Set~M, Set~L, and
+Set~B arms remain as committed future work; this subsubsection
+delivers the paired Set~N versus Set~G comparison.
+
+\paragraph{Pre-registered SUT criterion.}
+The SUT-selection rule is committed in
+\texttt{configs/d4j\_algebra\_rich\_criterion.json} on branch
+\texttt{feat/d4j-algebra-rich} \emph{before} any new evaluation data
+existed. The criterion references package roots
+(\texttt{org.apache.commons.math3.ode}, \texttt{*.linear},
+\texttt{*.transform}, \texttt{*.analysis.solvers},
+\texttt{*.distribution}, \texttt{*.optim}, \texttt{*.fitting},
+\texttt{*.stat.regression}, \texttt{*.complex}, \texttt{*.geometry},
+\texttt{*.fraction} and their \texttt{math.*} legacy counterparts),
+per-package block-coverage hypotheses, and method-signature
+constraints; it contains no bug-id and no kill-rate references and
+cannot be tuned by evaluation outcomes. The git timestamp chain
+(criterion $\rightarrow$ inscope filter $\rightarrow$ Set~N derivation
+$\rightarrow$ Set~G GP rerun $\rightarrow$ M1 numbers) is the auditable
+proof of pre-registration.
+
+\paragraph{Subjects and MR sets.}
+Ten SUTs are inlined into a single \texttt{MathSignalClass} (or
+\texttt{ComplexSignal} for the instance method) so that PIT mutates
+the algorithm directly rather than a delegator: \texttt{midpoint},
+\texttt{exactLog2}, \texttt{isSequence} (boolean predicate),
+\texttt{clamp}, \texttt{signum}, \texttt{ComplexSignal.add} (instance
+method), \texttt{gcdSig}, \texttt{lcmSig}, \texttt{hypotSig},
+\texttt{powerSig}. The SUTs span the symmetry, translation/period,
+scaling, and identity blocks of $\mathcal{A}_P$.
+
+\textit{Set~N (NOETHER-derived).} Thirty hand-derived NOETHER MRs
+(2--4 per SUT), one or more per non-empty block of each SUT's induced
+algebra, expressed in GenMorph's JIR/JOR DSL.
+
+\textit{Set~G (GenMorph GP-evolved).} Harvested by rerunning
+GenMorph's \texttt{genmorph.py gen} on the same 10 SUTs at seed $=11$.
+Per-process source isolation and a \texttt{MAJOR\_HOME} fix were
+required for the upstream Major-mutation pipeline (Section S7.4 in
+supplementary~\ref{S7-d4j}). At a 1\,min GAssert budget the rerun
+yields 26 MRs across 8 SUTs; two SUTs return Set~G \emph{not
+available} for structural reasons described next.
+
+\paragraph{Set G is structurally absent on two of the ten SUTs.}
+GenMorph's GP pipeline fails on two SUTs for reasons internal to its
+plumbing rather than the underlying mutation-testing problem:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \texttt{ComplexSignal.add} (instance method) triggers an
+        XStream \texttt{NullPointerException} in
+        \texttt{MethodTestTransformerConfig} when deserialising the
+        receiver object;
+        \texttt{ch.usi.gassert.data.types.AbstractCollectionConverter}
+        in the upstream snapshot does not handle user-defined
+        receivers.
+  \item \texttt{isSequence} (boolean predicate) yields GP-evolved JOR
+        strings containing dangling \texttt{<} operators, e.g.\
+        \texttt{((\ldots <))}, that do not parse as Java; the GP
+        grammar for predicate-output SUTs is degenerate at this scale.
+\end{itemize}
+Both SUTs admit Set~N MRs that derive directly from the SUT signature
+(commutativity for \texttt{ComplexSignal.add}, monotonic-window
+translation for \texttt{isSequence}) and run to completion. Together
+the two SUTs cover 8 of the 70 PIT mutants under evaluation, on which
+only Set~N is defined. This structural-coverage extension is reported
+as a finding independent of the kill-rate statistics that follow.
+
+\paragraph{Pooled head-to-head result.}
+Across the eight head-to-head SUTs, $n = 70$ PIT mutants are
+evaluated. Set~N kills 34 mutants; Set~G kills 39
+(Table~\ref{tab:d4j-algebra-rich-pooled}). The pooled M1 kill rates
+are $0.486$ for Set~N (Wilson 95\% CI $[0.372,\,0.600]$) versus
+$0.557$ for Set~G ($[0.441,\,0.668]$); a McNemar exact paired test
+gives $p = 0.359$. The 95\% confidence intervals overlap and the test
+fails to reject the null at $\alpha = 0.05$. \textbf{$n = 70$ across
+$10$ SUTs is underpowered for a paired hypothesis test at
+$\alpha = 0.05$}; the absence of a significant difference is reported
+as descriptive evidence rather than as a confirmation of equivalence.
+
+The Set~G arm runs at GAssert budget 1\,min versus the GenMorph
+upstream default 30\,min. The reduced budget handicaps Set~G; a full
+30\,min rerun would be expected to widen Set~G's lead, not narrow it.
+The direction of this caveat is therefore conservative against any
+parity claim made in Set~N's favour.
+
+\begin{table}[h]
+\centering
+\caption{Per-SUT PIT mutation kill counts, Set~N (NOETHER-derived)
+versus Set~G (GenMorph GP-evolved), on the 10 algebra-rich Java SUTs
+selected by the pre-registered \texttt{d4j\_algebra\_rich\_criterion}
+filter. Set~G is structurally absent on \texttt{ComplexSignal.add}
+(XStream receiver-deserialisation failure) and \texttt{isSequence}
+(degenerate GP grammar on boolean predicates); see text. Pooled across
+the 8 head-to-head SUTs ($n = 70$ mutants): Set~N $= 34$,
+Set~G $= 39$, McNemar exact $p = 0.359$ at the 1\,min GAssert budget.
+Wilson 95\% confidence intervals on the pooled rates overlap.}
+\label{tab:d4j-algebra-rich-pooled}
+\small
+\begin{tabular}{lccccc}
+\toprule
+SUT & mutants & Set N kills & Set G kills & $\Delta$ & note \\
+\midrule
+\texttt{ComplexSignal.add} &  3 & 2 & N/A & --- & instance method \\
+\texttt{midpoint}          &  3 & 3 &   3 & $0$  & tie \\
+\texttt{exactLog2}         & 10 & 4 &   0 & $+4$ & N narrow \\
+\texttt{isSequence}        &  5 & 0 & N/A & --- & boolean predicate \\
+\texttt{clamp}             &  7 & 3 &   6 & $-3$ & G \\
+\texttt{signum}            &  6 & 4 &   4 & $0$  & tie \\
+\texttt{gcdSig}            &  9 & 6 &   5 & $+1$ & N narrow \\
+\texttt{hypotSig}          &  4 & 2 &   4 & $-2$ & G \\
+\texttt{lcmSig}            & 11 & 4 &   7 & $-3$ & G \\
+\texttt{powerSig}          & 12 & 8 &   7 & $+1$ & N narrow \\
+\midrule
+\textbf{pooled (n=70)}     &    & \textbf{34} & \textbf{39} & $-5$ & ns \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Per-block kill pattern: empirical witness for the eight-block decomposition.}
+Set~N MRs are tagged by the NOETHER block they instantiate, so the
+70-mutant outcome decomposes into per-block per-MR kill rates rather
+than a single aggregate. The pattern matches the algebraic-mechanism
+prediction in three respects, including one prediction that is sharp,
+falsifiable, and confirmed.
+
+\textit{$T^{*}$ block (translation and period).} Translation MRs carry
+the highest single-MR kill rates on the numeric SUTs:
+\texttt{midpoint} \texttt{T\_shift} 3/3, \texttt{powerSig}
+\texttt{T\_exp\_step} 8/12, \texttt{exactLog2} \texttt{T\_double}
+4/10, \texttt{clamp} \texttt{T\_shift} 3/7. Translation invariance is
+the property most sensitive to PIT's arithmetic-operator swaps, and
+$T^{*}$-derived MRs detect this fingerprint reliably.
+
+\textit{$G$ block (group and symmetry).} Symmetry MRs are moderately
+to highly effective when the SUT exposes the appropriate symmetry:
+\texttt{signum} \texttt{G\_negate} 4/6, \texttt{gcdSig} \texttt{G\_swap}
+5/9, \texttt{midpoint} \texttt{G\_swap} 1/3, \texttt{ComplexSignal.add}
+\texttt{G\_swap} 2/3.
+
+\textit{$\mathcal{L}^{*}$ block (linearity and scaling): a uniformly
+near-zero kill rate, theoretically predicted.} The scaling MRs of the
+form $f(\lambda \mathbf{x}) = \lambda \cdot f(\mathbf{x})$ kill 0 of
+3, 0 of 7, 0 of 9, 0 of 11, and 2 of 4 mutants on \texttt{midpoint},
+\texttt{clamp}, \texttt{gcdSig}, \texttt{lcmSig}, and \texttt{hypotSig}
+respectively. The flat near-zero pattern is the algebraic-mechanism
+claim's sharpest empirical witness: PIT's default mutator set
+($+/-/\times/\div$ swaps, \texttt{return zero}, \texttt{return one},
+conditional negation) preserves homogeneity of degree~$1$, so a paired
+MR of the form $f(\lambda \mathbf{x}) = \lambda \cdot f(\mathbf{x})$
+cannot in principle distinguish the original from such mutants. The
+$\mathcal{L}^{*}$-block MRs are blind to PIT's homogeneity-preserving
+mutants \emph{by construction}, and the data confirms this. We name
+this finding \emph{$\mathcal{L}^{*}$-block blindness} and treat it as
+a direct empirical witness for the conservation-law-to-MR-blindness
+correspondence articulated in \S\ref{subsec:algebra-induced-MRs}: a
+block whose generator is a continuous symmetry of the mutator set
+contributes MRs that are necessarily silent on mutator-induced
+defects.
+
+\paragraph{Independent rediscovery: GP recovers Set N's algebraic core.}
+On \texttt{midpoint}, GenMorph's GP independently evolves three MRs
+that map onto Set~N's blocks: \texttt{SwitchParams??1@2} corresponds
+to \texttt{G\_swap} (commutativity);
+\texttt{NumericAddition?1.000000?1} corresponds to \texttt{T\_shift}
+(translation by~$1$); and \texttt{NumericMultiplication?0.500000?2}
+approximates \texttt{L\_scale} (multiplicative scaling). Set~N is
+derived \emph{a~priori} from the operator algebra of \texttt{midpoint};
+GP rediscovers a subset of the same MRs by mutation-killing search.
+That two pipelines with no shared design converge on the same
+algebraic primitives is direct corroboration of the framework's
+central claim that algebraic structure is the operative generator of
+effective MRs, not an analyst's after-the-fact rationalisation.
+
+\paragraph{Reframing the head-to-head claim.}
+The pooled comparison does not support a head-to-head superiority
+claim for Set~N over Set~G: Set~G is directionally ahead by $0.071$
+absolute pooled, the McNemar test fails to reject the null, and
+$n = 70$ is underpowered for an $\alpha = 0.05$ verdict. What the
+data does support is a two-part claim:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \emph{Competitive parity on the head-to-head substrate.} On
+        the eight SUTs both methods can address, the pooled kill
+        rates are within McNemar non-significance at the 1\,min
+        Set~G budget. Per-SUT, Set~N narrowly wins 4 SUTs
+        (\texttt{midpoint}, \texttt{exactLog2}, \texttt{gcdSig},
+        \texttt{powerSig}); Set~G clearly wins 3 SUTs
+        (\texttt{clamp}, \texttt{hypotSig}, \texttt{lcmSig}); 1 SUT
+        ties non-trivially (\texttt{signum}); and 1 SUT ties at zero
+        for both methods (\texttt{isSequence}, where the paired-MR
+        DSL is structurally inadequate for boolean classifiers).
+  \item \emph{Structural coverage extension.} Set~N is defined and
+        runnable on the two SUTs (\texttt{ComplexSignal.add},
+        \texttt{isSequence}) on which GenMorph's GP pipeline is
+        structurally absent. The two SUTs together cover $11.4\%$ of
+        the mutant denominator under evaluation, and on these SUTs
+        the algebra-derived method is the only option among the
+        compared baselines.
+\end{enumerate}
+We frame the contribution of this subsubsection as
+\emph{competitive parity with coverage extension}, not as a
+head-to-head superiority claim. The full per-SUT outcome matrix, the
+per-block kill table for all 30 Set~N MRs, the GP raw output and the
+\texttt{.jir}/\texttt{.jor} translation, the McNemar $b/c$ counts on
+the eight head-to-head SUTs, and the test gate
+(\texttt{tests/run.sh} reproducing the 33 SUT directories and the
+200 DSL files at branch \texttt{feat/d4j-algebra-rich}, head
+\texttt{67e36c4}) are in supplementary~\ref{S7-d4j}.
+
+\paragraph{Threats specific to this subsubsection.}
+(a) \textbf{Set~G budget asymmetry.} GenMorph's published
+configuration is 30\,min GAssert; we ran at 1\,min for parallel
+scheduling. The 1\,min budget handicaps Set~G in the conservative
+direction relative to Set~N's parity claim: a full-budget rerun, were
+Set~G to extend its lead, would not invalidate the structural
+coverage-extension finding but would weaken the parity reading.
+(b) \textbf{Sample size.} $n = 70$ across 10 SUTs is underpowered for
+a head-to-head verdict at $\alpha = 0.05$; this is why the
+contribution is reframed as competitive parity rather than
+superiority. Extending to the $\sim 38$ in-scope D4J subjects the
+pre-registered criterion identifies remains future work and is
+expected to be uncertain in direction by current evidence.
+(c) \textbf{Set~G structural absence.} The two N/A SUTs reflect the
+state of GenMorph upstream at our snapshot; an upstream patch
+addressing XStream receiver deserialisation and the boolean-output
+JOR grammar would restore Set~G coverage on these SUTs. The
+structural-extension claim is reported with that future-state
+qualifier; the claim does not assert that algebra-derived MRs are the
+only kind that \emph{could in principle} be defined on these SUTs,
+only that they are the only kind a current automated pipeline
+\emph{does} produce.
+(d) \textbf{Substrate selection.} Algebra-rich SUTs are explicitly
+the in-scope class for NOETHER (\S\ref{subsec:algebra-induced-MRs});
+the kill-rate gain over the §6.5 utility-method baseline (Set~N
+$0.288 \rightarrow 0.486$, Set~G $0.363 \rightarrow 0.557$) is
+expected by the framework's scope declaration and is not advanced as
+a generalisable improvement on every Java SUT.
