@@ -215,7 +215,7 @@ in-domain claim.
 **Response**: We agree that §5 does not include a codebase pilot and
 that the absence is a real gap relative to IST's preference for
 empirical bite. We disagree with characterising §5's role as "in-domain
-empirical anchor" — that role is in §6 (equivariant ML EGNN case
+empirical anchor", that role is in §6 (equivariant ML EGNN case
 study) and in §7 (Java mathematical methods comparison). §5's role
 is to demonstrate that CONSTRUCT-MP **generates** MRs from a
 non-trivial operator algebra in a domain where the algebraic
@@ -270,7 +270,7 @@ on $\mathcal{A}_P$ distillation" subsection at the end of §4 (after
 
 1. A 3–5 step workflow for distilling $\mathcal{A}_P$ from a
    program family's documented mathematical structure.
-2. A worked example lighter than §5/§6's full case studies — we
+2. A worked example lighter than §5/§6's full case studies, we
    propose using one of the §7 algebra-rich SUTs (e.g.,
    \texttt{midpoint}) where the distillation is short enough to fit
    in 1 page but non-trivial.
@@ -430,7 +430,7 @@ blocks" subsection at the end of §3, with one sentence per block in
 non-formal language. Examples:
 
 * $G$ (group / symmetry): "the input transformations that the
-  function commutes with — e.g., swap-arguments for commutative
+  function commutes with, e.g., swap-arguments for commutative
   binary operations"
 * $\mathcal{L}^{*}$ (linearity / scaling): "the function's behaviour
   under positive rescaling of all numeric inputs"
