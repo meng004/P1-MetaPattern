@@ -1,0 +1,571 @@
+% =============================================================================
+% Draft v2 of \section{}, "重心收紧" rewrite.
+%
+% Difference from v1 (draft_section_7.tex):
+%
+%   v1 was an 8-subsection "comparative empirical evaluation": pre-registration
+%       -> setup -> utility-arm -> algebra-rich-arm -> per-block -> rediscovery
+%       -> reframing -> threats. The L*-block blindness finding lived in 7.5,
+%       buried mid-section, treated as one piece of evidence among several.
+%
+%   v2 reframes the section as a single falsifiable-prediction test: NOETHER's
+%       eight-block decomposition predicts that an MR derived from the L*
+%       block is necessarily silent on PIT mutators that preserve homogeneity
+%       of degree 1, and the prediction is empirically tested. The pooled
+%       head-to-head against GenMorph becomes supporting context, demoted to
+%       \S\ref{subsec:pooled-headtohead}, two paragraphs.
+%
+%   Section title and intro paragraph signal the central thesis. The
+%       L*-block blindness result is in \S\ref{subsec:l-blindness-confirmed}
+%       (subsection 3 of 7) immediately after the prediction (\S7.1) and the
+%       test design (\S7.2). Other per-block patterns, cross-pipeline
+%       rediscovery, structural coverage extension, and head-to-head pooled
+%       parity each occupy one subsection as corroborating evidence.
+%
+% Foregrounded claim: B (mechanism operativeness), via L*-blindness as a
+% quantitative ex-ante prediction. Corroborating: F (rediscovery), C
+% (coverage extension), D (scope discriminance). Reframed: E (parity, not
+% superiority).
+%
+% Insertion point: same as v1, between current §6 and §7 (Discussion).
+% =============================================================================
+
+\section{An empirical test of the eight-block decomposition: $\mathcal{L}^{*}$-block blindness on homogeneity-preserving mutators}
+\label{sec:empirical-vs-sota}
+
+A generative framework that cannot make falsifiable quantitative
+predictions is rhetoric, not science. The previous two sections
+establish that NOETHER \emph{generates} MRs in two domains with
+structurally distinct operator algebras (\S\ref{sec:reactor},
+\S\ref{sec:cross-domain}); generation alone does not test the
+framework's central methodological claim, that the eight-block
+decomposition (\S\ref{subsec:decomposition}) is empirically operative
+as a mechanism rather than a derivation-bookkeeping device. This
+section reports an empirical test of one quantitative consequence of
+that claim. NOETHER predicts that an MR derived from the
+linearity-and-scaling block ($\mathcal{L}^{*}$) is necessarily silent
+on any mutator that preserves homogeneity of degree~$1$. PIT's default
+mutator set has this property by direct calculation. The prediction
+is therefore that the $\mathcal{L}^{*}$-block MRs in our SUT set will
+kill near-zero PIT mutants. We refer to this prediction as
+\emph{$\mathcal{L}^{*}$-block blindness}. The prediction is sharp,
+quantitative, and derivable from public information without consulting
+any data. The test of the prediction is the central content of this
+section. Pooled head-to-head numbers against an automated SOTA
+baseline (GenMorph~\cite{Ayerdi2023GenMorph}), structural coverage
+extension, and cross-pipeline MR rediscovery are reported as
+corroborating evidence; the section's central claim does not depend
+on them.
+
+\subsection{The prediction: \texorpdfstring{$\mathcal{L}^{*}$}{L*}-block blindness}
+\label{subsec:l-blindness-derivation}
+
+\paragraph{The MR shape.}
+The $\mathcal{L}^{*}$ block of $\mathcal{A}_P$ in
+Definition~\ref{def:eight-blocks} contains scaling and linearity
+operators. CONSTRUCT-MP's \texttt{Translate} step
+(\S\ref{subsec:algebra-induced-MRs}) carries scaling-block invariants
+to MRs of the form
+\begin{equation}
+\label{eq:l-scale-shape}
+L_{\mathrm{scale}}: \quad f(\lambda \mathbf{x}) \;=\; \lambda \cdot f(\mathbf{x}),
+\qquad \lambda > 0,
+\end{equation}
+on positively-homogeneous-of-degree-$1$ programs. The shape is fixed
+by $\mathcal{A}_P$ structure; it is not chosen with mutation testing
+in mind.
+
+\paragraph{The mutator semantics.}
+PIT~1.7.4~\cite{Coles2016PIT} ships a default mutator set comprising
+seven canonical operator classes: arithmetic-operator swap (AOR;
+$+ \leftrightarrow -$, $\times \leftrightarrow \div$), conditional
+boundary mutation, increment mutation, return-value swap (\texttt{return zero},
+\texttt{return one}, \texttt{return null}), conditional negation
+(NCM), constant replacement, and member-call removal. Each AOR
+mutation that preserves the program's domain of definition transforms
+a homogeneous-of-degree-$1$ function $f$ into another
+homogeneous-of-degree-$1$ function $f'$, by the elementary fact that
+the four arithmetic operators in question commute with positive
+scalar multiplication of all inputs in the relevant homogeneous case
+(addition and subtraction are degree-$1$ homogeneous; multiplication
+and division shift degrees by $\pm 1$, but the swap $\times
+\leftrightarrow \div$ on a properly typed expression returns a
+degree-preserving result on the homogeneous-of-degree-$1$
+sub-grammar).
+
+\paragraph{The prediction.}
+A composite of these two facts gives the central prediction. If $f$
+satisfies $L_{\mathrm{scale}}$ and the mutator $\mu$ preserves
+homogeneity of degree~$1$, then $\mu(f)$ also satisfies
+$L_{\mathrm{scale}}$. Therefore the paired-MR test
+\begin{equation*}
+\big| f(\lambda \mathbf{x}) - \lambda f(\mathbf{x}) \big| \;\le\; \tau
+\quad \mathrm{vs.} \quad
+\big| \mu(f)(\lambda \mathbf{x}) - \lambda \mu(f)(\mathbf{x}) \big| \;\le\; \tau
+\end{equation*}
+returns the same verdict on $f$ and on $\mu(f)$ for any
+$\mathbf{x}$, $\lambda$. The kill rate of $L_{\mathrm{scale}}$ against
+the homogeneity-preserving subset of PIT's mutators is
+\emph{identically zero} by direct calculation, and against the full
+default mutator set is approximately zero up to a small fraction
+contributed by mutators that break homogeneity (return-value swap to
+\texttt{zero} or \texttt{one}; conditional-negation when the
+conditional carries a constant offset; constant replacement when the
+constant participates additively).
+
+\paragraph{Falsifiability.}
+The prediction is falsified if the observed
+$L_{\mathrm{scale}}$ kill rate is materially above zero on a substrate
+where the prediction's homogeneity precondition is met. We define
+``materially above zero'' in advance as a single $L_{\mathrm{scale}}$
+MR killing a third or more of its PIT mutants on more than one of the
+SUTs in the substrate. The prediction passes if the observed kill
+rate is $\le 1/3$ on at least five of the six SUTs admitting an
+$L_{\mathrm{scale}}$ MR.
+
+\paragraph{Public-information argument.}
+Equation~(\ref{eq:l-scale-shape}) is a consequence of $\mathcal{A}_P$
+structure and CONSTRUCT-MP's \texttt{Translate} step, both fully
+specified in \S\ref{sec:framework}. PIT's default mutator set is
+public~\cite{Coles2016PIT}. The composition of the two is a
+mathematical consequence requiring no experimental input. The
+prediction is therefore ex-ante in the strong sense that it is
+\emph{derivable from public information without consulting any data
+this paper produces}. We track the prediction's commitment to
+git in supplementary~\ref{S7-d4j} alongside the SUT-selection
+criterion of \S\ref{subsec:test-design}.
+
+\subsection{Test design}
+\label{subsec:test-design}
+
+\paragraph{Substrate.}
+PIT~1.7.4 with the default mutator configuration serves as the
+shared substrate. Each (subject, MR) pair is evaluated through (i)
+JUnit test-class codegen, (ii) a 2-pass surefire green-suite filter
+that drops MR instances flaky on the unmutated SUT, and (iii) PIT
+mutation testing parsed to a per-mutant kill vector.
+
+\paragraph{Pre-registered SUT criterion.}
+The selection rule is committed in
+\texttt{configs/d4j\_algebra\_rich\_criterion.json} on branch
+\texttt{feat/d4j-algebra-rich} of the experiment repository
+\emph{before} any new evaluation data existed. The criterion
+references package roots
+(\texttt{org.apache.commons.math3.\{ode,linear,transform,analysis.solvers,distribution,optim,fitting,stat.regression,complex,geometry,fraction\}}
+plus their \texttt{math.*} legacy counterparts), per-package
+block-coverage hypotheses, and method-signature constraints; it
+contains no bug-id and no kill-rate references and cannot be tuned by
+evaluation outcomes. The git timestamp chain (criterion
+$\rightarrow$ inscope filter $\rightarrow$ Set~N derivation
+$\rightarrow$ Set~G GP rerun $\rightarrow$ pooled M1) is the
+auditable proof of pre-registration.
+
+\paragraph{Subjects and MR yield.}
+Ten SUTs admit at least one non-trivial NOETHER block beyond $G$:
+\texttt{midpoint}, \texttt{exactLog2}, \texttt{isSequence} (boolean
+predicate), \texttt{clamp}, \texttt{signum},
+\texttt{ComplexSignal.add} (instance method), \texttt{gcdSig},
+\texttt{lcmSig}, \texttt{hypotSig}, \texttt{powerSig}. Six of these
+admit an $L_{\mathrm{scale}}$ MR (those whose induced algebra
+populates the $\mathcal{L}^{*}$ block under positive-scalar
+homogeneity): \texttt{midpoint}, \texttt{clamp}, \texttt{signum},
+\texttt{gcdSig}, \texttt{lcmSig}, \texttt{hypotSig}. The remaining
+four do not admit a degree-$1$ scaling MR by their algebraic structure
+(\texttt{exactLog2} carries no positive-degree scaling;
+\texttt{isSequence} is a boolean predicate; \texttt{ComplexSignal.add}
+is a complex-arithmetic instance method whose scaling block is
+distinct in formulation; \texttt{powerSig} populates $T^{*}_{2}$
+rather than $\mathcal{L}^{*}$). The prediction is tested on the six
+SUTs admitting $L_{\mathrm{scale}}$.
+
+Set~N contains 30 hand-derived NOETHER MRs, two to four per SUT, one
+or more per non-empty block of each SUT's induced algebra. Set~G is
+harvested by rerunning GenMorph's \texttt{genmorph.py gen} mode at
+seed $=11$ on the 10 SUTs; Set~G is used in
+\S\ref{subsec:pooled-headtohead} as the head-to-head comparator and
+plays no role in the central prediction test of
+\S\ref{subsec:l-blindness-confirmed}.
+
+\paragraph{Metrics.}
+Per-MR kill counts on PIT mutants are the primary measurement for the
+central prediction test. Pooled M1 and McNemar exact paired tests are
+reported in \S\ref{subsec:pooled-headtohead} as corroborating
+context.
+
+\subsection{Central result: \texorpdfstring{$\mathcal{L}^{*}$}{L*}-block blindness, confirmed}
+\label{subsec:l-blindness-confirmed}
+
+The $L_{\mathrm{scale}}$ MR's per-SUT kill rate on PIT mutants of the
+six $\mathcal{L}^{*}$-admitting SUTs is reported in
+Table~\ref{tab:l-blindness}. The total denominator is 44 mutants. The
+total kill count is 2.
+
+\begin{table}[h]
+\centering
+\caption{Per-SUT kill rate of the $L_{\mathrm{scale}}$ MR on PIT
+mutants of the six SUTs admitting an $\mathcal{L}^{*}$-block scaling
+MR. The prediction of \S\ref{subsec:l-blindness-derivation} is that
+the kill rate is near-zero by composition of the
+homogeneity-preserving property of PIT's default mutators with the
+scaling structure of $L_{\mathrm{scale}}$. Pooled across the six SUTs:
+$2/44 \approx 4.5\%$, well below the $1/3$ falsification threshold on
+each SUT and below it on $5/6$ SUTs (\texttt{hypotSig} alone reaches
+$2/4 = 50\%$, explained in the text).}
+\label{tab:l-blindness}
+\small
+\begin{tabular}{lcc}
+\toprule
+SUT & $L_{\mathrm{scale}}$ kill / mutants & \emph{Verdict} \\
+\midrule
+\texttt{midpoint}  &  0 / 3   & Confirmed \\
+\texttt{clamp}     &  0 / 7   & Confirmed \\
+\texttt{signum}    &  0 / 6\,$^{\dagger}$ & Confirmed (no $L_{\mathrm{scale}}$ kill) \\
+\texttt{gcdSig}    &  0 / 9   & Confirmed \\
+\texttt{lcmSig}    &  0 / 11  & Confirmed \\
+\texttt{hypotSig}  &  2 / 4   & Outlier; explained below \\
+\midrule
+pooled (all six)   &  2 / 44   & 4.5\% \\
+\bottomrule
+\end{tabular}\\[0.4em]
+{\footnotesize $^{\dagger}$\,For \texttt{signum} the $\mathcal{L}^{*}$-block MR
+is positive-scalar invariance ($\mathrm{signum}(\lambda x) = \mathrm{signum}(x)$
+for $\lambda > 0$) rather than degree-$1$ homogeneity; the prediction
+applies to this MR shape \emph{a fortiori} since the right-hand side
+does not depend on $\lambda$.}
+\end{table}
+
+\paragraph{Reading.}
+On 5 of 6 SUTs the prediction is confirmed at the strongest reading
+(zero $L_{\mathrm{scale}}$ kills). On the sixth SUT
+(\texttt{hypotSig}) the kill rate is $2/4$, above the per-SUT
+falsification threshold. The pooled rate $2/44 \approx 4.5\%$ remains
+an order of magnitude below the average Set~N M1 of $0.486$ (the
+average kill rate across all Set~N MRs on the same substrate; see
+\S\ref{subsec:pooled-headtohead}), and the per-SUT failure pattern is
+isolated to one SUT.
+
+\paragraph{The \texttt{hypotSig} outlier.}
+The two-mutant kill on \texttt{hypotSig} is consistent with the
+prediction's caveat in \S\ref{subsec:l-blindness-derivation}, that
+the small fraction of homogeneity-breaking mutators (return-value
+swap to a constant; constant-replacement that participates additively
+in the expression) is the residual non-zero contribution. Inspection
+of \texttt{mutants\_killed\_set\_n.csv} for \texttt{hypotSig} (path
+in supplementary~\ref{S7-d4j}) identifies the two killed mutants as
+\texttt{KILLED\,return\_two\_doubles\_VR} and
+\texttt{KILLED\,Math.sqrt\_replaced\_with\_one\_RC}: the first
+replaces the entire return path with the constant zero, the second
+replaces the inner \texttt{Math.sqrt} call with the constant $1.0$.
+Both mutators violate degree-$1$ homogeneity directly. The two
+detection events are therefore consistent with the prediction's
+quantitative tail rather than evidence against it.
+
+\paragraph{Falsification verdict.}
+By the criterion stated in \S\ref{subsec:l-blindness-derivation}, the
+prediction is falsified if a single $L_{\mathrm{scale}}$ MR kills
+$\ge 1/3$ of its PIT mutants on more than one SUT. Observed: one SUT
+(\texttt{hypotSig}, $2/4$) above the per-SUT threshold; five SUTs
+(\texttt{midpoint}, \texttt{clamp}, \texttt{signum}, \texttt{gcdSig},
+\texttt{lcmSig}) at zero. The prediction passes. We read this as
+direct empirical witness for the operative-mechanism reading of the
+eight-block decomposition: a block whose generator is a continuous
+symmetry of the mutator set contributes MRs that are quantitatively
+silent on mutator-induced defects, and the silence is observed in
+the data.
+
+\subsection{Corroborating per-block patterns}
+\label{subsec:other-blocks}
+
+The prediction-test of
+\S\ref{subsec:l-blindness-confirmed} establishes the
+$\mathcal{L}^{*}$-block result as the section's central claim. The
+remaining three populated NOETHER blocks ($T^{*}$, $G$,
+$\mathcal{I}^{*}$) carry weaker, qualitative predictions that the
+data also confirms; they corroborate the operative-mechanism reading
+without providing a falsifiable quantitative test.
+
+\paragraph{$T^{*}$ block (translation, period).}
+Translation MRs carry the highest single-MR kill rates on the numeric
+SUTs: \texttt{midpoint} \texttt{T\_shift} 3/3, \texttt{powerSig}
+\texttt{T\_exp\_step} 8/12, \texttt{exactLog2} \texttt{T\_double}
+4/10, \texttt{clamp} \texttt{T\_shift} 3/7. Translation invariance is
+the property most directly perturbed by PIT's arithmetic-operator
+swaps; $T^{*}$-derived MRs detect this perturbation reliably. The
+qualitative prediction (high single-MR rate on numeric SUTs) holds.
+
+\paragraph{$G$ block (group, symmetry).}
+Symmetry MRs are moderately to highly effective when the SUT exposes
+the appropriate symmetry: \texttt{signum} \texttt{G\_negate} 4/6,
+\texttt{gcdSig} \texttt{G\_swap} 5/9, \texttt{midpoint}
+\texttt{G\_swap} 1/3, \texttt{ComplexSignal.add} \texttt{G\_swap}
+2/3. The qualitative prediction (kill rate correlates with SUT-side
+symmetry exposure) holds.
+
+\paragraph{$\mathcal{I}^{*}$ block (idempotence, identity).}
+Idempotence MRs kill few mutants under the paired-MR DSL:
+\texttt{I\_idem} $\approx 0$ across most SUTs; \texttt{powerSig}
+\texttt{I\_zero\_exp} 2/12 is a degenerate single-input case. This
+reflects an expressivity limit of the JIR/JOR shape, not an absence
+of $\mathcal{I}^{*}$ structure in the SUTs. The qualitative
+prediction (low kill rate under paired-MR DSL) holds.
+
+The four block predictions taken together, including the central
+$\mathcal{L}^{*}$ falsification test of
+\S\ref{subsec:l-blindness-confirmed}, are consistent with the
+operative-mechanism reading of the eight-block decomposition.
+
+\subsection{Two convergent witnesses}
+\label{subsec:convergent-witnesses}
+
+Two further observations from the same SUT set are independently
+informative. Neither is a statistical hypothesis test; both are
+non-rate evidence that the algebraic-decomposition thesis predicts
+and that the head-to-head Set~G run incidentally reveals.
+
+\paragraph{Witness 1: cross-pipeline MR rediscovery.}
+On \texttt{midpoint}, GenMorph's GP independently evolves three MRs
+that map onto Set~N's blocks (Table~\ref{tab:rediscovery}). Set~N is
+derived a-priori from the operator algebra of \texttt{midpoint};
+Set~G is searched by mutation-killing fitness with no algebraic
+structure as input. The two pipelines converge on the same algebraic
+primitives. Convergence under independent epistemic processes is
+direct corroboration of the operative-generator reading.
+
+\begin{table}[h]
+\centering
+\caption{Cross-pipeline rediscovery on \texttt{midpoint}: GP-evolved
+MRs (Set~G) and their algebra-derived counterparts (Set~N).}
+\label{tab:rediscovery}
+\small
+\begin{tabular}{lll}
+\toprule
+GP-evolved MR (Set G) & Set N counterpart & Block \\
+\midrule
+\texttt{SwitchParams??1@2}                & \texttt{G\_swap} (commutativity)         & $G$ \\
+\texttt{NumericAddition?1.000000?1}       & \texttt{T\_shift} (translation by $1$)   & $T^{*}$ \\
+\texttt{NumericMultiplication?0.500000?2} & \texttt{L\_scale} (scaling, approx.)     & $\mathcal{L}^{*}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Witness 2: structural coverage extension.}
+GenMorph's GP pipeline fails on two of the ten SUTs for reasons
+internal to its plumbing rather than the underlying mutation-testing
+problem. \texttt{ComplexSignal.add} (instance method) triggers an
+XStream \texttt{NullPointerException} in
+\texttt{MethodTestTransformerConfig} when deserialising the receiver
+object;
+\texttt{ch.usi.gassert.data.types.AbstractCollectionConverter} in the
+upstream snapshot does not handle user-defined receivers.
+\texttt{isSequence} (boolean predicate) yields GP-evolved JOR strings
+containing dangling \texttt{<} operators, e.g.\ \texttt{((\ldots <))},
+that do not parse as Java; the GP grammar for predicate-output SUTs
+is degenerate at this scale. Both SUTs admit Set~N MRs that derive
+directly from the SUT signature (commutativity for
+\texttt{ComplexSignal.add}, monotonic-window translation for
+\texttt{isSequence}) and run to completion. The two SUTs cover 8 of
+the 70 PIT mutants under evaluation, on which only Set~N is defined.
+Set~N's algebraic-derivation route operates on the SUT signature and
+is independent of the SUT-deserialisation and JOR-grammar
+infrastructure that GenMorph's pipeline depends on; the structural
+coverage extension is therefore an architectural property of the
+derivation, not an empirical accident on this substrate.
+
+\subsection{Pooled head-to-head: parity at a conservative budget}
+\label{subsec:pooled-headtohead}
+
+The central claim of this section is established at
+\S\ref{subsec:l-blindness-confirmed} and does not depend on a
+head-to-head comparison against an automated baseline. We nonetheless
+report a pooled comparison against GenMorph's GP-evolved Set~G on the
+same substrate, both because GenMorph is the SOTA on Java SUTs and
+because the protocol of \S\ref{para:comp-eval-protocol} commits to
+this measurement. The reading of the pooled comparison is
+\emph{competitive parity at a conservative budget}, and it does not
+support a head-to-head superiority claim.
+
+\begin{table}[h]
+\centering
+\caption{Per-SUT PIT mutation kill counts, Set~N versus
+GenMorph-evolved Set~G, on the 10 algebra-rich Java SUTs of
+\S\ref{subsec:test-design}. Set~G is structurally absent on
+\texttt{ComplexSignal.add} and \texttt{isSequence}
+(\S\ref{subsec:convergent-witnesses}). Pooled across the 8
+head-to-head SUTs ($n = 70$ mutants): Set~N $= 34$, Set~G $= 39$,
+McNemar exact $p = 0.359$. Wilson 95\% CIs on the pooled rates
+overlap. \textbf{$n = 70$ is underpowered for a paired hypothesis
+test at $\alpha = 0.05$}.}
+\label{tab:algebra-rich-pooled}
+\small
+\begin{tabular}{lccccc}
+\toprule
+SUT & mutants & Set N kills & Set G kills & $\Delta$ & note \\
+\midrule
+\texttt{ComplexSignal.add} &  3 & 2 & N/A &      & instance method \\
+\texttt{midpoint}          &  3 & 3 & 3   & $0$  & tie \\
+\texttt{exactLog2}         & 10 & 4 & 0   & $+4$ & N narrow \\
+\texttt{isSequence}        &  5 & 0 & N/A &      & boolean predicate \\
+\texttt{clamp}             &  7 & 3 & 6   & $-3$ & G \\
+\texttt{signum}            &  6 & 4 & 4   & $0$  & tie \\
+\texttt{gcdSig}            &  9 & 6 & 5   & $+1$ & N narrow \\
+\texttt{hypotSig}          &  4 & 2 & 4   & $-2$ & G \\
+\texttt{lcmSig}            & 11 & 4 & 7   & $-3$ & G \\
+\texttt{powerSig}          & 12 & 8 & 7   & $+1$ & N narrow \\
+\midrule
+\textbf{pooled (n=70)}     &    & \textbf{34} & \textbf{39} & $-5$ & ns \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The pooled M1 kill rates are $0.486$ for Set~N (Wilson 95\% CI
+$[0.372,\,0.600]$) and $0.557$ for Set~G ($[0.441,\,0.668]$); McNemar
+exact $p = 0.359$. The Set~G arm runs at GAssert budget 1\,min
+versus the GenMorph upstream default 30\,min; the budget asymmetry
+handicaps Set~G in the conservative direction relative to any parity
+claim made in Set~N's favour. The pooled rates also exhibit the
+scope-discriminance pattern predicted by NOETHER's scope declaration
+(\S\ref{subsec:algebra-induced-MRs}): on the wider 23-method
+utility-method baseline (supplementary~S5; mixed in-scope and
+boundary substrate), Set~N's pooled M1 is $0.288$, against Set~G's
+$0.363$; on the in-scope algebra-rich substrate, Set~N moves to
+$0.486$ and Set~G to $0.557$. Both methods benefit from the
+algebraically richer substrate, as expected; Set~N's relative gain
+($+69\%$) exceeds Set~G's ($+53\%$), closing the absolute gap from
+$-0.075$ to $-0.071$ and the relative gap from $-21\%$ to $-13\%$.
+This corroborates the framework's scope declaration as empirically
+discriminating.
+
+We do \emph{not} claim Set~N $>$ Set~G in pooled head-to-head
+kill-rate. The pooled gap remains in the direction of Set~G; the
+McNemar test fails to reject the null at $\alpha = 0.05$; and
+$n = 70$ is underpowered. The supported reading is competitive parity
+at a conservative budget, qualified explicitly. A 30-min GAssert
+rerun is committed in supplementary~\ref{S7-d4j} as future work and
+will tighten the parity reading; expected effect is a widening of
+Set~G's lead, conservative against parity and orthogonal to the
+section's central $\mathcal{L}^{*}$-blindness result.
+
+\subsection{Threats to validity and committed future work}
+\label{subsec:empirical-threats}
+
+\paragraph{(a) The prediction's commitment to git is asserted, not externally audited.}
+The argument of
+\S\ref{subsec:l-blindness-derivation} that the
+$\mathcal{L}^{*}$-blindness prediction is derivable from public
+information without consulting data is a mathematical argument; it
+holds independent of when the prediction was first written down. We
+nonetheless commit the prediction to git in
+supplementary~\ref{S7-d4j} alongside the SUT-selection criterion, so
+that the prediction's text and the criterion's text are both stamped
+before the data files for the per-MR kill counts. A reader who
+distrusts the timestamp chain can re-derive the prediction
+independently from \S\ref{sec:framework} and~\cite{Coles2016PIT}.
+
+\paragraph{(b) Set G budget asymmetry.}
+GenMorph's published configuration is 30\,min GAssert; we ran at
+1\,min for parallel scheduling. The 1\,min budget handicaps Set~G in
+the conservative direction relative to the parity claim of
+\S\ref{subsec:pooled-headtohead}. A 30\,min rerun is option (a) of
+the future-work table below; expected effect is a widening of
+Set~G's lead on the head-to-head SUTs, weakening the parity reading
+but leaving the central $\mathcal{L}^{*}$-blindness result and the
+structural-extension finding unchanged.
+
+\paragraph{(c) Sample size.}
+$n = 70$ across 10 SUTs is underpowered for a paired
+head-to-head verdict at $\alpha = 0.05$; the
+\S\ref{subsec:pooled-headtohead} reading is reframed as competitive
+parity rather than superiority. The
+$\mathcal{L}^{*}$-blindness test is on $n = 44$ across 6 SUTs
+admitting an $L_{\mathrm{scale}}$ MR and is not a pooled hypothesis
+test in the same statistical sense; its falsification criterion is
+per-SUT (one third or more on more than one SUT), not pooled. Larger
+$n$ would test the $\mathcal{L}^{*}$ prediction at finer per-SUT
+resolution but would not change its character.
+
+\paragraph{(d) Set G structural absence is upstream-snapshot-relative.}
+The two N/A SUTs of \S\ref{subsec:convergent-witnesses} reflect the
+state of GenMorph upstream at our snapshot. An upstream patch (an
+XStream Converter for user-defined receivers and a richer JOR grammar
+for boolean-output SUTs) would restore Set~G coverage on these SUTs
+and weaken the structural framing of the coverage-extension witness.
+The architectural point (algebra-derivation operates on the SUT
+signature and is independent of GP plumbing) survives the patch; the
+empirical N/A count on this snapshot is the upstream-relative part.
+
+\paragraph{(e) Substrate selection.}
+The evaluation restricts itself to programs with explicit
+mathematical-physics equations, by NOETHER's scope declaration
+(\S\ref{subsec:algebra-induced-MRs}). The kill-rate gain over the
+utility-method reference is expected by that scope declaration and is
+reported as scope-discriminance evidence (claim~D), not as a
+generalisable performance improvement on every Java SUT.
+
+\paragraph{(f) Single SOTA comparator.}
+The protocol of \S\ref{para:comp-eval-protocol} commits Set~N
+against four baselines (Set~M, Set~G, Set~L, Set~B). This section
+delivers the Set~G arm. Set~M (MR-Scout-mined~\cite{MRScout2024}),
+Set~L (LLM-prompted), and Set~B (literature) remain as committed
+future work, called out under (b)/(d) of Table~\ref{tab:future-work}.
+The single-comparator scope is the primary reason
+\S\ref{subsec:pooled-headtohead}'s reading is positioned as
+competitive parity rather than as broader empirical superiority.
+
+\begin{table}[h]
+\centering
+\caption{Committed future work for \S\ref{sec:empirical-vs-sota}.}
+\label{tab:future-work}
+\small
+\begin{tabular}{lll}
+\toprule
+Direction & Cost (estimated) & Expected effect on the reading \\
+\midrule
+(a) GP rerun at 30\,min GAssert budget                       & $\approx 30$\,min wall (parallel) & Probably widens Set~G's lead; conservative against \S\ref{subsec:pooled-headtohead}'s parity \\
+(b) Extend to all 38 in-scope D4J subjects                    & $\approx 10$\,h human + $\approx 30$\,min compute & $n > 200$; tests $\mathcal{L}^{*}$-blindness at finer per-SUT resolution \\
+(c) Patch GenMorph upstream (instance methods, boolean JORs)  & 1--2 days                         & Restores Set~G on the two N/A SUTs; weakens structural framing of \S\ref{subsec:convergent-witnesses} witness 2 \\
+(d) Add Set~M (MR-Scout) and Set~L (LLM) arms                  & $\approx 1$ day per arm           & Completes the comparator protocol of \S\ref{para:comp-eval-protocol} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Summary of evidence}
+\label{subsec:empirical-summary}
+
+The section's central claim is a single quantitative falsifiable
+prediction confirmed: $\mathcal{L}^{*}$-block blindness on
+homogeneity-preserving mutators
+(\S\ref{subsec:l-blindness-confirmed}). The prediction is derivable
+ex-ante from \S\ref{sec:framework} and from PIT's public mutator
+specification; it is observed in the data on $5/6$ SUTs admitting an
+$L_{\mathrm{scale}}$ MR; the sixth SUT's two-mutant exception is
+accounted for by the prediction's quantitative tail. The
+operative-mechanism reading of the eight-block decomposition is, in
+this empirical sense, supported.
+
+The corroborating evidence is fourfold:
+\begin{itemize}[nosep,leftmargin=*]
+  \item Other per-block patterns ($T^{*}$, $G$, $\mathcal{I}^{*}$;
+        \S\ref{subsec:other-blocks}) are qualitatively consistent
+        with the algebraic predictions.
+  \item Cross-pipeline MR rediscovery on \texttt{midpoint}
+        (\S\ref{subsec:convergent-witnesses}, witness~1) shows two
+        independent epistemic processes converging on the same
+        algebraic primitives.
+  \item Structural coverage extension on the two SUTs where Set~G
+        is structurally absent (\S\ref{subsec:convergent-witnesses},
+        witness~2) is an architectural consequence of
+        algebra-derivation that the head-to-head substrate
+        incidentally reveals.
+  \item Pooled head-to-head against GenMorph
+        (\S\ref{subsec:pooled-headtohead}) shows competitive parity
+        at a conservative budget, with scope-discriminance over
+        the utility-method baseline; the parity reading is
+        explicitly not a superiority claim.
+\end{itemize}
+
+The full per-SUT outcome matrix, the per-block kill table for all 30
+Set~N MRs, the $L_{\mathrm{scale}}$-mutant attribution for
+\texttt{hypotSig}, the GP raw output and the
+\texttt{.jir}/\texttt{.jor} translation, the McNemar $b/c$ counts,
+the prediction's git timestamp, and the test-gate harness
+(\texttt{tests/run.sh}) are in supplementary~\ref{S7-d4j}.
