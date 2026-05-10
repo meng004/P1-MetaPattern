@@ -1166,6 +1166,30 @@ the $\mathcal{L}^{*}$-blindness result of
 \S\ref{subsec:l-blindness-confirmed} is the corresponding D2-cell
 specialisation already executed.
 
+\paragraph{Phase~1 kill-set overlap (substrate-level bound).}
+Pending the per-mutant labelling of follow-up~(e), a kill-set overlap
+analysis on the head-to-head substrate ($n = 62$ pooled across the
+eight SUTs) yields defensible bounds on the D1 / D2 split. Of the 62
+PIT mutants, 28 are killed by both Set~N and Set~G, 4 are killed by
+Set~N only, 12 are killed by Set~G only, and 18 are killed by neither.
+By the framework's design, every Set~N kill is a D1 detection, so
+Set~N's D1 reach is at least $32/62 = 51.6\%$ (Wilson 95\% CI:
+$39.4\%, 63.6\%$) and Set~G's D1$\cup$D2 reach is $40/62 = 64.5\%$
+(Wilson 95\% CI: $52.1\%, 75.3\%$); the 12 G-only kills constitute a
+candidate-D2 pool with lower-bound $12/62 = 19.4\%$ (Wilson 95\% CI:
+$11.4\%, 30.9\%$), and the 18 mutants that neither set reaches
+(coverage $29.0\%$, Wilson 95\% CI: $19.2\%, 41.3\%$) further partition
+into D2 mutants outside both sets' reach and D1 mutants both sets
+missed for input-coverage reasons. The $\mathcal{L}^{*}$-only
+specialisation (2/44, Table~\ref{tab:l-blindness}) is the cleanest
+D2-cell estimate already on hand because the
+$\langle$MATH, $\mathcal{L}^{*}\rangle$ and
+$\langle$RETURN\_VALS, $\mathcal{L}^{*}\rangle$ cells of
+Table~\ref{tab:pit-block} are both ``$\circ$''. Disambiguating the
+G-only and neither cells per Table~\ref{tab:pit-block} requires
+preserving the raw PIT \texttt{mutations.csv}, which is committed as
+the next iteration of follow-up~(e).
+
 \subsection{Test design}
 \label{subsec:test-design}
 
