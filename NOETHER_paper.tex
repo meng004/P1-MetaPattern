@@ -1190,6 +1190,40 @@ G-only and neither cells per Table~\ref{tab:pit-block} requires
 preserving the raw PIT \texttt{mutations.csv}, which is committed as
 the next iteration of follow-up~(e).
 
+\paragraph{Phase~2 per-mutant classification (Table~\ref{tab:pit-block} applied).}
+A subsequent iteration of follow-up~(e) re-ran PIT on all eight
+head-to-head SUTs with the raw \texttt{mutations.csv} preserved, then
+applied Table~\ref{tab:pit-block} per-mutant to each SUT's operative
+blocks (encoded in
+\texttt{configs/sut\_block\_decomposition.json} of the companion
+experiment repository). Of the $n = 62$ mutants, 28 are classified D1
+(at least one operative block has ``$\times$'' for the mutant's
+category), 0 are classified D2 (every operative block ``$\circ$''),
+and 34 are classified \emph{ambiguous} (no ``$\times$'' and at least
+one ``$\sim$'' on an operative block). Stratified kill rates: Set~N
+on D1 is $20/28 = 0.714$ (Wilson 95\% CI: $0.529, 0.847$); Set~G on
+D1 is $23/28 = 0.821$ (Wilson 95\% CI: $0.644, 0.921$); Set~N on the
+ambiguous bucket is $12/34 = 0.353$ and Set~G is $17/34 = 0.500$. The
+``no D2 mutants identified'' verdict is a property of the present
+Table~\ref{tab:pit-block} encoding: the ``$\sim$'' cells (e.g.,
+$\langle$MATH, $O_{\le}\rangle$, $\langle$INVERT\_NEGS,
+$\mathcal{L}^{*}\rangle$, $\langle$NEGATE\_CONDITIONALS,
+$\mathcal{T}^{*}\rangle$) require SUT-specific resolution that the
+substrate-level reconstruction conservatively defers. Resolving the
+``$\sim$'' cells against each SUT's actual algebraic invariants
+(rather than the generic-case verdict in
+Table~\ref{tab:pit-block}) is committed as follow-up~(e.1): we expect
+the ambiguous bucket to partition into additional D1 and D2 mutants,
+yielding a directly testable Set~N D2 kill rate. The Phase~2 result
+already establishes the stronger of two complementary claims: on the
+$28$ mutants whose D1 status is settled by the generic-case
+Table~\ref{tab:pit-block} alone, Set~N's design-scope kill rate is
+$0.714$ and Set~G's is $0.821$, with the $11$~pp gap on D1 mutants
+consistent with Set~G's overall pooled lead reported in
+\S\ref{subsec:pooled-headtohead}, indicating that Set~G's advantage
+is not concentrated on the algebra-preserving fault subset that
+Set~N is designed against by construction.
+
 \subsection{Test design}
 \label{subsec:test-design}
 
@@ -1728,7 +1762,8 @@ Direction & Cost (estimated) & Expected effect on the reading \\
 (b) Extend to all 38 in-scope D4J subjects                    & $\approx 10$\,h human + $\approx 30$\,min compute & $n > 200$; tests $\mathcal{L}^{*}$-blindness at finer per-SUT resolution \\
 (c) Patch GenMorph upstream (instance methods, boolean JORs)  & 1--2 days                         & Restores Set~G on the two N/A SUTs; weakens structural framing of \S\ref{subsec:convergent-witnesses} witness 2 \\
 (d) Run Set~M (MR-Scout full re-execution) and multi-LLM ensemble Set~L (Xu's protocol scale) arms & $\approx 1$ day per arm + token cost (Table~\ref{tab:gen-cost}) & Completes the three-SOTA-category protocol of \S\ref{para:comp-eval-protocol} \\
-(e) D1/D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant) & $\approx 0.5$ day human + minutes compute & Stratified kill rate Set~N on D1-only vs D1+D2; tests the framework's design-scope prediction directly \\
+(e) D1/D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant) & Phase~1 done (substrate-level bound); Phase~2 done (28 D1 / 0 D2 / 34 ambiguous; generic-case ``$\sim$'' cells deferred) & Set~N D1 kill rate 0.714 reported in \S\ref{subsec:pit-block-matrix} \\
+(e.1) Resolve Table~\ref{tab:pit-block} ``$\sim$'' cells against each SUT's algebraic invariants (vs the generic-case verdict) & $\approx 1$ day human (per-SUT review of operative blocks vs each mutator's effect on the SUT's specific algebra) & Partitions the 34 ambiguous mutants into D1 / D2; gives a directly testable Set~N D2 kill rate (predicted near zero by framework design) \\
 \bottomrule
 \end{tabular}
 \end{table}
