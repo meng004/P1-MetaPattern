@@ -458,7 +458,7 @@ The Boltzmann transport equation governs the distribution of neutral particles. 
 
 The program-induced operator algebra $\mathcal{A}_{\mathrm{Boltz}}$ contains $\{G_{\mathrm{geom}},\, \mathfrak{R}_E,\, \mathcal{L}_{\Sigma},\, \mathcal{L}_\nu,\, \mathcal{L}^*,\, \mathcal{T},\, \mathcal{L}_h,\, \mathcal{D}_{\mathrm{Bate}},\, \mathcal{E}_{\mathrm{cmp}}\}$. Decomposed along the eight blocks of Section~\ref{subsec:decomposition}, $\mathcal{A}_{\mathrm{Boltz}}$ yields entries in seven blocks (with $\mathcal{B}^{*}_{\mathrm{rel}}$ empty under the absence of idempotent-semiring rewriting structure). Every operator listed has an unambiguous status in the established theory of neutral-particle transport~\cite{BellGlasstone1970, LewisMiller1993}.
 
-\subsection{Running CONSTRUCT-MP on $\mathcal{A}_{\mathrm{Boltz}}$}
+\subsection{Running CONSTRUCT-MP on \texorpdfstring{$\mathcal{A}_{\mathrm{Boltz}}$}{A\_Boltz}}
 
 Steps 1--4 of CONSTRUCT-MP yield seven MetaPatterns: $m_{\mathrm{inv}}$ (invariance/equivariance), $m_{\mathrm{mono}}$ (parameter-monotonicity), $m_{\mathrm{adj}}$ (self-adjoint duality / adjoint reciprocity), $m_{\mathrm{rev}}$ (time-reversal compatibility), $m_{\mathrm{conv}}$ (discretisation convergence), $m_{\mathrm{dyn}}$ (qualitative-dynamics shape invariants), and $m_{\mathrm{cmp}}$ (method-comparison error-bound partial orders).
 
@@ -522,7 +522,7 @@ Bol-Alg-04 & $P_0$ over-estimates $k$ in H-systems & P5 & $\mathcal{E}^{*}$ & $m
 \end{tabular}
 \end{table}
 
-\subsection{A Noether-style derivation of $m_{\mathrm{adj}}$}
+\subsection{A Noether-style derivation of \texorpdfstring{$m_{\mathrm{adj}}$}{m\_adj}}
 \label{subsec:noether-mAdj}
 
 The framework's name is methodological. Noether's first theorem replaces an empirically curated catalogue of conservation laws with a derivation from the symmetry structure of an action functional~\cite{Noether1918}. We do not invoke Noether's theorem as a theorem about programs (programs do not, in general, possess an action functional in the variational-calculus sense). What the framework does mirror is the \emph{methodological move}: instead of cataloguing observed invariants, derive them from a structural source. We illustrate the move on $m_{\mathrm{adj}}$.
@@ -557,7 +557,7 @@ NOETHER, applied to $\mathcal{A}_{\mathrm{Boltz}}$, deductively produces a seven
 
 Equivariant neural networks impose by architectural construction that certain symmetries of the input induce predictable transformations of the output~\cite{CohenWelling2016, ThomasSmidt2018, KondorTrivedi2018, Bronstein2021GDL}. The program family $\mathcal{F}_{\mathrm{equi}}$ comprises classifiers satisfying $f(g\cdot \mathbf{x}) = \rho(g)\cdot f(\mathbf{x})$ for $g \in G = \mathrm{SO}(3) \times \mathfrak{S}_n$. Decomposed along the eight blocks: $G = \{G_{\mathrm{equi}}\}$, $O_{\le} = \{O_{\le}^{\mathrm{train}}\}$, $T^{*} = \{T^{*}_{\mathrm{att}}\}$, $\mathcal{T}^{*} = \{\mathcal{T}_{\mathrm{seq}}\}$, $\mathcal{L}^{*} = \{\mathcal{L}_{\mathrm{train}},\, \mathcal{L}_{\mathrm{depth}},\, \mathcal{L}_{\mathrm{dim}}\}$, $\mathcal{D}^{*} = \emptyset$ (for feedforward classifiers), $\mathcal{E}^{*} = \emptyset$ within a single architecture, $\mathcal{B}^{*}_{\mathrm{rel}} = \emptyset$ (no idempotent-semiring rewriting on equivariant-classifier outputs).
 
-\subsection{Running CONSTRUCT-MP on $\mathcal{A}_{\mathrm{equi}}$}
+\subsection{Running CONSTRUCT-MP on \texorpdfstring{$\mathcal{A}_{\mathrm{equi}}$}{A\_equi}}
 
 CONSTRUCT-MP returns
 $$\mathbb{M}(\mathcal{A}_{\mathrm{equi}}) = \bigl\{\,m^{\mathrm{eq}}_{\mathrm{inv}},\; m^{\mathrm{eq}}_{\mathrm{mono}},\; m^{\mathrm{eq}}_{\mathrm{adj}},\; m^{\mathrm{eq}}_{\mathrm{rev}},\; m^{\mathrm{eq}}_{\mathrm{conv}}\,\bigr\}.$$
@@ -606,7 +606,7 @@ The same methodological move that produced $m_{\mathrm{adj}}$ in \S\ref{subsec:n
 
 \paragraph{Step 6. Pattern coverage status.} The MR $\rho_{\mathrm{rot}}$ above, together with $\rho_{\mathrm{perm}}$ and $\rho_{\mathrm{train}}$ derived in Appendix~\ref{app:code}, populates three of the five non-empty MetaPatterns of $\mathbb{M}(\mathcal{A}_{\mathrm{equi}})$. We refrain from reporting a percentage coverage figure: with so few non-empty blocks and a denominator subject to the eight-block sufficiency hypothesis (Hypothesis~\ref{hyp:seven-blocks}), a percentage is more rhetorical than informative. We instead derive in the following two subsections two MRs from the remaining non-empty blocks, $T^{*}$ (self-adjoint) and $\mathcal{T}^{*}$ (time-reversal), chosen specifically because they are not standard practice in equivariant-ML testing and therefore probe whether NOETHER's transfer claim extends beyond well-known invariances such as $\rho_{\mathrm{rot}}$.
 
-\subsection{An adjoint-attention duality MR ($\rho_{\mathrm{adj}}$)}
+\subsection{An adjoint-attention duality MR (\texorpdfstring{$\rho_{\mathrm{adj}}$}{rho\_adj})}
 \label{subsec:rho-adj}
 
 The self-adjoint block $T^{*}$ in $\mathcal{A}_{\mathrm{equi}}$ contains the attention-kernel symmetriser $T^{*}_{\mathrm{att}}$. We give two formulations, distinguished by whether the MR runs at CI-time (production-suitable) or at debug-time (one-off scaffolding).
@@ -625,7 +625,7 @@ which equals $A^{\dagger}$'s trace by the cyclic property of trace and the Hermi
 
 \noindent for two input clouds $\mathbf{x}^{(1)}, \mathbf{x}^{(2)}$ presented to the network in opposite query/key roles. With $\tau_{\mathrm{adj}} = 10^{-4}$ for fp32 architectures, this MR is executable on any equivariant transformer whose attention layer exposes the bilinear form (or can be probed through a forward-hook). To the best of our knowledge $\rho_{\mathrm{adj}}$ has not been catalogued as a standard MR for equivariant attention testing in the existing literature~\cite{Segura2016, MRScout2024, GenMorph2024}, although Hermitian-attention diagnostics have appeared in the architecture-design literature in non-MR form. NOETHER's contribution here is the algebraic warrant for treating it as a MetaPattern member structurally distinct from $m^{\mathrm{eq}}_{\mathrm{inv}}$.
 
-\subsection{A training-trajectory time-reversal MR ($\rho_{\mathrm{train\text{-}rev}}$)}
+\subsection{A training-trajectory time-reversal MR (\texorpdfstring{$\rho_{\mathrm{train\text{-}rev}}$}{rho\_train-rev})}
 \label{subsec:rho-rev}
 
 The time-reversal block $\mathcal{T}^{*}$ in $\mathcal{A}_{\mathrm{equi}}$ is non-empty for SGD trajectories under the Hamiltonian-Monte-Carlo / continuous-time-flow view of stochastic optimisation~\cite{ChenStein2014}. The discretised SGD update $\theta_{t+1} = \theta_t - \eta\,\nabla\mathcal{L}(\theta_t; \xi_t)$ is, to leading order in the learning rate $\eta$ and in the absence of momentum or noise, time-reversible: applying the inverse update $\theta_{t+1} \mapsto \theta_{t+1} + \eta\,\nabla\mathcal{L}(\theta_{t+1}; \xi_t)$ recovers $\theta_t$ up to $O(\eta^2)$. The operator $\mathcal{T}_{\mathrm{seq}} \in \mathcal{T}^{*}$ encodes this involution.
@@ -988,7 +988,7 @@ The two MRs $\rho_{\mathrm{nonadd}}$ and $\rho_{\mathrm{MTC\text{-}bor}}$ are al
 \emph{Not established.} That a Composite-\texttt{Translate} extension of NOETHER would absorb these two MRs while preserving Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time decidability. This is the principal open problem the negative instantiation leaves to follow-up work. The five obstructions of Table~\ref{tab:five-obstructions} are pairwise independent, so any candidate extension must address them jointly rather than sequentially.
 
 %% =========================================================
-\section{An empirical test of the eight-block decomposition: $\mathcal{L}^{*}$-block blindness on homogeneity-preserving mutators}
+\section{An empirical test of the eight-block decomposition: \texorpdfstring{$\mathcal{L}^{*}$}{L*}-block blindness on homogeneity-preserving mutators}
 \label{sec:empirical-vs-sota}
 
 A generative framework that cannot make falsifiable quantitative
@@ -2075,7 +2075,7 @@ To support reviewer verification while preserving double-blind anonymity, we rel
 
 \paragraph{Acceptance-stage public release.} At acceptance the same archive will be deposited on Zenodo under a permanent DOI, and the SHA-256 hash anchored in the camera-ready version. We aim for the \emph{Available} and \emph{Functional} artefact-evaluation badges.
 
-\subsection{The remaining human role and partial automation of $\mathcal{A}_P$ distillation}
+\subsection{The remaining human role and partial automation of \texorpdfstring{$\mathcal{A}_P$}{A\_P} distillation}
 \label{subsec:remaining-human-role}
 
 NOETHER mechanises the construction downstream of $\mathcal{A}_P$ but assumes that $\mathcal{A}_P$ has been distilled by a human. Three directions may partially automate that upstream step: LLM-assisted operator extraction, static-analysis-based extraction, and empirical-symmetry detection. None of them eliminates the human role for arbitrary programs.
@@ -2273,7 +2273,7 @@ $T^{*}$ & paired tuple $((x_1, P(x_1)), (x_2, P(x_2)))$ in the inner product & $
 $\mathcal{T}^{*}$ & $(x, \mathcal{T} x)$ with $\mathcal{T}$ the time-reversal involution & $P(\mathcal{T} x) = \mathcal{T}\,P(x)$ on the reversibility sub-domain \\
 $\mathcal{L}^{*}$ & sequence $(x_\theta)$ with $\theta \to \theta_*$ & $\|P_{\theta} - P_{\theta_*}\|_{*} = O(f(\theta))$ at the prescribed rate \\
 $\mathcal{D}^{*}$ & solution trajectory $(\xi(t))_{t \ge 0}$ extracted by $\mathcal{D}$ & qualitative-feature relation (extremum, monotonicity, S-curve) preserved on $(\xi(t))$ \\
-$\mathcal{E}^{*}$ & method pair $(M_1, M_2)$ in the partial order $\preceq_\mathcal{E}$ & $\mathrm{err}(M_1) \le \mathrm{err}(M_2)$ on the prescribed benchmark family \\
+$\mathcal{E}^{*}$ & method pair $(M_1, M_2)$ in the partial order $\preceq_{\mathcal{E}}$ & $\mathrm{err}(M_1) \le \mathrm{err}(M_2)$ on the prescribed benchmark family \\
 $\mathcal{B}^{*}_{\mathrm{rel}}$ & rewrite pair $(E, E')$ generated by an algebraic-rewriting rule $\mathcal{R} \in \mathcal{R}_{\mathrm{rel}}$ on the idempotent semiring & $\forall D.\ \mathrm{eval}(E, D) =_{\mathrm{bag}} \mathrm{eval}(E', D)$ at the rewriting rule's stated scope \\
 \bottomrule
 \end{tabular}
