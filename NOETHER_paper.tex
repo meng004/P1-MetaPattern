@@ -1157,72 +1157,61 @@ construction, structurally invisible to algebraic MRs. Set~N's
 appropriate fault-detection metric is therefore the kill rate on D1
 mutants; D2 mutants are out-of-scope for algebraic detection and are
 the territory of complementary techniques (random testing, GP
-search, LLM-prompted generative MRs). A full per-mutant D1/D2
-labelling on the \S\ref{subsec:test-design} substrate ($n = 70$
-mutants on 10 SUTs) requires per-mutant invariant-break analysis on
-the populated blocks of each SUT and is committed as
-follow-up~(e) in Table~\ref{tab:future-work}; on the present substrate
-the $\mathcal{L}^{*}$-blindness result of
+search, LLM-prompted generative MRs). On the $n = 62$ head-to-head
+substrate, the per-mutant D1/D2 labelling has been carried out and
+is reported in the subsequent paragraphs; the
+$\mathcal{L}^{*}$-blindness result of
 \S\ref{subsec:l-blindness-confirmed} is the corresponding D2-cell
-specialisation already executed.
+specialisation on the wider 23-SUT substrate.
 
-\paragraph{Phase~1 kill-set overlap (substrate-level bound).}
-Pending the per-mutant labelling of follow-up~(e), a kill-set overlap
-analysis on the head-to-head substrate ($n = 62$ pooled across the
-eight SUTs) yields defensible bounds on the D1 / D2 split. Of the 62
-PIT mutants, 28 are killed by both Set~N and Set~G, 4 are killed by
-Set~N only, 12 are killed by Set~G only, and 18 are killed by neither.
-By the framework's design, every Set~N kill is a D1 detection, so
-Set~N's D1 reach is at least $32/62 = 51.6\%$ (Wilson 95\% CI:
-$39.4\%, 63.6\%$) and Set~G's D1$\cup$D2 reach is $40/62 = 64.5\%$
-(Wilson 95\% CI: $52.1\%, 75.3\%$); the 12 G-only kills constitute a
-candidate-D2 pool with lower-bound $12/62 = 19.4\%$ (Wilson 95\% CI:
-$11.4\%, 30.9\%$), and the 18 mutants that neither set reaches
-(coverage $29.0\%$, Wilson 95\% CI: $19.2\%, 41.3\%$) further partition
-into D2 mutants outside both sets' reach and D1 mutants both sets
-missed for input-coverage reasons. The $\mathcal{L}^{*}$-only
-specialisation (2/44, Table~\ref{tab:l-blindness}) is the cleanest
-D2-cell estimate already on hand because the
+\paragraph{Kill-set overlap on the head-to-head substrate.}
+On the $n = 62$ PIT mutants pooled across the eight head-to-head
+SUTs, $22$ are killed by both Set~N and Set~G, $4$ are killed by
+Set~N only, $18$ are killed by Set~G only, and $18$ are killed by
+neither. The $18$ G-only kills constitute a candidate scope-mismatch
+pool (mutants reachable by Set~G's GP-evolved oracle but missed by
+the algebraic Set~N construction), and the $18$ jointly-missed
+mutants further partition into D2 mutants outside Set~N's algebraic
+reach and D1 mutants both sets miss for input-coverage reasons.
+The $\mathcal{L}^{*}$-only specialisation
+(Table~\ref{tab:l-blindness}) is the cleanest D2-cell estimate on
+the wider 23-SUT substrate, since the
 $\langle$MATH, $\mathcal{L}^{*}\rangle$ and
 $\langle$RETURN\_VALS, $\mathcal{L}^{*}\rangle$ cells of
-Table~\ref{tab:pit-block} are both ``$\circ$''. Disambiguating the
-G-only and neither cells per Table~\ref{tab:pit-block} requires
-preserving the raw PIT \texttt{mutations.csv}, which is committed as
-the next iteration of follow-up~(e).
+Table~\ref{tab:pit-block} are both ``$\circ$''.
 
-\paragraph{Phase~2 per-mutant classification (Table~\ref{tab:pit-block} applied).}
-A subsequent iteration of follow-up~(e) re-ran PIT on all eight
-head-to-head SUTs with the raw \texttt{mutations.csv} preserved, then
-applied Table~\ref{tab:pit-block} per-mutant to each SUT's operative
-blocks (encoded in
-\texttt{configs/sut\_block\_decomposition.json} of the companion
-experiment repository). Of the $n = 62$ mutants, 28 are classified D1
-(at least one operative block has ``$\times$'' for the mutant's
-category), 0 are classified D2 (every operative block ``$\circ$''),
-and 34 are classified \emph{ambiguous} (no ``$\times$'' and at least
-one ``$\sim$'' on an operative block). Stratified kill rates: Set~N
-on D1 is $20/28 = 0.714$ (Wilson 95\% CI: $0.529, 0.847$); Set~G on
-D1 is $23/28 = 0.821$ (Wilson 95\% CI: $0.644, 0.921$); Set~N on the
-ambiguous bucket is $12/34 = 0.353$ and Set~G is $17/34 = 0.500$. The
-``no D2 mutants identified'' verdict is a property of the present
-Table~\ref{tab:pit-block} encoding: the ``$\sim$'' cells (e.g.,
-$\langle$MATH, $O_{\le}\rangle$, $\langle$INVERT\_NEGS,
-$\mathcal{L}^{*}\rangle$, $\langle$NEGATE\_CONDITIONALS,
-$\mathcal{T}^{*}\rangle$) require SUT-specific resolution that the
-substrate-level reconstruction conservatively defers. Resolving the
-``$\sim$'' cells against each SUT's actual algebraic invariants
-(rather than the generic-case verdict in
-Table~\ref{tab:pit-block}) is committed as follow-up~(e.1): we expect
-the ambiguous bucket to partition into additional D1 and D2 mutants,
-yielding a directly testable Set~N D2 kill rate. The Phase~2 result
-already establishes the stronger of two complementary claims: on the
-$28$ mutants whose D1 status is settled by the generic-case
-Table~\ref{tab:pit-block} alone, Set~N's design-scope kill rate is
-$0.714$ and Set~G's is $0.821$, with the $11$~pp gap on D1 mutants
-consistent with Set~G's overall pooled lead reported in
-\S\ref{subsec:pooled-headtohead}, indicating that Set~G's advantage
-is not concentrated on the algebra-preserving fault subset that
-Set~N is designed against by construction.
+\paragraph{Per-mutant D1 / D2 classification with SUT-specific overrides.}
+Per-mutant classification applies Table~\ref{tab:pit-block} together
+with SUT-specific overrides (encoded in
+\texttt{configs/sut\_block\_decomposition.json} +
+\texttt{configs/sut\_block\_overrides.json} of the companion experiment
+repository) that resolve the ``$\sim$'' cells against each SUT's
+actual algebraic invariants rather than the generic-case verdict in
+Table~\ref{tab:pit-block}. Of the $n = 62$ mutants on the eight
+head-to-head SUTs, $55$ are classified D1 (at least one operative
+block of the SUT's algebra is broken on the mutant's category by
+either Table~\ref{tab:pit-block}'s generic verdict or an
+override-resolved $\sim$~cell) and $7$ are classified D2 (every
+operative block of the SUT's algebra is preserved by the mutant on
+the SUT's input domain); the ambiguous bucket is empty after the
+overrides. Stratified kill rates: Set~N on D1 is
+$26/55 = 0.473$ (Wilson 95\% CI: $0.347, 0.602$); Set~G on D1 is
+$40/55 = 0.727$ (Wilson 95\% CI: $0.598, 0.827$); Set~N on D2 is
+$0/7 = 0.000$ (Wilson 95\% CI: $0.000, 0.354$) and Set~G on D2 is
+identically $0/7 = 0.000$. The D2 verdict is the framework's
+falsifiability commitment instantiated on this substrate: the
+prediction $\mathrm{kill\;rate}_{\mathrm{D2}} \le 10\%$ holds (PASS);
+Set~G's identical $0$ confirms that D2 is a structural ceiling of
+algebra-grounded testing on this substrate rather than a Set~N-
+specific weakness. On D1 (the algebra-disrupting subset Set~N is
+designed against by construction), Set~G's $25.4$~pp advantage over
+Set~N is in the same direction as the pooled head-to-head
+(\S\ref{subsec:pooled-headtohead}) and is significant on the exact
+McNemar D1-stratum test ($p = 0.0043$). The footnote on
+equivalent-mutant denominator from
+\S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote})
+applies identically here, by symmetric construction of the D1 and
+D2 strata.
 
 \subsection{Test design}
 \label{subsec:test-design}
@@ -1465,7 +1454,7 @@ infrastructure that GenMorph's pipeline depends on; the structural
 coverage extension is therefore an architectural property of the
 derivation, not an empirical accident on this substrate.
 
-\subsection{Pooled head-to-head: parity at GenMorph's published budget}
+\subsection{Head-to-head at GenMorph's published budget: scope-matched D1 reading plus framework D2 prediction}
 \label{subsec:pooled-headtohead}
 
 The central claim of this section is established at
@@ -1496,7 +1485,7 @@ deserialisation) and \texttt{isSequence} (boolean-predicate JOR
 grammar) under both budgets (\S\ref{subsec:convergent-witnesses}).
 Set~N's kill vector is held fixed across budgets. Pooled across the
 8 head-to-head SUTs ($n = 62$ mutants), 30-min budget primary: Set~N
-$= 32$, Set~G $= 40$, McNemar exact two-sided $p = 0.077$. The
+$= 26$, Set~G $= 40$, McNemar exact two-sided $p = 0.0043$. The
 $\Delta$ (30-min) column reports Set~N $-$ Set~G at the 30-min budget;
 note labels are directional descriptors only and do not assert
 per-SUT statistical significance (see prose). \textbf{$n = 62$ is
@@ -1512,38 +1501,87 @@ SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & not
 \texttt{midpoint}          &  3 & 3 & 3   & 3   & $0$  & tie \\
 \texttt{exactLog2}         & 10 & 4 & 0   & 0   & $+4$ & directional only \\
 \texttt{isSequence}        &  5 & 0 & N/A & N/A &      & boolean predicate (Set~G N/A) \\
-\texttt{clamp}             &  7 & 3 & 5   & 5   & $-2$ & directional only \\
+\texttt{clamp}             &  7 & 5 & 5   & 5   & $0$  & tie \\
 \texttt{signum}            &  6 & 4 & 4   & 4   & $0$  & tie \\
-\texttt{gcdSig}            &  9 & 5 & 6   & 5   & $-1$ & directional only ($+1$ mutant at 30-min) \\
+\texttt{gcdSig}            &  9 & 1 & 6   & 5   & $-5$ & directional only \\
 \texttt{hypotSig}          &  4 & 2 & 4   & 4   & $-2$ & directional only \\
-\texttt{lcmSig}            & 11 & 3 & 8   & 8   & $-5$ & directional only \\
-\texttt{powerSig}          & 12 & 8 & 10  & 10  & $-2$ & directional only \\
+\texttt{lcmSig}            & 11 & 0 & 8   & 8   & $-8$ & directional only \\
+\texttt{powerSig}          & 12 & 7 & 10  & 10  & $-3$ & directional only ($2$ Set~N MRs ineligible, see footnote) \\
 \midrule
-\textbf{pooled (head-to-head, n=62)}     &    & \textbf{32} & \textbf{40} & \textbf{39} & $-8$ & McNemar two-sided $p = 0.077$ (30-min) \\
+\textbf{pooled (head-to-head, n=62)}     &    & \textbf{26} & \textbf{40} & \textbf{39} & $-14$ & McNemar two-sided $p = 0.0043$ (30-min) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{Headline pooled rates (PIT arm, $n = 62$ mutants on 8 head-to-head SUTs).}
-At GenMorph's published 30-min GAssert budget (primary), Set~N's
-pooled M1 kill rate is $0.516$ (Wilson 95\% CI
-$[0.394,\,0.636]$) and Set~G's is $0.645$ ($[0.521,\,0.753]$);
-McNemar exact two-sided $p = 0.077$ against the fixed Set~N kill
-vector\footnote{If a directional pre-registration of the form
-``Set~G has more discordant kills than Set~N'' is accepted, the
-one-sided $p \approx 0.038$ crosses $\alpha = 0.05$. We did not
-commit a directional pre-registration in advance, and we therefore
-report the conservative two-sided value as primary and do not assert
-directional significance here.}. At the 1-min sensitivity budget,
-the rates are Set~N $0.486$ ($[0.372,\,0.600]$, computed under the
-$n=70$ ten-SUT framing in which Set~G's two N/A SUTs contribute zero
-kills to the denominator) and Set~G $0.557$ ($[0.441,\,0.668]$),
-McNemar two-sided $p = 0.359$. The 30-min rerun changes Set~G's
-per-SUT counts on only one of the eight head-to-head SUTs
-(\texttt{gcdSig}, $5 \to 6$); seven of eight SUTs are unchanged, and
-no SUT regresses. A $30\times$ budget increase therefore buys $+1$
-mutant on a single SUT under PIT mutation; the qualitative parity
-reading is preserved at the published budget.
+\paragraph{Scope-matched head-to-head (PIT arm, D1 stratum, $n = 55$).}
+Set~N is derived from algebraic blocks; its theoretical reach is the
+$\mathrm{D1}$ subset of algebra-disrupting mutants (those that violate
+at least one operative block's invariant on the SUT's input domain).
+On the $n=55$ D1 mutants of the eight head-to-head SUTs at the 30-min
+GAssert budget, Set~N achieves $\mathrm{M1}_{\mathrm{D1}} =
+26/55 = 0.473$ (Wilson 95\% CI $[0.347,\,0.602]$) and Set~G achieves
+$\mathrm{M1}_{\mathrm{D1}} = 40/55 = 0.727$
+($[0.598,\,0.827]$); the exact McNemar two-sided test on the D1
+stratum (discordant pairs $b=18$ where only Set~G kills, $c=4$ where
+only Set~N kills) yields $p = 0.0043$. Set~G significantly
+outperforms Set~N on the scope-matched subset at the published
+budget. The result holds notwithstanding the structural-extension
+witness (\S\ref{subsec:convergent-witnesses}) on the two SUTs where
+Set~G is N/A.
+
+\paragraph{Framework prediction on the D2 stratum (algebra-preserving, $n = 7$).}
+On the $n=7$ algebra-preserving mutants of the same eight SUTs, Set~N
+kill rate $= 0/7 = 0.000$ (Wilson 95\% CI $[0.000,\,0.354]$); the
+framework prediction $\mathrm{kill\;rate}_{\mathrm{D2}} \le 10\%$
+holds (PASS). Set~G also kills $0/7$ on the D2 stratum, indicating
+D2 is a structural ceiling of algebra-grounded testing on this
+substrate rather than a Set~N-specific blindness. The D2 reading is
+the framework's own falsifiability commitment
+(\S\ref{subsec:l-blindness-confirmed}); it is not a head-to-head
+metric.
+
+\paragraph{Pooled M1 rates (auxiliary, scope-mismatched, $n = 62$).}
+For completeness against prior reporting conventions, the pooled M1
+rates over D1 $\cup$ D2 are: Set~N $= 0.419$ ($[0.305,\,0.543]$),
+Set~G $= 0.645$ ($[0.521,\,0.753]$), McNemar two-sided
+$p = 0.0043$\footnote{The D1-only McNemar and pooled McNemar
+coincide here because all $7$ D2 mutants are unkilled by both Set~N
+and Set~G; D2 mutants contribute only to the concordant ``both miss''
+cell of the $2{\times}2$ table, leaving the discordant pairs
+$(b,c) = (18,4)$ identical on both denominators.}. We report this
+pooled comparison as scope-mismatched: the $7$ D2 mutants in the
+denominator are not in Set~N's theoretical reach by construction,
+so the pooled gap overstates Set~N's effective miss rate within its
+declared scope. At the 1-min sensitivity budget, the pooled rates
+are Set~N unchanged from the kill vector at the 30-min budget when
+Set~G is the only variable; Set~G's pooled M1 is $0.557$
+($[0.441,\,0.668]$). The 30-min rerun changes Set~G's per-SUT
+counts on one of the eight head-to-head SUTs (\texttt{gcdSig},
+$5 \to 6$); seven SUTs are unchanged, none regresses. A
+$30{\times}$ budget increase therefore buys $+1$ Set~G mutant on a
+single SUT under PIT mutation.
+
+\paragraph{Footnote on equivalent-mutant denominator.}\label{para:eq-mutant-footnote}
+The $n=62$ denominator (and the $n=55$ D1, $n=7$ D2 stratifications)
+counts PIT-SURVIVED mutants without distinguishing semantically
+distinct mutants from PIT false-positives (mutants whose modified
+bytecode is behaviorally indistinguishable from the original on the
+SUT's declared input domain). A targeted analyst review of a stratified
+sample of $8$ mutants from the four highest-risk SUTs flagged
+$3/8 = 37.5\%$ as candidate-equivalent (lower bound; upper bound under
+``uncertain treated as candidate'' equals the lower bound here,
+because the analyst returned no ``uncertain'' verdict). The numbers
+reported above are therefore conservative
+upper-bound miss rates on the eq-contaminated denominator; bytecode-
+canonicalisation plus behavioral-suite expansion plus symmetric
+manual ratification across the full $n=62$ is the standing follow-up
+on the present substrate and does not affect the D2 prediction's
+falsifiability commitment\footnote{The D2 kill rate is reported on
+the $7$ Set-N-out-of-scope mutants. If any of the $7$ D2 mutants is
+later reclassified as equivalent, both Set~N and Set~G's denominators
+shrink symmetrically and the framework prediction's PASS verdict is
+preserved by construction. The scope-matched D1 head-to-head is the
+metric most affected by equivalent-mutant exclusion.}.
 
 The pooled rates also exhibit the scope-discriminance pattern
 predicted by NOETHER's scope declaration
@@ -1551,22 +1589,25 @@ predicted by NOETHER's scope declaration
 utility-method baseline (supplementary~S5; mixed in-scope and
 boundary substrate), Set~N's pooled M1 is $0.288$, against Set~G's
 $0.363$; on the in-scope algebra-rich substrate ($n = 62$
-head-to-head, 30-min budget), Set~N moves to $0.516$ and Set~G to
-$0.645$. Both methods benefit from the algebraically richer
+head-to-head, 30-min budget), Set~N moves to $0.419$ and Set~G to
+$0.645$ (and within the D1 scope-matched subset to $0.473$ vs
+$0.727$). Both methods benefit from the algebraically richer
 substrate, as expected. This corroborates the framework's scope
 declaration as empirically discriminating.
 
-We do \emph{not} claim Set~N $>$ Set~G in pooled head-to-head
-kill-rate. The pooled gap remains in the direction of Set~G; the
-McNemar two-sided test fails to reject the null at $\alpha = 0.05$
-under the published 30-min budget; and $n = 62$ is underpowered for
-a paired hypothesis test in two-sided form. The supported reading is
-\emph{competitive parity at GenMorph's published budget, with a
-coverage-extension witness on two SUTs where Set~G is structurally
-absent} (\S\ref{subsec:convergent-witnesses}). The
+We do \emph{not} claim Set~N $>$ Set~G on the scope-matched D1
+head-to-head. The D1 gap is in the direction of Set~G; the exact
+McNemar two-sided test on the D1 stratum yields $p = 0.0043$
+($\alpha = 0.05$ threshold crossed at the published 30-min budget),
+and the pooled comparison concurs. The supported reading is
+\emph{the framework's D2 falsifiability prediction holds (Set~N kill
+rate on the algebra-preserving stratum is $0/7$, within the
+$\le 10\%$ ceiling), and Set~G is the stronger fault-detector within
+the D1 scope-matched subset on this substrate}. The
 $\mathcal{L}^{*}$-blindness result of
 \S\ref{subsec:l-blindness-confirmed} and the structural-extension
-witness are unaffected by the budget change.
+witness on the two SUTs where Set~G is N/A
+(\S\ref{subsec:convergent-witnesses}) are unaffected.
 
 \paragraph{Comparator scope and three-SOTA-category coverage.}
 The head-to-head reported here delivers the GP-evolved-baseline arm
@@ -1600,8 +1641,12 @@ Per-SUT delta entries in Table~\ref{tab:algebra-rich-pooled} are
 \emph{directional descriptors only}; under Holm-Bonferroni
 correction for the $8 \times 2 = 16$ paired comparisons across the
 two budgets, the per-SUT family-wise threshold is $\alpha/16 \approx
-0.003$, which no per-SUT contrast meets. The pooled $p = 0.077$ at
-the 30-min budget is the only paired hypothesis test reported.
+0.003$, which no per-SUT contrast meets. The two paired hypothesis
+tests reported on this substrate are the scope-matched D1 McNemar
+($p = 0.0043$ at the 30-min budget, exact two-sided) and its
+auxiliary pooled counterpart ($p = 0.0043$ identically, since the
+$7$ D2 mutants are concordant ``both miss'' in the $2{\times}2$
+McNemar table).
 
 \subsection{Threats to validity and committed future work}
 \label{subsec:empirical-threats}
@@ -1620,14 +1665,15 @@ distrusts the timestamp chain can re-derive the prediction
 independently from \S\ref{sec:framework} and~\cite{Coles2016PIT}.
 
 \paragraph{(b) Set G budget asymmetry.}
-GenMorph's published configuration is 30\,min GAssert; we ran at
-1\,min for parallel scheduling. The 1\,min budget handicaps Set~G in
-the conservative direction relative to the parity claim of
-\S\ref{subsec:pooled-headtohead}. A 30\,min rerun is option (a) of
-the future-work table below; expected effect is a widening of
-Set~G's lead on the head-to-head SUTs, weakening the parity reading
-but leaving the central $\mathcal{L}^{*}$-blindness result and the
-structural-extension finding unchanged.
+GenMorph's published configuration is 30\,min GAssert; the
+sensitivity rerun at 1\,min handicaps Set~G in the conservative
+direction relative to the head-to-head reading of
+\S\ref{subsec:pooled-headtohead}. Both budgets are reported in
+Table~\ref{tab:algebra-rich-pooled}; the 30-min budget changes Set~G's
+per-SUT counts on one of the eight head-to-head SUTs, leaves the
+$\mathcal{L}^{*}$-blindness result and the structural-extension
+finding unchanged, and yields the D1 head-to-head verdict reported
+in \S\ref{subsec:pooled-headtohead}.
 
 \paragraph{(c) Sample size.}
 $n = 70$ across 10 SUTs is underpowered for a paired
@@ -1762,8 +1808,9 @@ Direction & Cost (estimated) & Expected effect on the reading \\
 (b) Extend to all 38 in-scope D4J subjects                    & $\approx 10$\,h human + $\approx 30$\,min compute & $n > 200$; tests $\mathcal{L}^{*}$-blindness at finer per-SUT resolution \\
 (c) Patch GenMorph upstream (instance methods, boolean JORs)  & 1--2 days                         & Restores Set~G on the two N/A SUTs; weakens structural framing of \S\ref{subsec:convergent-witnesses} witness 2 \\
 (d) Run Set~M (MR-Scout full re-execution) and multi-LLM ensemble Set~L (Xu's protocol scale) arms & $\approx 1$ day per arm + token cost (Table~\ref{tab:gen-cost}) & Completes the three-SOTA-category protocol of \S\ref{para:comp-eval-protocol} \\
-(e) D1/D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant) & Phase~1 done (substrate-level bound); Phase~2 done (28 D1 / 0 D2 / 34 ambiguous; generic-case ``$\sim$'' cells deferred) & Set~N D1 kill rate 0.714 reported in \S\ref{subsec:pit-block-matrix} \\
-(e.1) Resolve Table~\ref{tab:pit-block} ``$\sim$'' cells against each SUT's algebraic invariants (vs the generic-case verdict) & $\approx 1$ day human (per-SUT review of operative blocks vs each mutator's effect on the SUT's specific algebra) & Partitions the 34 ambiguous mutants into D1 / D2; gives a directly testable Set~N D2 kill rate (predicted near zero by framework design) \\
+(e) D1 / D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant with SUT-specific overrides) & \textbf{Done} & $55$ D1 / $7$ D2 / $0$ ambiguous on $n = 62$; Set~N D1 kill rate $0.473$, Set~N D2 kill rate $0.000$ reported in \S\ref{subsec:pit-block-matrix} \\
+(e.2) Equivalent-mutant exclusion on the head-to-head denominator: bytecode-canonicalisation detector, behavioral-suite expansion ($10\times$ Randoop), symmetric manual ratification across $n = 62$ & $\approx 1$ day human + $\approx 30$\,min compute & Re-aggregates Set~N M1$_{\mathrm{D1}}$ on the equivalent-excluded denominator (a stratified $8$-mutant pilot flagged $3/8$ as candidate-equivalent on the four highest-risk SUTs, triggering this follow-up) \\
+(e.3) Tighten or excise the two grid Set~N MRs whose \texttt{jor} predicate is out-of-domain on \texttt{powerSig} (\texttt{E\_power\_of\_power} and \texttt{L\_scale\_base}) & $\approx 4$\,h human (predicate refinement + green-suite re-validation) & Restores the two MRs to the PIT-evaluable set; expected to recover $\le 2$ kills on \texttt{powerSig} (currently $7/12$) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1796,11 +1843,13 @@ The corroborating evidence is fourfold:
         witness~2) is an architectural consequence of
         algebra-derivation that the head-to-head substrate
         incidentally reveals.
-  \item Pooled head-to-head against GenMorph
-        (\S\ref{subsec:pooled-headtohead}) shows competitive parity
-        at a conservative budget, with scope-discriminance over
-        the utility-method baseline; the parity reading is
-        explicitly not a superiority claim.
+  \item Head-to-head against GenMorph
+        (\S\ref{subsec:pooled-headtohead}) shows Set~G as the
+        stronger fault-detector on the scope-matched D1 stratum at
+        the published budget, while the framework's falsifiable
+        prediction on the D2 stratum ($\mathrm{kill\;rate} \le 10\%$)
+        holds (Set~N $= 0/7$); scope-discriminance over the
+        utility-method baseline is preserved.
 \end{itemize}
 
 The full per-SUT outcome matrix, the per-block kill table for all 30
