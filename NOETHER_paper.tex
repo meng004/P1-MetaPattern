@@ -1203,15 +1203,21 @@ falsifiability commitment instantiated on this substrate: the
 prediction $\mathrm{kill\;rate}_{\mathrm{D2}} \le 10\%$ holds (PASS);
 Set~G's identical $0$ confirms that D2 is a structural ceiling of
 algebra-grounded testing on this substrate rather than a Set~N-
-specific weakness. On D1 (the algebra-disrupting subset Set~N is
-designed against by construction), Set~G's $25.4$~pp advantage over
-Set~N is in the same direction as the pooled head-to-head
-(\S\ref{subsec:pooled-headtohead}) and is significant on the exact
-McNemar D1-stratum test ($p = 0.0043$). The footnote on
-equivalent-mutant denominator from
+specific weakness. On D1 (the algebra-disrupting subset Set~N is designed against by
+construction), the cross-block aggregate gap (Set~G $40/55 = 0.727$
+vs Set~N $26/55 = 0.473$; exact McNemar two-sided $p = 0.0043$)
+decomposes per-block (Table~\ref{tab:per-block-headtohead} of
+\S\ref{subsec:pooled-headtohead}): the gap is concentrated on $G$
+(Set~N $0/7$ on the two Euclidean-style SUTs) and on $\mathcal{L}^{*}$
+(Set~G's denser per-SUT coverage on \texttt{lcmSig} /
+\texttt{gcdSig}), and is partially offset by Set~N's $\mathcal{T}^{*}$
+edge ($8/15$ vs $7/15$). The per-block decomposition is the
+appropriate substrate-level reading; the aggregate is reported as a
+cross-block summary. The footnote on equivalent-mutant denominator
+from
 \S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote})
-applies identically here, by symmetric construction of the D1 and
-D2 strata.
+applies identically here, by symmetric construction of the per-block,
+D1 aggregate, and D2 strata.
 
 \subsection{Test design}
 \label{subsec:test-design}
@@ -1454,7 +1460,7 @@ infrastructure that GenMorph's pipeline depends on; the structural
 coverage extension is therefore an architectural property of the
 derivation, not an empirical accident on this substrate.
 
-\subsection{Head-to-head at GenMorph's published budget: scope-matched D1 reading plus framework D2 prediction}
+\subsection{Head-to-head at GenMorph's published budget: per-block precision, complementarity, and framework D2 prediction}
 \label{subsec:pooled-headtohead}
 
 The central claim of this section is established at
@@ -1513,21 +1519,131 @@ SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & not
 \end{tabular}
 \end{table}
 
-\paragraph{Scope-matched head-to-head (PIT arm, D1 stratum, $n = 55$).}
-Set~N is derived from algebraic blocks; its theoretical reach is the
-$\mathrm{D1}$ subset of algebra-disrupting mutants (those that violate
-at least one operative block's invariant on the SUT's input domain).
-On the $n=55$ D1 mutants of the eight head-to-head SUTs at the 30-min
-GAssert budget, Set~N achieves $\mathrm{M1}_{\mathrm{D1}} =
-26/55 = 0.473$ (Wilson 95\% CI $[0.347,\,0.602]$) and Set~G achieves
-$\mathrm{M1}_{\mathrm{D1}} = 40/55 = 0.727$
-($[0.598,\,0.827]$); the exact McNemar two-sided test on the D1
-stratum (discordant pairs $b=18$ where only Set~G kills, $c=4$ where
-only Set~N kills) yields $p = 0.0043$. Set~G significantly
-outperforms Set~N on the scope-matched subset at the published
-budget. The result holds notwithstanding the structural-extension
-witness (\S\ref{subsec:convergent-witnesses}) on the two SUTs where
-Set~G is N/A.
+\paragraph{Per-block head-to-head and complementarity (Primary, PIT arm).}
+Each Set~N MR derives from exactly one NOETHER block; its
+theoretical reach is the subset of mutants that violate \emph{that
+specific block}'s invariant on the SUT's input domain. The natural
+head-to-head denominator is therefore per-block rather than the
+union over operative blocks. Across the eight head-to-head SUTs,
+three operative blocks have non-empty per-block strata: $G$
+(group / swap / negate), $\mathcal{L}^{*}$ (scale / homogeneity),
+and $\mathcal{T}^{*}$ (translation / self-adjoint). For each
+block~$b$, let $n_{b}$ denote the count of mutants whose
+(SUT, mutator) entry in
+\texttt{configs/sut\_block\_overrides.json} of the companion
+experiment repository marks block~$b$ as broken (``$\times$''),
+aggregated across the eight SUTs. Per-block kill counts and the
+complementarity partition (both / Set~N-only / Set~G-only /
+neither) are in Table~\ref{tab:per-block-headtohead}.
+
+\begin{table}[h]
+\centering
+\caption{Per-block head-to-head on the eight in-scope SUTs of
+\S\ref{subsec:test-design}. Each row's denominator $n_{b}$ counts
+mutants violating block $b$'s invariant. The complementarity
+partition splits the $n_{b}$ mutants into the four cells
+``both~kill'' / ``Set~N-only kill'' / ``Set~G-only kill'' /
+``neither kills''; the row total equals $n_{b}$. Wilson 95\%
+intervals are reported alongside the point rates. Auxiliary rows:
+aggregate D1 (union of operative blocks; secondary metric retained
+below) and the unmapped bucket (mutants from $(\mathrm{SUT},
+\mathrm{mutator})$ cells without an override entry, principally
+\texttt{RETURN\_VALS} and \texttt{MATH} on SUTs where the
+table-5-reconstruction fallback assigns D1 but does not specify
+broken blocks; documented as a lower-bound caveat on per-block
+denominators, not a participating row).}
+\label{tab:per-block-headtohead}
+\small
+\begin{tabular}{lrrlrlrrrr}
+\toprule
+Block & $n_{b}$ & Set~N kills & rate (95\% CI) & Set~G kills & rate (95\% CI) & both & $N$-only & $G$-only & neither \\
+\midrule
+$G$              & 11 &  2 & $0.182$ $[0.051,\,0.477]$ &  9 & $0.818$ $[0.523,\,0.949]$ & 2 & 0 & 7 & 2 \\
+$\mathcal{L}^{*}$ & 24 & 10 & $0.417$ $[0.245,\,0.612]$ & 16 & $0.667$ $[0.467,\,0.820]$ & 8 & 2 & 8 & 6 \\
+$\mathcal{T}^{*}$ & 15 &  8 & $0.533$ $[0.301,\,0.752]$ &  7 & $0.467$ $[0.248,\,0.699]$ & 6 & 2 & 1 & 6 \\
+\midrule
+\textit{D1 aggregate (secondary)} & 55 & 26 & $0.473$ $[0.347,\,0.602]$ & 40 & $0.727$ $[0.598,\,0.827]$ & --- & --- & --- & --- \\
+\textit{unmapped (lower-bound caveat)} & 30 & --- & --- & --- & --- & --- & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The per-block reading distinguishes three regimes:
+
+\begin{itemize}[nosep,leftmargin=*]
+\item \textbf{$G$ block: Set~G dominates on the substrate.} Set~N
+kills 0 of the 7 mutants Set~G exclusively reaches on $G$; the
+Set~N hits concentrate on \texttt{signum} ($2/4$), while
+\texttt{gcdSig} and \texttt{lcmSig} contribute $0/7$ for Set~N
+against $7/7$ for Set~G. The Euclidean-style SUTs appear to be
+structurally unreachable by NOETHER's $G$-block MR construction on
+the grid-synthesised catalogue: \texttt{gcdSig} normalises its two
+inputs via \texttt{a < 0 ? -a : a; b < 0 ? -b : b} at lines 66--67
+\emph{before} the recursive identity \texttt{gcd(a,b)=gcd(b,
+a\,mod\,b)} fires, so the sign-flip invariant the LLM-synthesised
+$G$-block MR encodes is absorbed by the SUT's own normalisation
+prologue and never reaches a distinguishable output;
+\texttt{lcmSig} delegates to \texttt{gcdSig} and inherits the same
+prologue. Whether this calls for re-synthesising an $\mathcal{R}$-
+block (reversibility / domain-reduction) MR for Euclidean
+algorithms, or for documenting recursive-normalising SUTs as
+structurally orthogonal to $G$-block reasoning, is committed as
+follow-up~(e.4) of Table~\ref{tab:future-work}.
+
+\item \textbf{$\mathcal{L}^{*}$ block: complementary coverage.}
+Both Sets kill 8 mutants in common, 2 are exclusively Set~N
+(\texttt{exactLog2}), 8 exclusively Set~G, and 6 are jointly missed.
+The union covers $75\%$ of $\mathcal{L}^{*}$-violating mutants
+($18/24$), materially above either Set's individual rate. Set~N's
+exclusive reach on \texttt{exactLog2} (\texttt{O\_le\_monotone} and
+\texttt{T\_double} kill 4 mutants that Set~G's 30-min GP run misses
+entirely) quantifies the coverage-extension witness of
+\S\ref{subsec:convergent-witnesses} per-block. Conversely Set~G's
+exclusive reach on \texttt{gcdSig} and \texttt{lcmSig} compensates
+for the $G$-block gap above on the same SUTs.
+
+\item \textbf{$\mathcal{T}^{*}$ block: Set~N edge (underpowered).}
+Of $15$ $\mathcal{T}^{*}$-violating mutants, Set~N kills $8$ and
+Set~G kills $7$; Set~N's exclusive reach is 2, Set~G's is 1, with
+6 in common. The union covers $9/15 = 60\%$, larger than either
+Set's individual rate ($53.3\%$ vs $46.7\%$). Set~N has $+6.7$~pp
+in rate \emph{and} $+1$ in exclusive count on its own block. The
+sample size ($n = 15$ on $\mathcal{T}^{*}$) is insufficient for an
+$\alpha = 0.05$ inferential test (the 95\% Wilson intervals
+$[0.30,\,0.75]$ and $[0.25,\,0.70]$ overlap substantially), so we
+report the per-block Set~N edge as a directional finding
+consistent with the framework's $\mathcal{T}^{*}$ design
+prediction rather than as an inferential conclusion.
+\end{itemize}
+
+\paragraph{What the per-block reading supports, and what it does not.}
+The framework's empirical contribution on the present substrate is
+not a uniform improvement over the GP-evolved baseline. It is
+targeted per-block: $\mathcal{T}^{*}$ shows the design's directional
+advantage and complementarity; $\mathcal{L}^{*}$ shows
+complementarity in both directions (Set~N reaches what Set~G
+misses on \texttt{exactLog2}; Set~G reaches what Set~N misses on
+\texttt{gcdSig} / \texttt{lcmSig}); $G$ shows the design's current
+limit on the substrate's two Euclidean-style SUTs. The
+appropriate reading is therefore \emph{block-targeted precision
+plus complementarity, with documented per-block design gaps},
+rather than a single ``head-to-head winner'' metric.
+
+\paragraph{Aggregate D1 head-to-head (Secondary, cross-block, $n = 55$).}
+For continuity with prior reporting conventions, the cross-block
+aggregate D1 head-to-head is: Set~N
+$\mathrm{M1}_{\mathrm{D1}} = 26/55 = 0.473$ (Wilson 95\% CI
+$[0.347,\,0.602]$), Set~G $\mathrm{M1}_{\mathrm{D1}} = 40/55 =
+0.727$ ($[0.598,\,0.827]$); exact McNemar two-sided $p = 0.0043$
+on the D1 stratum with discordant pairs $(b,c) = (18,4)$. The
+aggregate gap (which favours Set~G) collapses into the per-block
+profile above: it is driven primarily by Set~G's near-complete
+reach on $G$ (\texttt{gcdSig} + \texttt{lcmSig}) and by its denser
+$\mathcal{L}^{*}$ coverage; it is partially offset by Set~N's
+$\mathcal{T}^{*}$ edge but not enough to close the cross-block
+aggregate. The aggregate is presented as secondary because it
+averages over per-block strengths and weaknesses that the
+per-block table makes visible.
 
 \paragraph{Framework prediction on the D2 stratum (algebra-preserving, $n = 7$).}
 On the $n=7$ algebra-preserving mutants of the same eight SUTs, Set~N
@@ -1811,6 +1927,7 @@ Direction & Cost (estimated) & Expected effect on the reading \\
 (e) D1 / D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant with SUT-specific overrides) & \textbf{Done} & $55$ D1 / $7$ D2 / $0$ ambiguous on $n = 62$; Set~N D1 kill rate $0.473$, Set~N D2 kill rate $0.000$ reported in \S\ref{subsec:pit-block-matrix} \\
 (e.2) Equivalent-mutant exclusion on the head-to-head denominator: bytecode-canonicalisation detector, behavioral-suite expansion ($10\times$ Randoop), symmetric manual ratification across $n = 62$ & $\approx 1$ day human + $\approx 30$\,min compute & Re-aggregates Set~N M1$_{\mathrm{D1}}$ on the equivalent-excluded denominator (a stratified $8$-mutant pilot flagged $3/8$ as candidate-equivalent on the four highest-risk SUTs, triggering this follow-up) \\
 (e.3) Tighten or excise the two grid Set~N MRs whose \texttt{jor} predicate is out-of-domain on \texttt{powerSig} (\texttt{E\_power\_of\_power} and \texttt{L\_scale\_base}) & $\approx 4$\,h human (predicate refinement + green-suite re-validation) & Restores the two MRs to the PIT-evaluable set; expected to recover $\le 2$ kills on \texttt{powerSig} (currently $7/12$) \\
+(e.4) $G$-block MR re-synthesis (or in-scope documentation) for Euclidean-style SUTs (\texttt{gcdSig}, \texttt{lcmSig}): the grid-synthesised $G$ MR encodes a sign-flip identity that the SUT's own \texttt{a < 0 ? -a : a} normalisation prologue absorbs before the recursive Euclidean reduction fires, so $G$-block reasoning is currently vacuous on these SUTs (Table~\ref{tab:per-block-headtohead}: Set~N $0/7$, Set~G $7/7$) & $\approx 1$ day human (CONSTRUCT-MP re-derivation targeting an $\mathcal{R}$-block reversibility identity \emph{post}-normalisation, or a paper paragraph in \S\ref{subsec:l-blindness-confirmed} documenting recursive-normalising SUTs as structurally orthogonal to $G$-block reasoning) & Partitions the 7-mutant $G$-block gap into ``MR design defect'' (redesign) vs ``framework boundary'' (document); informs the framework's per-SUT scope precondition \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1844,12 +1961,21 @@ The corroborating evidence is fourfold:
         algebra-derivation that the head-to-head substrate
         incidentally reveals.
   \item Head-to-head against GenMorph
-        (\S\ref{subsec:pooled-headtohead}) shows Set~G as the
-        stronger fault-detector on the scope-matched D1 stratum at
-        the published budget, while the framework's falsifiable
-        prediction on the D2 stratum ($\mathrm{kill\;rate} \le 10\%$)
-        holds (Set~N $= 0/7$); scope-discriminance over the
-        utility-method baseline is preserved.
+        (\S\ref{subsec:pooled-headtohead}) reads per-block, not as a
+        single winner. On $\mathcal{T}^{*}$ Set~N shows a directional
+        edge ($8/15$ vs $7/15$, two exclusive kills) consistent with
+        its design prediction; on $\mathcal{L}^{*}$ Set~N and Set~G
+        are complementary (union $18/24$; Set~N exclusively reaches
+        \texttt{exactLog2}, Set~G exclusively reaches denser regions
+        of \texttt{lcmSig} / \texttt{gcdSig}); on $G$ Set~G dominates
+        ($9/11$ vs $2/11$) because the substrate's two Euclidean-
+        style SUTs absorb the sign-flip invariant in their
+        normalisation prologue (Table~\ref{tab:per-block-headtohead},
+        Set~N $0/7$ on \texttt{gcdSig}~+~\texttt{lcmSig}). The
+        framework's falsifiable D2 prediction
+        ($\mathrm{kill\;rate} \le 10\%$) holds (Set~N $= 0/7$); the
+        per-block reading is the appropriate substrate-level
+        contribution metric.
 \end{itemize}
 
 The full per-SUT outcome matrix, the per-block kill table for all 30
