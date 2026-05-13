@@ -75,7 +75,7 @@ Metamorphic Testing (MT) is recognised in IEEE/ISO software-testing standards an
 
 This paper introduces \textbf{NOETHER}, a two-layer framework for MetaPattern discovery. The \emph{downstream layer} is mechanical and provable: given an operator-algebra block decomposition, the \texttt{CONSTRUCT-MP} algorithm produces a MetaPattern set with an algebraic-closure guarantee under the framework's \texttt{Translate} operator (Theorem~1) and polynomial-time decidability under a finite generating set (Theorem~2); absolute completeness over arbitrary properties expressible in the operator algebra is identified as an open conjecture. The \emph{upstream layer} is a curated eight-block decomposition over recurrent mathematical structures (symmetry, order, self-adjoint, time-reversal, limit, qualitative-dynamics, method-comparison, and relational equivalence), stated as an explicit empirical hypothesis with a documented out-of-scope catalogue rather than as an axiom.
 
-The framework's scope precondition is that the program family under test admits an explicit operator-algebraic description through mathematical or physical equations; programs lacking such structure are out of scope by construction. Within this scope, we instantiate NOETHER on three structurally distinct domains: a Boltzmann reactor-physics transport solver, where the framework systematises a prior inductive catalogue and re-classifies further equivalence classes; equivariant machine learning, where executable MRs are derived for rotation invariance, adjoint duality, and training-trajectory reversibility; and relational query optimisers, whose idempotent-semiring algebra exercises the relational-equivalence block. Structural-coverage predictions are consistent with the data within each case-study scope; comparative evaluation against three SOTA representatives (a GP-evolved baseline, an LLM-assisted baseline, and a mining-based baseline) is reported alongside an algebra-aligned metric framework that distinguishes algebra-disrupting from algebra-preserving mutants and an MR-generation cost matrix; a head-to-head superiority claim is not asserted. A negative instantiation on the PWR core diffusion algebra falsifies the absolute-completeness conjecture (Theorem~$1'$) via two independent counterexamples that identify five pairwise-independent extensions of the framework's \texttt{Translate} operator; companion structural-obstruction surveys on the equivariant-ML and relational-query algebras (\S\ref{subsec:third-domain}) identify five additional candidate extensions, yielding ten pairwise-independent extensions across the three algebras as the principal locus of follow-up work. NOETHER lifts induction from per-program MR sampling to a stable per-domain algebraic layer and makes the downstream step deductive and mechanical without eliminating induction at the upstream layer.
+The framework's scope precondition is that the program family under test admits an explicit operator-algebraic description through mathematical or physical equations; programs lacking such structure are out of scope by construction. Within this scope, we instantiate NOETHER on three structurally distinct domains: a Boltzmann reactor-physics transport solver, where the framework systematises a prior inductive catalogue and re-classifies further equivalence classes; equivariant machine learning, where executable MRs are derived for rotation invariance, adjoint duality, and training-trajectory reversibility; and relational query optimisers, whose idempotent-semiring algebra exercises the relational-equivalence block. Structural-coverage predictions are consistent with the data within each case-study scope; comparative evaluation against three SOTA representatives (a GP-evolved baseline, an LLM-assisted baseline, and a mining-based baseline) is reported alongside an algebra-aligned metric framework that distinguishes algebra-disrupting from algebra-preserving mutants and an MR-generation cost matrix; a head-to-head superiority claim is not asserted. A negative instantiation on the PWR core diffusion algebra falsifies the absolute-completeness conjecture (Theorem~$1'$) via two independent counterexamples that identify five pairwise-independent extensions of the framework's \texttt{Translate} operator; companion structural-obstruction surveys on the equivariant-ML and relational-query algebras identify five additional candidate extensions, yielding ten pairwise-independent extensions across the three algebras as the principal locus of follow-up work. NOETHER lifts induction from per-program MR sampling to a stable per-domain algebraic layer and makes the downstream step deductive and mechanical without eliminating induction at the upstream layer.
 \end{abstract}
 
 %% CCS Concepts
@@ -435,7 +435,7 @@ For the Boltzmann instantiation the relevant generators are finite ($n \le 14$, 
 
 \subsection{The principal limitation}
 
-NOETHER replaces inductive grounding with algebraic grounding \emph{downstream of $\mathcal{A}_P$}. Upstream, the distillation of $\mathcal{A}_P$ from a program family remains a human task. This limitation is central to the framework's scope: NOETHER does not automate domain modelling, but it turns the step after domain modelling into a well-defined construction. A second limitation, made explicit in \S\ref{subsec:negative-pwr} and Appendix~\ref{app:negative-proofs}, is that even when $\mathcal{A}_P$ is fully specified, \texttt{Translate}'s present signature (single-block, first-order $\pi$-template, single partial-order direction, operating on $P(x)$ tuples rather than on operator-spectrum quantities) systematically excludes a class of MRs that engineering practice treats as standard: non-additivity of operator-composition functionals and higher-order mixed parametric dependences. The principal limitation is therefore not only the upstream distillation of $\mathcal{A}_P$ but also the present signature of \texttt{Translate}.
+NOETHER replaces inductive grounding with algebraic grounding \emph{downstream of $\mathcal{A}_P$}. Upstream, the distillation of $\mathcal{A}_P$ from a program family remains a human task. This limitation is central to the framework's scope: NOETHER does not automate domain modelling, but it turns the step after domain modelling into a well-defined construction. A second limitation, made explicit in \S\ref{subsec:negative-pwr} and Appendix~\ref{app:negative-proofs}, is that even when $\mathcal{A}_P$ is fully specified, \texttt{Translate}'s present signature (single-block, first-order $\pi$-template, single partial-order direction, operating on $P(x)$ tuples rather than on operator-spectrum quantities) systematically excludes a class of MRs that engineering practice treats as standard: non-additivity of operator-composition functionals and higher-order mixed parametric dependences. The principal limitation is therefore twofold: the upstream distillation of $\mathcal{A}_P$, and the present signature of \texttt{Translate}.
 
 \begin{tcolorbox}[colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Boundary of contribution (Section~\ref{sec:framework} restatement),fonttitle=\small\bfseries]
 The downstream layer is mechanical: Theorem~\ref{thm:closure} (algebraic closure under \texttt{Translate}) and Theorem~\ref{thm:decidable} (polynomial-time decidability) operate on a given block decomposition. The upstream layer remains empirical: the eight-block decomposition is Hypothesis~\ref{hyp:seven-blocks}, an open empirical hypothesis with six documented out-of-scope program-family classes (Remark~\ref{rem:counterex}). Theorem~1$'$ (absolute completeness) is open. Sections~\ref{sec:reactor}, \ref{sec:cross-domain}, and \ref{subsec:third-domain} instantiate NOETHER on three structurally distinct program families.
@@ -537,13 +537,13 @@ where $B$ is the Boltzmann operator and $B^{\dagger}$ its formal adjoint under t
 \label{eq:m-adj-mr}
 \rho_{\mathrm{adj}}: \quad \big| \langle \phi^{\dagger}, S \rangle - \langle \phi, S^{\dagger} \rangle \big| \le \tau,
 \end{equation}
-which the testing harness checks on a forward and an adjoint solver run with externally specified sources $S, S^{\dagger}$. The MR is therefore a Noether-style consequence of the duality symmetry rather than a manually catalogued reactor-physics property: the symmetry $\phi \leftrightarrow \phi^{\dagger}$ is the structural source, the bilinear form is the conserved current, and the MR is the conservation law in testable form. The same template applies to $m_{\mathrm{rev}}$ with the involution $\mathcal{T}: \phi(\mathbf{r}, \mathbf{\Omega}, E, t) \mapsto \phi(\mathbf{r}, -\mathbf{\Omega}, E, -t)$ as the symmetry. The template's general statement is: given a symmetry of the program family's operator algebra, CONSTRUCT-MP extracts the invariant of the symmetry and \texttt{Translate} converts it into an executable MR.
+which the testing harness checks on a forward and an adjoint solver run with externally specified sources $S, S^{\dagger}$. The MR is therefore a Noether-style consequence of the duality symmetry rather than a manually catalogued reactor-physics property: the symmetry $\phi \leftrightarrow \phi^{\dagger}$ is the structural source, the bilinear form is the conserved current, and the MR is the conservation law in testable form. The same template applies to $m_{\mathrm{rev}}$ with the involution $\mathcal{T}: \phi(\mathbf{r}, \boldsymbol{\Omega}, E, t) \mapsto \phi(\mathbf{r}, -\boldsymbol{\Omega}, E, -t)$ as the symmetry. The template's general statement is: given a symmetry of the program family's operator algebra, CONSTRUCT-MP extracts the invariant of the symmetry and \texttt{Translate} converts it into an executable MR.
 
 \subsection{Specialisation to neutron transport, diffusion, and burnup}
 
 The Boltzmann formulation is the most general; specialised solvers are obtained by truncating or projecting $\mathcal{A}_{\mathrm{Boltz}}$. Neutron transport solvers retain the full angular dependence; the same seven MetaPatterns apply. Neutron diffusion solvers truncate angular dependence to its $P_1$ approximation: the time-reversal block contracts (diffusion is dissipative), removing $m_{\mathrm{rev}}$. Burnup-coupled solvers introduce the Bateman ODEs; the Bateman operator $e^{At}$ enriches multiple blocks ($G$ semi-group, $O_{\le}$ linearity, $\mathcal{D}^{*}$ overshoot/S-curve, $\mathcal{E}^{*}$ CRAM-vs-TTA bounds).
 
-The MetaPattern set is \emph{compositional} with respect to the underlying algebra: add a block, gain MetaPatterns; remove a block, lose them. The framework supports not only construction but also \emph{prediction} of which patterns a new specialisation will exhibit, before any MR is identified empirically.
+The MetaPattern set is \emph{compositional} with respect to the underlying algebra: add a block, gain MetaPatterns; remove a block, lose them. The framework supports both construction and \emph{prediction} of which patterns a new specialisation will exhibit, before any MR is identified empirically.
 
 \subsection{Summary}
 
@@ -752,7 +752,7 @@ B (Lit.)    & 0/5                                           & $[0.00, 0.43]$ \\
 \end{table}
 
 \paragraph{Reading the pilot.}
-The pilot's direction is consistent with the framework's prediction: Set N detects two cat-v mutations (cat-v-01 and cat-v-03, both caught by $\rho_{\mathrm{train}}$, the $\mathcal{L}^*$-block training-trajectory MR), while Sets L and B detect zero. The detection mechanism deserves explicit explanation. $\rho_{\mathrm{train}}$ tests training-size limit invariance: for inputs the model classifies confidently at full training, the prediction should remain stable when the head is exposed to a fresh small-batch fine-tuning step. cat-v-01 (head weight scaled by $1/N_{\mathrm{classes}}=1/5$) collapses the head-output magnitudes uniformly toward zero, which softens the softmax and changes the argmax on inputs near classification boundaries; the post-fine-tune predictions drift away from the pre-fine-tune predictions and the inference-stability invariant fails. cat-v-03 (head weight zeroed) makes every output identically zero pre-softmax, again breaking inference stability. cat-v-02 (tanh saturation), cat-v-04 (bias removal), and cat-v-05 (Glorot re-init) preserve enough head signal for the inference-stability check to pass on the eight test clouds within the chosen tolerance, so $\rho_{\mathrm{train}}$ does not fire on them. The mechanism is therefore not "$\rho_{\mathrm{train}}$ catches cat-v-01 because cat-v-01 changes the loss"; it is "$\rho_{\mathrm{train}}$'s inference-stability check fails when head magnitude is perturbed past a margin-of-error threshold for boundary inputs". This explains both the 2/5 detection result and why the boundary inputs matter. At $n=5$ the Fisher-exact $p$-values for Set N vs Set L and Set N vs Set B are both $p = 1.00$: the test has insufficient power to declare significance even with a 2/5-vs-0/5 contrast. \emph{We do not over-interpret this result.} What the pilot establishes is (i) the comparative-evaluation infrastructure runs end-to-end against real-fault-style mutations on the trained checkpoint, (ii) the framework's $\mathcal{L}^*$-block prediction is non-vacuous on a fault distribution it was not designed against, and (iii) the framework boundary on cat-v-02 (activation change), cat-v-04 (bias removal), and cat-v-05 (weight re-init) (none of these are detected by any MR set, including Set N) confirms the empirical-parameter-distribution out-of-scope class of Remark~\ref{rem:counterex}: weight-distribution and bias-magnitude perturbations on the classification head are not captured by any of the eight current blocks and are a candidate ninth block.
+The pilot's direction is consistent with the framework's prediction: Set N detects two cat-v mutations (cat-v-01 and cat-v-03, both caught by $\rho_{\mathrm{train}}$, the $\mathcal{L}^*$-block training-trajectory MR), while Sets L and B detect zero. The detection mechanism: $\rho_{\mathrm{train}}$ tests training-size limit invariance: for inputs the model classifies confidently at full training, the prediction should remain stable when the head is exposed to a fresh small-batch fine-tuning step. cat-v-01 (head weight scaled by $1/N_{\mathrm{classes}}=1/5$) collapses the head-output magnitudes uniformly toward zero, which softens the softmax and changes the argmax on inputs near classification boundaries; the post-fine-tune predictions drift away from the pre-fine-tune predictions and the inference-stability invariant fails. cat-v-03 (head weight zeroed) makes every output identically zero pre-softmax, again breaking inference stability. cat-v-02 (tanh saturation), cat-v-04 (bias removal), and cat-v-05 (Glorot re-init) preserve enough head signal for the inference-stability check to pass on the eight test clouds within the chosen tolerance, so $\rho_{\mathrm{train}}$ does not fire on them. The mechanism is therefore not "$\rho_{\mathrm{train}}$ catches cat-v-01 because cat-v-01 changes the loss"; it is "$\rho_{\mathrm{train}}$'s inference-stability check fails when head magnitude is perturbed past a margin-of-error threshold for boundary inputs". This explains both the 2/5 detection result and why the boundary inputs matter. At $n=5$ the Fisher-exact $p$-values for Set N vs Set L and Set N vs Set B are both $p = 1.00$: the test has insufficient power to declare significance even with a 2/5-vs-0/5 contrast. \emph{We do not over-interpret this result.} What the pilot establishes is (i) the comparative-evaluation infrastructure runs end-to-end against real-fault-style mutations on the trained checkpoint, (ii) the framework's $\mathcal{L}^*$-block prediction is non-vacuous on a fault distribution it was not designed against, and (iii) the framework boundary on cat-v-02 (activation change), cat-v-04 (bias removal), and cat-v-05 (weight re-init) (none of these are detected by any MR set, including Set N) confirms the empirical-parameter-distribution out-of-scope class of Remark~\ref{rem:counterex}: weight-distribution and bias-magnitude perturbations on the classification head are not captured by any of the eight current blocks and are a candidate ninth block.
 
 The pilot is the first empirical handhold beyond the constructed mutation set; the larger comparative-evaluation protocol below remains as committed work for follow-up. The three undetected mutations (cat-v-02 activation change, cat-v-04 bias removal, cat-v-05 weight re-init) are \emph{consistent with, but do not establish}, the parameter-distribution candidate ninth block of Remark~\ref{rem:counterex} item~(vi); a panel of $n \ge 20$ mutations on more than one architecture is required to establish the block-extension claim. The pilot's role here is to motivate the candidate, not to confirm it; we report it alongside the metric-stability candidate of Remark~\ref{rem:metric-stability-block} as the two most actionable extension targets.
 
@@ -1019,10 +1019,10 @@ on them.
 \label{subsec:l-blindness-derivation}
 
 \paragraph{The MR shape.}
-The $\mathcal{L}^{*}$ block of $\mathcal{A}_P$ in
-Definition~\ref{def:eight-blocks} contains scaling and linearity
+The $\mathcal{L}^{*}$ block of $\mathcal{A}_P$ under
+Hypothesis~\ref{hyp:seven-blocks} contains scaling and linearity
 operators. CONSTRUCT-MP's \texttt{Translate} step
-(\S\ref{subsec:algebra-induced-MRs}) carries scaling-block invariants
+(Definition~\ref{def:alg-induced}) carries scaling-block invariants
 to MRs of the form
 \begin{equation}
 \label{eq:l-scale-shape}
@@ -1098,7 +1098,7 @@ mathematical consequence requiring no experimental input. The
 prediction is therefore ex-ante in the strong sense that it is
 \emph{derivable from public information without consulting any data
 this paper produces}. We track the prediction's commitment to
-git in supplementary~\ref{S7-d4j} alongside the SUT-selection
+git in supplementary~S7 (\texttt{d4j/}) alongside the SUT-selection
 criterion of \S\ref{subsec:test-design}.
 
 \subsection{PIT mutator and 8-block invariant compatibility}
@@ -1121,7 +1121,7 @@ invariant, the block's MR can typically detect the mutant; ``$\sim$''
 with the eight NOETHER blocks. Cells reflect the dominant case for
 mutators in the category as applied to a generic algebra-rich SUT;
 SUT-specific exceptions are catalogued in
-supplementary~\ref{S7-d4j}. The cells $\langle$MATH, $\mathcal{L}^{*}\rangle$
+supplementary~S7 (\texttt{d4j/}). The cells $\langle$MATH, $\mathcal{L}^{*}\rangle$
 and $\langle$RETURN\_VALS, $\mathcal{L}^{*}\rangle$ are both
 ``$\circ$'' (homogeneity-preserving), and the
 $\mathcal{L}^{*}$-blindness result of \S\ref{subsec:l-blindness-confirmed}
@@ -1256,7 +1256,7 @@ $\rightarrow$ Set~G GP rerun $\rightarrow$ pooled M1) is the
 auditable proof of pre-registration. To strengthen the third-party
 verifiability of the pre-registration, the SHA-256 hash of
 \texttt{configs/d4j\_algebra\_rich\_criterion.json} together with
-the matching commit hash is deposited in supplementary~\ref{S7-d4j}
+the matching commit hash is deposited in supplementary~S7 (\texttt{d4j/})
 alongside the experiment artifact; reviewers may verify the deposit
 against the criterion file directly.
 
@@ -1351,7 +1351,7 @@ the small fraction of homogeneity-breaking mutators (return-value
 swap to a constant; constant-replacement that participates additively
 in the expression) is the residual non-zero contribution. Inspection
 of \texttt{mutants\_killed\_set\_n.csv} for \texttt{hypotSig} (path
-in supplementary~\ref{S7-d4j}) identifies the two killed mutants as
+in supplementary~S7 (\texttt{d4j/})) identifies the two killed mutants as
 \texttt{KILLED\,return\_two\_doubles\_VR} and
 \texttt{KILLED\,Math.sqrt\_replaced\_with\_one\_RC}: the first
 replaces the entire return path with the constant zero, the second
@@ -1416,7 +1416,7 @@ fires. The grid-synthesised $G$-block MR
 $\sigma = \mathrm{sign\text{-}flip}$ involution) is therefore vacuously
 satisfied on the SUT's normalised input domain, independent of any
 downstream mutation. The framework's scope precondition
-(\S\ref{subsec:algebra-induced-MRs}) requires that the SUT's input
+(Definition~\ref{def:alg-induced}) requires that the SUT's input
 domain expose the algebraic action under test; for these two SUTs the
 $G$-action is structurally absorbed by the SUT's own normalisation
 prologue, so $G$-block reasoning is orthogonal to the recursive
@@ -1795,7 +1795,7 @@ of the pilot analyst's manual verdict.
 
 The pooled rates also exhibit the scope-discriminance pattern
 predicted by NOETHER's scope declaration
-(\S\ref{subsec:algebra-induced-MRs}): on the wider 23-method
+(Definition~\ref{def:alg-induced}): on the wider 23-method
 utility-method baseline (supplementary~S5; mixed in-scope and
 boundary substrate), Set~N's pooled M1 is $0.288$, against Set~G's
 $0.363$; on the in-scope algebra-rich substrate (eq-excluded $n =
@@ -1868,7 +1868,7 @@ $\mathcal{L}^{*}$-blindness prediction is derivable from public
 information without consulting data is a mathematical argument; it
 holds independent of when the prediction was first written down. We
 nonetheless commit the prediction to git in
-supplementary~\ref{S7-d4j} alongside the SUT-selection criterion, so
+supplementary~S7 (\texttt{d4j/}) alongside the SUT-selection criterion, so
 that the prediction's text and the criterion's text are both stamped
 before the data files for the per-MR kill counts. A reader who
 distrusts the timestamp chain can re-derive the prediction
@@ -1910,7 +1910,7 @@ empirical N/A count on this snapshot is the upstream-relative part.
 \paragraph{(e) Substrate selection.}
 The evaluation restricts itself to programs with explicit
 mathematical-physics equations, by NOETHER's scope declaration
-(\S\ref{subsec:algebra-induced-MRs}). The kill-rate gain over the
+(Definition~\ref{def:alg-induced}). The kill-rate gain over the
 utility-method reference is expected by that scope declaration and is
 reported as scope-discriminance evidence (claim~D), not as a
 generalisable performance improvement on every Java SUT.
@@ -1981,7 +1981,7 @@ Human effort / family        & $\approx 10$~h $\mathcal{A}_P$ distillation      
 Token cost (USD) / family    & 0                                                       & 0                           & \$5--50 (\$50--500 with CoT) & 0 \\
 Seed-corpus dependency       & none                                                    & none                        & none                       & required (mining input) \\
 Determinism                  & deterministic                                           & seed-/budget-dependent      & prompt-/temperature-dependent & corpus-dependent \\
-Cold-start capable           & \checkmark                                              & \checkmark (after harness)  & \checkmark (after prompt)  & $\times$ (needs corpus) \\
+Cold-start capable           & yes                                                    & yes (after harness)         & yes (after prompt)         & no (needs corpus) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2080,7 +2080,7 @@ Set~N MRs, the $L_{\mathrm{scale}}$-mutant attribution for
 \texttt{hypotSig}, the GP raw output and the
 \texttt{.jir}/\texttt{.jor} translation, the McNemar $b/c$ counts,
 the prediction's git timestamp, and the test-gate harness
-(\texttt{tests/run.sh}) are in supplementary~\ref{S7-d4j}.
+(\texttt{tests/run.sh}) are in supplementary~S7 (\texttt{d4j/}).
 
 %% =========================================================
 \section{Discussion and threats to validity}
