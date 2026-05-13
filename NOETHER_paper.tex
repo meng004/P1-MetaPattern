@@ -179,7 +179,7 @@ Our disagreement is not with this direction but with its grounding. The categori
 
 \subsection{Automated MR identification}
 
-Automated MR identification attacks the bottleneck by searching for executable relations more directly. MR-Scout mines MRs from existing test suites by extracting input-transformation and output-assertion patterns from test-case pairs and abstracting them into reusable relations~\cite{MRScout2024}; closely related is the work of Nair et~al.\ on mining MRs from bug-report corpora~\cite{NairTSE2022}. GenMorph evolves MR candidates through genetic programming, co-evolving input transformations with output assertions and using mutation-killing as the fitness signal~\cite{GenMorph2024}. For deep-learning pipelines specifically, MT4DL extends MR mining to the multi-stage training-and-inference pipeline~\cite{MT4DL2024}. Shin et~al.\ derive executable MRs from natural-language requirements via few-shot prompting of a large language model, with validation through an industrial questionnaire study with Siemens~\cite{Shin2024}; the systematic empirical study of Xu et~al.~\cite{XuTOSEM2024} characterises the practical limits of LLM-generated MRs across multiple ML benchmarks. Further LLM-assisted variants, including domain-customised GPTs for autonomous-driving simulators~\cite{GPTMR2025} and multi-agent retrieval-augmented pipelines for traffic-rule MRs~\cite{AutoMT2025}, extend this template into safety-critical or rule-rich domains. Within ML-system testing, differential-testing approaches such as DeepXplore~\cite{DeepXplore2017} use input-transformation invariance as a proxy oracle, complementary to the explicit MR formulation we adopt here.
+Automated MR identification attacks the bottleneck by searching for executable relations more directly. MR-Scout mines MRs from existing test suites by extracting input-transformation and output-assertion patterns from test-case pairs and abstracting them into reusable relations~\cite{MRScout2024}. GenMorph evolves MR candidates through genetic programming, co-evolving input transformations with output assertions and using mutation-killing as the fitness signal~\cite{GenMorph2024}. Shin et~al.\ derive executable MRs from natural-language requirements through few-shot prompting of a large language model, with validation through an industrial questionnaire study with Siemens~\cite{Shin2024}; further LLM-assisted variants, including ChatGPT-driven MR generation~\cite{ZhangChatGPTMR2023}, domain-customised GPTs for autonomous-driving simulators~\cite{GPTMR2025}, and multi-agent retrieval-augmented pipelines for traffic-rule MRs~\cite{AutoMT2025}, extend this template into safety-critical or rule-rich domains. Within ML-system testing, differential-testing approaches such as DeepXplore~\cite{DeepXplore2017} use input-transformation invariance as a proxy oracle, complementary to the explicit MR formulation we adopt here.
 
 A second strand uses program-structure features rather than test-case mining. Kanewala et al.~\cite{Kanewala2016GraphKernel} predict MRs of scientific software via graph-kernel learning over control-flow and data-dependency graphs, an early demonstration that program structure carries enough signal for automated MR discovery. Nolasco et al.'s MemoRIA~\cite{Nolasco2024MemoRIA} infers MRs by deriving an object-protocol abstraction and validating candidates through fuzzing plus SAT-based reduction, then evaluates on 22 Java subjects. Tao et al.'s Mettoc~\cite{Tao2010Mettoc} applied MT to compiler testing using equivalence-preservation as the canonical relation. Ying et al.~\cite{Ying2025MRPatterns} formalise relationships between metamorphic-relation patterns into family trees, and Altamimi et al.~\cite{Altamimi2022MRSLR} provide a recent systematic literature review of MR-automation work that catalogues the structural-vs-empirical-search divide our framework targets. Earlier LLM-assisted attempts include Zhang et al.~\cite{ZhangChatGPTMR2023} on ChatGPT-driven MR generation.
 
@@ -764,12 +764,12 @@ The most material threats are: (a) \textbf{MR-budget asymmetry}: GPT-4 might gen
 The single hand-constructed mutation set above is supplemented by a comparative protocol that runs Set N alongside two independent automated pipelines on a shared subject set. The protocol fixes the following measurable quantities, leaving only the result population to subsequent revisions of this paper.
 
 \begin{description}
-  \item[Subjects.] (i) GenMorph's published 23 Java-method benchmark~\cite{Ayerdi2023GenMorph} restricted to subjects whose induced operator algebra is non-trivial under the eight-block decomposition (we expect $\approx 14$ subjects after filtering on whether $\mathcal{A}_P$ has at least one non-empty block beyond $G$); (ii) two ML benchmarks built on DeepCrime real-fault mutation operators~\cite{Humbatova2021DeepCrime}: an MNIST classifier and a CIFAR-10 classifier under DeepCrime's 24 mutation operators systematically extracted from real DL fault taxonomies. Replacing the hand-constructed 20 mutations with DeepCrime's published real-fault operators directly addresses the construction-bias threat (c) above.
-  \item[Compared methods.] Set N (NOETHER, derived from $\mathcal{A}_P$); Set M (MR-Scout-mined~\cite{MRScout2024} from existing test suites); Set G (GenMorph-evolved via genetic programming~\cite{Ayerdi2023GenMorph}); Set L (LLM-prompted with the same prompt template as in the §\ref{subsec:case-study} case study); Set B (literature MRs).
+  \item[Subjects.] (i) GenMorph's published 23 Java-method benchmark~\cite{GenMorph2024} restricted to subjects whose induced operator algebra is non-trivial under the eight-block decomposition (we expect $\approx 14$ subjects after filtering on whether $\mathcal{A}_P$ has at least one non-empty block beyond $G$); (ii) two ML benchmarks built on DeepCrime real-fault mutation operators~\cite{Humbatova2021DeepCrime}: an MNIST classifier and a CIFAR-10 classifier under DeepCrime's 24 mutation operators systematically extracted from real DL fault taxonomies. Replacing the hand-constructed 20 mutations with DeepCrime's published real-fault operators directly addresses the construction-bias threat (c) above.
+  \item[Compared methods.] Set N (NOETHER, derived from $\mathcal{A}_P$); Set M (MR-Scout-mined~\cite{MRScout2024} from existing test suites); Set G (GenMorph-evolved via genetic programming~\cite{GenMorph2024}); Set L (LLM-prompted with the same prompt template as in the §\ref{subsec:case-study} case study); Set B (literature MRs).
   \item[Metrics.] Per-subject mutation-detection rate (Set $\cap$ killed mutants / total killed); real-bug-detection rate (where bug logs are available); false-positive rate on baseline (un-mutated) inputs; coverage with respect to the algebraic block decomposition $\mathrm{coverage}_{\mathrm{NOETHER}}$.
   \item[Statistical tests.] Wilson 95\% CI on per-set detection rates; pairwise McNemar exact tests for paired Set-vs-Set comparisons; pairwise Fisher exact tests for unpaired comparisons; Bonferroni correction for the 10 pairwise tests across 5 sets.
   \item[Pre-registered hypothesis (H3a, vs GP-evolved baseline).] On algebra-disrupting mutants (Definition in \S\ref{subsec:pit-block-matrix}), Set~N's pooled detection rate is within $\Delta = 0.10$ of GenMorph-evolved Set~G's rate at GenMorph's published 30-min budget; on the algorithmic-cost axis, Set~N's MR-generation cost is asymptotically lower than Set~G's (Theorem~\ref{thm:decidable} polynomial vs.\ stochastic search).
-  \item[Pre-registered hypothesis (H3b, vs LLM-assisted baseline).] On the structural-coverage diagnostic, $\mathrm{coverage}_{\mathrm{NOETHER}}(N) > \mathrm{coverage}_{\mathrm{NOETHER}}(L_{\mathrm{Xu24}})$, where Set~$L_{\mathrm{Xu24}}$ is the LLM-assisted representative drawn from the protocol of Xu et~al.~\cite{XuTOSEM2024}. The diagnostic is interpreted as a structural-prior signal (NOETHER's algebraic prior contributes block coverage that prompt-based LLMs lack on $\mathcal{A}_P$), \emph{not} as a fault-detection-superiority metric. \textbf{Verdict (tested, borderline-PASS at the structural reading)}: a $2$-vendor (DeepSeek, ChatGPT) $\times$ $5$-temperature ensemble harvested $487$ LLM-proposed MRs across the $10$ \S\ref{subsec:test-design} SUTs ($100$ samples); $43.5\%$ ($212/487$) of the proposals match a Set~N block-template under deterministic translation, and the matchable subset reproduces Set~N's kill rate on the aligned-mutant substrate ($34/70 = 0.486$ for the ensemble union, identical to Set~N on the same $70$ mutants). The remaining $56.5\%$ explore invariants outside the $8$-block frame (associativity, identity / inverse element, monotonicity on SUTs lacking an O\textsubscript{le}-block representative); these have no in-protocol kill measurement here and constitute the structural-coverage gap. NOETHER's $\mathrm{coverage}_{\mathrm{NOETHER}}$ remains $1.00$ by construction; the LLM ensemble's block-template coverage of Set~N's catalogue is $43.5\%$ on the matchable subset. A third-vendor (Anthropic Claude) replication is committed in follow-up~(d.set-l-claude) of Table~\ref{tab:future-work}.
+  \item[Pre-registered hypothesis (H3b, vs LLM-assisted baseline).] On the structural-coverage diagnostic, $\mathrm{coverage}_{\mathrm{NOETHER}}(N) > \mathrm{coverage}_{\mathrm{NOETHER}}(L_{\mathrm{ensemble}})$, where Set~$L_{\mathrm{ensemble}}$ is the LLM-assisted representative drawn from a multi-vendor $\times$ multi-temperature LLM-MR-generation protocol that subsumes the single-sample probes of Shin~\cite{Shin2024} and Zhang et~al.~\cite{ZhangChatGPTMR2023}. The diagnostic is interpreted as a structural-prior signal (NOETHER's algebraic prior contributes block coverage that prompt-based LLMs lack on $\mathcal{A}_P$), \emph{not} as a fault-detection-superiority metric. \textbf{Verdict (tested, borderline-PASS at the structural reading)}: a $2$-vendor (DeepSeek, ChatGPT) $\times$ $5$-temperature ensemble harvested $487$ LLM-proposed MRs across the $10$ \S\ref{subsec:test-design} SUTs ($100$ samples); $43.5\%$ ($212/487$) of the proposals match a Set~N block-template under deterministic translation, and the matchable subset reproduces Set~N's kill rate on the aligned-mutant substrate ($34/70 = 0.486$ for the ensemble union, identical to Set~N on the same $70$ mutants). The remaining $56.5\%$ explore invariants outside the $8$-block frame (associativity, identity / inverse element, monotonicity on SUTs lacking an O\textsubscript{le}-block representative); these have no in-protocol kill measurement here and constitute the structural-coverage gap. NOETHER's $\mathrm{coverage}_{\mathrm{NOETHER}}$ remains $1.00$ by construction; the LLM ensemble's block-template coverage of Set~N's catalogue is $43.5\%$ on the matchable subset. A third-vendor (Anthropic Claude) replication is committed in follow-up~(d.set-l-claude) of Table~\ref{tab:future-work}.
   \item[Pre-registered hypothesis (H3c, vs mining-based baseline).] At cold start (no seed test corpus), Set~N is operationally derivable from $\mathcal{A}_P$ alone, while MR-Scout~\cite{MRScout2024}'s reach is upper-bounded by the seed-suite's induced relations; an adapted-from-published-artifact estimate of MR-Scout's reach on the §\ref{subsec:test-design} substrate is reported in Table~\ref{tab:gen-cost} and contextualised in \S\ref{subsec:pooled-headtohead}.
   \item[Pre-registered hypothesis (continuous).] H4 (\emph{detection-rate non-inferiority on real faults}): on DeepCrime real-fault mutants, Set~N's detection rate is within $\Delta = 0.10$ of the best non-NOETHER set's detection rate, with $\Delta$ fixed in advance.
 \end{description}
@@ -1010,7 +1010,7 @@ kill near-zero PIT mutants. We refer to this prediction as
 quantitative, and derivable from public information without consulting
 any data. The test of the prediction is the central content of this
 section. Pooled head-to-head numbers against an automated SOTA
-baseline (GenMorph~\cite{Ayerdi2023GenMorph}), structural coverage
+baseline (GenMorph~\cite{GenMorph2024}), structural coverage
 extension, and cross-pipeline MR rediscovery are reported as
 corroborating evidence; the section's central claim does not depend
 on them.
@@ -1730,8 +1730,9 @@ mutant on a single SUT under PIT mutation.
 For the LLM-assisted comparator of \S\ref{para:comp-eval-protocol}'s
 H3b, we ran a $2$-vendor (DeepSeek, ChatGPT) $\times$ $5$-temperature
 ($t \in \{0.0, 0.3, 0.5, 0.7, 1.0\}$) ensemble on the same
-$10$-SUT substrate, mirroring Xu et~al.'s~\cite{XuTOSEM2024}
-multi-LLM-sample protocol scale. The harvest is $100$ LLM samples
+$10$-SUT substrate, at a multi-LLM-sample scale that subsumes the
+single-sample probes of Shin et~al.~\cite{Shin2024} and
+Zhang et~al.~\cite{ZhangChatGPTMR2023}. The harvest is $100$ LLM samples
 yielding $487$ proposed MRs; deterministic template-matching against
 Set~N's per-SUT block catalogue translates $212$ ($43.5\%$) into
 executable JIR/JOR pairs (the remaining $56.5\%$ are either compound
@@ -1823,19 +1824,20 @@ witness on the two SUTs where Set~G is N/A
 The head-to-head reported here delivers the GP-evolved-baseline arm
 of a three-SOTA-category protocol against one representative per
 category. The GP-evolved representative is GenMorph (Ayerdi
-et~al.~\cite{Ayerdi2023GenMorph}), the SOTA among
+et~al.~\cite{GenMorph2024}), the SOTA among
 genetic-programming MR identification pipelines on Java SUTs at the
 time of submission, run at its published 30-min GAssert budget. The
-LLM-assisted representative is the Xu et~al.\ TOSEM
-2024~\cite{XuTOSEM2024} systematic LLM-MR-generation protocol; this
-section's Set~L is a single-sample $n = 1$ GPT-4 probe
-(\S\ref{subsec:case-study}) and is reported as an
-\emph{anecdotal datapoint within Xu et al.'s protocol scale}, not
-the full LLM-assisted SOTA arm. A multi-LLM ensemble expansion
-(running Shin~\cite{Shin2024}, GPTMR~\cite{GPTMR2025}, and
-AutoMT~\cite{AutoMT2025} alongside multiple GPT-4 / Claude /
-GPT-OSS samples per Xu's protocol) is committed as
-post-acceptance follow-up in Table~\ref{tab:future-work}~(d). The
+LLM-assisted representative is a multi-vendor $\times$
+multi-temperature LLM-MR-generation protocol (the same arm reported
+inline in \S\ref{subsec:pooled-headtohead} as Set~$L_{\mathrm{ensemble}}$);
+this section's earlier Set~L is a single-sample $n = 1$ GPT-4 probe
+(\S\ref{subsec:case-study}) and is now superseded by the
+$2$-vendor (DeepSeek, ChatGPT) $\times$ $5$-temperature ensemble
+reported in \S\ref{subsec:pooled-headtohead}. A third-vendor
+(Anthropic Claude) extension running alongside
+Shin~\cite{Shin2024}, GPTMR~\cite{GPTMR2025}, and
+AutoMT~\cite{AutoMT2025} is committed as
+post-acceptance follow-up in Table~\ref{tab:future-work}~(d.set-l-claude). The
 mining-based representative is MR-Scout (Sun
 et~al.~\cite{MRScout2024}); on this section's substrate, MR-Scout's
 reach is reported as an estimate adapted from MR-Scout's
@@ -1918,16 +1920,19 @@ generalisable performance improvement on every Java SUT.
 \paragraph{(f) Three SOTA-category coverage.}
 The protocol of \S\ref{para:comp-eval-protocol} commits Set~N against
 one representative per SOTA category: a GP-evolved baseline
-(GenMorph~\cite{Ayerdi2023GenMorph}), an LLM-assisted baseline
-(Xu et~al.\ TOSEM 2024~\cite{XuTOSEM2024}), and a mining-based
-baseline (MR-Scout~\cite{MRScout2024}). This section delivers the
-GP-evolved arm in full at GenMorph's published 30-min budget. The
-LLM-assisted representative is reported as an anecdotal $n = 1$
-GPT-4 probe in the \S\ref{subsec:case-study} case study and
-contextualised against Xu et~al.'s systematic LLM-MR study; a
-multi-LLM ensemble extension (Shin~\cite{Shin2024},
-GPTMR~\cite{GPTMR2025}, AutoMT~\cite{AutoMT2025}) is committed as
-post-acceptance follow-up. The mining-based representative is
+(GenMorph~\cite{GenMorph2024}), an LLM-assisted baseline (a
+multi-vendor $\times$ multi-temperature LLM-MR-generation protocol
+that subsumes the single-sample probes of
+Shin~\cite{Shin2024}, ChatGPT-MR~\cite{ZhangChatGPTMR2023},
+GPTMR~\cite{GPTMR2025}, and AutoMT~\cite{AutoMT2025}), and a
+mining-based baseline (MR-Scout~\cite{MRScout2024}). This section
+delivers the GP-evolved arm in full at GenMorph's published 30-min
+budget. The LLM-assisted representative is delivered as the
+$2$-vendor (DeepSeek, ChatGPT) $\times$ $5$-temperature ensemble
+reported inline in \S\ref{subsec:pooled-headtohead}'s Set~L
+paragraph; the original \S\ref{subsec:case-study} $n = 1$ GPT-4
+probe is superseded. A third-vendor (Anthropic Claude) replication
+is committed as post-acceptance follow-up~(d.set-l-claude). The mining-based representative is
 reported through an adapted estimate of MR-Scout's reach on the
 \S\ref{subsec:test-design} substrate, derived from MR-Scout's
 published artifact reach figures rather than a full re-execution; full
@@ -1954,8 +1959,8 @@ seed-corpus dependency.
 \caption{MR-generation cost components for the four methods compared
 in this section. ``Cost dimension'' rows are independent (an
 LLM-arm token cost does not amortise GP wall-time and vice versa).
-The token-cost estimate for the LLM-assisted arm follows Xu
-et~al.'s~\cite{XuTOSEM2024} multi-LLM-sample protocol scale (5
+The token-cost estimate for the LLM-assisted arm is derived from
+a multi-vendor $\times$ multi-temperature protocol scale (3
 LLMs $\times$ 5 samples $\times$ $\approx 600$ tokens per
 SUT-prompt-and-output cycle, on the $n=10$ SUT substrate of
 \S\ref{subsec:test-design}; output cost dominates at GPT-4 January
@@ -2096,7 +2101,7 @@ We organise threats following Wohlin et al.'s four-validity framework~\cite{Wohl
 
 \paragraph{External validity.} Two distinct external-validity questions are in scope: (i) whether the framework's \emph{algebraic} reach (Hypothesis~\ref{hyp:seven-blocks}) covers all program families admitting an operator algebra, and (ii) whether the \S\ref{subsec:test-design} \emph{empirical} substrate generalises across codebases within the framework's scope precondition. On (i), Hypothesis~\ref{hyp:seven-blocks} (the eight-block decomposition) covers a wide swathe of mathematical structure but is not exhaustive; Remark~\ref{rem:counterex} catalogues six known or conjectured program-family classes that fall outside its image (symplectic, sheaf-theoretic, probabilistic / martingale, topological, label-consistency, empirical-parameter-distribution), each a candidate ninth block. Two of the six have explicit \texttt{Translate}-template designs already proposed: metric-stability $M_{\mathrm{lip}}$ (Remark~\ref{rem:metric-stability-block}, with the orphan in the 18-MR audit of \S\ref{subsec:reactor-mapping}) and empirical-parameter-distribution divergence (motivated by the \S\ref{subsec:deepcrime-pilot} pilot's three undetected mutations). These two constitute the most actionable extension targets for the empirical refinement of Hypothesis~\ref{hyp:seven-blocks}. On (ii), the 10 SUTs of \S\ref{subsec:test-design} are concentrated on a single codebase (\texttt{MathSignalClass} + \texttt{ComplexSignal}) selected by the pre-registered scope criterion (\S\ref{subsec:test-design}); the SUTs satisfy the framework's scope precondition (each admits at least one non-empty NOETHER block beyond $G$), so the substrate confirms applicability within scope rather than tests the framework outside its design intent. Cross-codebase replication on Apache Commons Math \texttt{linear} / \texttt{ode} / \texttt{transform} / \texttt{complex} / \texttt{geometry} packages, Defects4J subjects with explicit physical-law content, and SciPy's Python-bridge solver suite is committed as follow-up~(b) in Table~\ref{tab:future-work}. A pilot subset of (b) on Apache Commons Math 3.6.1 is reported as follow-up~(b.cm) in Table~\ref{tab:future-work}: 3 SUTs (\texttt{Complex.multiply}, \texttt{Complex.divide}, \texttt{Vector3D.dotProduct}), 5 Set~N MRs derived through the CONSTRUCT-MP procedure with per-(SUT, block) LLM-grid scaffolding and manual ratification, and PIT 1.7.4 evaluation on 77 target-method mutants pooled. The per-block $G$ kill rate is $6/21 = 28.6\%$ with Wilson 95\% CI $[13.8\%, 50.0\%]$ across the two SUTs admitting commutativity; the framework's D2 stratum prediction (kill rate $\le 10\%$) passes at $2/29 = 6.9\%$. The $\mathcal{L}^{*}$ block carries $n = 0$: no PIT mutator present on this substrate breaks the $\mathcal{L}^{*}$ invariant on Complex multiplication / division or 3D dot product. This is the framework's structural prediction, not a measurement gap. The bilinearity invariant tested by $L_{\mathrm{scale\_bilinear}}$ (\texttt{f(k$\cdot$a, b) = k$\cdot$f(a, b)}) is preserved point-wise by any per-coordinate arithmetic perturbation: changing $+$ to $-$ inside $\texttt{ac - bd}$ in \texttt{Complex.multiply} yields $\texttt{ac + bd}$, but the L-scale test compares \texttt{f(k$\cdot$a, b)} to $k\cdot\texttt{f(a, b)}$, and both sides apply the same mutated formula to scaled inputs and unscaled inputs respectively, yielding consistent $k$-proportional outputs (the bug propagates symmetrically through both invocations). The framework correctly identifies $\mathcal{L}^{*}$ as Set~N-orthogonal to bilinear SUTs under point-wise mutations and routes the kill load to the $G$ block (commutativity / conjugation), which is the operative invariant under PIT's mutator set on these SUTs. Set~G is treated as structurally N/A on this substrate because GenMorph's upstream gen-pipeline assumes a flat-source SUT layout incompatible with Commons Math's Maven-resolved transitive dependency graph; head-to-head against GenMorph on Maven-resolved substrates remains in (b) as a harness-extension task. The pilot $n$ is small (3 SUTs, 5 MRs, 77 target-method mutants), underpowered for $\alpha = 0.05$ hypothesis testing; the replication is reported as descriptive evidence consistent with the framework's scope-internal generalisation prediction, with full numbers in the experiment repository's \texttt{docs/commons\_math\_replication\_results.md}. The replication tests scope-internal generalisation, not whether the framework should apply to programs lacking explicit operator-algebraic structure (such programs are out of scope by construction).
 
-\paragraph{Conclusion validity.} The case study's statistical inferences (\S\ref{subsec:case-study}) rest on a 20-mutation $\times$ 3-MR-set cross-product on a single architecture. Wilson 95\% confidence intervals on detection rates ($[0.18,0.57]$ for Set~N, $[0.03,0.30]$ for Set~L, $[0.00,0.16]$ for Set~B) are reported; pairwise McNemar exact and Fisher exact tests are reported in supplementary S3 (\texttt{table4.json::pairwise\_stats}). The denominator (20 mutations on one EGNN model) is sufficient to detect the observed Set-N-vs-Set-B contrast at $\alpha = 0.05$ (Fisher $p = 0.008$) but is not sufficient to characterise the framework's performance distribution across architectures or defect distributions. The expanded comparative-evaluation protocol in \S\ref{subsec:case-study} (MR-Scout~\cite{MRScout2024}, GenMorph~\cite{Ayerdi2023GenMorph}, DeepCrime~\cite{Humbatova2021DeepCrime} subjects) raises the denominator and broadens the model coverage, addressing this threat directly.
+\paragraph{Conclusion validity.} The case study's statistical inferences (\S\ref{subsec:case-study}) rest on a 20-mutation $\times$ 3-MR-set cross-product on a single architecture. Wilson 95\% confidence intervals on detection rates ($[0.18,0.57]$ for Set~N, $[0.03,0.30]$ for Set~L, $[0.00,0.16]$ for Set~B) are reported; pairwise McNemar exact and Fisher exact tests are reported in supplementary S3 (\texttt{table4.json::pairwise\_stats}). The denominator (20 mutations on one EGNN model) is sufficient to detect the observed Set-N-vs-Set-B contrast at $\alpha = 0.05$ (Fisher $p = 0.008$) but is not sufficient to characterise the framework's performance distribution across architectures or defect distributions. The expanded comparative-evaluation protocol in \S\ref{subsec:case-study} (MR-Scout~\cite{MRScout2024}, GenMorph~\cite{GenMorph2024}, DeepCrime~\cite{Humbatova2021DeepCrime} subjects) raises the denominator and broadens the model coverage, addressing this threat directly.
 
 \subsection{Relationship with METRIC and METRIC+}
 
