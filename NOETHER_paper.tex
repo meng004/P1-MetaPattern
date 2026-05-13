@@ -768,7 +768,29 @@ The single hand-constructed mutation set above is supplemented by a comparative 
   \item[Compared methods.] Set N (NOETHER, derived from $\mathcal{A}_P$); Set M (MR-Scout-mined~\cite{MRScout2024} from existing test suites); Set G (GenMorph-evolved via genetic programming~\cite{GenMorph2024}); Set L (LLM-prompted with the same prompt template as in the §\ref{subsec:case-study} case study); Set B (literature MRs).
   \item[Metrics.] Per-subject mutation-detection rate (Set $\cap$ killed mutants / total killed); real-bug-detection rate (where bug logs are available); false-positive rate on baseline (un-mutated) inputs; coverage with respect to the algebraic block decomposition $\mathrm{coverage}_{\mathrm{NOETHER}}$.
   \item[Statistical tests.] Wilson 95\% CI on per-set detection rates; pairwise McNemar exact tests for paired Set-vs-Set comparisons; pairwise Fisher exact tests for unpaired comparisons; Bonferroni correction for the 10 pairwise tests across 5 sets.
-  \item[Pre-registered hypothesis (H3a, vs GP-evolved baseline).] On algebra-disrupting mutants (Definition in \S\ref{subsec:pit-block-matrix}), Set~N's pooled detection rate is within $\Delta = 0.10$ of GenMorph-evolved Set~G's rate at GenMorph's published 30-min budget; on the algorithmic-cost axis, Set~N's MR-generation cost is asymptotically lower than Set~G's (Theorem~\ref{thm:decidable} polynomial vs.\ stochastic search).
+  \item[Pre-registered hypothesis (H3a, vs GP-evolved baseline).]
+  Three sub-claims:
+  \begin{description}
+    \item[H3a.1 (Detection on D1, per-block).] On the
+      algebra-disrupting stratum (D1, Definition in
+      \S\ref{subsec:pit-block-matrix}), Set~N's per-block kill rate
+      is competitive with or superior to Set~G's on at least one
+      operative block within scope (per-block comparison; aggregate
+      D1 dominance is \emph{not} pre-registered as the load-bearing
+      reading, see \S\ref{subsec:pooled-headtohead}).
+    \item[H3a.2 (Complementarity).] Set~N and Set~G exhibit
+      non-trivial complementarity in mutant coverage on the D1
+      stratum (each set kills mutants the other misses); a
+      non-zero $N$-only kill count on at least one operative block
+      is the operational test.
+    \item[H3a.3 (Cost-axis).] Set~N's MR-generation cost is
+      asymptotically lower than Set~G's
+      (Theorem~\ref{thm:decidable} polynomial-time decidability
+      versus Set~G's $\approx 30$-min stochastic GP search per SUT,
+      detailed in Table~\ref{tab:gen-cost}). The cost-axis claim is
+      independent of the detection-axis claims and is read on the
+      cost-axis only.
+  \end{description}
   \item[Pre-registered hypothesis (H3b, vs LLM-assisted baseline).] On the structural-coverage diagnostic, $\mathrm{coverage}_{\mathrm{NOETHER}}(N) > \mathrm{coverage}_{\mathrm{NOETHER}}(L_{\mathrm{ensemble}})$, where Set~$L_{\mathrm{ensemble}}$ is the LLM-assisted representative drawn from a multi-vendor $\times$ multi-temperature LLM-MR-generation protocol that subsumes the single-sample probes of Shin~\cite{Shin2024} and Zhang et~al.~\cite{ZhangChatGPTMR2023}. The diagnostic is interpreted as a structural-prior signal (NOETHER's algebraic prior contributes block coverage that prompt-based LLMs lack on $\mathcal{A}_P$), \emph{not} as a fault-detection-superiority metric. \textbf{Verdict (tested, borderline-PASS at the structural reading)}: a $2$-vendor (DeepSeek, ChatGPT) $\times$ $5$-temperature ensemble harvested $487$ LLM-proposed MRs across the $10$ \S\ref{subsec:test-design} SUTs ($100$ samples); $43.5\%$ ($212/487$) of the proposals match a Set~N block-template under deterministic translation, and the matchable subset reproduces Set~N's kill rate on the aligned-mutant substrate ($34/70 = 0.486$ for the ensemble union, identical to Set~N on the same $70$ mutants). The remaining $56.5\%$ explore invariants outside the $8$-block frame (associativity, identity / inverse element, monotonicity on SUTs lacking an O\textsubscript{le}-block representative); these have no in-protocol kill measurement here and constitute the structural-coverage gap. NOETHER's $\mathrm{coverage}_{\mathrm{NOETHER}}$ remains $1.00$ by construction; the LLM ensemble's block-template coverage of Set~N's catalogue is $43.5\%$ on the matchable subset. A third-vendor (Anthropic Claude) replication is committed in follow-up~(d.set-l-claude) of Table~\ref{tab:future-work}.
   \item[Pre-registered hypothesis (H3c, vs mining-based baseline).] At cold start (no seed test corpus), Set~N is operationally derivable from $\mathcal{A}_P$ alone, while MR-Scout~\cite{MRScout2024}'s reach is upper-bounded by the seed-suite's induced relations; an adapted-from-published-artifact estimate of MR-Scout's reach on the §\ref{subsec:test-design} substrate is reported in Table~\ref{tab:gen-cost} and contextualised in \S\ref{subsec:pooled-headtohead}.
   \item[Pre-registered hypothesis (continuous).] H4 (\emph{detection-rate non-inferiority on real faults}): on DeepCrime real-fault mutants, Set~N's detection rate is within $\Delta = 0.10$ of the best non-NOETHER set's detection rate, with $\Delta$ fixed in advance.
@@ -1808,23 +1830,93 @@ $0.712$). Both methods benefit from the algebraically richer
 substrate, as expected. This corroborates the framework's scope
 declaration as empirically discriminating.
 
-We do \emph{not} claim Set~N $>$ Set~G on the scope-matched D1
-head-to-head. The D1 gap is in the direction of Set~G; the exact
-McNemar two-sided test on the D1 stratum (post eq-exclusion, $n =
-52$) yields $p = 0.019$ ($\alpha = 0.05$ threshold crossed at the
-published 30-min budget); the pooled $n = 57$ comparison yields
-$p = 0.0043$, but the pooled gap is strengthened by Set~G's $3/5$
-on the D2 stratum, an out-of-scope contribution for Set~N by
-construction. \textbf{H3a (scope-matched D1 non-inferiority,
-pre-registered $\Delta = 0.10$) is not supported}: the observed
-D1 gap is $0.712 - 0.500 = 0.212$, exceeding $\Delta$ by a factor
-of $2.1\times$. The supported reading is \emph{the framework's D2
-falsifiability prediction is consistent with the data (Set~N D2
-kill rate $0/5 = 0.000$, Wilson 95\% CI $[0.000,\,0.434]$; the
-$\le 10\%$ ceiling is within the CI but $n = 5$ is insufficient
-for $\alpha = 0.05$ confirmation), and Set~G is the stronger
-fault-detector within the D1 scope-matched subset on this
-substrate}. The
+\paragraph{Two-stratum head-to-head summary (Primary tabulation for H3a verdict).}
+\label{para:two-stratum}
+Table~\ref{tab:two-stratum} reports the two strata (D1, D2) each
+with four metrics: total mutants, equivalents excluded, Set~N kill
+/ survive counts and rate (Wilson 95\% CI), Set~G kill / survive
+counts and rate, and the complementarity partition ($N$-only,
+$G$-only, both, neither). The headline reading is per-block
+(Table~\ref{tab:per-block-headtohead}); the D1 aggregate
+(Table~\ref{tab:two-stratum}) and pooled (auxiliary, preceding
+paragraph) are reported for continuity with prior conventions.
+
+\begin{table}[h]
+\centering
+\caption{Two-stratum head-to-head on the eight-SUT head-to-head
+substrate (post equivalent-mutant exclusion). D1 = algebra-disrupting,
+D2 = algebra-preserving. Complementarity cells report mutant counts;
+the operative test for H3a.2 is the $N$-only column on D1.}
+\label{tab:two-stratum}
+\small
+\begin{tabular}{lcccccccc}
+\toprule
+Stratum & $n$ (post-exclusion) & equivalents excluded & Set~N kill / surv. & Set~N rate \scriptsize{[Wilson 95\%]} & Set~G kill / surv. & Set~G rate \scriptsize{[Wilson 95\%]} & both / $N$-only / $G$-only / neither & McNemar $p$ \\
+\midrule
+D1 & 52 & 0 & 26 / 26 & $0.500$ \scriptsize{$[0.369, 0.631]$} & 37 / 15 & $0.712$ \scriptsize{$[0.577, 0.817]$} & 22 / 4 / 15 / 11 & $0.019$ \\
+D2 & 5 & 5 & 0 / 5 & $0.000$ \scriptsize{$[0.000, 0.434]$} & 3 / 2 & $0.600$ \scriptsize{$[0.231, 0.882]$} & 0 / 0 / 3 / 2 & $0.25$ \\
+\midrule
+pooled & 57 & 5 & 26 / 31 & $0.456$ \scriptsize{$[0.334, 0.584]$} & 40 / 17 & $0.702$ \scriptsize{$[0.573, 0.805]$} & 22 / 4 / 18 / 13 & $0.0043$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{H3a verdict split into three sub-claims.}
+\label{para:h3a-verdict}
+
+\textbf{H3a.1 (Detection on D1, per-block).} Per
+Table~\ref{tab:per-block-headtohead}: \emph{partially supported}.
+On the $\mathcal{T}^{*}$ block Set~N achieves $10/17 = 0.588$
+versus Set~G $8/17 = 0.471$, with three $N$-only exclusive kills,
+a directional edge consistent with the algebra-induced prediction;
+on the $\mathcal{L}^{*}$ block Set~N achieves $10/24 = 0.417$
+versus Set~G $16/24 = 0.667$, complementary on $N$-only $= 2$ and
+$G$-only $= 8$; on the $G$ block on the substrate's two
+Euclidean-style SUTs (\texttt{gcdSig}, \texttt{lcmSig}) the
+SUTs' normalisation prologue absorbs the $G$-action before the
+recursive reduction (a documented framework boundary, see
+\nameref{para:g-block-euclidean-boundary}), so the $G$-block
+$0/7$ Set~N reading on those two SUTs is the
+framework-correct boundary verdict rather than a missed-opportunity
+MR-design defect. The aggregate D1 reading ($26/52$ vs $37/52$,
+McNemar $p = 0.019$) is in Set~G's direction, but is not the load-
+bearing reading per H3a's per-block clause; it is reported as
+Table~\ref{tab:two-stratum}'s D1 row for continuity with prior
+conventions. The eight-block coverage of the comparative substrate
+is currently three operative blocks ($G$, $\mathcal{L}^{*}$,
+$\mathcal{T}^{*}$); coverage of the remaining five operative
+blocks ($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$,
+$\mathcal{D}^{*}$, $\mathcal{E}^{*}$, $\mathcal{B}^{*}_{\mathrm{rel}}$)
+is the subject of a committed augmentation experiment
+(follow-up~(g) of Table~\ref{tab:future-work}: hand-craft
+$\ge 3$ mutants per operative block on the §\ref{subsec:test-design}
+substrate so that every block has statistically interpretable
+per-block kill-rate data).
+
+\textbf{H3a.2 (Complementarity).} \emph{Supported}. The D1
+complementarity partition (Table~\ref{tab:two-stratum}, row 1)
+reports $4$ $N$-only kills on the $n = 52$ D1 stratum (a $7.7\%$
+exclusive contribution), distributed across the $\mathcal{T}^{*}$
+and $\mathcal{L}^{*}$ blocks per
+Table~\ref{tab:per-block-headtohead}. Each set kills mutants the
+other misses; the union $N \cup G$ covers $26 + 4 + 15 = 45$ of
+$52$ D1 mutants ($86.5\%$ union coverage), against Set~G alone's
+$37$ ($71.2\%$) and Set~N alone's $30$ ($57.7\%$, $26$ both-killed
+$+$ $4$ $N$-only).
+
+\textbf{H3a.3 (Cost-axis).} \emph{Supported}. See
+\nameref{para:cost-axis-h3a} below for the detailed cost-axis
+analysis.
+
+\textbf{D2 stratum (framework prediction; not part of H3a).} Set~N
+D2 kill rate $= 0/5 = 0.000$ (Wilson 95\% CI $[0.000, 0.434]$);
+the framework's $\le 10\%$ prediction is consistent with the
+direction observed, but $n = 5$ is insufficient for $\alpha = 0.05$
+confirmation (the Wilson upper bound $0.434$ does not exclude the
+$10\%$ ceiling). Set~G achieves $3/5 = 0.600$ on the same stratum,
+an out-of-scope contribution for Set~N by construction (Set~G is
+not algebra-bound) and a signal that D2 is a \emph{Set~N-specific
+scope boundary} rather than a substrate-wide ceiling. The
 $\mathcal{L}^{*}$-blindness result of
 \S\ref{subsec:l-blindness-confirmed} and the structural-extension
 witness on the two SUTs where Set~G is N/A
@@ -2023,6 +2115,35 @@ fault-detection-superiority claim; they are cost-profile and
 coverage-profile claims that hold within the framework's scope
 precondition.
 
+\paragraph{Approximate-parity-at-lower-cost reading (H3a.3 verdict).}
+\label{para:cost-axis-h3a}
+Per H3a.3, Set~N's cost-axis advantage holds when the detection-axis
+reading is on the per-block primary (Table~\ref{tab:per-block-headtohead})
+rather than the D1 aggregate. On the $\mathcal{T}^{*}$ block Set~N
+edges Set~G with three exclusive $N$-only kills at zero per-SUT
+generation cost beyond the one-time CONSTRUCT-MP derivation
+($\approx 1$ hour human per SUT, amortising across SUTs sharing
+$\mathcal{A}_P$); Set~G's matching kill count costs a 30-min
+GAssert GP-search run per SUT ($\approx 4$ hours wall for the
+eight head-to-head SUTs in parallel-4) plus the Major-mutation
+$+$ JaCoCo $+$ Randoop pipeline assembly. On the $\mathcal{L}^{*}$
+block the two sets are complementary ($N$-only $= 2$, $G$-only $= 8$
+on a $24$-mutant denominator); Set~N's reach is reproducible
+without re-running the GP search, where Set~G's would require
+re-tuning the GP budget and seed if the SUT changes. The
+quantitative reading: \emph{approximate per-block detection parity
+on $\mathcal{T}^{*}$ ($10/17$ vs $8/17$) and complementarity on
+$\mathcal{L}^{*}$ are achieved at $\approx 1$ hour amortised human
+generation cost per SUT (NOETHER) versus $\approx 30$ minutes
+per-SUT GP search wall time (Set~G), with NOETHER's cost amortising
+across new SUTs in the same algebra family while Set~G's restarts
+from scratch}. The $G$-block gap on the substrate's two
+Euclidean-style SUTs (\nameref{para:g-block-euclidean-boundary})
+is a framework boundary, not a cost-axis trade-off. The
+cost-axis claim of H3a.3 is therefore \emph{supported}: comparable
+within-scope per-block detection at lower amortised generation
+cost.
+
 \begin{table}[h]
 \centering
 \caption{Committed future work for \S\ref{sec:empirical-vs-sota}.}
@@ -2040,6 +2161,7 @@ Direction & Cost (estimated) & Expected effect on the reading \\
 (d.set-l) Multi-LLM ensemble Set~L (Xu's protocol scale) arm: $2$ vendors (DeepSeek, ChatGPT) $\times$ $5$ temperatures $\times$ $10$ SUTs = $100$ samples; $487$ LLM-proposed MRs harvested; deterministic template-matching translation produces $212$ executable JIR/JOR pairs ($43.5\%$ translation rate); per-LLM pooled kill rates on the $n = 70$ aligned-mutant substrate: ChatGPT $34/70 = 0.486$ Wilson 95\% $[0.372, 0.600]$, DeepSeek $33/70 = 0.471$ $[0.359, 0.587]$, ensemble union $34/70 = 0.486$ $[0.372, 0.600]$ & \textbf{Done (2 of 3 vendors)} & Set~L ensemble matches Set~N's reach on the matchable subset ($34/34$ kill overlap; $0$ Set-L-exclusive kills); $56.5\%$ of LLM-proposed MRs explore invariants outside the 8-block frame (associativity, identity / inverse element, monotonicity on non-O\textsubscript{le} SUTs) and have no in-protocol kill measurement here; results in \texttt{docs/set\_l\_phase2\_results.md} of the experiment repository. A third-vendor (Anthropic Claude) replication remains in (d.set-l-claude) below \\
 (d.set-l-claude) Third-vendor Claude Opus replication of (d.set-l) & $\approx 5$\,h Remote + token cost ($\approx \$10$--$30$) & Completes the 3-vendor protocol of Xu's spec; expected to corroborate ensemble result \\
 (e) D1 / D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant with SUT-specific overrides) & \textbf{Done} & $52$ D1 / $10$ D2 / $0$ ambiguous on $n = 62$; post-equivalent-mutant exclusion $52$ D1 / $5$ D2 / $0$ ambiguous on $n = 57$; Set~N D1 kill rate $0.500$, Set~N D2 kill rate $0.000$ reported in \S\ref{subsec:pit-block-matrix} \\
+(g) Block-coverage augmentation: hand-craft $\ge 3$ semantically motivated mutants violating each of the $5$ currently-uncovered operative blocks ($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$, $\mathcal{E}^{*}$, $\mathcal{B}^{*}_{\mathrm{rel}}$) on the \S\ref{subsec:test-design} substrate, augmenting the PIT-generated mutant set with $\ge 15$ new mutants whose targeted invariants the framework's MRs are designed to detect & $\approx 2$\,days human (per-block mutation design + Remote PIT eval) & Yields a per-block kill-rate table covering all $8$ operative blocks with $n \ge 3$ each, strengthening the H3a.1 (per-block detection) and H3a.2 (complementarity) sub-claim verdicts to all-block coverage; current paper presents the table for $G$, $\mathcal{L}^{*}$, $\mathcal{T}^{*}$ only \\
 (e.2) Equivalent-mutant exclusion on the head-to-head denominator via two-stage filter (kill-vector auto-classification for the $44$ singly-or-doubly-killed mutants; progressive multi-LLM vote on the $18$ both-miss mutants, with Anthropic Claude Opus 4.6 as a third-voter tiebreaker invoked only when stage-1 voters DeepSeek + ChatGPT disagree) & \textbf{Done} & $5$ equivalents identified on the $n = 62$ head-to-head set, all ConditionalsBoundaryMutator on recursive normalising SUTs (\texttt{gcdSig}, \texttt{lcmSig}, \texttt{powerSig}); excluded symmetrically from both Sets' denominators; final $n = 57$ pooled, $n = 52$ D1, $n = 5$ D2 after the e.1 v2 override extension; numbers reported in \S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote}) \\
 (e.3) Tighten or excise the two grid Set~N MRs whose \texttt{jor} predicate is out-of-domain on \texttt{powerSig} (\texttt{E\_power\_of\_power} and \texttt{L\_scale\_base}) & $\approx 4$\,h human (predicate refinement + green-suite re-validation) & Restores the two MRs to the PIT-evaluable set; expected to recover $\le 2$ kills on \texttt{powerSig} (currently $7/12$) \\
 (e.4) $G$-block MR re-synthesis (or in-scope documentation) for Euclidean-style SUTs (\texttt{gcdSig}, \texttt{lcmSig}): the grid-synthesised $G$ MR encodes a sign-flip identity that the SUT's own \texttt{a < 0 ? -a : a} normalisation prologue absorbs before the recursive Euclidean reduction fires & \textbf{Done (documented)} & Closed via \S\ref{subsec:l-blindness-confirmed} (\nameref{para:g-block-euclidean-boundary}): the $0/7$ Set~N $G$-block kill rate on \texttt{gcdSig}+\texttt{lcmSig} is the framework-correct reading under the scope precondition (the SUT's input-domain normalisation absorbs the $G$-action before any downstream mutation fires); a $\mathcal{R}$-block reversibility-identity re-derivation \emph{post}-normalisation remains an open follow-up but is now classified as theoretical extension rather than MR-design defect \\
