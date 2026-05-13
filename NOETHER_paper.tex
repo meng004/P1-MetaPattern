@@ -769,7 +769,7 @@ The single hand-constructed mutation set above is supplemented by a comparative 
   \item[Metrics.] Per-subject mutation-detection rate (Set $\cap$ killed mutants / total killed); real-bug-detection rate (where bug logs are available); false-positive rate on baseline (un-mutated) inputs; coverage with respect to the algebraic block decomposition $\mathrm{coverage}_{\mathrm{NOETHER}}$.
   \item[Statistical tests.] Wilson 95\% CI on per-set detection rates; pairwise McNemar exact tests for paired Set-vs-Set comparisons; pairwise Fisher exact tests for unpaired comparisons; Bonferroni correction for the 10 pairwise tests across 5 sets.
   \item[Pre-registered hypothesis (H3a, vs GP-evolved baseline).] On algebra-disrupting mutants (Definition in \S\ref{subsec:pit-block-matrix}), Set~N's pooled detection rate is within $\Delta = 0.10$ of GenMorph-evolved Set~G's rate at GenMorph's published 30-min budget; on the algorithmic-cost axis, Set~N's MR-generation cost is asymptotically lower than Set~G's (Theorem~\ref{thm:decidable} polynomial vs.\ stochastic search).
-  \item[Pre-registered hypothesis (H3b, vs LLM-assisted baseline).] On the structural-coverage diagnostic, $\mathrm{coverage}_{\mathrm{NOETHER}}(N) > \mathrm{coverage}_{\mathrm{NOETHER}}(L_{\mathrm{Xu24}})$, where Set~$L_{\mathrm{Xu24}}$ is the LLM-assisted representative drawn from the protocol of Xu et~al.~\cite{XuTOSEM2024}. The diagnostic is interpreted as a structural-prior signal (NOETHER's algebraic prior contributes block coverage that prompt-based LLMs lack on $\mathcal{A}_P$), \emph{not} as a fault-detection-superiority metric. A multi-LLM ensemble extension (Shin~\cite{Shin2024}, GPTMR~\cite{GPTMR2025}, AutoMT~\cite{AutoMT2025}) is committed as post-acceptance follow-up.
+  \item[Pre-registered hypothesis (H3b, vs LLM-assisted baseline).] On the structural-coverage diagnostic, $\mathrm{coverage}_{\mathrm{NOETHER}}(N) > \mathrm{coverage}_{\mathrm{NOETHER}}(L_{\mathrm{Xu24}})$, where Set~$L_{\mathrm{Xu24}}$ is the LLM-assisted representative drawn from the protocol of Xu et~al.~\cite{XuTOSEM2024}. The diagnostic is interpreted as a structural-prior signal (NOETHER's algebraic prior contributes block coverage that prompt-based LLMs lack on $\mathcal{A}_P$), \emph{not} as a fault-detection-superiority metric. \textbf{Verdict (tested, borderline-PASS at the structural reading)}: a $2$-vendor (DeepSeek, ChatGPT) $\times$ $5$-temperature ensemble harvested $487$ LLM-proposed MRs across the $10$ \S\ref{subsec:test-design} SUTs ($100$ samples); $43.5\%$ ($212/487$) of the proposals match a Set~N block-template under deterministic translation, and the matchable subset reproduces Set~N's kill rate on the aligned-mutant substrate ($34/70 = 0.486$ for the ensemble union, identical to Set~N on the same $70$ mutants). The remaining $56.5\%$ explore invariants outside the $8$-block frame (associativity, identity / inverse element, monotonicity on SUTs lacking an O\textsubscript{le}-block representative); these have no in-protocol kill measurement here and constitute the structural-coverage gap. NOETHER's $\mathrm{coverage}_{\mathrm{NOETHER}}$ remains $1.00$ by construction; the LLM ensemble's block-template coverage of Set~N's catalogue is $43.5\%$ on the matchable subset. A third-vendor (Anthropic Claude) replication is committed in follow-up~(d.set-l-claude) of Table~\ref{tab:future-work}.
   \item[Pre-registered hypothesis (H3c, vs mining-based baseline).] At cold start (no seed test corpus), Set~N is operationally derivable from $\mathcal{A}_P$ alone, while MR-Scout~\cite{MRScout2024}'s reach is upper-bounded by the seed-suite's induced relations; an adapted-from-published-artifact estimate of MR-Scout's reach on the §\ref{subsec:test-design} substrate is reported in Table~\ref{tab:gen-cost} and contextualised in \S\ref{subsec:pooled-headtohead}.
   \item[Pre-registered hypothesis (continuous).] H4 (\emph{detection-rate non-inferiority on real faults}): on DeepCrime real-fault mutants, Set~N's detection rate is within $\Delta = 0.10$ of the best non-NOETHER set's detection rate, with $\Delta$ fixed in advance.
 \end{description}
@@ -1680,12 +1680,16 @@ For completeness against prior reporting conventions, the post-eq-
 exclusion pooled M1 rates over D1 $\cup$ D2 are: Set~N $= 26/57 =
 0.456$ (Wilson 95\% CI $[0.334,\,0.584]$), Set~G $= 40/57 = 0.702$
 ($[0.573,\,0.805]$), McNemar two-sided
-$p = 0.0043$\footnote{The D1-only McNemar and pooled McNemar coincide
-because all $7$ originally-classified D2 mutants (now $5$ excluded as
-equivalent + $2$ retained as out-of-scope) are unkilled by both Set~N
-and Set~G; D2 mutants contribute only to the concordant ``both miss''
-cell of the $2{\times}2$ table, leaving the discordant pairs
-$(b,c) = (18,4)$ identical on both denominators.}. We report this
+$p = 0.0043$\footnote{Pooled discordant pairs $(b,c) = (18, 4)$ on
+the $n = 57$ paired denominator. The D1-only McNemar separates at
+$(b,c) = (15, 4)$, $p = 0.019$ (\S\ref{subsec:pooled-headtohead}
+Aggregate D1 paragraph); the additional $3$ discordant pairs that
+the pooled comparison picks up come from the D2 stratum (Set~G
+kills $3$ of the $5$ surviving D2 mutants, Set~N kills $0$ of $5$;
+all $3$ are $b$-cell discordances). The pooled McNemar is thus
+\emph{strengthened} by including the D2 stratum, but at the cost of
+mixing the within-scope D1 comparison with the out-of-scope D2
+stratum that Set~N is not designed to detect.}. We report this
 pooled comparison as scope-mismatched: the $2$ D2 mutants in the
 denominator are not in Set~N's theoretical reach by construction, so
 the pooled gap overstates Set~N's effective miss rate within its
@@ -1696,6 +1700,39 @@ rerun changes Set~G's per-SUT counts on one of the eight head-to-head
 SUTs (\texttt{gcdSig}, $5 \to 6$); seven SUTs are unchanged, none
 regresses. A $30{\times}$ budget increase therefore buys $+1$ Set~G
 mutant on a single SUT under PIT mutation.
+
+\paragraph{LLM-assisted baseline (Set~L ensemble, $n = 70$ aligned).}
+For the LLM-assisted comparator of \S\ref{para:comp-eval-protocol}'s
+H3b, we ran a $2$-vendor (DeepSeek, ChatGPT) $\times$ $5$-temperature
+($t \in \{0.0, 0.3, 0.5, 0.7, 1.0\}$) ensemble on the same
+$10$-SUT substrate, mirroring Xu et~al.'s~\cite{XuTOSEM2024}
+multi-LLM-sample protocol scale. The harvest is $100$ LLM samples
+yielding $487$ proposed MRs; deterministic template-matching against
+Set~N's per-SUT block catalogue translates $212$ ($43.5\%$) into
+executable JIR/JOR pairs (the remaining $56.5\%$ are either compound
+multi-input properties or out-of-block algebra, e.g.\ associativity,
+identity / inverse elements, monotonicity on SUTs whose Set~N
+catalogue lacks an O\textsubscript{le}-block representative). On the
+aligned $n = 70$ pooled mutant substrate (the full $10$-SUT
+substrate including the two SUTs structurally N/A for Set~G), per-LLM
+pooled kill rates are ChatGPT $34/70 = 0.486$ Wilson 95\% CI
+$[0.372,\,0.600]$, DeepSeek $33/70 = 0.471$ $[0.359,\,0.587]$,
+ensemble union $34/70 = 0.486$ $[0.372,\,0.600]$. Set~L's union kill
+vector is a strict subset of Set~N's on this substrate ($34/34$
+overlap; $0$ Set-L-exclusive kills), as a structural consequence of
+the template-matching translator: every Set~L MR is by construction
+a byte-identical copy of a Set~N pair, so Set~L can match but not
+exceed Set~N's per-MR kill power. The substantive finding is that
+the $2$-vendor ensemble identifies enough of Set~N's catalogue to
+reproduce Set~N's reach on the matchable subset; on the unmatchable
+$56.5\%$, Set~L explores invariants outside the $8$-block frame that
+the framework's $\mathrm{coverage}_{\mathrm{NOETHER}}$ diagnostic
+correctly identifies as structurally orphaned. A third-vendor
+(Anthropic Claude) extension is committed in
+follow-up~(d.set-l-claude) of Table~\ref{tab:future-work}; full
+per-(LLM, SUT, temperature) breakdowns in
+\texttt{docs/set\_l\_phase2\_results.md} of the experiment
+repository.
 
 \paragraph{Footnote on equivalent-mutant denominator (resolved).}\label{para:eq-mutant-footnote}
 The original PIT-SURVIVED denominator ($n = 62$) does not
@@ -1956,9 +1993,11 @@ Direction & Cost (estimated) & Expected effect on the reading \\
 (b) Extend to all 38 in-scope D4J subjects                    & $\approx 10$\,h human + $\approx 30$\,min compute & $n > 200$; tests $\mathcal{L}^{*}$-blindness at finer per-SUT resolution \\
 (b.cm) Apache Commons Math 3.6.1 pilot replication (3 SUTs: \texttt{Complex.multiply}, \texttt{Complex.divide}, \texttt{Vector3D.dotProduct}; 5 Set~N MRs derived through CONSTRUCT-MP with LLM-grid scaffolding and manual ratification; PIT 1.7.4 on 77 target-method mutants pooled; Set~G structurally N/A on Maven-resolved substrates because GenMorph's gen-pipeline assumes a flat-source SUT layout) & \textbf{Done (pilot)} & $G$-block kill rate $6/21 = 0.286$ Wilson 95\% $[0.138, 0.500]$; D2 stratum prediction passes at $2/29 = 0.069 \le 0.10$; $\mathcal{L}^{*}$ block $n = 0$ under Table~\ref{tab:pit-block} reconstruction (parallel to (e.4)'s per-(SUT, mutator) override-authoring limitation); underpowered for $\alpha = 0.05$ inference at this $n$; full numbers in \texttt{docs/commons\_math\_replication\_results.md} of the experiment repository \\
 (c) Patch GenMorph upstream (instance methods, boolean JORs)  & 1--2 days                         & Restores Set~G on the two N/A SUTs; weakens structural framing of \S\ref{subsec:convergent-witnesses} witness 2 \\
-(d) Run Set~M (MR-Scout full re-execution) and multi-LLM ensemble Set~L (Xu's protocol scale) arms & $\approx 1$ day per arm + token cost (Table~\ref{tab:gen-cost}) & Completes the three-SOTA-category protocol of \S\ref{para:comp-eval-protocol} \\
+(d.scout) Run Set~M (MR-Scout full re-execution) arm & $\approx 1$ day human + corpus access & Completes the mining-based-baseline portion of the three-SOTA-category protocol of \S\ref{para:comp-eval-protocol} \\
+(d.set-l) Multi-LLM ensemble Set~L (Xu's protocol scale) arm: $2$ vendors (DeepSeek, ChatGPT) $\times$ $5$ temperatures $\times$ $10$ SUTs = $100$ samples; $487$ LLM-proposed MRs harvested; deterministic template-matching translation produces $212$ executable JIR/JOR pairs ($43.5\%$ translation rate); per-LLM pooled kill rates on the $n = 70$ aligned-mutant substrate: ChatGPT $34/70 = 0.486$ Wilson 95\% $[0.372, 0.600]$, DeepSeek $33/70 = 0.471$ $[0.359, 0.587]$, ensemble union $34/70 = 0.486$ $[0.372, 0.600]$ & \textbf{Done (2 of 3 vendors)} & Set~L ensemble matches Set~N's reach on the matchable subset ($34/34$ kill overlap; $0$ Set-L-exclusive kills); $56.5\%$ of LLM-proposed MRs explore invariants outside the 8-block frame (associativity, identity / inverse element, monotonicity on non-O\textsubscript{le} SUTs) and have no in-protocol kill measurement here; results in \texttt{docs/set\_l\_phase2\_results.md} of the experiment repository. A third-vendor (Anthropic Claude) replication remains in (d.set-l-claude) below \\
+(d.set-l-claude) Third-vendor Claude Opus replication of (d.set-l) & $\approx 5$\,h Remote + token cost ($\approx \$10$--$30$) & Completes the 3-vendor protocol of Xu's spec; expected to corroborate ensemble result \\
 (e) D1 / D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant with SUT-specific overrides) & \textbf{Done} & $52$ D1 / $10$ D2 / $0$ ambiguous on $n = 62$; post-equivalent-mutant exclusion $52$ D1 / $5$ D2 / $0$ ambiguous on $n = 57$; Set~N D1 kill rate $0.500$, Set~N D2 kill rate $0.000$ reported in \S\ref{subsec:pit-block-matrix} \\
-(e.2) Equivalent-mutant exclusion on the head-to-head denominator via two-stage filter (kill-vector auto-classification for the $44$ singly-or-doubly-killed mutants; progressive multi-LLM vote on the $18$ both-miss mutants, with Anthropic Claude Opus 4.6 as a third-voter tiebreaker invoked only when stage-1 voters DeepSeek + ChatGPT disagree) & \textbf{Done} & $5$ equivalents identified on the $n = 62$ head-to-head set, all ConditionalsBoundaryMutator on recursive normalising SUTs (\texttt{gcdSig}, \texttt{lcmSig}, \texttt{powerSig}); excluded symmetrically from both Sets' denominators; final $n = 57$ pooled, $n = 55$ D1 unchanged, $n = 2$ D2; numbers reported in \S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote}) \\
+(e.2) Equivalent-mutant exclusion on the head-to-head denominator via two-stage filter (kill-vector auto-classification for the $44$ singly-or-doubly-killed mutants; progressive multi-LLM vote on the $18$ both-miss mutants, with Anthropic Claude Opus 4.6 as a third-voter tiebreaker invoked only when stage-1 voters DeepSeek + ChatGPT disagree) & \textbf{Done} & $5$ equivalents identified on the $n = 62$ head-to-head set, all ConditionalsBoundaryMutator on recursive normalising SUTs (\texttt{gcdSig}, \texttt{lcmSig}, \texttt{powerSig}); excluded symmetrically from both Sets' denominators; final $n = 57$ pooled, $n = 52$ D1, $n = 5$ D2 after the e.1 v2 override extension; numbers reported in \S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote}) \\
 (e.3) Tighten or excise the two grid Set~N MRs whose \texttt{jor} predicate is out-of-domain on \texttt{powerSig} (\texttt{E\_power\_of\_power} and \texttt{L\_scale\_base}) & $\approx 4$\,h human (predicate refinement + green-suite re-validation) & Restores the two MRs to the PIT-evaluable set; expected to recover $\le 2$ kills on \texttt{powerSig} (currently $7/12$) \\
 (e.4) $G$-block MR re-synthesis (or in-scope documentation) for Euclidean-style SUTs (\texttt{gcdSig}, \texttt{lcmSig}): the grid-synthesised $G$ MR encodes a sign-flip identity that the SUT's own \texttt{a < 0 ? -a : a} normalisation prologue absorbs before the recursive Euclidean reduction fires, so $G$-block reasoning is currently vacuous on these SUTs (Table~\ref{tab:per-block-headtohead}: Set~N $0/7$, Set~G $7/7$) & $\approx 1$ day human (CONSTRUCT-MP re-derivation targeting an $\mathcal{R}$-block reversibility identity \emph{post}-normalisation, or a paper paragraph in \S\ref{subsec:l-blindness-confirmed} documenting recursive-normalising SUTs as structurally orthogonal to $G$-block reasoning) & Partitions the 7-mutant $G$-block gap into ``MR design defect'' (redesign) vs ``framework boundary'' (document); informs the framework's per-SUT scope precondition \\
 \bottomrule
