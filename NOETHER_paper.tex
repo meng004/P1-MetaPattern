@@ -75,7 +75,7 @@ Metamorphic Testing (MT) is recognised in IEEE/ISO software-testing standards an
 
 This paper introduces \textbf{NOETHER}, a two-layer framework for MetaPattern discovery. The \emph{downstream layer} is mechanical and provable: given an operator-algebra block decomposition, the \texttt{CONSTRUCT-MP} algorithm produces a MetaPattern set with an algebraic-closure guarantee under the framework's \texttt{Translate} operator (Theorem~1) and polynomial-time decidability under a finite generating set (Theorem~2); absolute completeness over arbitrary properties expressible in the operator algebra is identified as an open conjecture. The \emph{upstream layer} is a curated eight-block decomposition over recurrent mathematical structures (symmetry, order, self-adjoint, time-reversal, limit, qualitative-dynamics, method-comparison, and relational equivalence), stated as an explicit empirical hypothesis with a documented out-of-scope catalogue rather than as an axiom.
 
-The framework's scope precondition is that the program family under test admits an explicit operator-algebraic description through mathematical or physical equations; programs lacking such structure are out of scope by construction. Within this scope, we instantiate NOETHER on three structurally distinct domains: a Boltzmann reactor-physics transport solver, where the framework systematises a prior inductive catalogue and re-classifies further equivalence classes; equivariant machine learning, where executable MRs are derived for rotation invariance, adjoint duality, and training-trajectory reversibility; and relational query optimisers, whose idempotent-semiring algebra exercises the relational-equivalence block. Structural-coverage predictions are consistent with the data within each case-study scope; comparative evaluation against three SOTA representatives (a GP-evolved baseline, an LLM-assisted baseline, and a mining-based baseline) is reported alongside an algebra-aligned metric framework that distinguishes algebra-disrupting from algebra-preserving mutants and an MR-generation cost matrix; a head-to-head superiority claim is not asserted. A negative instantiation on the PWR core diffusion algebra falsifies the absolute-completeness conjecture (Theorem~$1'$) via two independent counterexamples that identify five pairwise-independent extensions of the framework's \texttt{Translate} operator; companion structural-obstruction surveys on the equivariant-ML and relational-query algebras identify five additional candidate extensions, yielding ten pairwise-independent extensions across the three algebras as the principal locus of follow-up work. NOETHER lifts induction from per-program MR sampling to a stable per-domain algebraic layer and makes the downstream step deductive and mechanical without eliminating induction at the upstream layer.
+The framework's scope precondition is that the program family under test admits an explicit operator-algebraic description through mathematical or physical equations; programs lacking such structure are out of scope by construction. Within this scope, we instantiate NOETHER on three structurally distinct domains: a Boltzmann reactor-physics transport solver, where the framework systematises a prior inductive catalogue and re-classifies further equivalence classes; equivariant machine learning, where executable MRs are derived for rotation invariance, adjoint duality, and training-trajectory reversibility; and relational query optimisers, whose idempotent-semiring algebra exercises the relational-equivalence block. Structural-coverage predictions are consistent with the data within each case-study scope; the framework's central falsifiable prediction (an $\mathcal{L}^{*}$-blindness pattern on homogeneity-preserving mutators, ex-ante derivable from the algebra and the PIT mutator specification) is observed on five of six SUTs admitting an $L_{\mathrm{scale}}$ MR on the comparative substrate. Comparative evaluation against three SOTA representatives (a GP-evolved baseline, an LLM-assisted baseline, and a mining-based baseline) is reported alongside an algebra-aligned metric framework that distinguishes algebra-disrupting from algebra-preserving mutants and an MR-generation cost matrix; on the scope-matched D1 stratum, Set~N is dominated by the GP-evolved baseline (a head-to-head superiority claim is not asserted), and the framework's contribution is read as algebraic derivability, per-block complementarity, and an out-of-scope D2-stratum boundary that no inductive baseline can derive ex-ante. A negative instantiation on the PWR core diffusion algebra falsifies the absolute-completeness conjecture (Theorem~$1'$) via two independent counterexamples that identify five pairwise-independent extensions of the framework's \texttt{Translate} operator; companion structural-obstruction surveys on the equivariant-ML and relational-query algebras identify five additional candidate extensions, yielding ten pairwise-independent extensions across the three algebras as the principal locus of follow-up work. NOETHER lifts induction from per-program MR sampling to a stable per-domain algebraic layer and makes the downstream step deductive and mechanical without eliminating induction at the upstream layer.
 \end{abstract}
 
 %% CCS Concepts
@@ -133,7 +133,7 @@ We make four contributions.
   \item \textbf{C1.} We introduce NOETHER, a \emph{two-layer} framework for MetaPattern discovery that combines an empirically curated eight-block decomposition (Hypothesis~\ref{hyp:seven-blocks}; upstream layer) with a constructive algorithm for deriving MetaPatterns from a program-induced operator algebra (downstream layer).
   \item \textbf{C2.} We prove an Algebraic Closure Theorem (Theorem~1) for the constructed set: given the eight-block decomposition, the resulting MetaPattern set is closed over the algebra-induced MR space under the framework's \texttt{Translate} operator. We also establish polynomial-time decidability when the algebra admits a finite generating set (Theorem~2). We further establish that the strictly stronger statement of absolute completeness over arbitrary properties expressible in $\mathcal{A}_P$ (Theorem~1$'$ / Conjecture~\ref{conj:absolute}) is false on the PWR core diffusion algebra $\mathcal{A}_{\mathrm{PWR}}$: two specific MRs from the standard PWR safety-analysis literature (non-additivity of rod-bank reactivity worth, and second-order mixed dependence of $k_{\mathrm{eff}}$ on moderator temperature and boron concentration) are formulable over $\mathcal{A}_{\mathrm{PWR}}$ but not in $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$ (\S\ref{subsec:negative-pwr}, Appendix~\ref{app:negative-proofs}). The two MRs identify five pairwise-independent structural obstructions in \texttt{Translate}'s signature (operator-spectrum output, homomorphism-failure $\pi$-template, configuration-indexed adjoint structure, higher-order mixed-difference templates, two-direction joint parametric dependence) as the principal open problem for follow-up work. Companion structural-obstruction surveys on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}; \texttt{theory/equi\_thm1prime\_search.md}, \texttt{theory/rel\_thm1prime\_search.md}, \texttt{theory/translate\_extensions.md}) identify five additional candidate extensions, bringing the count to ten pairwise-independent \texttt{Translate}-extension dimensions across the three algebras. The scope of each result is stated explicitly in Section~\ref{subsec:completeness}.
   \item \textbf{C3.} We instantiate NOETHER on a real-world program family and show how it \emph{systematises and re-classifies} previously catalogued patterns. The framework reproduces three prior MetaPatterns, refines two on a sounder algebraic basis, and includes a deflationary correction direction (revealing that the inductive grid was \emph{over-counted} on some sub-families and \emph{under-counted} by the absence of $m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$). The two structurally distinct re-classified equivalence classes are not de novo discoveries; domain experts could have written them down. NOETHER's contribution is the algebraic warrant for treating them as separate MetaPatterns within a uniform structure. The deflationary direction is non-circular relative to the prediction caveat of \S\ref{subsec:reactor-mapping}: \S\ref{subsec:pmcm-worked} demonstrates it on three independent test cases (a sorting library; Murphy et al.\ 2008's six-class ML categorisation~\cite{Murphy2008} re-decoded against a feedforward classifier algebra; the prior reactor-physics catalogue itself), without invoking $T^{*}$ or $\mathcal{T}^{*}$ structure that was curated from reactor physics.
-  \item \textbf{C4.} We demonstrate cross-domain transferability \emph{within the framework's scope precondition} (programs admitting an explicit operator-algebraic description) by instantiating NOETHER on three structurally distinct domains: Boltzmann reactor-physics transport, equivariant machine learning (Section~\ref{sec:cross-domain}), and relational query optimisers (Section~\ref{subsec:third-domain}), the last exercising the relational-equivalence block whose algebraic skeleton differs from the Lie-group / self-adjoint / time-reversal core. On a small-scale comparative case study and a DeepCrime-style real-fault pilot ($n=5$, underpowered for $\alpha=0.05$ inferential conclusions), the framework's structural-coverage prediction is consistent with the data within case-study scope; the case study's category-(iv) detection contrast exhibits construct validity of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe rather than averaged superiority, since the mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$. A larger comparative evaluation against three SOTA representatives (one per category: GP-evolved, LLM-assisted, mining-based) is reported as a pre-registered protocol.
+  \item \textbf{C4.} We demonstrate cross-domain transferability \emph{within the framework's scope precondition} (programs admitting an explicit operator-algebraic description) by instantiating NOETHER on three structurally distinct domains: Boltzmann reactor-physics transport, equivariant machine learning (Section~\ref{sec:cross-domain}), and relational query optimisers (Section~\ref{subsec:third-domain}), the last exercising the relational-equivalence block whose algebraic skeleton differs from the Lie-group / self-adjoint / time-reversal core. On a small-scale comparative case study, a DeepCrime-style real-fault pilot ($n=5$, underpowered for $\alpha=0.05$ inferential conclusions), and a cross-codebase pilot replication on Apache Commons Math ($n=3$ SUTs, $5$ Set~N MRs, $77$ target-method PIT mutants, Set~G structurally N/A on Maven-resolved substrates and reported as derivability~+~per-block-reach pilot rather than head-to-head replication), the framework's structural-coverage prediction is consistent with the data within case-study scope; the case study's category-(iv) detection contrast exhibits construct validity of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe rather than averaged superiority, since the mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$. A larger comparative evaluation against three SOTA representatives (one per category: GP-evolved, LLM-assisted, mining-based) is reported as a pre-registered protocol.
 \end{itemize}
 
 \paragraph{Scope of contribution.} This is a theoretical paper, and its contribution is systematisation rather than deduction from first principles. The eight blocks are curated by inspecting mathematical structures that recur across the program families we have studied; they are not derived from an algebraic axiom. The framework therefore has two layers: an \emph{upstream layer} (curating $\mathcal{A}_P$ and its block decomposition) that remains empirical and human, and a \emph{downstream layer} (mechanically deriving $\mathbb{M}(\mathcal{A}_P)$ from $\mathcal{A}_P$) that is algorithmic and provable. We do not claim to have eliminated induction from MetaPattern discovery. We move induction one level up, from ``what MetaPatterns recur in observed MR samples?'' to ``what algebraic structures recur in the program families practitioners care about?'', and make the downstream step mechanical. The engineering payoff of this re-grounding awaits empirical follow-up work; comparative evaluation against existing automated MR-identification pipelines is reported as a protocol in Section~\ref{subsec:case-study} and constitutes part of the framework's resubmission obligations.
@@ -1786,8 +1786,10 @@ LLM-flagged equivalents fall entirely within the algebra-preserving
 $T^{*}$ in Table~\ref{tab:per-block-headtohead}) are therefore
 unaffected by exclusion. The eq-excluded denominator $n = 62 - 5 =
 57$ governs the auxiliary pooled M1 in the preceding paragraph; the
-post-exclusion D2 stratum ($n = 2$) governs the framework prediction
-above. Methodological note: the progressive 2+1 voting scheme is
+post-exclusion D2 stratum ($n = 5$, after the ISSUE-010~(e.1)~v2
+override extension reclassified $3$ \texttt{PrimitiveReturnsMutator}
+mutants from D1 to D2 on \texttt{gcdSig} / \texttt{hypotSig} /
+\texttt{lcmSig}) governs the framework prediction above. Methodological note: the progressive 2+1 voting scheme is
 calibrated against the manual analyst session of the pilot
 (\S\ref{subsec:l-blindness-confirmed} footnote); convergence on the
 single pilot-vs-LLM disagreement case (\texttt{lcmSig::CB::81}) was
@@ -1808,13 +1810,21 @@ declaration as empirically discriminating.
 
 We do \emph{not} claim Set~N $>$ Set~G on the scope-matched D1
 head-to-head. The D1 gap is in the direction of Set~G; the exact
-McNemar two-sided test on the D1 stratum yields $p = 0.0043$
-($\alpha = 0.05$ threshold crossed at the published 30-min budget),
-and the pooled comparison concurs. The supported reading is
-\emph{the framework's D2 falsifiability prediction holds (Set~N kill
-rate on the algebra-preserving stratum is $0/7$, within the
-$\le 10\%$ ceiling), and Set~G is the stronger fault-detector within
-the D1 scope-matched subset on this substrate}. The
+McNemar two-sided test on the D1 stratum (post eq-exclusion, $n =
+52$) yields $p = 0.019$ ($\alpha = 0.05$ threshold crossed at the
+published 30-min budget); the pooled $n = 57$ comparison yields
+$p = 0.0043$, but the pooled gap is strengthened by Set~G's $3/5$
+on the D2 stratum, an out-of-scope contribution for Set~N by
+construction. \textbf{H3a (scope-matched D1 non-inferiority,
+pre-registered $\Delta = 0.10$) is not supported}: the observed
+D1 gap is $0.712 - 0.500 = 0.212$, exceeding $\Delta$ by a factor
+of $2.1\times$. The supported reading is \emph{the framework's D2
+falsifiability prediction is consistent with the data (Set~N D2
+kill rate $0/5 = 0.000$, Wilson 95\% CI $[0.000,\,0.434]$; the
+$\le 10\%$ ceiling is within the CI but $n = 5$ is insufficient
+for $\alpha = 0.05$ confirmation), and Set~G is the stronger
+fault-detector within the D1 scope-matched subset on this
+substrate}. The
 $\mathcal{L}^{*}$-blindness result of
 \S\ref{subsec:l-blindness-confirmed} and the structural-extension
 witness on the two SUTs where Set~G is N/A
@@ -1855,10 +1865,13 @@ correction for the $8 \times 2 = 16$ paired comparisons across the
 two budgets, the per-SUT family-wise threshold is $\alpha/16 \approx
 0.003$, which no per-SUT contrast meets. The two paired hypothesis
 tests reported on this substrate are the scope-matched D1 McNemar
-($p = 0.0043$ at the 30-min budget, exact two-sided) and its
-auxiliary pooled counterpart ($p = 0.0043$ identically, since the
-$7$ D2 mutants are concordant ``both miss'' in the $2{\times}2$
-McNemar table).
+($p = 0.019$ at the 30-min budget, exact two-sided, $n = 52$ post
+eq-exclusion, discordant pairs $(b, c) = (15, 4)$) and its
+auxiliary pooled counterpart ($p = 0.0043$ at $n = 57$, discordant
+$(b, c) = (18, 4)$). The pooled gap is strengthened by Set~G's
+$3/5$ kills on the D2 stratum, an out-of-scope contribution
+for Set~N by construction, which is why pooled and D1-stratified
+$p$ values now differ.
 
 \subsection{Threats to validity and committed future work}
 \label{subsec:empirical-threats}
@@ -2073,10 +2086,14 @@ The corroborating evidence is fourfold:
         ($9/11$ vs $2/11$) because the substrate's two Euclidean-
         style SUTs absorb the sign-flip invariant in their
         normalisation prologue (Table~\ref{tab:per-block-headtohead},
-        Set~N $0/7$ on \texttt{gcdSig}~+~\texttt{lcmSig}). The
+        Set~N $0/7$ on \texttt{gcdSig}~+~\texttt{lcmSig}, a $G$-block
+        reading on D1 mutants, not the D2 prediction). The
         framework's falsifiable D2 prediction
-        ($\mathrm{kill\;rate} \le 10\%$) holds (Set~N $= 0/7$); the
-        per-block reading is the appropriate substrate-level
+        ($\mathrm{kill\;rate} \le 10\%$) is consistent with the data
+        (Set~N D2 kill rate $0/5 = 0.000$, Wilson 95\% CI
+        $[0.000,\,0.434]$; $n = 5$ is insufficient for $\alpha = 0.05$
+        confirmation, but the observed direction is on-prediction);
+        the per-block reading is the appropriate substrate-level
         contribution metric.
 \end{itemize}
 
@@ -2285,10 +2302,10 @@ $\Sigma_t(E)\,\phi(E) = \int_{E}^{E/\alpha} \frac{\Sigma_s(E')\,\phi(E')}{(1-\al
 Across the four equations, NOETHER consistently produces MetaPattern sets drawn from the seven labels. No new label is required, and no expected label is missing under the algebraic structure each equation possesses. The systematic absences predicted by the framework are confirmed across the appendix's instantiations.
 
 %% Appendix B: per-MR source provenance for Table 3
-\section{Per-MR source provenance for the 12 representative MRs of Table~\ref{tab:elementwise}}
+\section{Per-MR source provenance for the representative MRs of Table~\ref{tab:elementwise}}
 \label{app:per-mr}
 
-This appendix makes the §\ref{subsec:reactor-mapping} claims of \emph{refinement} and \emph{prediction} auditable from textbook reactor-physics literature alone. For each of the 12 representative MRs in Table~\ref{tab:elementwise}, we list the source equation, the \texttt{Translate} template invoked, and the canonical block assignment, with citations to the original textbook or research-literature source where each MR's underlying physics is documented.
+This appendix makes the §\ref{subsec:reactor-mapping} claims of \emph{refinement} and \emph{prediction} auditable from textbook reactor-physics literature alone. For each of the 12 representative MRs in Table~\ref{tab:elementwise} (plus one supplementary $G$-block item, reflective-boundary symmetry, listed below as item~(iii) and provided as additional context not in the headline table), we list the source equation, the \texttt{Translate} template invoked, and the canonical block assignment, with citations to the original textbook or research-literature source where each MR's underlying physics is documented.
 
 \subsection*{B.1 Source equations and block assignments}
 
