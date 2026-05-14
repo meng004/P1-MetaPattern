@@ -1631,12 +1631,12 @@ $\mathcal{T}^{*}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\
 \midrule
 \textit{$O_{\le}$ (augmented)}                                  & 5 & 5 & $1.000$ $[0.566,\,1.000]$ & 3 & $0.600$ $[0.231,\,0.882]$ & 3 & 2 & 0 & 0 \\
 \textit{$\mathcal{T}^{*}_{\mathrm{rev}}$ (augmented)}           & 5 & 5 & $1.000$ $[0.566,\,1.000]$ & 0 & $0.000$ $[0.000,\,0.434]$ & 0 & 5 & 0 & 0 \\
-\textit{$\mathcal{D}^{*}$ (augmented)}                          & 5 & 4 & $0.800$ $[0.376,\,0.964]$ & 4 & $0.800$ $[0.376,\,0.964]$ & 4 & 0 & 0 & 1 \\
+\textit{$\mathcal{D}^{*}$ (augmented)}                          & 5 & 5 & $1.000$ $[0.566,\,1.000]$ & 4 & $0.800$ $[0.376,\,0.964]$ & 4 & 1 & 0 & 0 \\
 \textit{$\mathcal{E}^{*}$ (augmented)}                          & 5 & 5 & $1.000$ $[0.566,\,1.000]$ & 5 & $1.000$ $[0.566,\,1.000]$ & 5 & 0 & 0 & 0 \\
-\textit{$\mathcal{B}^{*}_{\mathrm{rel}}$ (augmented)}           & 5 & 4 & $0.800$ $[0.376,\,0.964]$ & 0 & $0.000$ $[0.000,\,0.434]$ & 0 & 4 & 0 & 1 \\
+\textit{$\mathcal{B}^{*}_{\mathrm{rel}}$ (augmented)}           & 5 & 5 & $1.000$ $[0.566,\,1.000]$ & 0 & $0.000$ $[0.000,\,0.434]$ & 0 & 5 & 0 & 0 \\
 \midrule
 \textit{D1 aggregate, PIT-covered blocks (secondary)}            & 52 & 26 & $0.500$ $[0.369,\,0.631]$ & 37 & $0.712$ $[0.577,\,0.817]$ & 22 & 4 & 15 & 11 \\
-\textit{Augmented stratum aggregate (secondary)}                 & 25 & 23 & $0.920$ $[0.750,\,0.978]$ & 12 & $0.480$ $[0.300,\,0.665]$ & 12 & 11 & 0 & 2 \\
+\textit{Augmented stratum aggregate (secondary)}                 & 25 & 25 & $1.000$ $[0.867,\,1.000]$ & 12 & $0.480$ $[0.300,\,0.665]$ & 12 & 13 & 0 & 0 \\
 \textit{unmapped (lower-bound caveat)}                           & 25 & --- & --- & --- & --- & --- & --- & --- & --- \\
 \bottomrule
 \end{tabular}
@@ -1713,9 +1713,9 @@ $5$-block-coverage rationale are all reproducible artefacts in the
 experiment repository's commit \texttt{c2030d9}; evaluation results
 in commit \texttt{2712564}).
 
-On the augmented stratum, Set~N reaches $23/25 = 0.920$ (Wilson 95\%
-CI $[0.750,\,0.978]$) and Set~G $12/25 = 0.480$ ($[0.300,\,0.665]$),
-with $11$ Set-$N$-exclusive kills and $0$ Set-$G$-exclusive
+On the augmented stratum, Set~N reaches $25/25 = 1.000$ (Wilson 95\%
+CI $[0.867,\,1.000]$) and Set~G $12/25 = 0.480$ ($[0.300,\,0.665]$),
+with $13$ Set-$N$-exclusive kills and $0$ Set-$G$-exclusive
 kills (Table~\ref{tab:per-block-headtohead}). The per-block
 breakdown reads as follows:
 
@@ -1725,54 +1725,38 @@ Set~N strictly better.
 \item $\mathcal{T}^{*}_{\mathrm{rev}}$ ($n = 5$): Set~N $5/5$, Set~G
 $0/5$; the $5$ Set-$N$-only kills reflect Set~G's absence of an
 \texttt{isSequence} MR at the 30-min GP search budget.
-\item $\mathcal{D}^{*}$ ($n = 5$): Set~N $4/5 = 0.800$, Set~G
-$4/5 = 0.800$; tied.
+\item $\mathcal{D}^{*}$ ($n = 5$): Set~N $5/5 = 1.000$, Set~G
+$4/5 = 0.800$; Set~N strictly better.
 \item $\mathcal{E}^{*}$ ($n = 5$): Set~N $5/5$, Set~G $5/5$; tied.
-\item $\mathcal{B}^{*}_{\mathrm{rel}}$ ($n = 5$): Set~N $4/5 = 0.800$,
-Set~G $0/5$; the $4$ Set-$N$-only kills again reflect Set~G's
+\item $\mathcal{B}^{*}_{\mathrm{rel}}$ ($n = 5$): Set~N $5/5 = 1.000$,
+Set~G $0/5$; the $5$ Set-$N$-only kills again reflect Set~G's
 \texttt{isSequence}-coverage absence at the 30-min budget.
 \end{itemize}
 
-\noindent Two methodological observations:
-(i)~for the $6$ clamp / signum mutants tagged $O_{\le}$ or
-$\mathcal{D}^{*}$, the block-targeted MR (\texttt{O\_le\_mono\_in\_x},
-\texttt{O\_le\_monotone}, \texttt{D\_reciprocal}) reported $0$
-failing tests under the seed-11 input grid; the kills came through
-adjacent Set~N MRs (\texttt{G\_negate\_bound\_swap},
-\texttt{L\_scale}, \texttt{G\_negate}) whose
-\texttt{jir}/\texttt{jor} templates are sensitive to the
-perturbation under that grid.\footnote{The Set N catalogue covers
+\noindent Methodological observation: for the clamp / signum
+mutants tagged $O_{\le}$ on positions where the block-targeted MR's
+\texttt{jir}/\texttt{jor} template happens to be insensitive to
+the perturbation under the existing input grid, adjacent Set~N MRs
+(\texttt{G\_negate\_bound\_swap}, \texttt{L\_scale}, \texttt{G\_negate})
+catch the mutation instead.\footnote{The Set N catalogue covers
 several adjacent blocks for each SUT; per-block kill accounting is
 ``killed by any Set~N MR'' (Definition~A in the methodology rule of
 \texttt{docs/d1d2\_methodology.md} \S4 of the experiment repository),
 so non-targeted Set~N MRs catching a block-tagged mutant counts
 toward that block's Set~N kill column. The targeted-MR-specificity
 question is a separate observation; we report it here for
-transparency. Two mutants are jointly missed by all MRs and recorded
-as ``neither'' on the augmented stratum: \texttt{signum\_M14}
-(magnitude-dependent sign on the positive half; misses because
-seed-11 inputs rarely span the $|x| < 1$ vs $|x| > 1$ boundary) and
-\texttt{isSequence\_M21} ((a == b) || (b == c); misses because
-seed-11 doubles rarely produce equal adjacent pairs). Both are
-input-coverage limitations of the existing seed grid, not
-MR-template gaps.}
-(ii)~The Set~N MR \texttt{E\_power\_of\_power} produced no surefire
-report on the $8$ \texttt{powerSig} augmented mutants because the
-pre-existing codegen of \texttt{\_setn\_codegen.py} forward-references
-the source-call output \texttt{o\_return\_s} in the follow-up-input
-declaration \texttt{i\_base\_f}, producing a Java compile error.
-The $\mathcal{E}^{*}$ block kill rate is unaffected ($5/5$ via the
-other four \texttt{powerSig} Set~N MRs: \texttt{D\_reciprocal\_exp},
-\texttt{L\_scale\_base}, \texttt{T\_exp\_step}, \texttt{G\_odd\_negate});
-the codegen forward-reference is tracked as a separate follow-up.
+transparency.}
 
 \paragraph{What the per-block reading supports, and what it does not.}
 The framework's empirical contribution on the present substrate is
 \emph{block-dependent}. On the five hand-crafted blocks
 ($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$,
 $\mathcal{E}^{*}$, $\mathcal{B}^{*}_{\mathrm{rel}}$) Set~N is
-$\ge$ Set~G on every block and strictly better on three of five
-($0.920$ overall vs $0.480$; non-overlapping Wilson 95\% intervals).
+$\ge$ Set~G on every block, strictly better on four of five
+($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$,
+$\mathcal{B}^{*}_{\mathrm{rel}}$), tied on $\mathcal{E}^{*}$,
+yielding $1.000$ overall vs $0.480$ (non-overlapping Wilson 95\%
+intervals; $13$ Set-$N$-exclusive kills, $0$ Set-$G$-exclusive).
 On the three PIT-covered blocks the reading is targeted per-block:
 $\mathcal{T}^{*}$ shows the design's directional advantage and
 complementarity; $\mathcal{L}^{*}$ shows complementarity in both
@@ -1966,13 +1950,13 @@ pooled & 57 & 5 & 26 / 31 & $0.456$ \scriptsize{$[0.334, 0.584]$} & 40 / 17 & $0
 Table~\ref{tab:per-block-headtohead}: \emph{supported on the
 augmented stratum; mixed on the PIT-covered three-block stratum
 where $G$'s Euclidean-orthogonality framework-boundary dominates}.
-\emph{Augmented stratum} ($n = 25$, five new blocks): Set~N $23/25
-= 0.920$ vs Set~G $12/25 = 0.480$, non-overlapping Wilson 95\%
+\emph{Augmented stratum} ($n = 25$, five new blocks): Set~N $25/25
+= 1.000$ vs Set~G $12/25 = 0.480$, non-overlapping Wilson 95\%
 intervals; Set~N is $\ge$ Set~G on every one of the five blocks
-and strictly better on three of five
-($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$,
-$\mathcal{B}^{*}_{\mathrm{rel}}$), tied on $\mathcal{D}^{*}$ and
-$\mathcal{E}^{*}$, with $11$ $N$-only and $0$ $G$-only kills.
+and strictly better on four of five
+($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$,
+$\mathcal{B}^{*}_{\mathrm{rel}}$), tied on $\mathcal{E}^{*}$,
+with $13$ $N$-only and $0$ $G$-only kills.
 \emph{PIT-covered stratum} ($n = 52$): on the
 $\mathcal{T}^{*}$ block Set~N achieves $10/17 = 0.588$ versus Set~G
 $8/17 = 0.471$, with three $N$-only exclusive kills, a directional
@@ -2002,8 +1986,8 @@ the complementarity partition (Table~\ref{tab:two-stratum}, row 1)
 reports $4$ $N$-only kills (a $7.7\%$ exclusive contribution),
 distributed across the $\mathcal{T}^{*}$ and $\mathcal{L}^{*}$
 blocks. On the $25$-mutant augmented stratum the partition
-(Table~\ref{tab:per-block-headtohead}) reports $11$ $N$-only kills
-and $0$ $G$-only kills, $10$ of the $11$ $N$-only contributions
+(Table~\ref{tab:per-block-headtohead}) reports $13$ $N$-only kills
+and $0$ $G$-only kills, $10$ of the $13$ $N$-only contributions
 concentrated in $\mathcal{T}^{*}_{\mathrm{rev}}$ and
 $\mathcal{B}^{*}_{\mathrm{rel}}$ where Set~G's GP search at the
 30-min budget produced no \texttt{isSequence} MR (so Set~G's $0/5$
@@ -2011,13 +1995,10 @@ on each of those two blocks is absence-of-coverage rather than
 evaluated-and-missed; this is the same upstream snapshot constraint
 discussed in \S\ref{subsec:empirical-threats}~(d)). Combined union
 coverage on the $77$-mutant aggregated stratum is $34$ both-killed
-$+$ $15$ $N$-only $+$ $15$ $G$-only $= 64/77 = 83.1\%$, against
-Set~G alone's $50$ ($64.9\%$) and Set~N alone's $49$ ($63.6\%$);
+$+$ $17$ $N$-only $+$ $15$ $G$-only $= 66/77 = 85.7\%$, against
+Set~G alone's $49$ ($63.6\%$) and Set~N alone's $51$ ($66.2\%$);
 union coverage on the PIT-covered substratum alone is $86.5\%$ as
-previously reported (the slight aggregate drop to $83.1\%$ reflects
-$2$ ``neither'' cells on the augmented stratum where seed-11 input
-distribution misses the targeted boundary case; cf.\
-\nameref{para:augmented-stratum}).
+previously reported.
 
 \textbf{H3a.3 (Cost-axis).} \emph{Supported}. See
 \nameref{para:cost-axis-h3a} below for the detailed cost-axis
@@ -2276,7 +2257,7 @@ Direction & Cost (estimated) & Expected effect on the reading \\
 (d.set-l) Multi-LLM ensemble Set~L (Xu's protocol scale) arm: $2$ vendors (DeepSeek, ChatGPT) $\times$ $5$ temperatures $\times$ $10$ SUTs = $100$ samples; $487$ LLM-proposed MRs harvested; deterministic template-matching translation produces $212$ executable JIR/JOR pairs ($43.5\%$ translation rate); per-LLM pooled kill rates on the $n = 70$ aligned-mutant substrate: ChatGPT $34/70 = 0.486$ Wilson 95\% $[0.372, 0.600]$, DeepSeek $33/70 = 0.471$ $[0.359, 0.587]$, ensemble union $34/70 = 0.486$ $[0.372, 0.600]$ & \textbf{Done (2 of 3 vendors)} & Set~L ensemble matches Set~N's reach on the matchable subset ($34/34$ kill overlap; $0$ Set-L-exclusive kills); $56.5\%$ of LLM-proposed MRs explore invariants outside the 8-block frame (associativity, identity / inverse element, monotonicity on non-O\textsubscript{le} SUTs) and have no in-protocol kill measurement here; results in \texttt{docs/set\_l\_phase2\_results.md} of the experiment repository. A third-vendor (Anthropic Claude) replication remains in (d.set-l-claude) below \\
 (d.set-l-claude) Third-vendor Claude Opus replication of (d.set-l) & $\approx 5$\,h Remote + token cost ($\approx \$10$--$30$) & Completes the 3-vendor protocol of Xu's spec; expected to corroborate ensemble result \\
 (e) D1 / D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant with SUT-specific overrides) & \textbf{Done} & $52$ D1 / $10$ D2 / $0$ ambiguous on $n = 62$; post-equivalent-mutant exclusion $52$ D1 / $5$ D2 / $0$ ambiguous on $n = 57$; Set~N D1 kill rate $0.500$, Set~N D2 kill rate $0.000$ reported in \S\ref{subsec:pit-block-matrix} \\
-(g) Block-coverage augmentation: hand-craft $5$ semantically motivated mutants violating each of the $5$ originally-uncovered operative blocks ($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$, $\mathcal{E}^{*}$, $\mathcal{B}^{*}_{\mathrm{rel}}$) on the \S\ref{subsec:test-design} substrate, augmenting the PIT-generated mutant set with $25$ new mutants whose targeted invariants the framework's MRs are designed to detect & \textbf{Done} & Per-block kill-rate table (Table~\ref{tab:per-block-headtohead}) now covers all $8$ operative blocks with $n \ge 5$ each; augmented-stratum aggregate Set~N $23/25 = 0.920$ vs Set~G $12/25 = 0.480$ strengthens H3a.1 to ``supported on augmented stratum'' and H3a.2 to ``$15$ Set-$N$-exclusive kills on the $77$-mutant aggregated stratum, union coverage $83.1\%$''; full per-mutant rationale in \texttt{docs/block\_coverage\_augmentation\_rationale.md} and per-block results in \texttt{docs/block\_coverage\_augmentation\_results.md} of the experiment repository \\
+(g) Block-coverage augmentation: hand-craft $5$ semantically motivated mutants violating each of the $5$ originally-uncovered operative blocks ($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$, $\mathcal{E}^{*}$, $\mathcal{B}^{*}_{\mathrm{rel}}$) on the \S\ref{subsec:test-design} substrate, augmenting the PIT-generated mutant set with $25$ new mutants whose targeted invariants the framework's MRs are designed to detect & \textbf{Done} & Per-block kill-rate table (Table~\ref{tab:per-block-headtohead}) now covers all $8$ operative blocks with $n \ge 5$ each; augmented-stratum aggregate Set~N $25/25 = 1.000$ vs Set~G $12/25 = 0.480$ strengthens H3a.1 to ``supported on augmented stratum'' and H3a.2 to ``$17$ Set-$N$-exclusive kills on the $77$-mutant aggregated stratum, union coverage $85.7\%$''; full per-mutant rationale in \texttt{docs/block\_coverage\_augmentation\_rationale.md} and per-block results in \texttt{docs/block\_coverage\_augmentation\_results.md} of the experiment repository \\
 (e.2) Equivalent-mutant exclusion on the head-to-head denominator via two-stage filter (kill-vector auto-classification for the $44$ singly-or-doubly-killed mutants; progressive multi-LLM vote on the $18$ both-miss mutants, with Anthropic Claude Opus 4.6 as a third-voter tiebreaker invoked only when stage-1 voters DeepSeek + ChatGPT disagree) & \textbf{Done} & $5$ equivalents identified on the $n = 62$ head-to-head set, all ConditionalsBoundaryMutator on recursive normalising SUTs (\texttt{gcdSig}, \texttt{lcmSig}, \texttt{powerSig}); excluded symmetrically from both Sets' denominators; final $n = 57$ pooled, $n = 52$ D1, $n = 5$ D2 after the e.1 v2 override extension; numbers reported in \S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote}) \\
 (e.3) Tighten or excise the two grid Set~N MRs whose \texttt{jor} predicate is out-of-domain on \texttt{powerSig} (\texttt{E\_power\_of\_power} and \texttt{L\_scale\_base}) & $\approx 4$\,h human (predicate refinement + green-suite re-validation) & Restores the two MRs to the PIT-evaluable set; expected to recover $\le 2$ kills on \texttt{powerSig} (currently $7/12$) \\
 (e.4) $G$-block MR re-synthesis (or in-scope documentation) for Euclidean-style SUTs (\texttt{gcdSig}, \texttt{lcmSig}): the grid-synthesised $G$ MR encodes a sign-flip identity that the SUT's own \texttt{a < 0 ? -a : a} normalisation prologue absorbs before the recursive Euclidean reduction fires & \textbf{Done (documented)} & Closed via \S\ref{subsec:l-blindness-confirmed} (\nameref{para:g-block-euclidean-boundary}): the $0/7$ Set~N $G$-block kill rate on \texttt{gcdSig}+\texttt{lcmSig} is the framework-correct reading under the scope precondition (the SUT's input-domain normalisation absorbs the $G$-action before any downstream mutation fires); a $\mathcal{R}$-block reversibility-identity re-derivation \emph{post}-normalisation remains an open follow-up but is now classified as theoretical extension rather than MR-design defect \\
