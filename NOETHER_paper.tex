@@ -1691,15 +1691,16 @@ exclusive reach on \texttt{gcdSig} and \texttt{lcmSig} compensates
 for the $G$-block gap above on the same SUTs.
 
 \item \textbf{$\mathcal{T}^{*}$ block: Set~N edge (underpowered).}
-Of $15$ $\mathcal{T}^{*}$-violating mutants, Set~N kills $8$ and
-Set~G kills $7$; Set~N's exclusive reach is 2, Set~G's is 1, with
-6 in common. The union covers $9/15 = 60\%$, larger than either
-Set's individual rate ($53.3\%$ vs $46.7\%$). Set~N has $+6.7$~pp
-in rate \emph{and} $+1$ in exclusive count on its own block. The
-sample size ($n = 15$ on $\mathcal{T}^{*}$) is insufficient for an
+Of $17$ $\mathcal{T}^{*}$-violating mutants, Set~N kills $10$ and
+Set~G kills $8$; Set~N's exclusive reach is $3$, Set~G's is $1$,
+with $7$ in common (and $6$ jointly missed). The union covers
+$11/17 = 64.7\%$, larger than either Set's individual rate
+($58.8\%$ vs $47.1\%$). Set~N has $+11.7$~pp in rate \emph{and}
+$+2$ in exclusive count on its own block. The sample size
+($n = 17$ on $\mathcal{T}^{*}$) is insufficient for an
 $\alpha = 0.05$ inferential test (the 95\% Wilson intervals
-$[0.30,\,0.75]$ and $[0.25,\,0.70]$ overlap substantially), so we
-report the per-block Set~N edge as a directional finding
+$[0.360,\,0.784]$ and $[0.262,\,0.690]$ overlap substantially),
+so we report the per-block Set~N edge as a directional finding
 consistent with the framework's $\mathcal{T}^{*}$ design
 prediction rather than as an inferential conclusion.
 \end{itemize}
@@ -1797,7 +1798,7 @@ all $3$ are $b$-cell discordances). The pooled McNemar is thus
 \emph{strengthened} by including the D2 stratum, but at the cost of
 mixing the within-scope D1 comparison with the out-of-scope D2
 stratum that Set~N is not designed to detect.}. We report this
-pooled comparison as scope-mismatched: the $2$ D2 mutants in the
+pooled comparison as scope-mismatched: the $5$ D2 mutants in the
 denominator are not in Set~N's theoretical reach by construction, so
 the pooled gap overstates Set~N's effective miss rate within its
 declared scope. At the 1-min sensitivity budget, Set~N is unchanged
@@ -1966,9 +1967,11 @@ $4$ $N$-only kills, $15$ $G$-only kills, $22$ both-killed and $11$
 neither, distributed across the $\mathcal{T}^{*}$ and
 $\mathcal{L}^{*}$ blocks (per
 Table~\ref{tab:per-block-headtohead}). Union coverage on the
-PIT-covered substrate is $26 + 4 + 15 = 45 / 52 = 86.5\%$,
-materially above Set~G alone's $37 / 52 = 71.2\%$ and Set~N alone's
-$30 / 52 = 57.7\%$. The complementarity is asymmetric: Set~G's
+PIT-covered substrate is $22 + 4 + 15 = 41 / 52 = 78.8\%$
+(both-killed plus exclusively-Set-N-killed plus
+exclusively-Set-G-killed), modestly above Set~G alone's
+$37 / 52 = 71.2\%$ and materially above Set~N alone's
+$26 / 52 = 50.0\%$. The complementarity is asymmetric: Set~G's
 exclusive contribution ($15$ kills) is roughly four times Set~N's
 ($4$ kills), reflecting the substrate's predominance of generic
 algebra-disrupting mutations that Set~G's GP-evolved generic MRs
@@ -3026,7 +3029,27 @@ invariant (per-mutant rationale in
 experiment repository; generator and runner in commits
 \texttt{c2030d9} and \texttt{2712564}; codegen fixes to remove
 forward-reference and identity-fallback regressions in commit
-\texttt{f7edfa7}). Mutant evaluation uses \texttt{mvn test} on the
+\texttt{f7edfa7}).\footnote{A residual codegen limitation, documented
+in \texttt{docs/codegen\_fix\_audit.md} of the experiment repository
+but not fixed in the current build, is that
+\texttt{parse\_jir\_to\_transforms} does not handle the
+integer-equality jir pattern \texttt{i\_n\_f == -i\_n\_s} used by the
+\texttt{D\_reciprocal\_exp} MR on \texttt{powerSig}; under the
+current codegen the MR's follow-up exponent falls back to identity
+($n_{f} = n_{s}$) and the jor \texttt{|o\_f - 1/o\_s| < 1e-4}
+degenerates into a coarse ``output is not its own reciprocal''
+detector. The construct-trace kill verdict for the
+\texttt{powerSig} mutants reported in
+Table~\ref{tab:augmented-stratum} remains robust to removing the
+$D\_reciprocal\_exp$ MR (every \texttt{powerSig} augmented mutant
+is also killed by at least one of \texttt{E\_power\_of\_power},
+\texttt{L\_scale\_base}, \texttt{T\_exp\_step}, or
+\texttt{G\_odd\_negate}, per the per-MR audit in the experiment
+repository), so the appendix's per-block kill flag is unaffected;
+nonetheless the MR-level specificity question of which MR fires
+on which mutant is partly clouded by this degeneracy, and a
+codegen extension to handle integer-equality jir patterns is
+committed as a separate follow-up.} Mutant evaluation uses \texttt{mvn test} on the
 substituted SUT under each existing Set~N and Set~G MR test suite;
 kill verdict is "killed by any Set~N MR" (Definition~A of
 \texttt{docs/d1d2\_methodology.md} \S4 in the experiment repository).
