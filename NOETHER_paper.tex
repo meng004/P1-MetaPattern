@@ -1642,6 +1642,20 @@ $\mathcal{T}^{*}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\
 \end{tabular}
 \end{table}
 
+The $\mathrm{unmapped}$ auxiliary row of
+Table~\ref{tab:per-block-headtohead} reports a count of $25$ PIT
+mutants from (SUT, mutator) cells whose D1/D2 override table does
+not specify the broken blocks; the row is a lower-bound caveat on
+the per-block denominators (each unmapped mutant is D1-classified
+but its block membership is unknown), \emph{not} an additional
+denominator added to the $G + \mathcal{L}^{*} + \mathcal{T}^{*}$
+union. The pre-equivalent-mutant-exclusion D1 pool is
+$n = 52$ and the post-exclusion D1 pool is the same $52$
+(Table~\ref{tab:two-stratum}, row~1); the $25$ unmapped is a
+parallel count that documents incompleteness of the override
+authoring, not a fourth block whose mutants we have failed to
+attribute.
+
 The per-block reading distinguishes three regimes:
 
 \begin{itemize}[nosep,leftmargin=*]
@@ -1841,7 +1855,7 @@ Second, the $18$ jointly-missed (both-miss) mutants are submitted to
 a progressive multi-LLM voting scheme: DeepSeek and ChatGPT at
 temperature $0.0$ in parallel; if both agree, the verdict is locked;
 otherwise a third independent voter (Anthropic Claude Opus 4.6,
-accessed through the bltcy.ai proxy) is invoked, and the final
+accessed through a third-party LLM API proxy) is invoked, and the final
 verdict is the simple majority of the three. Of the $18$ both-miss
 mutants, $5$ are voted equivalent (all
 \texttt{ConditionalsBoundaryMutator} on the recursive normalising
@@ -2382,10 +2396,17 @@ scope and committed as follow-up~(i) of Table~\ref{tab:future-work}.
 
 \begin{table}[h]
 \centering
-\caption{Mapping of METRIC$+$'s $11$ input-domain $\times$
-output-relation category pairs (per~\cite{SunMETRICplus2021}
-Table~II) onto NOETHER's eight blocks for a deterministic
-comparison-sort library. $9$ pairs collapse onto two non-empty
+\caption{Mapping of $11$ input-domain ($D$) $\times$
+output-relation ($R$) category pairs onto NOETHER's eight blocks for
+a deterministic comparison-sort library. Row labels follow the
+input-domain ($D$) / output-relation ($R$) naming convention of
+METRIC and METRIC$+$~\cite{ChenMETRIC2016, SunMETRICplus2021}; the
+specific row contents are operationalised here for the
+comparison-sort SUT under $\mathcal{A}_{\mathrm{sort}}$ drawing on
+the category families enumerated in those works rather than as a
+verbatim copy of a single METRIC$+$ table, since METRIC$+$'s
+category enumeration is parametrised by the SUT and ours is the
+sort-specific specialisation. $9$ pairs collapse onto two non-empty
 blocks ($G$, $O_{\le}$); $2$ pairs ($D_5$, $R_4$) are out-of-scope
 by construction for a sort whose semantics ignore additive and
 multiplicative input transformations.}
