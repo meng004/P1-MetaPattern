@@ -30,6 +30,8 @@
 \usepackage{xcolor}
 \usepackage[breakable]{tcolorbox}
 \usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric, fit, calc, backgrounds}
 \newcommand{\cmark}{\textbf{Y}}
 \newcommand{\xmark}{\ensuremath{-}}
 \newcommand{\tildemark}{\textbf{P}}
@@ -132,7 +134,70 @@ The principal artefact at that foundational layer is the \emph{MetaPattern} (MP)
 
 We call this the \emph{origin--closure--transferability gap}. The gap matters because it explains why MR sets continue to grow as one-off artefacts. Without a structural source, there is no clear boundary on what the pattern space contains. Without a transfer rule, a relation written for one program rarely moves cleanly to another, even when both programs share a deep structural template. These are not only tooling limitations; they follow from grounding MetaPatterns in observed examples rather than in the structure that makes the relations hold.
 
-This paper proposes such a structural source. We introduce \textbf{NOETHER}, a constructive framework that derives MetaPatterns from the operator-algebraic structure of the program family under test. The framework extracts MetaPatterns from invariants of an operator algebra $\mathcal{A}_P$ (formally defined in Section~\ref{sec:prelim}) that captures the program family's mathematical scaffolding. Given $\mathcal{A}_P$, NOETHER produces a MetaPattern set $\mathbb{M}(\mathcal{A}_P)$ (constructed by the algorithm of Section~\ref{sec:framework}) together with a closure guarantee over the algebra-induced MR space. Given a different program family with a different algebra $\mathcal{A}_{P'}$, the same construction produces $\mathbb{M}(\mathcal{A}_{P'})$ without re-running empirical induction. The framework does not abolish induction: domain experts must still distil $\mathcal{A}_P$ from program semantics, and Section~\ref{sec:discussion} states this limitation explicitly. What becomes algebraic is the downstream step from $\mathcal{A}_P$ to the MetaPattern set.
+This paper proposes such a structural source. We introduce \textbf{NOETHER}, a constructive framework that derives MetaPatterns from the operator-algebraic structure of the program family under test. The framework extracts MetaPatterns from invariants of an operator algebra $\mathcal{A}_P$ (formally defined in Section~\ref{sec:prelim}) that captures the program family's mathematical scaffolding. Given $\mathcal{A}_P$, NOETHER produces a MetaPattern set $\mathbb{M}(\mathcal{A}_P)$ (constructed by the algorithm of Section~\ref{sec:framework}) together with a closure guarantee over the algebra-induced MR space. Given a different program family with a different algebra $\mathcal{A}_{P'}$, the same construction produces $\mathbb{M}(\mathcal{A}_{P'})$ without re-running empirical induction. The framework does not abolish induction: domain experts must still distil $\mathcal{A}_P$ from program semantics, and Section~\ref{sec:discussion} states this limitation explicitly. What becomes algebraic is the downstream step from $\mathcal{A}_P$ to the MetaPattern set. Figure~\ref{fig:noether-arch} summarises the two-layer architecture.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  font=\small,
+  node distance=4mm and 6mm,
+  box/.style={draw, rounded corners=2pt, align=center, inner sep=4pt, minimum height=8mm, fill=white},
+  thmbox/.style={draw, rounded corners=2pt, align=center, inner sep=3pt, minimum height=7mm, fill=gray!8, font=\footnotesize\itshape},
+  inst/.style={draw, rounded corners=2pt, align=center, inner sep=3pt, minimum height=6mm, fill=gray!5, font=\footnotesize},
+  arr/.style={-{Latex[length=2mm]}, thick},
+  layerlbl/.style={font=\footnotesize\bfseries, anchor=west}
+]
+%% Upstream layer
+\node[box] (prog) {Program family $P$};
+\node[box, right=12mm of prog] (alg) {Operator algebra $\mathcal{A}_P$};
+\node[box, right=12mm of alg] (decomp) {Block decomposition $\mathcal{D}(\mathcal{A}_P)$\\\footnotesize $\{G, O_{\le}, T^{*}, \mathcal{T}^{*}_{\mathrm{rev}}, \mathcal{L}^{*}, \mathcal{D}^{*}, \mathcal{E}^{*}, \mathcal{B}^{*}_{\mathrm{rel}}\}$};
+
+\draw[arr] (prog) -- node[above, font=\scriptsize, align=center] {expert\\$+$ LLM grid} (alg);
+\draw[arr] (alg) -- node[above, font=\scriptsize] {Hypothesis~\ref{hyp:seven-blocks}} (decomp);
+
+%% Downstream layer
+\node[box, below=20mm of alg] (mset) {MetaPattern set $\mathbb{M}(\mathcal{A}_P)$};
+\node[box, right=12mm of mset] (mrset) {Algebra-induced MR space $\mathrm{MR}(\mathcal{A}_P)$};
+
+\draw[arr] (decomp) -- ++(0,-6mm) -| node[above, near start, font=\scriptsize] {\texttt{CONSTRUCT-MP}} (mset);
+\draw[arr] (mset) -- node[above, font=\scriptsize] {\texttt{Translate}} (mrset);
+
+%% Theorem annotations
+\node[thmbox, below=4mm of mset] (thm2) {Theorem~\ref{thm:decidable}\\poly-time};
+\node[thmbox, below=4mm of mrset] (thm1) {Theorem~\ref{thm:closure}\\closure};
+
+\draw[densely dotted] (mset) -- (thm2);
+\draw[densely dotted] (mrset) -- (thm1);
+
+%% Instantiations (right of downstream)
+\node[inst, right=10mm of mrset, anchor=west, yshift=4mm] (inst1) {Boltzmann reactor physics (\S\ref{sec:reactor})};
+\node[inst, below=2mm of inst1.south west, anchor=north west] (inst2) {Equivariant ML (\S\ref{sec:cross-domain})};
+\node[inst, below=2mm of inst2.south west, anchor=north west] (inst3) {Relational query optimisers (\S\ref{subsec:third-domain})};
+
+\draw[arr, densely dashed] (mrset.east) -- ++(8mm,0) |- (inst1.west);
+\draw[arr, densely dashed] (mrset.east) -- ++(8mm,0) |- (inst2.west);
+\draw[arr, densely dashed] (mrset.east) -- ++(8mm,0) |- (inst3.west);
+
+%% Layer backgrounds
+\begin{pgfonlayer}{background}
+  \node[fit=(prog)(decomp), draw=gray!50, dashed, rounded corners, inner sep=6pt, label={[layerlbl, gray!70!black]above left:UPSTREAM (empirical hypothesis)}] {};
+  \node[fit=(mset)(mrset)(thm2)(thm1), draw=gray!50, dashed, rounded corners, inner sep=6pt, label={[layerlbl, gray!70!black]below left:DOWNSTREAM (mechanical, provable)}] {};
+\end{pgfonlayer}
+\end{tikzpicture}
+\caption{NOETHER framework architecture (two layers). The
+\emph{upstream layer} curates the program family's operator algebra
+$\mathcal{A}_P$ and its eight-block decomposition as an empirical
+hypothesis (Hypothesis~\ref{hyp:seven-blocks}). The \emph{downstream
+layer} mechanically derives the MetaPattern set
+$\mathbb{M}(\mathcal{A}_P)$ via \texttt{CONSTRUCT-MP}, with closure
+under \texttt{Translate} over $\mathrm{MR}(\mathcal{A}_P)$
+(Theorem~\ref{thm:closure}) and polynomial-time decidability under a
+finite generating set (Theorem~\ref{thm:decidable}). The framework
+is instantiated on three structurally distinct domains
+(\S\ref{sec:reactor}, \S\ref{sec:cross-domain}, \S\ref{subsec:third-domain})
+to test transferability at the algebra-skeleton level.}
+\label{fig:noether-arch}
+\end{figure}
 
 We make four contributions.
 
