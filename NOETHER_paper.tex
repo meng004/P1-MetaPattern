@@ -1709,48 +1709,28 @@ SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & not
 \end{table}
 
 \paragraph{Per-block head-to-head and complementarity (Primary, PIT arm).}
-Each Set~N MR derives from exactly one NOETHER block; its
-theoretical reach is the subset of mutants that violate \emph{that
-specific block}'s invariant on the SUT's input domain. The natural
-head-to-head denominator is therefore per-block rather than the
-union over operative blocks. Across the eight head-to-head SUTs,
-three operative blocks have non-empty per-block strata: $G$
-(group / swap / negate), $\mathcal{L}^{*}$ (scale / homogeneity),
-and $\mathcal{T}^{*}$ (translation / self-adjoint). For each
-block~$b$, let $n_{b}$ denote the count of mutants whose
-(SUT, mutator) entry in
-\texttt{configs/sut\_block\_overrides.json} of the companion
-experiment repository marks block~$b$ as broken (``$\times$''),
-aggregated across the eight SUTs. Per-block kill counts and the
-complementarity partition (both / Set~N-only / Set~G-only /
-neither) are in Table~\ref{tab:per-block-headtohead}.
+Each Set~N MR derives from exactly one NOETHER block, so the natural head-to-head denominator is per-block rather than the operative-block union. Across the eight head-to-head SUTs, PIT's stock mutator catalogue exercises three operative blocks: $G$ (group / swap / negate), $\mathcal{L}^{*}$ (scale / homogeneity), and $\mathcal{T}^{*}$ (translation / self-adjoint). For each block~$b$, $n_{b}$ counts mutants whose (SUT, mutator) entry in \texttt{configs/sut\_block\_overrides.json} marks block~$b$ as broken (``$\times$''). Per-block kill counts and the complementarity partition (both / $N$-only / $G$-only / neither) appear in Table~\ref{tab:per-block-headtohead}.
 
 \begin{table}[h]
 \centering
 \caption{Per-block head-to-head on the three operative blocks
-reached by PIT 1.7.4's stock mutator catalogue, across the eight
-in-scope SUTs of \S\ref{subsec:test-design}. Each row's denominator
-$n_{b}$ counts mutants violating block $b$'s invariant. The
-complementarity partition splits the $n_{b}$ mutants into the four
-cells ``both~kill'' / ``Set~N-only kill'' / ``Set~G-only kill'' /
-``neither kills''; the row total equals $n_{b}$. Wilson 95\%
-intervals are reported alongside the point rates. The five
-operative blocks not exercised by PIT 1.7.4
-($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$,
-$\mathcal{D}^{*}$, $\mathcal{E}^{*}$,
-$\mathcal{B}^{*}_{\mathrm{rel}}$) are reported separately in
-Appendix~\ref{app:augmented-stratum} as a construct-trace
-consistency check on hand-crafted block-targeted mutants; per
-\S\ref{app:augmented-stratum}, those results are design-implied by
-the construction of the mutants against known Set~N MRs and are not
-used as independent fault-detection evidence in this section's H3a
-verdicts. Auxiliary rows: aggregate D1 (union of the three
-PIT-covered operative blocks); the unmapped bucket (PIT mutants
-from $(\mathrm{SUT}, \mathrm{mutator})$ cells without an override
-entry, principally \texttt{RETURN\_VALS} and \texttt{MATH} on SUTs
-where the table-5-reconstruction fallback assigns D1 but does not
-specify broken blocks; documented as a lower-bound caveat on
-per-block denominators, not a participating row).}
+exercised by PIT 1.7.4 across the eight in-scope SUTs of
+\S\ref{subsec:test-design}. Each row's denominator $n_{b}$ counts
+mutants violating block~$b$'s invariant; complementarity cells
+``both'' / ``$N$-only'' / ``$G$-only'' / ``neither'' partition $n_{b}$.
+Wilson 95\% intervals are reported alongside point rates. The five
+operative blocks PIT~1.7.4 does not exercise
+($O_{\le}, \mathcal{T}^{*}_{\mathrm{rev}}, \mathcal{D}^{*},
+\mathcal{E}^{*}, \mathcal{B}^{*}_{\mathrm{rel}}$) are addressed by
+the construct-trace consistency check on hand-crafted
+block-targeted mutants (now in supplementary~S9, item
+``D\_E\_implementation\_consistency''); those results are
+design-implied and not used as independent fault-detection
+evidence. Auxiliary rows report the D1 aggregate and the unmapped
+bucket (PIT mutants from cells without an override entry,
+principally \texttt{RETURN\_VALS} and \texttt{MATH} on SUTs where
+the table-5-reconstruction fallback assigns D1 but does not specify
+broken blocks; lower-bound caveat, not a participating row).}
 \label{tab:per-block-headtohead}
 \small
 \begin{tabular}{lrrlrlrrrr}
@@ -1767,67 +1747,16 @@ $\mathcal{T}^{*}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\
 \end{tabular}
 \end{table}
 
-The $\mathrm{unmapped}$ auxiliary row of
-Table~\ref{tab:per-block-headtohead} reports a count of $25$ PIT
-mutants from (SUT, mutator) cells whose D1/D2 override table does
-not specify the broken blocks; the row is a lower-bound caveat on
-the per-block denominators (each unmapped mutant is D1-classified
-but its block membership is unknown), \emph{not} an additional
-denominator added to the $G + \mathcal{L}^{*} + \mathcal{T}^{*}$
-union. The pre-equivalent-mutant-exclusion D1 pool is
-$n = 52$ and the post-exclusion D1 pool is the same $52$
-(Table~\ref{tab:two-stratum}, row~1); the $25$ unmapped is a
-parallel count that documents incompleteness of the override
-authoring, not a fourth block whose mutants we have failed to
-attribute.
+The unmapped auxiliary row counts $25$ PIT mutants from cells whose D1/D2 override table does not specify broken blocks; it is a lower-bound caveat on per-block denominators (each unmapped mutant is D1-classified but its block membership is unknown), not an additional denominator added to the $G + \mathcal{L}^{*} + \mathcal{T}^{*}$ union. The D1 pool is $n = 52$ pre and post equivalent-mutant exclusion (Table~\ref{tab:two-stratum} row~1).
 
 The per-block reading distinguishes three regimes:
 
 \begin{itemize}[nosep,leftmargin=*]
-\item \textbf{$G$ block: Set~G dominates on the substrate.} Set~N
-kills 0 of the 7 mutants Set~G exclusively reaches on $G$; the
-Set~N hits concentrate on \texttt{signum} ($2/4$), while
-\texttt{gcdSig} and \texttt{lcmSig} contribute $0/7$ for Set~N
-against $7/7$ for Set~G. The Euclidean-style SUTs appear to be
-structurally unreachable by NOETHER's $G$-block MR construction on
-the grid-synthesised catalogue: \texttt{gcdSig} normalises its two
-inputs via \texttt{a < 0 ? -a : a; b < 0 ? -b : b} at lines 66--67
-\emph{before} the recursive identity \texttt{gcd(a,b)=gcd(b,
-a\,mod\,b)} fires, so the sign-flip invariant the LLM-synthesised
-$G$-block MR encodes is absorbed by the SUT's own normalisation
-prologue and never reaches a distinguishable output;
-\texttt{lcmSig} delegates to \texttt{gcdSig} and inherits the same
-prologue. Whether this calls for re-synthesising an $\mathcal{R}$-
-block (reversibility / domain-reduction) MR for Euclidean
-algorithms, or for documenting recursive-normalising SUTs as
-structurally orthogonal to $G$-block reasoning, is committed as
-follow-up~(e.4) of Table~\ref{tab:future-work}.
+\item \textbf{$G$ block: Set~G dominates.} Set~N kills $0/7$ of the mutants Set~G exclusively reaches; the Set~N hits concentrate on \texttt{signum} ($2/4$), while \texttt{gcdSig} and \texttt{lcmSig} contribute $0/7$ for Set~N. The Euclidean-style SUTs are structurally unreachable by NOETHER's $G$-block construction on this grid-synthesised catalogue: \texttt{gcdSig} normalises its inputs via \texttt{a < 0 ? -a : a} before the recursive \texttt{gcd(a,b)=gcd(b, a\,mod\,b)} fires, absorbing the sign-flip invariant; \texttt{lcmSig} inherits the same prologue. Whether this calls for an $\mathcal{R}$-block re-synthesis or for documenting recursive-normalising SUTs as $G$-orthogonal is committed as follow-up~(e.4).
 
-\item \textbf{$\mathcal{L}^{*}$ block: complementary coverage.}
-Both Sets kill 8 mutants in common, 2 are exclusively Set~N
-(\texttt{exactLog2}), 8 exclusively Set~G, and 6 are jointly missed.
-The union covers $75\%$ of $\mathcal{L}^{*}$-violating mutants
-($18/24$), materially above either Set's individual rate. Set~N's
-exclusive reach on \texttt{exactLog2} (\texttt{O\_le\_monotone} and
-\texttt{T\_double} kill 4 mutants that Set~G's 30-min GP run misses
-entirely) quantifies the coverage-extension witness of
-\S\ref{subsec:convergent-witnesses} per-block. Conversely Set~G's
-exclusive reach on \texttt{gcdSig} and \texttt{lcmSig} compensates
-for the $G$-block gap above on the same SUTs.
+\item \textbf{$\mathcal{L}^{*}$ block: complementary coverage.} Both Sets kill 8 mutants in common, 2 are $N$-only (\texttt{exactLog2}), 8 are $G$-only, 6 are jointly missed; the union covers $18/24 = 75\%$, above either Set's individual rate. Set~N's exclusive reach on \texttt{exactLog2} quantifies the coverage-extension witness of \S\ref{subsec:convergent-witnesses} per-block; Set~G's exclusive reach on \texttt{gcdSig}+\texttt{lcmSig} compensates for the $G$-block gap.
 
-\item \textbf{$\mathcal{T}^{*}$ block: Set~N edge (underpowered).}
-Of $17$ $\mathcal{T}^{*}$-violating mutants, Set~N kills $10$ and
-Set~G kills $8$; Set~N's exclusive reach is $3$, Set~G's is $1$,
-with $7$ in common (and $6$ jointly missed). The union covers
-$11/17 = 64.7\%$, larger than either Set's individual rate
-($58.8\%$ vs $47.1\%$). Set~N has $+11.7$~pp in rate \emph{and}
-$+2$ in exclusive count on its own block. The sample size
-($n = 17$ on $\mathcal{T}^{*}$) is insufficient for an
-$\alpha = 0.05$ inferential test (the 95\% Wilson intervals
-$[0.360,\,0.784]$ and $[0.262,\,0.690]$ overlap substantially),
-so we report the per-block Set~N edge as a directional finding
-consistent with the framework's $\mathcal{T}^{*}$ design
-prediction rather than as an inferential conclusion.
+\item \textbf{$\mathcal{T}^{*}$ block: Set~N edge (underpowered).} Of $17$ $\mathcal{T}^{*}$-violating mutants, Set~N kills $10$ and Set~G kills $8$ ($N$-only $3$, $G$-only $1$, both $7$, neither $6$); union $11/17 = 64.7\%$. Set~N is $+11.7$~pp in rate and $+2$ in exclusive count on its own block, but the Wilson intervals $[0.360,\,0.784]$ and $[0.262,\,0.690]$ overlap substantially. We report the per-block edge as directional, consistent with the $\mathcal{T}^{*}$ design prediction rather than inferential at $\alpha = 0.05$.
 \end{itemize}
 
 \paragraph{Coverage of the remaining five operative blocks.}
@@ -1972,53 +1901,10 @@ per-(LLM, SUT, temperature) breakdowns in
 \texttt{docs/set\_l\_phase2\_results.md} of the experiment
 repository.
 
-\paragraph{Footnote on equivalent-mutant denominator (resolved).}\label{para:eq-mutant-footnote}
-The original PIT-SURVIVED denominator ($n = 62$) does not
-distinguish semantically distinct mutants from PIT false-positives
-(mutants whose modified bytecode is behaviorally indistinguishable
-from the original on the SUT's declared input domain). To resolve
-this, every head-to-head mutant was passed through a two-stage filter.
-First, the $44$ mutants killed by at least one of Set~N or Set~G are
-auto-classified non-equivalent on the operational ground that at
-least one deterministic MR test distinguished them from the original.
-Second, the $18$ jointly-missed (both-miss) mutants are submitted to
-a progressive multi-LLM voting scheme: DeepSeek and ChatGPT at
-temperature $0.0$ in parallel; if both agree, the verdict is locked;
-otherwise a third independent voter (Anthropic Claude Opus 4.6,
-accessed through a third-party LLM API proxy) is invoked, and the final
-verdict is the simple majority of the three. Of the $18$ both-miss
-mutants, $5$ are voted equivalent (all
-\texttt{ConditionalsBoundaryMutator} on the recursive normalising
-SUTs \texttt{gcdSig}, \texttt{lcmSig}, \texttt{powerSig}: the SUT's
-own \texttt{a < 0 ? -a : a} prologue absorbs the sign-flip mutation
-before any test can observe a difference), $13$ are voted non-
-equivalent ($8$ stage-1 unanimous, $5$ via tiebreaker). The five
-LLM-flagged equivalents fall entirely within the algebra-preserving
-(D2) stratum; the per-block scope-matched D1 denominators (G, $L^{*}$,
-$T^{*}$ in Table~\ref{tab:per-block-headtohead}) are therefore
-unaffected by exclusion. The eq-excluded denominator $n = 62 - 5 =
-57$ governs the auxiliary pooled M1 in the preceding paragraph; the
-post-exclusion D2 stratum ($n = 5$, after the ISSUE-010~(e.1)~v2
-override extension reclassified $3$ \texttt{PrimitiveReturnsMutator}
-mutants from D1 to D2 on \texttt{gcdSig} / \texttt{hypotSig} /
-\texttt{lcmSig}) governs the framework prediction above. Methodological note: the progressive 2+1 voting scheme is
-calibrated against the manual analyst session of the pilot
-(\S\ref{subsec:l-blindness-confirmed} footnote); convergence on the
-single pilot-vs-LLM disagreement case (\texttt{lcmSig::CB::81}) was
-achieved by the new methodology resolving stage-1-unanimous in favor
-of the pilot analyst's manual verdict.
+\paragraph{Equivalent-mutant denominator (resolved).}\label{para:eq-mutant-footnote}
+The original PIT-SURVIVED denominator ($n = 62$) does not separate semantically distinct mutants from PIT false-positives. Every head-to-head mutant passed through a two-stage filter: the $44$ mutants killed by at least one of Set~N or Set~G are auto-classified non-equivalent; the $18$ jointly-missed mutants go through a progressive multi-LLM vote (DeepSeek + ChatGPT at temperature $0.0$, with Anthropic Claude Opus tiebreaker when stage-1 voters disagree). Outcome: $5$ voted equivalent (all \texttt{ConditionalsBoundaryMutator} on \texttt{gcdSig}, \texttt{lcmSig}, \texttt{powerSig} where \texttt{a < 0 ? -a : a} prologues absorb the sign-flip), $13$ non-equivalent. The $5$ equivalents fall entirely within the algebra-preserving (D2) stratum, leaving the per-block D1 denominators unchanged. The eq-excluded total is $n = 57$ ($52$ D1 + $5$ D2 after the (e.1)~v2 override reclassified $3$ \texttt{PrimitiveReturnsMutator} mutants from D1 to D2). The 2+1 voting scheme was calibrated against the pilot's manual analyst session (\S\ref{subsec:l-blindness-confirmed}); the single pilot-vs-LLM disagreement case resolved in favor of the pilot verdict.
 
-The pooled rates also exhibit the scope-discriminance pattern
-predicted by NOETHER's scope declaration
-(Definition~\ref{def:alg-induced}): on the wider 23-method
-utility-method baseline (supplementary~S5; mixed in-scope and
-boundary substrate), Set~N's pooled M1 is $0.288$, against Set~G's
-$0.363$; on the in-scope algebra-rich substrate (eq-excluded $n =
-57$ head-to-head, 30-min budget), Set~N moves to $0.456$ and Set~G
-to $0.702$ (and within the D1 scope-matched subset to $0.500$ vs
-$0.712$). Both methods benefit from the algebraically richer
-substrate, as expected. This corroborates the framework's scope
-declaration as empirically discriminating.
+Pooled rates exhibit the scope-discriminance pattern predicted by NOETHER's scope declaration (Definition~\ref{def:alg-induced}): on the wider 23-method utility-method baseline (supplementary~S5; mixed in-scope and boundary), Set~N's pooled M1 is $0.288$ vs Set~G's $0.363$; on the in-scope algebra-rich substrate (eq-excluded $n = 57$), Set~N moves to $0.456$ and Set~G to $0.702$ (D1 subset: $0.500$ vs $0.712$). Both methods benefit from the algebraically richer substrate; the scope declaration is empirically discriminating.
 
 \paragraph{Two-stratum head-to-head summary (Primary tabulation for H3a verdict).}
 \label{para:two-stratum}
@@ -2173,127 +2059,23 @@ $p$ values now differ.
 \subsection{Threats to validity and committed future work}
 \label{subsec:empirical-threats}
 
-\paragraph{(a) The prediction's commitment to git is asserted, not externally audited.}
-The argument of
-\S\ref{subsec:l-blindness-derivation} that the
-$\mathcal{L}^{*}$-blindness prediction is derivable from public
-information without consulting data is a mathematical argument; it
-holds independent of when the prediction was first written down. We
-nonetheless commit the prediction to git in
-supplementary~S7 (\texttt{d4j/}) alongside the SUT-selection criterion, so
-that the prediction's text and the criterion's text are both stamped
-before the data files for the per-MR kill counts. A reader who
-distrusts the timestamp chain can re-derive the prediction
-independently from \S\ref{sec:framework} and~\cite{Coles2016PIT}.
+\paragraph{(a) Prediction-commitment timestamp.}
+The $\mathcal{L}^{*}$-blindness prediction of \S\ref{subsec:l-blindness-derivation} is derivable from public information without consulting data, and is committed to git in supplementary~S7 (\texttt{d4j/}) alongside the SUT-selection criterion before the per-MR kill-count files; a reader who distrusts the timestamp chain can re-derive the prediction independently from \S\ref{sec:framework} and~\cite{Coles2016PIT}.
 
 \paragraph{(b) Set G budget asymmetry.}
-GenMorph's published configuration is 30\,min GAssert; the
-sensitivity rerun at 1\,min handicaps Set~G in the conservative
-direction relative to the head-to-head reading of
-\S\ref{subsec:pooled-headtohead}. Both budgets are reported in
-Table~\ref{tab:algebra-rich-pooled}; the 30-min budget changes Set~G's
-per-SUT counts on one of the eight head-to-head SUTs, leaves the
-$\mathcal{L}^{*}$-blindness result and the structural-extension
-finding unchanged, and yields the D1 head-to-head verdict reported
-in \S\ref{subsec:pooled-headtohead}.
+GenMorph's published 30-min GAssert configuration is reported alongside a 1-min sensitivity rerun (Table~\ref{tab:algebra-rich-pooled}) that handicaps Set~G conservatively; the 30-min budget leaves the $\mathcal{L}^{*}$-blindness result and the structural-extension finding unchanged.
 
 \paragraph{(c) Sample size.}
-$n = 70$ across 10 SUTs is underpowered for a paired
-head-to-head verdict at $\alpha = 0.05$; the
-\S\ref{subsec:pooled-headtohead} reading is the honest disclosure
-that Set~N is dominated by Set~G in the aggregate D1 stratum
-(McNemar $p = 0.019$ on D1; $p = 0.0043$ pooled), with the
-framework's contribution read at the per-block, cost-axis, and
-D2-prediction layers rather than as aggregate fault-detection
-superiority. The
-$\mathcal{L}^{*}$-blindness test is on $n = 44$ across 6 SUTs
-admitting an $L_{\mathrm{scale}}$ MR and is not a pooled hypothesis
-test in the same statistical sense; its falsification criterion is
-per-SUT (one third or more on more than one SUT), not pooled. Larger
-$n$ would test the $\mathcal{L}^{*}$ prediction at finer per-SUT
-resolution but would not change its character.
+$n = 70$ across 10 SUTs is underpowered for a paired head-to-head verdict at $\alpha = 0.05$; the \S\ref{subsec:pooled-headtohead} reading is the honest disclosure that Set~N is dominated by Set~G in the aggregate D1 stratum (McNemar $p = 0.019$ on D1; $p = 0.0043$ pooled), with the framework's contribution read at the per-block, cost-axis, and D2-prediction layers rather than aggregate fault-detection superiority. The $\mathcal{L}^{*}$-blindness test on $n = 44$ across 6 SUTs is per-SUT (one third or more on more than one SUT), not pooled.
 
 \paragraph{(d) Set G structural absence is upstream-snapshot-relative.}
-The two N/A SUTs of \S\ref{subsec:convergent-witnesses} reflect the
-state of GenMorph upstream at our snapshot. An upstream patch (an
-XStream Converter for user-defined receivers and a richer JOR grammar
-for boolean-output SUTs) would restore Set~G coverage on these SUTs
-and weaken the structural framing of the coverage-extension witness.
-The architectural point (algebra-derivation operates on the SUT
-signature and is independent of GP plumbing) survives the patch; the
-empirical N/A count on this snapshot is the upstream-relative part.
+The two N/A SUTs of \S\ref{subsec:convergent-witnesses} reflect the state of GenMorph upstream at our snapshot. An upstream patch would restore Set~G coverage and weaken the structural framing of the coverage-extension witness, though the architectural point (algebra-derivation operates on the SUT signature, independent of GP plumbing) survives the patch.
 
 \paragraph{(e) Substrate selection.}
-The evaluation restricts itself to programs with explicit
-mathematical-physics equations, by NOETHER's scope declaration
-(Definition~\ref{def:alg-induced}). The kill-rate gain over the
-utility-method reference is expected by that scope declaration and is
-reported as scope-discriminance evidence (claim~D), not as a
-generalisable performance improvement on every Java SUT.
+The evaluation restricts itself to programs with explicit mathematical-physics equations, by NOETHER's scope declaration (Definition~\ref{def:alg-induced}); the kill-rate gain over the utility-method reference is reported as scope-discriminance evidence (claim~D), not as a generalisable performance improvement on every Java SUT.
 
 \paragraph{(f) Three SOTA-category coverage with explicit baseline-strength caveats.}
-The protocol of \S\ref{para:comp-eval-protocol} commits Set~N against
-one representative per SOTA category: a GP-evolved baseline
-(GenMorph~\cite{GenMorph2024}), an LLM-assisted baseline (a
-multi-vendor $\times$ multi-temperature LLM-MR-generation protocol
-that subsumes the single-sample probes of
-Shin~\cite{Shin2024}, ChatGPT-MR~\cite{ZhangChatGPTMR2023},
-GPTMR~\cite{GPTMR2025}, and AutoMT~\cite{AutoMT2025}), and a
-mining-based baseline (MR-Scout~\cite{MRScout2024}). The arms differ
-in delivery completeness, and we declare the baseline-strength
-asymmetry explicitly:
-
-\begin{itemize}[nosep,leftmargin=*]
-\item The GP-evolved arm is delivered in full at GenMorph's
-published 30-min budget on a single random seed; multi-seed
-replication for GenMorph's GP stochasticity is committed as
-follow-up~(a.budget-replication) of Table~\ref{tab:future-work}.
-
-\item The LLM-assisted arm is delivered as a $2$-vendor
-(DeepSeek-V3, ChatGPT-4o-mini) $\times$ $5$-temperature ensemble
-($100$ samples). The third commercial closed-vendor frontier
-offering (Anthropic Claude Sonnet / Opus class) is \emph{not}
-included in the $2$-vendor harvest; we do not include the strongest
-contemporary closed-vendor frontier LLMs (e.g.\ GPT-4o, Claude Opus
-$4.6$ / Sonnet $4.5$) and the $2$-of-$3$-vendor coverage limits
-the strength of the LLM-assisted comparison. A third-vendor Claude
-replication is committed as post-acceptance
-follow-up~(d.set-l-claude); we report the current Set~L results as
-a $2$-vendor proxy for the LLM-assisted SOTA category rather than as
-the SOTA-strongest configuration.
-
-\item The mining-based arm is reported through an adapted estimate
-of MR-Scout's reach on the \S\ref{subsec:test-design} substrate,
-derived from MR-Scout's published artifact reach figures rather
-than a full re-execution; this is a weaker delivery than the
-GP-evolved and LLM-assisted arms, and the corresponding claim is
-labelled as estimate-only throughout
-\S\ref{subsec:pooled-headtohead} and
-Table~\ref{tab:gen-cost}. Full MR-Scout re-execution on our
-substrate is committed as follow-up~(d) in
-Table~\ref{tab:future-work}.
-
-\item METRIC+ (Sun \& Chen~\cite{SunMETRICplus2021}, the
-inductive-catalogue prior art most directly contrasted with
-NOETHER's algebraic derivation) is \emph{not} run head-to-head: no
-automated METRIC+ identification pipeline is publicly available, and
-re-implementing the $9$-category MetaPattern catalogue from
-prose specification would constitute substantial software work
-outside this paper's scope. We instead provide a
-qualitative-plus-quantitative coverage contrast in the
-\S\ref{subsec:case-study} sorting worked example below
-(``METRIC+ versus NOETHER on the sorting algorithm class'') and in
-the per-block coverage diagnostic of
-\S\ref{subsec:test-design}: NOETHER's $\mathcal{A}_P$-derived
-catalogue covers the relevant blocks of the sorting algebra that
-METRIC+'s $9$-category catalogue parametrises differently, but the
-two approaches are not directly substitutable as head-to-head
-oracles.
-\end{itemize}
-
-\noindent
-The cost-component breakdown of the four MR-generation methods is
-given in Table~\ref{tab:gen-cost}.
+The protocol of \S\ref{para:comp-eval-protocol} commits Set~N against one representative per SOTA category: a GP-evolved baseline (GenMorph~\cite{GenMorph2024}), an LLM-assisted baseline (subsuming the single-sample probes of~\cite{Shin2024,ZhangChatGPTMR2023,GPTMR2025,AutoMT2025}), and a mining-based baseline (MR-Scout~\cite{MRScout2024}). Baseline-strength asymmetry: (i)~GP-evolved arm delivered in full at GenMorph's published 30-min budget on a single seed; multi-seed replication committed as follow-up~(a.budget-replication). (ii)~LLM-assisted arm delivered as a $2$-vendor (DeepSeek-V3, ChatGPT-4o-mini) $\times$ $5$-temperature ensemble ($100$ samples); the third commercial closed-vendor frontier (Anthropic Claude) is committed as post-acceptance follow-up~(d.set-l-claude), and the current Set~L results are reported as a $2$-vendor proxy rather than the SOTA-strongest configuration. (iii)~Mining-based arm reported through an adapted estimate of MR-Scout's reach derived from its published artifact figures; full re-execution committed as follow-up~(d). METRIC+~\cite{SunMETRICplus2021} is not run head-to-head because no automated identification pipeline is publicly available; the qualitative-plus-quantitative coverage contrast appears in \S\ref{subsec:case-study} (sorting worked example) and \S\ref{subsec:test-design} (per-block coverage diagnostic). The cost-component breakdown of all four methods is in Table~\ref{tab:gen-cost}.
 
 \subsection{MR-generation cost}
 \label{subsec:gen-cost}
@@ -2367,37 +2149,7 @@ precondition.
 
 \paragraph{Approximate-parity-at-lower-cost reading (H3a.3 verdict).}
 \label{para:cost-axis-h3a}
-Per H3a.3, Set~N's cost-axis advantage holds when the detection-axis
-reading is on the per-block primary (Table~\ref{tab:per-block-headtohead})
-rather than the D1 aggregate. On the $\mathcal{T}^{*}$ block Set~N
-edges Set~G with three exclusive $N$-only kills at zero per-SUT
-generation cost beyond the one-time CONSTRUCT-MP derivation
-($\approx 1$ hour human per SUT, amortising across SUTs sharing
-$\mathcal{A}_P$); Set~G's matching kill count costs a 30-min
-GAssert GP-search run per SUT ($\approx 4$ hours wall for the
-eight head-to-head SUTs in parallel-4) plus the Major-mutation
-$+$ JaCoCo $+$ Randoop pipeline assembly. On the $\mathcal{L}^{*}$
-block the two sets are complementary ($N$-only $= 2$, $G$-only $= 8$
-on a $24$-mutant denominator); Set~N's reach is reproducible
-without re-running the GP search, where Set~G's would require
-re-tuning the GP budget and seed if the SUT changes. The
-quantitative reading: \emph{a directional Set~N edge on the
-$\mathcal{T}^{*}$ block ($10/17$ vs $8/17$, $n = 17$ underpowered for
-inferential confirmation, Wilson intervals $[0.360, 0.784]$ and
-$[0.262, 0.690]$ overlap) and complementarity on $\mathcal{L}^{*}$
-are achieved at $\approx 1$ hour amortised human generation cost per
-SUT (NOETHER) versus $\approx 30$ minutes per-SUT GP search wall
-time (Set~G), with NOETHER's cost amortising across new SUTs in the
-same algebra family while Set~G's restarts from scratch}. The
-per-block $\mathcal{T}^{*}$ edge is a directional finding consistent
-with the framework's design prediction on that block; it does not
-overturn Set~G's aggregate dominance on the D1 stratum, which is
-acknowledged at the head of \S\ref{subsec:pooled-headtohead}. The $G$-block gap on the substrate's two
-Euclidean-style SUTs (\nameref{para:g-block-euclidean-boundary})
-is a framework boundary, not a cost-axis trade-off. The
-cost-axis claim of H3a.3 is therefore \emph{supported}: comparable
-within-scope per-block detection at lower amortised generation
-cost.
+H3a.3's cost-axis claim holds when detection is read on the per-block primary (Table~\ref{tab:per-block-headtohead}). On $\mathcal{T}^{*}$, Set~N edges Set~G with three $N$-only kills at zero per-SUT generation cost beyond the one-time CONSTRUCT-MP derivation ($\approx 1$\,h human, amortising across SUTs sharing $\mathcal{A}_P$); Set~G's matching count costs a 30-min GAssert GP-search per SUT ($\approx 4$\,h wall for the eight SUTs in parallel-4) plus the Major + JaCoCo + Randoop pipeline assembly. On $\mathcal{L}^{*}$, the sets are complementary ($N$-only $2$, $G$-only $8$ on $24$); Set~N's reach is reproducible without re-running GP, whereas Set~G requires re-tuning budget and seed when the SUT changes. \emph{Quantitative reading}: a directional $\mathcal{T}^{*}$ edge ($10/17$ vs $8/17$, $n=17$ underpowered) plus $\mathcal{L}^{*}$ complementarity, at $\approx 1$\,h amortised human cost versus $\approx 30$ minutes per-SUT GP search; NOETHER's cost amortises across new SUTs in the same algebra family while Set~G's restarts from scratch. The per-block edge does not overturn Set~G's D1 aggregate dominance (acknowledged at the head of \S\ref{subsec:pooled-headtohead}); the $G$-block gap on the Euclidean SUTs (\nameref{para:g-block-euclidean-boundary}) is a framework boundary, not a cost-axis trade-off. H3a.3 is therefore \emph{supported}: comparable within-scope per-block detection at lower amortised generation cost.
 
 \begin{table}[h]
 \centering
@@ -2408,22 +2160,22 @@ cost.
 \toprule
 Direction & Cost (estimated) & Expected effect on the reading \\
 \midrule
-(a) GP rerun at 30\,min GAssert budget                       & $\approx 30$\,min wall (parallel) & Probably widens Set~G's lead; conservative against \S\ref{subsec:pooled-headtohead}'s parity \\
-(a.budget-replication) GenMorph GP search 30\,min $\times$ $5$ random seeds on the \S\ref{subsec:test-design} substrate, to quantify GP stochasticity for the H3a.1 / H3a.2 readings & $\approx 20$\,h Remote compute + 1\,d local aggregation & Yields a distribution over Set~G's pooled D1 kill rate (currently single-seed point estimate $37/52$) and over the per-block complementarity 4-tuples; will quantify whether the $4$ Set-N-only kills on the PIT-covered D1 stratum are robust across GP seeds or seed-dependent \\
-(b) Extend to all 38 in-scope D4J subjects                    & $\approx 10$\,h human + $\approx 30$\,min compute & $n > 200$; tests $\mathcal{L}^{*}$-blindness at finer per-SUT resolution \\
-(b.cm) Apache Commons Math 3.6.1 pilot replication (3 SUTs: \texttt{Complex.multiply}, \texttt{Complex.divide}, \texttt{Vector3D.dotProduct}; 5 Set~N MRs derived through CONSTRUCT-MP with LLM-grid scaffolding and manual ratification; PIT 1.7.4 on 77 target-method mutants pooled; Set~G structurally N/A on Maven-resolved substrates because GenMorph's gen-pipeline assumes a flat-source SUT layout) & \textbf{Done (pilot)} & $G$-block kill rate $6/21 = 0.286$ Wilson 95\% $[0.138, 0.500]$; D2 stratum prediction passes at $2/29 = 0.069 \le 0.10$; $\mathcal{L}^{*}$ block $n = 0$ under Table~\ref{tab:pit-block} reconstruction (parallel to (e.4)'s per-(SUT, mutator) override-authoring limitation); underpowered for $\alpha = 0.05$ inference at this $n$; full numbers in \texttt{docs/commons\_math\_replication\_results.md} of the experiment repository \\
-(c) Patch GenMorph upstream (instance methods, boolean JORs)  & 1--2 days                         & Restores Set~G on the two N/A SUTs; weakens structural framing of \S\ref{subsec:convergent-witnesses} witness 2 \\
-(d.scout) Run Set~M (MR-Scout full re-execution) arm & $\approx 1$ day human + corpus access & Completes the mining-based-baseline portion of the three-SOTA-category protocol of \S\ref{para:comp-eval-protocol} \\
-(d.set-l) Multi-LLM ensemble Set~L (Xu's protocol scale) arm: $2$ vendors (DeepSeek, ChatGPT) $\times$ $5$ temperatures $\times$ $10$ SUTs = $100$ samples; $487$ LLM-proposed MRs harvested; deterministic template-matching translation produces $212$ executable JIR/JOR pairs ($43.5\%$ translation rate); per-LLM pooled kill rates on the $n = 70$ aligned-mutant substrate: ChatGPT $34/70 = 0.486$ Wilson 95\% $[0.372, 0.600]$, DeepSeek $33/70 = 0.471$ $[0.359, 0.587]$, ensemble union $34/70 = 0.486$ $[0.372, 0.600]$ & \textbf{Done (2 of 3 vendors)} & Set~L ensemble matches Set~N's reach on the matchable subset ($34/34$ kill overlap; $0$ Set-L-exclusive kills); $56.5\%$ of LLM-proposed MRs explore invariants outside the 8-block frame (associativity, identity / inverse element, monotonicity on non-O\textsubscript{le} SUTs) and have no in-protocol kill measurement here; results in \texttt{docs/set\_l\_phase2\_results.md} of the experiment repository. A third-vendor (Anthropic Claude) replication remains in (d.set-l-claude) below \\
-(d.set-l-claude) Third-vendor Claude Opus replication of (d.set-l) & $\approx 5$\,h Remote + token cost ($\approx \$10$--$30$) & Completes the 3-vendor protocol of Xu's spec; expected to corroborate ensemble result \\
-(e) D1 / D2 mutant labelling on the \S\ref{subsec:test-design} substrate (\S\ref{subsec:pit-block-matrix} matrix applied per-mutant with SUT-specific overrides) & \textbf{Done} & $52$ D1 / $10$ D2 / $0$ ambiguous on $n = 62$; post-equivalent-mutant exclusion $52$ D1 / $5$ D2 / $0$ ambiguous on $n = 57$; Set~N D1 kill rate $0.500$, Set~N D2 kill rate $0.000$ reported in \S\ref{subsec:pit-block-matrix} \\
-(g) Construct-trace consistency check via hand-crafted block-targeted mutants on the $5$ operative blocks PIT $1.7.4$ does not exercise ($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$, $\mathcal{E}^{*}$, $\mathcal{B}^{*}_{\mathrm{rel}}$); $25$ hand-crafted mutants ($5$ per block) targeting specific Set~N MRs' invariants & \textbf{Done (Appendix~\ref{app:augmented-stratum})} & Pipeline-correctness verification: \emph{$25/25$ Set~N detection is design-implied} by mutant authoring (each mutant constructed against a known Set~N MR's invariant) \emph{and is therefore not used as independent fault-detection evidence for H3a.1}. Set~G's incidental reach is $12/25 = 0.480$ with $0$ Set-G-only kills, of which $10/15$ Set-N-only contributions are from Set~G's absence-of-MR-coverage on \texttt{isSequence}. Generic-mutation independent test of H3a.1 on the five additional blocks is committed as a separate future-work item ((h) below). Construct-trace details in Appendix~\ref{app:augmented-stratum}; rationale in \texttt{docs/block\_coverage\_augmentation\_rationale.md} of the experiment repository \\
-(h) Independent (non-construct-trace) test of H3a.1 on the $5$ PIT-unexercised blocks: require an automated mutation operator catalogue that exercises $O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$, $\mathcal{E}^{*}$, $\mathcal{B}^{*}_{\mathrm{rel}}$ invariants without hand-authoring against Set~N's targeted invariants (e.g.\ extend PIT $1.7.4$'s mutator set with new operators derived from the algebra of the SUT, or adopt a domain-specific operator catalogue such as MAJOR's algebra-rich extension) & $\approx 1$\,month research + tooling & Would yield generic-mutation per-block kill rates for the five additional blocks on the \S\ref{subsec:test-design} substrate, completing the H3a.1 per-block evidence base \\
-(i) METRIC$+$ head-to-head: re-implement the METRIC$+$ category enumeration as an automated identifier (from \cite{SunMETRICplus2021}'s prose specification), run on the \S\ref{subsec:test-design} substrate, and compare kill rate against Set~N at the same mutation budget & $\approx 2$\,weeks engineering + $\approx 30$\,min compute & Would convert the qualitative-plus-quantitative coverage contrast of \S\ref{para:metricplus-sorting} into a head-to-head fault-detection metric; currently METRIC$+$ is contrasted only as a category-enumeration scaffold, not as an executable comparator \\
-(e.2) Equivalent-mutant exclusion on the head-to-head denominator via two-stage filter (kill-vector auto-classification for the $44$ singly-or-doubly-killed mutants; progressive multi-LLM vote on the $18$ both-miss mutants, with Anthropic Claude Opus 4.6 as a third-voter tiebreaker invoked only when stage-1 voters DeepSeek + ChatGPT disagree) & \textbf{Done} & $5$ equivalents identified on the $n = 62$ head-to-head set, all ConditionalsBoundaryMutator on recursive normalising SUTs (\texttt{gcdSig}, \texttt{lcmSig}, \texttt{powerSig}); excluded symmetrically from both Sets' denominators; final $n = 57$ pooled, $n = 52$ D1, $n = 5$ D2 after the e.1 v2 override extension; numbers reported in \S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote}) \\
-(e.3) Tighten or excise the two grid Set~N MRs whose \texttt{jor} predicate is out-of-domain on \texttt{powerSig} (\texttt{E\_power\_of\_power} and \texttt{L\_scale\_base}) & $\approx 4$\,h human (predicate refinement + green-suite re-validation) & Restores the two MRs to the PIT-evaluable set; expected to recover $\le 2$ kills on \texttt{powerSig} (currently $7/12$) \\
-(e.4) $G$-block MR re-synthesis (or in-scope documentation) for Euclidean-style SUTs (\texttt{gcdSig}, \texttt{lcmSig}): the grid-synthesised $G$ MR encodes a sign-flip identity that the SUT's own \texttt{a < 0 ? -a : a} normalisation prologue absorbs before the recursive Euclidean reduction fires & \textbf{Done (documented)} & Closed via \S\ref{subsec:l-blindness-confirmed} (\nameref{para:g-block-euclidean-boundary}): the $0/7$ Set~N $G$-block kill rate on \texttt{gcdSig}+\texttt{lcmSig} is the framework-correct reading under the scope precondition (the SUT's input-domain normalisation absorbs the $G$-action before any downstream mutation fires); a $\mathcal{R}$-block reversibility-identity re-derivation \emph{post}-normalisation remains an open follow-up but is now classified as theoretical extension rather than MR-design defect \\
-(j) External-transfer test on an independently-authored reactor-physics MR corpus: apply NOETHER's eight-block decomposition to a PARCS V\&V suite catalogue or an IAEA-TECDOC-class catalogue authored by a team unconnected to the present authors, and report what the framework reproduces / refines / predicts / fails to reach. The \S\ref{subsec:reactor-mapping} comparison tests internal vocabulary coherence on the authors' own 84-MR corpus; external-transfer evidence is required to convert that into a generalisable systematisation claim & $\approx 1$\,month corpus-access + classification & Would yield external-team Fleiss $\kappa$ on the eight-block labelling and a per-MR reproduction/refinement/prediction count on an unrelated reactor-physics catalogue; analogous on the reactor side to the cross-codebase commons-math pilot (b.cm) on the Java side \\
+(a) GP rerun at 30-min GAssert budget & $\approx 30$\,min parallel & Probably widens Set~G's lead; conservative against \S\ref{subsec:pooled-headtohead} \\
+(a.budget-replication) GenMorph $30$-min $\times$ $5$ seeds for GP stochasticity quantification & $\approx 20$\,h remote + 1\,d aggregation & Distribution over Set~G's pooled D1 rate (single-seed point estimate $37/52$); robustness of the $4$ Set-N-only kills \\
+(b) Extend to all 38 in-scope D4J subjects & $\approx 10$\,h human + $30$\,min compute & $n > 200$; finer per-SUT $\mathcal{L}^{*}$-blindness resolution \\
+(b.cm) Commons Math 3.6.1 pilot (3 SUTs, 5 Set~N MRs, 77 target-method mutants; Set~G structurally N/A on Maven-resolved substrates) & \textbf{Done (pilot)} & Pooled Set~N $10/77 = 13.0\%$; $G$-block $6/21 = 28.6\%$; D2 prediction passes $2/29 = 6.9\%$; $n$ underpowered; details in supplementary \\
+(c) Patch GenMorph upstream (instance methods, boolean JORs) & 1--2 days & Restores Set~G on two N/A SUTs; weakens \S\ref{subsec:convergent-witnesses} witness 2 \\
+(d.scout) Set~M full MR-Scout re-execution & $\approx 1$\,d human + corpus & Completes mining-based arm of \S\ref{para:comp-eval-protocol} \\
+(d.set-l) Multi-LLM ensemble Set~L (2 vendors $\times$ 5 temps $\times$ 10 SUTs = 100 samples; 487 MRs, 212 executable, 43.5\% translation) & \textbf{Done (2 of 3 vendors)} & Ensemble matches Set~N on matchable subset ($34/34$); $56.5\%$ outside the 8-block frame; results in supplementary \\
+(d.set-l-claude) Third-vendor Claude Opus replication & $\approx 5$\,h remote + \$10--30 & Completes 3-vendor protocol; expected to corroborate ensemble \\
+(e) D1/D2 mutant labelling & \textbf{Done} & $52$ D1 / $10$ D2 pre-, $52$ D1 / $5$ D2 post-equivalent-mutant exclusion \\
+(g) Construct-trace consistency check, $25$ hand-crafted block-targeted mutants on 5 PIT-unexercised blocks & \textbf{Done (supplementary)} & Pipeline-correctness; $25/25$ Set~N detection is design-implied; not used as independent fault-detection evidence \\
+(h) Generic-mutation independent test of H3a.1 on 5 PIT-unexercised blocks (operator catalogue not hand-authored against Set~N) & $\approx 1$\,month research + tooling & Per-block kill rates for the five additional blocks \\
+(i) METRIC$+$ head-to-head: re-implement category enumeration as automated identifier, run on \S\ref{subsec:test-design}~substrate & $\approx 2$\,weeks engineering & Convert qualitative coverage contrast into measured kill-rate \\
+(e.2) Two-stage equivalent-mutant exclusion (kill-vector auto-classify + multi-LLM vote with Claude tiebreaker) & \textbf{Done} & $5$ equivalents on $n=62$ (all ConditionalsBoundaryMutator on recursive normalising SUTs); final $n=57$ \\
+(e.3) Tighten 2 out-of-domain Set~N MRs on \texttt{powerSig} (\texttt{E\_power\_of\_power}, \texttt{L\_scale\_base}) & $\approx 4$\,h human & Recovers $\le 2$ kills on \texttt{powerSig} \\
+(e.4) $G$-block MR re-synthesis (or in-scope documentation) for Euclidean SUTs (\texttt{a < 0 ? -a : a} normalisation absorbs sign-flip) & \textbf{Done (documented)} & $0/7$ on Euclidean SUTs is framework-correct under scope precondition; $\mathcal{R}$-block post-normalisation re-derivation open \\
+(j) External-transfer on an independently-authored reactor-physics corpus (PARCS V\&V / IAEA-TECDOC) & $\approx 1$\,month corpus-access & Fleiss $\kappa$ on 8-block labelling; reactor-side analogue of (b.cm) \\
 \bottomrule
 \end{tabular}
 \end{table}
