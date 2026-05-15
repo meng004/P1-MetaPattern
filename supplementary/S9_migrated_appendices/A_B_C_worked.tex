@@ -1,0 +1,140 @@
+\section{NOETHER on the remaining reactor equations}
+\label{app:reactor-others}
+
+This appendix runs CONSTRUCT-MP on four further reactor equations as confidence-strengthening evidence.
+
+\subsection{The heat equation}
+
+$\rho c_p\,\partial_t T = \nabla\!\cdot\!(k\nabla T) + q'''$. The operator algebra $\mathcal{A}_{\mathrm{heat}}$ contains geometric symmetry, conductivity scaling, diffusion-operator self-adjointness, mesh-refinement limits, and qualitative-dynamics shape invariants, but no time-reversal (heat flow is irreversible). CONSTRUCT-MP yields $\mathbb{M}(\mathcal{A}_{\mathrm{heat}}) = \{\,m_{\mathrm{inv}},\,m_{\mathrm{mono}},\,m_{\mathrm{adj}},\,m_{\mathrm{conv}}\,\}$, four MetaPatterns, with $m_{\mathrm{rev}}$ correctly absent. The full Step~1--4 derivation parallels Section~\ref{app:momentum} below; we omit the per-step expansion since its content is structurally identical to the momentum-equation case once $G_{\mathrm{Gal}}$ is replaced by $G_{\mathrm{geom}}$ alone and $L_{\mathrm{visc}}$ by the heat-conduction Laplacian.
+
+\subsection{The continuity equation}
+
+$\partial_t \rho + \nabla\!\cdot\!(\rho\,\mathbf{v}) = 0$. CONSTRUCT-MP yields $\mathbb{M}(\mathcal{A}_{\mathrm{cont}}) = \{\,m_{\mathrm{inv}},\,m_{\mathrm{mono}},\,m_{\mathrm{conv}}\,\}$. Integral mass conservation $\frac{d}{dt}\int_V \rho\,dV = -\oint_{\partial V} \rho\mathbf{v}\!\cdot\!\hat{n}\,dS$ emerges deductively from the equation's divergence structure. The four-step derivation follows the template of Section~\ref{app:momentum}, with the simplification that $T^{*}_{\mathrm{cont}} = \emptyset$ (no inner-product self-adjointness) and $\mathcal{D}^{*}_{\mathrm{cont}} = \emptyset$ (no qualitative-dynamics structure beyond mass conservation).
+
+\subsection{The momentum equation: a worked end-to-end derivation}
+\label{app:momentum}
+
+We treat the Reynolds-averaged momentum equation in detail, both as a confidence-strengthening instantiation and as a parallel to the Boltzmann derivation of Section~\ref{sec:reactor}, so a reader can verify CONSTRUCT-MP on a mathematically distinct equation. The remaining three appendix subsections retain their concise form and are read against this template; we mark cross-references as ``see analogous derivation in \S\ref{app:momentum}'' where the abbreviation might otherwise obscure the construction.
+
+\paragraph{The equation.} The Reynolds-averaged Navier--Stokes momentum equation is
+\begin{equation}
+\partial_t (\rho \mathbf{v}) + \nabla\!\cdot\!(\rho \mathbf{v}\otimes\mathbf{v}) = -\nabla p + \nabla\!\cdot\!\boldsymbol{\tau} + \rho\mathbf{g},
+\label{eq:rans}
+\end{equation}
+where $\rho$ is fluid density, $\mathbf{v}$ the mean velocity field, $p$ the pressure, $\boldsymbol{\tau}$ the deviatoric stress tensor (incorporating both the molecular and Reynolds stresses), and $\mathbf{g}$ the body-force acceleration.
+
+\paragraph{The operator algebra $\mathcal{A}_{\mathrm{mom}}$.}
+Following Definition~1, we identify the operators acting on $\mathcal{X}_{\mathrm{mom}}$ (initial-and-boundary data) and $\mathcal{Y}_{\mathrm{mom}}$ (the velocity-pressure solution pair):
+\begin{itemize}
+    \item $G_{\mathrm{geom}}$ --- spatial isometries respected by the boundary geometry (rotations, translations of homogeneous domains).
+    \item $G_{\mathrm{Gal}}$ --- the Galilean group $\mathrm{Gal}(3) \cong \mathrm{SO}(3) \ltimes (\mathbb{R}^3 \rtimes \mathbb{R}^3)$ acting on inertial frames: rotations, spatial translations, and uniform-velocity boosts.
+    \item $\mathcal{S}_p$ --- pressure-shift operators $p \mapsto p + p_0$ (incompressible regime: arbitrary constant $p_0$ does not affect $\mathbf{v}$).
+    \item $\mathcal{O}_{\mathrm{rho}}$ --- density-scaling for incompressible flow (uniform rescaling $\rho \mapsto \alpha\rho$).
+    \item $L_{\mathrm{visc}}$ --- the viscous-dissipation operator $\mathbf{v} \mapsto \nabla\!\cdot\!(\mu \nabla \mathbf{v})$, self-adjoint with respect to the standard $L^2$ inner product on the divergence-free velocity space (Stokes operator).
+    \item $\mathcal{L}_h$ --- mesh-refinement limit operator (CFD discretisation).
+    \item $\mathcal{D}_{\mathrm{flow}}$ --- qualitative-dynamics operators capturing flow-regime classification (laminar/transitional/turbulent transitions, vortex-shedding onset).
+    \item $\mathcal{E}_{\mathrm{turb}}$ --- method-comparison operators ordering turbulence-closure models (e.g.\ $k$-$\varepsilon$ vs.\ LES on canonical benchmarks).
+\end{itemize}
+Time-reversal is broken by the dissipative term $\nabla\!\cdot\!\boldsymbol{\tau}$, so $\mathcal{T}^{*}_{\mathrm{mom}} = \emptyset$ and consequently $m_{\mathrm{rev}}$ does not appear in $\mathbb{M}(\mathcal{A}_{\mathrm{mom}})$.
+
+\paragraph{Decomposition.} The eight-block decomposition of $\mathcal{A}_{\mathrm{mom}}$ is
+$$
+\mathcal{D}(\mathcal{A}_{\mathrm{mom}}) = \bigl(\,\{G_{\mathrm{geom}}, G_{\mathrm{Gal}}\},\; \{\mathcal{S}_p, \mathcal{O}_{\mathrm{rho}}\},\; \{L_{\mathrm{visc}}\},\; \emptyset,\; \{\mathcal{L}_h\},\; \{\mathcal{D}_{\mathrm{flow}}\},\; \{\mathcal{E}_{\mathrm{turb}}\},\; \emptyset\,\bigr),
+$$
+where the trailing $\emptyset$ is $\mathcal{B}^{*}_{\mathrm{rel}}$ (no idempotent-semiring rewriting on momentum-equation states). Six of the eight blocks are non-empty.
+
+\paragraph{Step 1. Invariant extraction.} For each non-empty block we record the structurally relevant invariants:
+\begin{itemize}
+    \item $G_{\mathrm{Gal}}$: under a Galilean boost $\mathbf{v} \mapsto \mathbf{v} + \mathbf{u}_0$ (constant $\mathbf{u}_0$) with simultaneous coordinate translation, equation~\eqref{eq:rans} is form-invariant: derivatives of the boost vanish (constant $\mathbf{u}_0$), and $\rho\mathbf{g}$ is unaffected. The invariant is $\mathrm{form}(\eqref{eq:rans}) \mapsto \mathrm{form}(\eqref{eq:rans})$.
+    \item $\mathcal{S}_p$ (incompressible regime): $\nabla p$ is invariant under $p \mapsto p + p_0$, so the velocity solution is unchanged.
+    \item $\mathcal{O}_{\mathrm{rho}}$: in the incompressible regime $(\rho \to \alpha \rho)$ rescales the body force consistently if $\mathbf{g} \to \mathbf{g}$; the resulting solution rescales as $\mathbf{v}\to\mathbf{v}$ if both sides are simultaneously rescaled.
+    \item $L_{\mathrm{visc}}$: $\langle L_{\mathrm{visc}}\mathbf{v},\mathbf{w}\rangle = \langle \mathbf{v}, L_{\mathrm{visc}}\mathbf{w}\rangle$ on divergence-free $\mathbf{v},\mathbf{w}$ with appropriate boundary conditions.
+    \item $\mathcal{L}_h$: discretisation-error tends to zero under mesh refinement at a known order.
+    \item $\mathcal{D}_{\mathrm{flow}}$: vortex-shedding onset at the critical Reynolds number $\mathrm{Re}_c$ is preserved under perturbations of the discretisation.
+    \item $\mathcal{E}_{\mathrm{turb}}$: LES no-worse-than RANS on attached-flow benchmarks at sufficient resolution.
+\end{itemize}
+
+\paragraph{Step 2. MR derivation.} \texttt{Translate} carries each invariant to a concrete MR over a CFD program $P_{\mathrm{cfd}}$:
+\begin{itemize}
+    \item $\rho_{\mathrm{Gal}}$: $\;P_{\mathrm{cfd}}(\mathbf{u}_0\text{-boosted IC/BC}) = \mathbf{u}_0\text{-boost of } P_{\mathrm{cfd}}(\text{original IC/BC})$.
+    \item $\rho_{\mathrm{press}}$: $\;P_{\mathrm{cfd}}(\text{IC with } p \mapsto p + p_0) - P_{\mathrm{cfd}}(\text{IC}) = (\mathbf{0},\,p_0)$ in the velocity-pressure pair.
+    \item $\rho_{\mathrm{visc}}^{\mathrm{adj}}$: $\;\langle P_{\mathrm{cfd}}(\text{forcing }\mathbf{f}_1),\,\mathbf{f}_2\rangle = \langle \mathbf{f}_1,\,P_{\mathrm{cfd}}^{\dagger}(\mathbf{f}_2)\rangle$ for the adjoint solver.
+    \item $\rho_{\mathrm{conv}}$: $\;\|P_{\mathrm{cfd}}^{(h)} - P_{\mathrm{cfd}}^{(h_*)}\|_{L^2} = O(h^k)$ for the discretisation order $k$.
+    \item $\rho_{\mathrm{Re}}$: $\;\mathrm{vortex\text{-}shed}(P_{\mathrm{cfd}}, \mathrm{Re}) = \mathrm{vortex\text{-}shed}(P_{\mathrm{cfd}}, \mathrm{Re}')$ on either side of $\mathrm{Re}_c$.
+    \item $\rho_{\mathrm{turb}}$: $\;\mathrm{err}(P_{\mathrm{cfd}}^{\mathrm{LES}}) \le \mathrm{err}(P_{\mathrm{cfd}}^{\mathrm{RANS}})$ on canonical benchmarks at high resolution.
+\end{itemize}
+
+\paragraph{Step 3--4. Quotient and aggregation.} Quotienting by structural equivalence within each block yields
+$$
+\mathbb{M}(\mathcal{A}_{\mathrm{mom}}) = \{\,m_{\mathrm{inv}},\, m_{\mathrm{mono}},\, m_{\mathrm{adj}},\, m_{\mathrm{conv}},\, m_{\mathrm{dyn}},\, m_{\mathrm{cmp}}\,\}.
+$$
+$m_{\mathrm{rev}}$ is correctly absent because $\mathcal{T}^{*}_{\mathrm{mom}} = \emptyset$.
+
+\paragraph{Comparison to inductive expectation.} The Galilean instance of $m_{\mathrm{inv}}$ is in the standard CFD-testing literature but is rarely listed as a stand-alone MetaPattern; it is more typically subsumed under ``coordinate-system independence'' as a single MR. NOETHER's contribution at this level is the same as in the reactor case: it places Galilean invariance, viscous reciprocity, vortex-shedding qualitative dynamics, and turbulence-closure ordering into structurally distinct equivalence classes that an inductive catalogue tends to conflate. The derivation above can be re-run on the corresponding sub-equations (Stokes flow drops $G_{\mathrm{Gal}}$'s convective non-linearity; potential flow drops $L_{\mathrm{visc}}$); each truncation removes the corresponding MetaPatterns from the output.
+
+\subsection{The resonance slowing-down equation}
+
+$\Sigma_t(E)\,\phi(E) = \int_{E}^{E/\alpha} \frac{\Sigma_s(E')\,\phi(E')}{(1-\alpha)E'}\,dE' + S(E)$. The self-shielding non-monotonicity~\cite{BellGlasstone1970, LewisMiller1993} appears as a sub-class of $m_{\mathrm{mono}}$ with bounded saturation rather than the inductive ``trajectory'' classification. The Step~1--4 derivation again parallels Section~\ref{app:momentum}, distinguished by an energy-group permutation symmetry $\mathfrak{R}_E$ in the $G$ block and a non-monotone interval in $O_{\le}$ that the canonical-block ordering routes to $m_{\mathrm{mono}}$ rather than $m_{\mathrm{dyn}}$.
+
+\subsection{Aggregate}
+
+Across the four equations, NOETHER consistently produces MetaPattern sets drawn from the seven labels. No new label is required, and no expected label is missing under the algebraic structure each equation possesses. The systematic absences predicted by the framework are confirmed across the appendix's instantiations.
+
+%% Appendix B: per-MR source provenance for Table 3
+\section{Per-MR source provenance for the representative MRs of Table~\ref{tab:elementwise}}
+\label{app:per-mr}
+
+This appendix makes the §\ref{subsec:reactor-mapping} claims of \emph{refinement} and \emph{prediction} auditable from textbook reactor-physics literature alone. For each of the 12 representative MRs in Table~\ref{tab:elementwise} (plus one supplementary $G$-block item, reflective-boundary symmetry, listed below as item~(iii) and provided as additional context not in the headline table), we list the source equation, the \texttt{Translate} template invoked, and the canonical block assignment, with citations to the original textbook or research-literature source where each MR's underlying physics is documented.
+
+\subsection*{B.1 Source equations and block assignments}
+
+\noindent\textbf{Group 1: $G$-block MRs (geometric and energy-group symmetries).}
+
+\noindent (i) \emph{Quarter-rotation invariance for the steady-state Boltzmann equation.} Source equation: $\Omega \cdot \nabla\phi(\mathbf{r}, \Omega, E) + \Sigma_t \phi = \int \int \Sigma_s\, \phi\, d\Omega' dE' + S$. Symmetry: $\phi(R_{\pi/2}\mathbf{r}, R_{\pi/2}\Omega, E) = \phi(\mathbf{r}, \Omega, E)$ for assemblies with quarter-symmetric core layouts. Source: standard PWR-physics treatment, Bell \& Glasstone~\cite{BellGlasstone1970} Chapter~3. \texttt{Translate} template: $G$-block ($\rho_{\iota,G}$, Table~\ref{tab:translate} row 1). Block: $G$, MetaPattern $m_{\mathrm{inv}}$.
+
+\noindent (ii) \emph{Energy-group permutation symmetry.} Source equation: multi-group transport with isotropic scattering and unscreened slowing-down. Symmetry: $\phi_g \mapsto \phi_{\sigma(g)}$ commutes with the multi-group operator under permutations $\sigma$ that preserve the scattering kernel structure. Source: Lewis \& Miller~\cite{LewisMiller1993} §3.2. Block: $G$, MetaPattern $m_{\mathrm{inv}}$.
+
+\noindent (iii) \emph{Reflective-boundary symmetry.} Source equation: same as (i) with reflective boundary conditions. Symmetry: $\phi$ is invariant under reflection across the boundary normal direction. Source: Bell \& Glasstone~\cite{BellGlasstone1970} §3.5. Block: $G$, MetaPattern $m_{\mathrm{inv}}$.
+
+\noindent\textbf{Group 2: $O_{\le}$-block MRs (parameter monotonicity).}
+
+\noindent (iv) \emph{$k_{\mathrm{eff}}$ monotonicity in fuel enrichment.} Source equation: $k_{\mathrm{eff}} = \nu \langle\Sigma_f \phi\rangle / \langle (\Sigma_a + DB^2) \phi\rangle$. Source: Lewis \& Miller~\cite{LewisMiller1993} §6.4. Block: $O_{\le}$, MetaPattern $m_{\mathrm{mono}}$.
+
+\noindent (v) \emph{Coolant-density Doppler monotonicity.} Source equation: temperature-dependent cross-sections $\Sigma_t(T) = \Sigma_t(T_0) + \alpha (T-T_0)$ for resonance materials. Source: IAEA TECDOC-1949 (\emph{Reactor Physics Calculations for Power Reactors}). Block: $O_{\le}$, MetaPattern $m_{\mathrm{mono}}$.
+
+\noindent (vi) \emph{Burnup-step monotonicity.} Source equation: Bateman ODE chain $dN/dt = AN$ with negative-eigenvalue decay matrix on the leading isotopes. Source: Lewis \& Miller~\cite{LewisMiller1993} §10.7. Block: $O_{\le}$, MetaPattern $m_{\mathrm{mono}}$.
+
+\noindent\textbf{Group 3: $\mathcal{L}^*$-block MRs (mesh and time-step convergence).}
+
+\noindent (vii) \emph{Mesh-refinement convergence rate.} Source equation: spatial discretisation error of the diffusion operator $\nabla \cdot D \nabla$ scales as $O(h^2)$ for a centred-difference scheme. Source: Lewis \& Miller~\cite{LewisMiller1993} §6.2. Block: $\mathcal{L}^*$, MetaPattern $m_{\mathrm{conv}}$.
+
+\noindent (viii) \emph{Time-step convergence in transient.} Source equation: the time-discretisation error of the implicit Euler scheme on the kinetic equations scales as $O(\Delta t)$. Source: Lewis \& Miller~\cite{LewisMiller1993} §11.4. Block: $\mathcal{L}^*$, MetaPattern $m_{\mathrm{conv}}$.
+
+\noindent\textbf{Group 4: $\mathcal{D}^*$-block MRs (qualitative dynamics).}
+
+\noindent (ix) \emph{Xenon-poisoning S-curve.} Source equation: $dX/dt = \gamma_X \Sigma_f \phi + \lambda_I I - (\lambda_X + \sigma_X^a \phi) X$. Source: Bell \& Glasstone~\cite{BellGlasstone1970} §10.3 (xenon-iodine kinetics with characteristic post-shutdown peak). Block: $\mathcal{D}^*$, MetaPattern $m_{\mathrm{dyn}}$.
+
+\noindent (x) \emph{Decay-heat trajectory shape preservation.} Source equation: the post-shutdown decay heat curve has a characteristic logarithmic-decay envelope. Source: ANS Standard ANS-5.1-2014 (\emph{Decay Heat Power}). Block: $\mathcal{D}^*$, MetaPattern $m_{\mathrm{dyn}}$.
+
+\noindent\textbf{Group 5: $\mathcal{E}^*$-block MR (method comparison).}
+
+\noindent (xi) \emph{Diffusion-vs-transport approximation bound.} Source equation: $|\phi_{\mathrm{diff}} - \phi_{\mathrm{transport}}| \le c \|\nabla \phi\|$ where $c$ depends on the medium's transport-mean-free-path-to-system-size ratio. Source: Lewis \& Miller~\cite{LewisMiller1993} §3.6 (asymptotic equivalence of $P_1$ and full transport in optically thick regimes). Block: $\mathcal{E}^*$, MetaPattern $m_{\mathrm{cmp}}$.
+
+\noindent\textbf{Group 6: Predicted MRs (no canonical instance in the 84-MR corpus; both members are derived in \S\ref{subsec:noether-mAdj}).}
+
+\noindent (xii) \emph{Adjoint-flux reciprocity.} Source equation: $\langle \phi^{\dagger}, S \rangle = \langle \phi, S^{\dagger} \rangle$, the central reciprocity identity of transport theory. Source: Bell \& Glasstone~\cite{BellGlasstone1970} §6.1; Lewis \& Miller~\cite{LewisMiller1993} §4.2. Derivation: §\ref{subsec:noether-mAdj} above. Block: $T^*$, MetaPattern $m_{\mathrm{adj}}$.
+
+\noindent (xiii) \emph{Collisionless time-reversal compatibility.} Source equation: in the absence of scattering, $\phi(\mathbf{r}, \Omega, E, t) = \phi(\mathbf{r}, -\Omega, E, -t)$ on the time-reversible sub-domain. Source: Bell \& Glasstone~\cite{BellGlasstone1970} §1.7. Block: $\mathcal{T}^*$, MetaPattern $m_{\mathrm{rev}}$.
+
+\subsection*{B.2 What this appendix establishes}
+The 12 representative MRs of Table~\ref{tab:elementwise} are documented in textbook and research-literature sources. The §\ref{subsec:reactor-mapping} claims --- that NOETHER reproduces three prior MetaPatterns, refines two, and predicts two further --- are therefore evaluable from this appendix alone. Supplementary S2 (\texttt{pwr\_84mr\_full.csv}) provides a larger 84-row corpus with per-row textbook citations.
+
+%% Appendix C (was B): worked multi-block examples
+\section{Worked examples for multi-block-derivable MRs}
+\label{app:multi-block}
+
+\paragraph{Example B.1. Adjoint reciprocity in a self-adjoint, geometrically-symmetric solver.} The MR ``for any source-detector pair $(S, Q)$, the response is invariant under the geometric quarter-rotation'' admits derivation through $G$ (rotation invariance) or $T^{*}$ (reciprocity-derived invariance). Definition~\ref{def:canonical-order} ($G > T^{*}$) assigns the MR to $m_{\mathrm{inv}}$.
+
+\paragraph{Example B.2. Burnup semi-group monotonicity.} The Bateman MR ``$P(\Delta t_1 + \Delta t_2)\,N_0 = P(\Delta t_2)\circ P(\Delta t_1)\,N_0$ implies monotonic decay of stable nuclides'' admits derivation through $G$ (semi-group identity) and $O_{\le}$ (monotonicity). $G > O_{\le}$, so the MR is canonically $m_{\mathrm{inv}}$.
+
+%% Appendix C

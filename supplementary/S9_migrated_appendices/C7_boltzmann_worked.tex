@@ -1,0 +1,42 @@
+\subsection*{C.7 A worked enumeration of CONSTRUCT-MP on the Boltzmann algebra}
+\label{app:pmcm-enumeration}
+
+Theorem~\ref{thm:closure} (closure under \texttt{Translate}) and Theorem~\ref{thm:decidable} (polynomial-time decidability of CONSTRUCT-MP) are stated abstractly. This appendix records a concrete, systematic enumeration on the program-induced operator algebra $\mathcal{A}_{\mathrm{Boltz}}$ of the production reactor-physics solver underlying Section~\ref{subsec:reactor-mapping}. The enumeration is intended both as an instance of CONSTRUCT-MP's worked-out output and as evidence that the framework's predictive content extends well beyond the two MetaPatterns ($m_{\mathrm{adj}}$, $m_{\mathrm{rev}}$) whose re-classification was demonstrated in Section~\ref{subsec:reactor-mapping}.
+
+\paragraph{Protocol.} CONSTRUCT-MP (Section~\ref{subsec:decomposition}) was applied to a nine-block working decomposition $\mathcal{D}'(\mathcal{A}_{\mathrm{Boltz}}) = \mathcal{D}(\mathcal{A}_{\mathrm{Boltz}}) \cup \{ M_{\mathrm{lip}} \}$, where $M_{\mathrm{lip}}$ is the candidate metric-stability block of Appendix~C.5.2. The four-step procedure of Section~3.2 was instantiated at each block: (i) extract one canonical block invariant from the operator family of $\mathcal{A}_{\mathrm{Boltz}}$; (ii) apply the per-block \texttt{Translate} template (Definition~\ref{def:alg-induced}) to obtain a candidate MR; (iii) quotient out within the block; (iv) aggregate across blocks under canonical ordering (Definition~\ref{def:canonical-order}). The procedure terminates in time $O(n \cdot \max_i t_i \cdot \log n)$ per Theorem~\ref{thm:decidable} on the finite generating set; on $\mathcal{A}_{\mathrm{Boltz}}$ this completes within seconds on a desktop machine.
+
+\paragraph{Result.} The enumeration produced 35 candidate MRs across the nine blocks. Of these, 28 are present in either the prior 84-MR PWR corpus or the 18-MR engineering catalogue used in the audit of Section~\ref{subsec:reactor-mapping}. Seven were not previously catalogued in either source; one further candidate (time-reversal applied to the diffusion sub-domain) is structurally legitimate but vacuous on dissipative dynamics and is reported as a negative result. Table~\ref{tab:pmcm-new7} summarises the seven new MRs.
+
+\begin{table}[h]
+\centering
+\caption{Seven MRs produced by CONSTRUCT-MP on $\mathcal{D}'(\mathcal{A}_{\mathrm{Boltz}})$ that are absent from both the 84-MR PWR corpus and the 18-MR engineering catalogue.}
+\label{tab:pmcm-new7}
+\footnotesize
+\begin{tabular}{p{2.0cm}p{1.0cm}p{4.5cm}p{4.5cm}}
+\toprule
+\textbf{ID} & \textbf{Block} & \textbf{Invariant / \texttt{Translate} template} & \textbf{Reactor-physics content} \\
+\midrule
+$\rho_{\mathrm{pert}}$ & $T^{*}$ & First-order adjoint perturbation $\Delta k = \langle \varphi^{\dagger}, \Delta B \, \varphi \rangle / \langle \varphi^{\dagger}, F\, \varphi \rangle$ ; follow-up = small operator perturbation $\Delta B$ ; predicate = $\Delta k_{\mathrm{pred}} \approx \Delta k_{\mathrm{obs}}$ within $o(\Delta B)$ & Adjoint-weighted sensitivity coefficient (perturbation theory) \\
+\addlinespace
+$\rho_{\mathrm{burnup}}$ & $\mathcal{D}^{*}$ & Qualitative-shape invariant $dk_{\infty}/d\mathrm{BU} < 0$ over fuel cycle ; follow-up = burnup increment; predicate = monotone decay & Fuel-depletion kinetics shape \\
+\addlinespace
+$\rho_{\mathrm{tally}}$ & $\mathcal{B}^{*}_{\mathrm{rel}}$ & Bag-equality invariant under permutation of MC tally events ; follow-up = $\sigma$-permuted event stream; predicate = $\mathrm{aggregate}(\sigma(E)) = \mathrm{aggregate}(E)$ & Monte Carlo tally accumulator order-independence \\
+\addlinespace
+$\rho_{\mathrm{xs}}$ & $M_{\mathrm{lip}}$ & $K$-Lipschitz invariant $|k'_{\mathrm{eff}} - k_{\mathrm{eff}}| \le K_{\Sigma} \cdot \|\Sigma' - \Sigma\|_{\infty}$ ; follow-up = bounded XS perturbation; predicate = bounded $k_{\mathrm{eff}}$ response & Cross-section data uncertainty propagation \\
+\addlinespace
+$\rho_{\mathrm{mesh}}$ & $M_{\mathrm{lip}}$ & $K$-Lipschitz invariant $d(\varphi_A, \varphi_B) \le K \cdot |Q(A) - Q(B)|$ at fixed $h$ ; follow-up = mesh re-shuffle preserving size; predicate = bounded flux change & Mesh-quality stability at fixed mesh size \\
+\addlinespace
+$\rho_{\mathrm{green}}$ & $M_{\mathrm{lip}}$ & Locality invariant $\|\varphi' - \varphi\| \le K \cdot G(r, r_0) \cdot |\delta|$ ; follow-up = local point-source perturbation at $r_0$; predicate = Green's-function-bounded response at distant $r$ & Source-localised flux response decay \\
+\addlinespace
+$\rho_{\mathrm{batch}}$ & $M_{\mathrm{lip}}$ & $K$-Lipschitz invariant $|\bar T_{B'} - \bar T_B| \le K \cdot \sqrt{1/B}$ ; follow-up = MC batch-size shift; predicate = bounded tally drift & Monte Carlo batch-size stability \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Negative result.} Applying \texttt{Translate} to the time-reversal block $\mathcal{T}^{*}$ on the diffusion sub-domain produces the empty equivalence class: the diffusion equation is dissipative, so the reversibility precondition of $m_{\mathrm{rev}}$ fails on this sub-domain. CONSTRUCT-MP correctly contracts $\mathcal{T}^{*}$ on diffusion solvers rather than producing a vacuous MR. The framework therefore rejects ill-posed instantiations as part of the enumeration itself.
+
+\paragraph{Connection to Section~\ref{subsec:reactor-mapping}.} Section~\ref{subsec:reactor-mapping} re-classified two MetaPatterns ($m_{\mathrm{adj}}$, $m_{\mathrm{rev}}$) that were absent from the prior inductive 84-MR catalogue. The enumeration above extends this from two MetaPatterns to seven concrete MR instances, including one in $T^{*}$ that refines $m_{\mathrm{adj}}$ ($\rho_{\mathrm{pert}}$, adjoint-weighted perturbation theory rather than only forward-adjoint reciprocity), one in $\mathcal{D}^{*}$ ($\rho_{\mathrm{burnup}}$), one in $\mathcal{B}^{*}_{\mathrm{rel}}$ ($\rho_{\mathrm{tally}}$), and four in the candidate metric-stability block $M_{\mathrm{lip}}$. The four $M_{\mathrm{lip}}$ instances are conditional on the proposed ninth block of Appendix~C.5.2; the three non-$M_{\mathrm{lip}}$ instances ($\rho_{\mathrm{pert}}$, $\rho_{\mathrm{burnup}}$, $\rho_{\mathrm{tally}}$) are within the canonical eight-block decomposition and constitute a strict extension of the predictive demonstration in Section~\ref{subsec:reactor-mapping}.
+
+\paragraph{Interpretive caveat (parallel to Section~\ref{subsec:reactor-mapping}).} As with $m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$, none of the seven MRs in Table~\ref{tab:pmcm-new7} is claimed as a de novo physical discovery. Adjoint perturbation theory, burnup monotonicity, MC tally order-independence, sensitivity coefficients, and Green's-function locality are each individually known to reactor-physics practitioners and appear in standard references~\cite{BellGlasstone1970, LewisMiller1993}. What this enumeration does establish is the more limited but methodologically meaningful claim: a single mechanical pass of CONSTRUCT-MP over $\mathcal{D}'(\mathcal{A}_{\mathrm{Boltz}})$, given only the operator algebra and the per-block \texttt{Translate} templates of Table~\ref{tab:translate}, surfaces seven MRs absent from two independent prior catalogues. The framework is therefore generative in the operational sense (it enumerates structurally-valid MRs that human curators had not collated) without claiming generative power in the stronger physical-discovery sense. The full enumeration (35 candidates including the 28 already-catalogued) and a negative-result audit of $\mathcal{T}^{*}$ on diffusion are released as supplementary material S2 (\texttt{boltzmann\_enumeration/35mr.csv} and \texttt{boltzmann\_enumeration/negative\_audit.md}); the seven novel MRs of Table~\ref{tab:pmcm-new7} are the strict subset absent from both the 84-MR PWR corpus and the 18-MR engineering catalogue.
+
+%% Appendix D

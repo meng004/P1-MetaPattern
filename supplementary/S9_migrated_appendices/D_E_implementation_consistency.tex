@@ -1,0 +1,217 @@
+\section{A reference implementation of CONSTRUCT-MP}
+\label{app:code}
+
+This appendix gives a Python sketch of CONSTRUCT-MP applied to a toy operator algebra: bit-flip-symmetric programs over $\mathbb{F}_2^n$. The complete code (approximately 80 lines including comments and demonstration), along with the reactor-physics and equivariant-ML instantiations, will be released on Zenodo at acceptance.
+
+\begin{lstlisting}[style=pythonstyle, caption={Reference implementation of CONSTRUCT-MP for a toy bit-flip algebra.}]
+"""
+NOETHER reference implementation: CONSTRUCT-MP on a toy bit-flip algebra.
+Demonstrates the four-step procedure of Section 4.2.
+"""
+from dataclasses import dataclass, field
+from typing import Callable, Dict, List, Set, Tuple
+
+@dataclass(frozen=True)
+class Operator:
+    name: str
+    block: str   # one of {"G","O_le","T*","T_rev*","L*","D*","E*"}
+
+@dataclass(frozen=True)
+class Invariant:
+    operator: Operator
+    description: str
+
+@dataclass(frozen=True)
+class MR:
+    invariant: Invariant
+    template: str
+
+@dataclass
+class MetaPattern:
+    block: str
+    members: Set[MR] = field(default_factory=set)
+
+CANONICAL_ORDER = ["G","O_le","T*","T_rev*","L*","D*","E*"]   # Def. 3
+
+def extract_invariants(generators: List[Operator]) -> Dict[str, List[Invariant]]:
+    inv_by_block = {b: [] for b in CANONICAL_ORDER}
+    for g in generators:
+        if g.block == "G":
+            inv_by_block["G"].append(
+                Invariant(g, f"P(g.x) = rho(g).P(x) for g={g.name}"))
+        elif g.block == "O_le":
+            inv_by_block["O_le"].append(
+                Invariant(g, f"x1 <=_theta x2 => P(x1) <=_Y P(x2) for theta={g.name}"))
+    return inv_by_block
+
+def translate(iota: Invariant) -> MR:
+    return MR(iota, template=iota.description)
+
+def construct_mp(generators: List[Operator]) -> List[MetaPattern]:
+    inv_by_block = extract_invariants(generators)
+    mps = []
+    for block in CANONICAL_ORDER:
+        mrs = {translate(i) for i in inv_by_block[block]}
+        if mrs:
+            mps.append(MetaPattern(block=block, members=mrs))
+    return mps
+
+if __name__ == "__main__":
+    Z2 = Operator("bit_flip", "G")
+    perm = Operator("permutation_S3", "G")
+    scale_x = Operator("input_scaling", "O_le")
+
+    mp_set = construct_mp([Z2, perm, scale_x])
+    for mp in mp_set:
+        print(f"MetaPattern in block {mp.block}:")
+        for mr in mp.members:
+            print(f"  - {mr.template}")
+\end{lstlisting}
+
+The reactor-physics and equivariant-ML instantiations follow the same structure, replacing the toy generators with the operators of $\mathcal{A}_{\mathrm{Boltz}}$ and $\mathcal{A}_{\mathrm{equi}}$ respectively.
+
+%% =========================================================
+\section{Construct-trace consistency check on hand-crafted block-targeted mutants}
+\label{app:augmented-stratum}
+
+This appendix reports a \emph{construct-trace consistency check} on
+the five operative NOETHER blocks ($O_{\le}$,
+$\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$, $\mathcal{E}^{*}$,
+$\mathcal{B}^{*}_{\mathrm{rel}}$) that PIT 1.7.4's stock mutator
+catalogue does not exercise on the
+\S\ref{subsec:test-design} substrate. The exercise is not an
+independent fault-detection comparison: by construction, each mutant
+violates a specific Set~N MR's targeted invariant, so a non-trivial
+Set~N detection rate is implied by the framework's
+\texttt{CONSTRUCT-MP} design rather than measured by an independent
+oracle. We report the results to (i) verify that the per-mutant
+\texttt{jir}/\texttt{jor} pipeline does in fact catch the intended
+invariant violations end-to-end, and (ii) document the secondary
+question of whether Set~G's GP-evolved MRs incidentally detect the
+same mutants. The headline H3a verdicts in \S\ref{subsec:pooled-headtohead}
+do not rely on the numbers in this appendix.
+
+\paragraph{Mutant authoring.}
+For each of the five uncovered operative blocks we hand-crafted $5$
+mutants ($25$ total) against the \S\ref{subsec:test-design} SUTs whose
+Set~N MR catalogue contains an MR targeting that block. Each mutant
+is a complete \texttt{MathSignalClass.java} replacement with one
+method body altered to violate the targeted block's canonical-form
+invariant (per-mutant rationale in
+\texttt{docs/block\_coverage\_augmentation\_rationale.md} of the
+experiment repository; generator and runner in commits
+\texttt{c2030d9} and \texttt{2712564}; codegen fixes to remove
+forward-reference and identity-fallback regressions in commit
+\texttt{f7edfa7}).\footnote{A residual codegen limitation, documented
+in \texttt{docs/codegen\_fix\_audit.md} of the experiment repository
+but not fixed in the current build, is that
+\texttt{parse\_jir\_to\_transforms} does not handle the
+integer-equality jir pattern \texttt{i\_n\_f == -i\_n\_s} used by the
+\texttt{D\_reciprocal\_exp} MR on \texttt{powerSig}; under the
+current codegen the MR's follow-up exponent falls back to identity
+($n_{f} = n_{s}$) and the jor \texttt{|o\_f - 1/o\_s| < 1e-4}
+degenerates into a coarse ``output is not its own reciprocal''
+detector. The construct-trace kill verdict for the
+\texttt{powerSig} mutants reported in
+Table~\ref{tab:augmented-stratum} remains robust to removing the
+$D\_reciprocal\_exp$ MR (every \texttt{powerSig} augmented mutant
+is also killed by at least one of \texttt{E\_power\_of\_power},
+\texttt{L\_scale\_base}, \texttt{T\_exp\_step}, or
+\texttt{G\_odd\_negate}, per the per-MR audit in the experiment
+repository), so the appendix's per-block kill flag is unaffected;
+nonetheless the MR-level specificity question of which MR fires
+on which mutant is partly clouded by this degeneracy, and a
+codegen extension to handle integer-equality jir patterns is
+committed as a separate follow-up.} Mutant evaluation uses \texttt{mvn test} on the
+substituted SUT under each existing Set~N and Set~G MR test suite;
+kill verdict is "killed by any Set~N MR" (Definition~A of
+\texttt{docs/d1d2\_methodology.md} \S4 in the experiment repository).
+
+\paragraph{Per-block results.}
+Table~\ref{tab:augmented-stratum} reports the per-block kill counts.
+Set~N detects $25/25$ of the hand-crafted mutants
+(Wilson 95\% CI $[0.867,\,1.000]$); since each mutant was
+constructed to violate the block targeted by a Set~N MR, this is the
+\emph{design-implied} outcome and should be read as confirming the
+construct-trace consistency of the pipeline rather than as a measure
+of independent fault-detection. Set~G's
+$12/25 = 0.480$ ($[0.300,\,0.665]$) is a more informative number: it
+quantifies the incidental reach of GP-evolved generic MRs on the
+same hand-crafted mutants, with $0$ Set-G-only kills. Two blocks
+($\mathcal{T}^{*}_{\mathrm{rev}}$ and
+$\mathcal{B}^{*}_{\mathrm{rel}}$, both targeting the
+\texttt{isSequence} SUT) have Set~G $0/5$ by
+absence-of-MR-coverage: the 30-min GenMorph rerun produced no
+\texttt{isSequence} MR (see \S\ref{subsec:empirical-threats}~(d) on
+GenMorph's structural N/A pattern).
+
+\begin{table}[h]
+\centering
+\caption{Construct-trace consistency check on hand-crafted block-targeted
+mutants ($n = 5$ per block, $25$ total). \textbf{Set~N's column is
+design-implied}: each mutant is constructed against a specific Set~N
+MR's targeted invariant, so Set~N's near-$100\%$ detection is a
+pipeline-correctness check, not independent fault-detection evidence
+(see \nameref{para:construct-trace-not-headtohead} below).
+Set~G's $12/25 = 0.480$ measures the incidental reach of GP-evolved
+generic MRs on the same mutants and is not design-implied.
+Wilson 95\% intervals reported. Two blocks have Set~G $0/5$ from
+GenMorph's structural absence of an \texttt{isSequence} MR at the
+$30$-min budget. \textbf{This table is excluded from the H3a.1
+evidence base (\S\ref{subsec:pooled-headtohead});} the H3a.1 verdict
+rests on the pre-registered PIT-covered three-block substrate only.}
+\label{tab:augmented-stratum}
+\small
+\begin{tabular}{lr l l r l r r r r}
+\toprule
+Block & $n$ & \emph{Set~N kills (CTT)} & \emph{rate (CTT)} & Set~G kills & rate (95\% CI) & both & $N$-only & $G$-only & neither \\
+\midrule
+$O_{\le}$                                  & 5 & \emph{5} & \emph{$1.000^{\,\dagger}$} & 3 & $0.600$ $[0.231,\,0.882]$ & 3 & 2 & 0 & 0 \\
+$\mathcal{T}^{*}_{\mathrm{rev}}$           & 5 & \emph{5} & \emph{$1.000^{\,\dagger}$} & 0 & $0.000$ $[0.000,\,0.434]$ & 0 & 5 & 0 & 0 \\
+$\mathcal{D}^{*}$                          & 5 & \emph{5} & \emph{$1.000^{\,\dagger}$} & 4 & $0.800$ $[0.376,\,0.964]$ & 4 & 1 & 0 & 0 \\
+$\mathcal{E}^{*}$                          & 5 & \emph{5} & \emph{$1.000^{\,\dagger}$} & 5 & $1.000$ $[0.566,\,1.000]$ & 5 & 0 & 0 & 0 \\
+$\mathcal{B}^{*}_{\mathrm{rel}}$           & 5 & \emph{5} & \emph{$1.000^{\,\dagger}$} & 0 & $0.000$ $[0.000,\,0.434]$ & 0 & 5 & 0 & 0 \\
+\midrule
+\textit{aggregate} & 25 & \emph{25} & \emph{$1.000^{\,\dagger}$} & 12 & $0.480$ $[0.300,\,0.665]$ & 12 & 13 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\footnotesize
+\textit{CTT = construct-trace test (design-implied).}
+$^\dagger$ Set~N columns are italicised to mark that the rate is design-implied by mutant authoring (each mutant constructed against a specific Set~N MR's targeted invariant), not an independent fault-detection measurement. Do not compare $1.000^{\,\dagger}$ against Set~G's $0.480$ as if they were commensurable; the $1.000$ value is a pipeline-correctness check, the $0.480$ value is Set~G's incidental reach on the same mutants. Comparative H3a.1 evidence comes from the PIT-covered substrate (Table~\ref{tab:per-block-headtohead}, \S\ref{subsec:pooled-headtohead}).
+\end{table}
+
+\paragraph{Multiple-comparison correction.}
+A Bonferroni-corrected Fisher exact test at the per-block
+significance level $\alpha / 5 = 0.01$ would be appropriate if these
+were independent measurements of Set~N's reach. Since the test is
+design-implied and the per-block sample size $n = 5$ is below the
+threshold at which any cell of the $2 \times 2$ table can reach
+$p < 0.01$ in either direction (Fisher exact lower bound under
+$n_{1} = n_{2} = 5$ with all-or-nothing splits is $p \approx 0.008$,
+attainable only at the
+$0/5$-vs-$5/5$ extreme; both
+$\mathcal{T}^{*}_{\mathrm{rev}}$ and
+$\mathcal{B}^{*}_{\mathrm{rel}}$ rows reach this extreme but only
+via Set~G's absence-of-coverage), the construct-trace reading is
+the only defensible interpretation.
+
+\paragraph{Why this is not a head-to-head test of H3a.1.}
+\label{para:construct-trace-not-headtohead}
+H3a.1 (Set~N's per-block detection on D1) is a question about
+\emph{generic} algebra-disrupting mutations on the substrate, of
+which PIT 1.7.4 produces a subset on three operative blocks (G,
+$\mathcal{L}^{*}$, $\mathcal{T}^{*}$). The hand-crafted mutants of
+Table~\ref{tab:augmented-stratum} are not drawn from a generic
+mutation distribution: they were specifically authored to violate
+the targeted invariant of a known Set~N MR. To use them as
+evidence for H3a.1 on the five additional operative blocks would
+constitute construct-trace circular validation. The
+construct-trace check is reported here for transparency and to
+verify the pipeline's end-to-end correctness on the previously
+uncovered blocks; the H3a.1 verdict reported in
+\S\ref{subsec:pooled-headtohead} rests on the pre-registered
+PIT-covered three-block substrate only.
+
+%% =========================================================
