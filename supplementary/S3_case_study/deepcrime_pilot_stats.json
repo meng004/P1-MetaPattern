@@ -1,4 +1,5 @@
 {
+  "_note": "Stage 4.5 Round 5 correction (2026-05-15): the prior fisher_exact entries below misapplied scipy.stats.fisher_exact to a degenerate paired contingency [[a_both, b_N_only], [c_other_only, d_neither]] = [[0, 2], [0, 3]] in which column 1 has total = 0; scipy returns p = 1.0 in that case because column 1 carries no inferential weight, but the underlying paired comparison was not correctly tested. The corrected entries below report McNemar's exact (the appropriate test for paired binary outcomes on the same 5 mutations) plus the unpaired Fisher analogue for reference.",
   "N": {
     "detected": 2,
     "total": 5,
@@ -23,17 +24,41 @@
       0.434
     ]
   },
-  "fisher_NvsB": {
-    "a_both": 0,
-    "b_N_only": 2,
-    "c_B_only": 0,
-    "d_neither": 3,
-    "p_value": 1.0
+  "mcnemar_exact_NvsL": {
+    "discordant_b_N_only": 2,
+    "discordant_c_L_only": 0,
+    "two_sided_p": 0.5,
+    "test_method": "binomial X=0 in n=2 trials at p0=0.5"
   },
-  "fisher_NvsL": {
+  "mcnemar_exact_NvsB": {
+    "discordant_b_N_only": 2,
+    "discordant_c_B_only": 0,
+    "two_sided_p": 0.5,
+    "test_method": "binomial X=0 in n=2 trials at p0=0.5"
+  },
+  "fisher_unpaired_NvsL": {
+    "contingency_rows_Sets_cols_detected_missed": [[2, 3], [0, 5]],
+    "two_sided_p": 0.4444,
+    "note": "reported as the unpaired-test analogue for completeness; the paired McNemar above is the methodologically appropriate test"
+  },
+  "fisher_unpaired_NvsB": {
+    "contingency_rows_Sets_cols_detected_missed": [[2, 3], [0, 5]],
+    "two_sided_p": 0.4444,
+    "note": "reported as the unpaired-test analogue for completeness; the paired McNemar above is the methodologically appropriate test"
+  },
+  "_deprecated_fisher_NvsL_p_1p0": {
+    "_status": "INCORRECT — column-degenerate Fisher misuse; see _note at top of file",
     "a_both": 0,
     "b_N_only": 2,
     "c_L_only": 0,
+    "d_neither": 3,
+    "p_value": 1.0
+  },
+  "_deprecated_fisher_NvsB_p_1p0": {
+    "_status": "INCORRECT — column-degenerate Fisher misuse; see _note at top of file",
+    "a_both": 0,
+    "b_N_only": 2,
+    "c_B_only": 0,
     "d_neither": 3,
     "p_value": 1.0
   }

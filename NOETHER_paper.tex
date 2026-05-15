@@ -815,10 +815,15 @@ B (Lit.)    & 0/5                                           & $[0.00, 0.43]$ \\
 \centering
 \caption{Paired contingency for Set~N vs Set~L on the $n=5$ DeepCrime
 pilot. The Set~N vs Set~B contingency is identical because Set~B also
-detected $0/5$. The Fisher exact two-sided $p$-value on this $2\times 2$
-is $p = 1.00$ ($n=5$ is below the threshold at which $(2, 0)$ vs $(0, 0)$
-discordant counts are inferentially decisive); per-pair statistics in
-supplementary~S3 \texttt{deepcrime\_pilot\_stats.json}.}
+detected $0/5$. The appropriate paired-binary test is McNemar's exact
+test on the $(b, c) = (2, 0)$ discordant counts: two-sided exact
+$p = 0.500$ (binomial $X = 0$ in $n = 2$ trials with $p_0 = 0.5$ under
+$H_0$ of equal Set N / Set L performance); equivalently, an unpaired
+Fisher exact $2\times 2$ on rows = Sets, columns = (detected, missed)
+yields two-sided $p = 0.444$. Both numbers fail to reject $H_0$ at
+$\alpha = 0.05$ because $n = 5$ is below the threshold at which a
+$2 / 5$ vs $0 / 5$ contrast is inferentially decisive; per-pair
+statistics in supplementary~S3 \texttt{deepcrime\_pilot\_stats.json}.}
 \label{tab:deepcrime-contingency}
 \small
 \begin{tabular}{l c c c}
@@ -834,7 +839,7 @@ Total             & 0              & 5            & 5 \\
 \end{table}
 
 \paragraph{Reading the pilot (inferential verdict).}
-At $n=5$ the Fisher-exact $p$-values for Set N vs Set L and Set N vs Set B are both $p = 1.00$; the pilot is therefore underpowered for an inferential conclusion at $\alpha = 0.05$. The 2/5 vs 0/5 vs 0/5 detection contrast is reported as descriptive evidence consistent with the direction of the framework's $\mathcal{L}^{*}$-block prediction, not as a hypothesis confirmation. The pilot's load-bearing claim is that the comparative-evaluation infrastructure runs end-to-end against real-fault-style mutations on the trained checkpoint; non-vacuousness of the $\mathcal{L}^{*}$-block prediction and the parameter-distribution candidate-ninth-block reading are candidate evidence requiring a larger $n$.
+At $n=5$ the appropriate paired-binary test is McNemar's exact on the discordant counts $(b, c) = (2, 0)$ for both Set N vs Set L and Set N vs Set B: two-sided exact $p = 0.500$ (and the unpaired-Fisher analogue yields two-sided $p = 0.444$ on the same contingency); the pilot is therefore underpowered for an inferential conclusion at $\alpha = 0.05$. The 2/5 vs 0/5 vs 0/5 detection contrast is reported as descriptive evidence consistent with the direction of the framework's $\mathcal{L}^{*}$-block prediction, not as a hypothesis confirmation. The pilot's load-bearing claim is that the comparative-evaluation infrastructure runs end-to-end against real-fault-style mutations on the trained checkpoint; non-vacuousness of the $\mathcal{L}^{*}$-block prediction and the parameter-distribution candidate-ninth-block reading are candidate evidence requiring a larger $n$.
 
 \paragraph{Interpretation of the two detection events (mechanism, not inference).}
 For descriptive context only, the detection mechanism on the two events: $\rho_{\mathrm{train}}$ tests training-size limit invariance --- for inputs the model classifies confidently at full training, the prediction should remain stable when the head is exposed to a fresh small-batch fine-tuning step. cat-v-01 (head weight scaled by $1/N_{\mathrm{classes}}=1/5$) collapses head-output magnitudes uniformly toward zero, softens the softmax, and changes the argmax on inputs near classification boundaries; post-fine-tune predictions drift away from pre-fine-tune predictions and the inference-stability invariant fails. cat-v-03 (head weight zeroed) makes every output identically zero pre-softmax, again breaking inference stability. cat-v-02 (tanh saturation), cat-v-04 (bias removal), and cat-v-05 (Glorot re-init) preserve enough head signal for the inference-stability check to pass on the eight test clouds within the chosen tolerance, so $\rho_{\mathrm{train}}$ does not fire on them. The mechanism is therefore ``$\rho_{\mathrm{train}}$'s inference-stability check fails when head magnitude is perturbed past a margin-of-error threshold for boundary inputs'' --- a mechanism-level statement independent of the underpowered sample size.
