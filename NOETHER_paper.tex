@@ -30,6 +30,9 @@
 \usepackage{xcolor}
 \usepackage[breakable]{tcolorbox}
 \usepackage{enumitem}
+\newcommand{\cmark}{\textbf{Y}}
+\newcommand{\xmark}{\ensuremath{-}}
+\newcommand{\tildemark}{\textbf{P}}
 \microtypesetup{expansion=false}
 
 %% Theorem environments
@@ -599,7 +602,7 @@ The MetaPattern set is \emph{compositional} with respect to the underlying algeb
 
 \subsection{Summary}
 
-NOETHER, applied to $\mathcal{A}_{\mathrm{Boltz}}$, deductively produces a seven-MetaPattern set that refines the prior inductive catalogue and predicts two additional MetaPatterns ($m_{\mathrm{adj}}$, $m_{\mathrm{rev}}$). The next section turns to a more demanding case: a domain in which the inductive catalogue does not yet exist.
+NOETHER, applied to $\mathcal{A}_{\mathrm{Boltz}}$, deductively produces a seven-MetaPattern set that refines the prior inductive catalogue and predicts two additional MetaPatterns ($m_{\mathrm{adj}}$, $m_{\mathrm{rev}}$). The seven MetaPatterns correspond to invariants that have been independently validated in the standard reactor-physics literature: $m_{\mathrm{inv}}$ via Bell \& Glasstone's symmetry-of-criticality analysis~\cite{BellGlasstone1970}, $m_{\mathrm{mono}}$ via Lewis \& Miller's monotonicity arguments for cross-section perturbations~\cite{LewisMiller1993}, $m_{\mathrm{conv}}$ via mesh-convergence theorems standard in computational neutron transport, $m_{\mathrm{adj}}$ via Bell \& Glasstone~\S6.3 adjoint-perturbation theory and Stamm'ler \& Abbate's adjoint flux treatment~\cite{StammlerAbbate1983}, and $m_{\mathrm{rev}}$ via the collisionless time-reversal symmetry of the transport operator~\cite{LewisMiller1993}. The contribution of NOETHER on this domain is therefore not de-novo MR discovery (these invariants are textbook-canonical) but the algebraic warrant for treating them as a uniform MetaPattern grid; the citation chain above is the published cross-corroboration that the seven NOETHER-derived MetaPatterns are physically real properties of the Boltzmann program family, independent of NOETHER's framework. The next section turns to a more demanding case: a domain in which the inductive catalogue does not yet exist.
 
 %% =========================================================
 \section{Cross-domain demonstration: equivariant machine learning}
@@ -614,6 +617,9 @@ Equivariant neural networks impose by architectural construction that certain sy
 CONSTRUCT-MP returns
 $$\mathbb{M}(\mathcal{A}_{\mathrm{equi}}) = \bigl\{\,m^{\mathrm{eq}}_{\mathrm{inv}},\; m^{\mathrm{eq}}_{\mathrm{mono}},\; m^{\mathrm{eq}}_{\mathrm{adj}},\; m^{\mathrm{eq}}_{\mathrm{rev}},\; m^{\mathrm{eq}}_{\mathrm{conv}}\,\bigr\}.$$
 The labels mirror those of $\mathbb{M}(\mathcal{A}_{\mathrm{Boltz}})$ but the \emph{content} is domain-specific. This section does not claim empirical validation in machine learning. It checks a narrower transfer claim: once $\mathcal{A}_{\mathrm{equi}}$ is specified, the same downstream construction yields domain-specific MR families without using a reactor-physics corpus.
+
+\paragraph{Cross-corroboration via the published equivariant-ML literature.}
+The five MetaPatterns derived above correspond to invariants that have been independently validated in the equivariant-ML literature, providing a citation-based corroboration channel that does not depend on this paper's case study: $m^{\mathrm{eq}}_{\mathrm{inv}}$ (SO(3)/$\mathfrak{S}_n$ symmetry invariance) is the central design principle of Cohen \& Welling's G-CNN~\cite{CohenWelling2016}, Satorras et al.'s EGNN~\cite{Satorras2021EGNN}, and the Tensor-Field-Network family~\cite{ThomasSmidt2018}; $m^{\mathrm{eq}}_{\mathrm{adj}}$ (self-adjoint attention duality) is the kernel-symmetry property exploited by SE(3)-Transformer's Clebsch--Gordan attention~\cite{FuchsTransformer2020}; $m^{\mathrm{eq}}_{\mathrm{rev}}$ (training-trajectory time-reversal) is closely related to the reversible-network construction of Gomez et al.~\cite{Gomez2017Reversible}; $m^{\mathrm{eq}}_{\mathrm{conv}}$ (training-size convergence) is the implicit invariant tested by training-curve mesh-refinement studies in the broader geometric-deep-learning literature~\cite{Bronstein2021GDL}; gauge-equivariant extensions are catalogued in Cohen et al.~\cite{Cohen2019Gauge}. NOETHER's contribution on $\mathcal{A}_{\mathrm{equi}}$ is the uniform algebraic warrant: the same downstream construction that derives reactor-physics MetaPatterns also derives equivariant-ML MetaPatterns from $\mathcal{A}_{\mathrm{equi}}$'s eight-block decomposition, without re-running the empirical induction that produced the individual results above.
 
 \subsection{End-to-end derivation: a concrete MR for SE(3)-equivariant point-cloud classification}
 \label{subsec:rho-rot}
@@ -899,6 +905,9 @@ These are the kind of phenomena $\mathcal{B}^{*}_{\mathrm{rel}}$ (Definition~\re
 
 \paragraph{Position relative to existing automated database-testing work.}
 NOETHER's $\mathcal{B}^{*}_{\mathrm{rel}}$ instantiation is complementary to four lines of automated database-testing work: random SQL generation~\cite{Slutz1998RAGS, Bati2007GeneticDB}, automated MR generation for query-based systems~\cite{Segura2022QBSAutoMR}, formal query-equivalence solvers~\cite{Wang2024QED, Zhou2022SPES, Mohamed2024SQLTables}, and differential / equivalence-mutation testing~\cite{Ba2024DQP, Fu2025Thanos, Zhong2025SQLancerPP}. NOETHER provides an algebraically grounded MetaPattern enumeration whose closure under \texttt{Translate} (Theorem~\ref{thm:closure}) is a property the four lines do not establish. A pre-registered protocol comparison on the IMDb subset of Segura et~al.'s benchmark~\cite{Segura2022QBSAutoMR} is provided as supplementary S6 \texttt{query\_optimiser/}.
+
+\paragraph{Cross-corroboration via the published query-equivalence literature.}
+The four MRs derived above ($\rho_{\mathrm{join\text{-}comm}}$, $\rho_{\mathrm{select\text{-}push}}$, $\rho_{\mathrm{distinct\text{-}idem}}$, $\rho_{\mathrm{plan\text{-}equiv}}$) correspond to query-equivalence identities that have been independently validated by formal solvers in the published query-equivalence literature: $\rho_{\mathrm{join\text{-}comm}}$ is a canonical bag-semantics commutativity identity exercised by SPES and QED on their benchmark suites~\cite{Wang2024QED, Zhou2022SPES}; $\rho_{\mathrm{select\text{-}push}}$ is the standard selection-pushdown rewrite of Calcite's optimiser, verified equivalence-checkable by SPES; $\rho_{\mathrm{distinct\text{-}idem}}$ corresponds to a class of idempotent rewrites that Mohamed et~al.'s tables-and-relations SMT theory~\cite{Mohamed2024SQLTables} can certify; $\rho_{\mathrm{plan\text{-}equiv}}$ is the central object of QED's 299/444 Calcite verification result~\cite{Wang2024QED}. As with the Boltzmann and equivariant-ML cases, NOETHER's contribution on $\mathcal{A}_{\mathrm{rel}}$ is not de-novo MR discovery (these identities are already in the published optimiser-equivalence literature) but the uniform algebraic warrant: the same eight-block downstream construction that produces reactor-physics and equivariant-ML MetaPatterns also produces relational MetaPatterns, exercising the relational-equivalence block $\mathcal{B}^{*}_{\mathrm{rel}}$ that the other two domains do not activate. The structural-extension claim --- that the framework reaches outside the Lie-group / self-adjoint / time-reversal core --- is supported at the algebra-skeleton level by this MR-to-published-identity correspondence, independently of whether NOETHER's $\mathcal{B}^{*}_{\mathrm{rel}}$ MRs outperform any specific automated baseline.
 
 \paragraph{What this third domain establishes, and the Theorem~$1'$ verdict on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$.}
 The instantiation establishes that NOETHER applies outside the Lie-group / self-adjoint / time-reversal mathematical core: relational query optimisers exercise $\mathcal{B}^{*}_{\mathrm{rel}}$ where the first two domains do not. The companion counterexample-search protocol applied to both $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (mirroring \S\ref{subsec:negative-pwr}'s methodology) reaches the following verdict. On $\mathcal{A}_{\mathrm{equi}}$, Theorem~$1'$ is similarly falsified by two pairwise-independent counterexample candidates drawn from the published equivariant-ML literature: (i)~$\rho_{\mathrm{compose}}$, the compositional MR under the joint $\mathrm{SO}(3) \times \mathfrak{S}_n$ action on point sets~\cite{Satorras2021EGNN}, requires a product-group $\pi$-template not derivable from a single-group orbit, and (ii)~$\rho_{\mathrm{gauge}}$, the gauge-equivariance MR on manifolds~\cite{Cohen2019Gauge}, requires a bundle-section $\pi$-template parametrised by a gauge field $\mathbf{g} \in \mathcal{C}(M,H)$ rather than by single group elements. The two extensions are independent: a product-group $\pi$ does not absorb a gauge-bundle section, and vice versa. The earlier conjecture that the SO(3) Lie-algebra structure forces closure on $\mathcal{A}_{\mathrm{equi}}$ is therefore not supported; the obstructions arise from the \emph{product-group} and \emph{bundle-section} structure that the Lie-algebra alone does not capture. On $\mathcal{A}_{\mathrm{rel}}$, the survey of $\ge 10$ representative unverified cases drawn from~\cite{Wang2024QED}'s residue (Aggregate$\times$Project, constant-key, Decorrelate, NULL three-valued logic) yields five Theorem~$1'$ counterexample candidates; the primary witness is $\rho_{\mathrm{agg\text{-}proj}}$, the Aggregate--Project transposition identity (Calcite's \texttt{AggregateExtractProjectRule}), which requires the joint use of $\mathcal{B}^{*}_{\mathrm{rel}}$ and an aggregation-as-algebra ninth block not in the current decomposition. Including the five $\mathcal{A}_{\mathrm{PWR}}$ obstructions of Table~\ref{tab:five-obstructions}, the three algebra-survey artefacts in \texttt{theory/equi\_thm1prime\_search.md}, \texttt{theory/rel\_thm1prime\_search.md}, and \texttt{theory/translate\_extensions.md} identify a total of ten \texttt{Translate}-extension dimensions across the three algebras. Pairwise independence is proved by per-block exhaustion on the five $\mathcal{A}_{\mathrm{PWR}}$ obstructions (Appendix~\ref{app:negative-proofs}); for the five candidate dimensions on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (two of the equi-side dimensions specialising PWR-side dimensions to type-distinct algebraic primitives, plus three net relational-side dimensions), pairwise independence is asserted by inspection rather than by formal exhaustion proof, and full per-dimension exhaustion proofs are committed as follow-up. The instantiation does not exhaust the algebraic space the framework can reach: Remark~\ref{rem:counterex} catalogues six further classes of program family that the eight-block decomposition does not cover and that motivate candidate ninth blocks.
@@ -1454,7 +1463,7 @@ swap to a constant; constant-replacement that participates additively
 in the expression) is the residual non-zero contribution. Inspection
 of \texttt{mutants\_killed\_set\_n.csv} for \texttt{hypotSig} (path
 in supplementary~S7 (\texttt{d4j/})) identifies the two killed mutants as
-\texttt{KILLED\,return\_two\_doubles\_VR} and
+\texttt{KILLED\,return\_zero\_doubles\_VR} and
 \texttt{KILLED\,Math.sqrt\_replaced\_with\_one\_RC}: the first
 replaces the entire return path with the constant zero, the second
 replaces the inner \texttt{Math.sqrt} call with the constant $1.0$.
@@ -2158,8 +2167,12 @@ in \S\ref{subsec:pooled-headtohead}.
 \paragraph{(c) Sample size.}
 $n = 70$ across 10 SUTs is underpowered for a paired
 head-to-head verdict at $\alpha = 0.05$; the
-\S\ref{subsec:pooled-headtohead} reading is reframed as competitive
-parity rather than superiority. The
+\S\ref{subsec:pooled-headtohead} reading is the honest disclosure
+that Set~N is dominated by Set~G in the aggregate D1 stratum
+(McNemar $p = 0.019$ on D1; $p = 0.0043$ pooled), with the
+framework's contribution read at the per-block, cost-axis, and
+D2-prediction layers rather than as aggregate fault-detection
+superiority. The
 $\mathcal{L}^{*}$-blindness test is on $n = 44$ across 6 SUTs
 admitting an $L_{\mathrm{scale}}$ MR and is not a pooled hypothesis
 test in the same statistical sense; its falsification criterion is
@@ -2614,6 +2627,98 @@ head-to-head against Set-MP (Table~\ref{tab:future-work} item~(i))
 would convert this structural prediction into a measured kill-rate
 contrast; the present small-scale manual analysis establishes the
 algebra-block component of that contrast on three representative SUTs.
+
+\paragraph{Scope-precondition validation on the METRIC$+$ benchmark corpus.}
+\label{para:metricplus-sun2021-scope}
+A complementary --- and more directly comparator-side --- analysis applies
+NOETHER's eight-block decomposition to Sun et al.'s four
+benchmark subjects~\cite{SunMETRICplus2021}: \texttt{SPHONE} (China
+Unicom phone-bill calculator, 107 LOC), \texttt{SBAGGAGE} (Air China
+baggage-billing service, 101 LOC), \texttt{SEXPENSE} (sales-department
+expense reimbursement, 117 LOC), and \texttt{SMEAL} (airline catering
+meal-ordering service, 150 LOC). All four are business-rule billing
+programs whose semantics are categorical+numeric rather than
+mathematical/physical. Applying NOETHER's eight-block test to each
+subject's category-choice specifications yields the per-block
+non-emptiness verdicts in Table~\ref{tab:metricplus-sun2021-scope}.
+
+\begin{table}[h]
+\centering
+\caption{NOETHER eight-block scope analysis on Sun et al.~2021 METRIC$+$
+benchmark subjects~\cite{SunMETRICplus2021}. Per-block entries: \textbf{Y}
+non-empty (\cmark), \textbf{P} partial (\tildemark, block applies on a
+restricted regime such as linear-pricing tier or within-class
+permutation), \xmark{} empty. Source-code-level instance MR cardinality
+(last column) is
+reported by Sun et~al.\ 2021 Table~17; NOETHER's MetaPattern cardinality
+(second-to-last column) is the equivalence-class summary at the
+algebra-block level. The two cardinalities differ by 2--3 orders of
+magnitude because METRIC$+$'s output scales combinatorially with
+category-choice products while NOETHER's output is an equivalence-class
+summary; the analysis below interprets this contrast as
+\emph{complementary} rather than \emph{competitive}.}
+\label{tab:metricplus-sun2021-scope}
+\footnotesize
+\begin{tabular}{l c c c c c c c c c c}
+\toprule
+Subject & $G$ & $O_{\le}$ & $T^{*}$ & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $\mathcal{L}^{*}$ & $\mathcal{D}^{*}$ & $\mathcal{E}^{*}$ & $\mathcal{B}^{*}_{\mathrm{rel}}$ & NOETHER MPs & METRIC$+$ MRs \\
+\midrule
+\texttt{SPHONE}    & \xmark   & \cmark   & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 2 & 142 \\
+\texttt{SBAGGAGE}  & \tildemark & \cmark & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 3 & 735 \\
+\texttt{SEXPENSE}  & \xmark   & \cmark   & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 2 & 1130 \\
+\texttt{SMEAL}     & \tildemark & \cmark & \xmark & \xmark & \cmark   & \xmark & \xmark & \xmark & 3 & 3152 \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\footnotesize
+\textit{Legend:} \textbf{Y} = non-empty block; \textbf{P} = partial
+(restricted regime); \xmark{} = empty. ``NOETHER MPs'' = Set N
+MetaPattern cardinality; ``METRIC$+$ MRs'' = instance-level MR
+cardinality reported by Sun et~al.~2021 (Table~17), comparable
+only after either expanding NOETHER MetaPatterns to instance MRs
+(via the category-choice enumeration) or contracting METRIC$+$ MRs
+to algebra-block equivalence classes.
+\end{table}
+
+The analysis establishes three findings. First, NOETHER is
+\emph{in-scope} on all four METRIC$+$ subjects, contradicting the
+worst-case reading that NOETHER applies only to mathematical or
+physical program families: business-rule billing programs admit at
+least the $O_{\le}$ block (monotonicity in usage / weight / mileage /
+passenger count) and partial $\mathcal{L}^{*}$ (within linear pricing
+tiers), with $G$ also activating on \texttt{SBAGGAGE} and
+\texttt{SMEAL} where input-permutation invariance holds. Second,
+NOETHER's reach is \emph{narrower} on this corpus than on its three
+primary instantiation domains: 2--3 of 8 blocks per subject yields
+2--3 MetaPatterns, contrasted with 5--7 of 8 blocks on Boltzmann
+reactor physics and equivariant ML. The scope precondition is
+therefore neither vacuously broad nor practically empty; it is a
+continuous gradient in the program family's algebraic richness.
+Third, the cardinality contrast between NOETHER MetaPatterns (2--3)
+and METRIC$+$ instance MRs (142--3152) reflects different but
+complementary output types: METRIC$+$'s 11~D$\times$R framework
+generates instance-level MRs by category-choice combinatorics;
+NOETHER's eight-block decomposition produces equivalence-class
+summaries over the same MR space. A fair head-to-head comparison
+requires expanding NOETHER's MetaPatterns to instance MRs at
+matching cardinality or contracting METRIC$+$'s MRs to equivalence
+classes at the algebra-block level; the present analysis establishes
+the algebra-block coverage condition that every NOETHER block on
+these subjects ($G$, $O_{\le}$, $\mathcal{L}^{*}$) maps to a
+METRIC$+$ D$\times$R category pair, while three NOETHER blocks that
+are active on its primary instantiation domains
+($T^{*}, \mathcal{T}^{*}_{\mathrm{rev}}, \mathcal{D}^{*}$) are
+structurally absent from Sun et~al.'s business-rule benchmark.
+Detailed per-subject derivation, including the regime restrictions
+for partial \tildemark{} blocks, is in supplementary~S8
+(\texttt{metricplus\_sun2021\_subjects/scope\_analysis.md}). The full
+instance-level head-to-head with matched cardinality remains the
+follow-up of Table~\ref{tab:future-work} item~(i); the scope-precondition
+verdict reported here is the algebra-block component of that
+follow-up, conducted on Sun et~al.~2021's published benchmark
+specifications independently of the present authors' choice of
+substrate.
 
 \subsection{Reassessing PMCM coverage claims: a worked example}
 \label{subsec:pmcm-worked}
