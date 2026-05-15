@@ -10,7 +10,7 @@ mutations of an SE(3)-equivariant point-cloud classifier.
 | Component | Status |
 |---|---|
 | MR set N (5 NOETHER MRs, 1 per non-empty block of $\mathcal{A}_{\mathrm{equi}}$) | ✓ implemented + executable |
-| MR set L (LLM-prompt baseline, 5 placeholder MRs) | ⚠ placeholders pending GPT-4 run; structurally complete |
+| MR set L (LLM-prompt baseline, 5 MRs) | ✓ generated via `gpt-4-turbo-2024-04-09` on 2026-05-15 (UTC), temperature=0.0, seed=4246; raw output in `mr_sets/prompt_log.md`; callables in `mr_sets/set_L_llm.py` |
 | MR set B (literature baseline, 5 MRs from Murphy/Xie/Segura/Shin) | ✓ implemented + executable |
 | 20 mutations across 4 categories (i/ii/iii/iv) | ✓ implemented; 8/20 adapted from P2 mutation operators |
 | Stub model (CPU-only, no torch/e3nn dependency) | ✓ end-to-end pipeline runnable |
@@ -95,7 +95,7 @@ S3_case_study/
 │   ├── set_N_noether.py               5 NOETHER MRs (rho_rot, rho_mono,
 │   │                                   rho_train, rho_adj, rho_train_rev)
 │   │                                   + auxiliary rho_perm in SET_N_PLUS
-│   ├── set_L_llm.py                    5 LLM-prompt MR placeholders
+│   ├── set_L_llm.py                    5 GPT-4-generated MRs (raw output in prompt_log.md)
 │   ├── set_B_literature.py            5 literature MRs
 │   └── prompt_log.md                   GPT-4 prompt + raw-output log
 ├── mutations/
@@ -151,15 +151,25 @@ Expected post-real-model differences from stub-mode results:
   qualitatively identical (these are the structural-coverage cases
   Theorem 1 predicts).
 
-## Replacing Set L placeholders with actual GPT-4 output
+## Regenerating Set L from the GPT-4 prompt
 
-1. Run the prompt in `mr_sets/prompt_log.md` against gpt-4-turbo at
-   temperature 0.0 with the seed in `S4_reproducibility/seeds.txt`.
-2. Append the raw JSON output to `prompt_log.md` (under the
-   `Raw GPT-4 output` heading).
-3. Translate each of the 5 returned MR specs into a Python callable in
-   `set_L_llm.py`, replacing the `_placeholder_*_fn` functions.
-4. Re-run `runner.py` and `analysis.py`.
+Set L was generated against `gpt-4-turbo-2024-04-09` on 2026-05-15
+(UTC). The raw JSON output is recorded verbatim in
+`mr_sets/prompt_log.md` and translated to Python callables in
+`mr_sets/set_L_llm.py`. To regenerate (e.g. if the LLM is updated or
+the prompt is revised):
+
+1. Restore the `[TO BE FILLED at experiment time]` sentinels in
+   `mr_sets/prompt_log.md` (or use `git checkout` to revert).
+2. Set `OPENAI_API_KEY` (or `CHATGPT_API_KEY`) and optionally
+   `OPENAI_BASE_URL` / `CHATGPT_BASE_URL` in the environment.
+3. Run `python mr_sets/run_gpt4_prompt.py` — it sends the same
+   prompt at temperature=0.0, seed=4246, and updates `prompt_log.md`
+   in place.
+4. Translate each of the 5 returned MR specs into Python callables
+   in `set_L_llm.py` (or accept the current translations if the
+   output is unchanged from 2026-05-15).
+5. Re-run `runner.py` and `analysis.py`.
 
 ## Troubleshooting
 

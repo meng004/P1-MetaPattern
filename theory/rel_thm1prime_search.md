@@ -12,9 +12,8 @@ Wang et al. 2024 \cite{Wang2024QED} ("QED: A Powerful Query Equivalence
 Decider for SQL") is published in *Proceedings of the VLDB Endowment*
 volume 17 issue 11, pages 3602--3614, DOI
 [10.14778/3681954.3682024](https://doi.org/10.14778/3681954.3682024).
-The authors are Shuxian Wang, Sicheng Pan, and Alvin Cheung
-(*not* "Sicheng Mao, Boyuan Tang, Junfeng Zhang, Yisu Remy Wang" as the
-working bib entry reads; see §5 below for a bib-correction note).
+The authors are Shuxian Wang, Sicheng Pan, and Alvin Cheung (matches the
+current `NOETHER_paper.bib` `Wang2024QED` entry, CrossRef-verified).
 
 ### 1.1 Confirmed empirical evaluation numbers
 
@@ -189,12 +188,10 @@ documented in `theory/translate_extensions.md`.
   on the actual SQL rewrite identity. We label them "candidates" rather
   than "confirmed counterexamples" to preserve the exploratory scope
   declared in the issue's success criteria.
-- The bib entry `Wang2024QED` in `NOETHER_paper.bib` (lines 290--295)
-  lists author names as "Shuxian Wang, Sicheng Mao, Boyuan Tang,
-  Junfeng Zhang, Yisu Remy Wang" but the published author list
-  (DOI 10.14778/3681954.3682024, verified via CrossRef) is **"Shuxian
-  Wang, Sicheng Pan, Alvin Cheung"**. The bib should be corrected;
-  recorded under follow-up in §7.
+- The bib entry `Wang2024QED` in `NOETHER_paper.bib` lists "Shuxian
+  Wang, Sicheng Pan, Alvin Cheung" matching the published author list
+  (DOI 10.14778/3681954.3682024, CrossRef-verified). No correction
+  required (resolved 2026-05-15).
 
 ## 7. Audit log and follow-ups
 
@@ -208,9 +205,10 @@ documented in `theory/translate_extensions.md`.
 
 Follow-ups:
 
-- **F1** Correct `Wang2024QED` bib entry author list (Mao $\to$ Pan,
-  drop Tang/Zhang, replace Yisu Remy Wang with Alvin Cheung).
-  *To be done as part of step 5 paper-side update.*
+- **F1** Resolved 2026-05-15: `Wang2024QED` bib entry already has
+  the correct author list (Wang/Pan/Cheung) matching the published
+  DOI; the discrepancy reported here was based on a now-stale earlier
+  bib snapshot.
 - **F2** Run QED on the test suite, log unverified cases, and verify
   the (b)-class candidates of §3 against the actual residue. *Tracked
   as follow-up issue beyond ISSUE-011's scope.*

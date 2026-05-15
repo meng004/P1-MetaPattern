@@ -36,15 +36,19 @@ categories = 4
 mutation_recording = S3_case_study/mutations/manifest.json (with per-mutation metadata)
 
 [LLM baseline]
-model_id = gpt-4-turbo-2024-04-09 (target)
+model_id = gpt-4-turbo-2024-04-09
 temperature = 0.0
+seed = 4246
 prompt_file = S3_case_study/mr_sets/prompt_log.md
-output_log = S3_case_study/mr_sets/llm_raw_output.txt
-prompt_token_budget = 2048
-status = at submission time, Set L is implemented as the five expected-shape
-         placeholders documented in mr_sets/set_L_llm.py; the full GPT-4
-         output is to be filed in prompt_log.md before camera-ready, with
-         Table 4 numbers re-run if the actual MRs differ in detection.
+output_log = S3_case_study/mr_sets/prompt_log.md (Raw GPT-4 output section)
+prompt_token_budget = 2048 (max_completion_tokens)
+date_generated = 2026-05-15 (UTC)
+status = Set L was generated via the run_gpt4_prompt.py driver on
+         2026-05-15 (UTC). The raw GPT-4 JSON output is recorded in
+         prompt_log.md and translated into Python callables in
+         mr_sets/set_L_llm.py. Table 4 detection numbers (Set N 7/20,
+         Set L 2/20, Set B 0/20; McNemar N-vs-L p=0.0625, Fisher
+         p=0.1274) are computed against the executed LLM output.
 
 [Reproducibility note]
 For pdflatex compilation of the manuscript, see ../../README of the parent

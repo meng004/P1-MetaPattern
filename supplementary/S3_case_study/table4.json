@@ -24,7 +24,10 @@
       },
       "unique": 5,
       "unique_details": {
-        "cat_iv_01": [
+        "cat_iv_05": [
+          "rho_train_rev"
+        ],
+        "cat_iv_02": [
           "rho_train_rev"
         ],
         "cat_iv_04": [
@@ -33,10 +36,7 @@
         "cat_iv_03": [
           "rho_train_rev"
         ],
-        "cat_iv_05": [
-          "rho_train_rev"
-        ],
-        "cat_iv_02": [
+        "cat_iv_01": [
           "rho_train_rev"
         ]
       },
@@ -48,7 +48,7 @@
     "L": {
       "detected": 2,
       "mutations_total": 20,
-      "coverage_noether": 0.4,
+      "coverage_noether": 0.2,
       "per_cat": {
         "i": [
           0,
