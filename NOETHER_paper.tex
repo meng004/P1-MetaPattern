@@ -2240,7 +2240,7 @@ Direction & Cost (estimated) & Expected effect on the reading \\
 (e) D1/D2 mutant labelling & \textbf{Done} & $52$ D1 / $10$ D2 pre-, $52$ D1 / $5$ D2 post-equivalent-mutant exclusion \\
 (g) Construct-trace consistency check, $25$ hand-crafted block-targeted mutants on 5 PIT-unexercised blocks & \textbf{Done (supplementary)} & Pipeline-correctness; $25/25$ Set~N detection is design-implied; not used as independent fault-detection evidence \\
 (h) Generic-mutation independent test of H3a.1 on 5 PIT-unexercised blocks (operator catalogue not hand-authored against Set~N) & $\approx 1$\,month research + tooling & Per-block kill rates for the five additional blocks \\
-(i) METRIC$+$ head-to-head: re-implement category enumeration as automated identifier, run on \S\ref{subsec:test-design}~substrate & $\approx 2$\,weeks engineering & Convert qualitative coverage contrast into measured kill-rate \\
+(i) METRIC$+$ head-to-head on Sun et al.\ 2021's 4 published subjects (\texttt{SPHONE}, \texttt{SBAGGAGE}, \texttt{SEXPENSE}, \texttt{SMEAL}); pre-registered protocol in supplementary~S8 (\texttt{protocol\_path\_a\_headtohead.md}): H$_{\mathrm{MP1}}$ coverage subsumption, H$_{\mathrm{MP2}}$ kill-rate parity, H$_{\mathrm{MP3}}$ cost-axis asymmetry, with two readings (NOETHER expanded to instance MRs at matched cardinality; METRIC$+$ contracted to algebra-block equivalence classes) & $\approx 2$\,weeks engineering + $\approx 30$\,min compute & Converts the qualitative coverage contrast of \S\ref{para:metricplus-sorting} into an inferential measured kill-rate test on Sun 2021's published corpus, addressing the "framework authors adjudicate both sides" concern by using the comparator's own substrate \\
 (e.2) Two-stage equivalent-mutant exclusion (kill-vector auto-classify + multi-LLM vote with Claude tiebreaker) & \textbf{Done} & $5$ equivalents on $n=62$ (all ConditionalsBoundaryMutator on recursive normalising SUTs); final $n=57$ \\
 (e.3) Tighten 2 out-of-domain Set~N MRs on \texttt{powerSig} (\texttt{E\_power\_of\_power}, \texttt{L\_scale\_base}) & $\approx 4$\,h human & Recovers $\le 2$ kills on \texttt{powerSig} \\
 (e.4) $G$-block MR re-synthesis (or in-scope documentation) for Euclidean SUTs (\texttt{a < 0 ? -a : a} normalisation absorbs sign-flip) & \textbf{Done (documented)} & $0/7$ on Euclidean SUTs is framework-correct under scope precondition; $\mathcal{R}$-block post-normalisation re-derivation open \\
@@ -2568,13 +2568,19 @@ are active on its primary instantiation domains
 structurally absent from Sun et~al.'s business-rule benchmark.
 Detailed per-subject derivation, including the regime restrictions
 for partial \tildemark{} blocks, is in supplementary~S8
-(\texttt{metricplus\_sun2021\_subjects/scope\_analysis.md}). The full
-instance-level head-to-head with matched cardinality remains the
-follow-up of Table~\ref{tab:future-work} item~(i); the scope-precondition
-verdict reported here is the algebra-block component of that
-follow-up, conducted on Sun et~al.~2021's published benchmark
-specifications independently of the present authors' choice of
-substrate.
+(\texttt{scope\_analysis.md}). The full instance-level head-to-head
+with matched cardinality on the same four subjects is committed as
+\emph{pre-registered protocol} (supplementary~S8 \texttt{protocol\_path\_a\_headtohead.md},
+Table~\ref{tab:future-work} item~(i)): three pre-registered
+hypotheses (H$_{\mathrm{MP1}}$ coverage subsumption, H$_{\mathrm{MP2}}$
+kill-rate parity, H$_{\mathrm{MP3}}$ cost-axis asymmetry); two
+matched-cardinality readings (NOETHER expanded to instance MRs;
+METRIC$+$ contracted to algebra-block equivalence classes); PIT
+mutation substrate; pre-registered statistical analysis plan with
+McNemar exact as the primary test. The scope-precondition verdict
+reported here is the algebra-block component of that follow-up,
+conducted on Sun et~al.~2021's published benchmark specifications
+independently of the present authors' choice of substrate.
 
 \subsection{Reassessing PMCM coverage claims: a worked example}
 \label{subsec:pmcm-worked}
