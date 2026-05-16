@@ -1,0 +1,190 @@
+{
+  "sphone": {
+    "subject": "sphone",
+    "n_mutants": 52,
+    "n_mrs_set_n": 8,
+    "n_mrs_set_mp": 19,
+    "samples_per_mr": 252,
+    "set_n_killed": 6,
+    "set_mp_killed": 15,
+    "set_n_rate": 0.11538461538461539,
+    "set_mp_rate": 0.28846153846153844,
+    "set_n_wilson95": [
+      0.05396895756082726,
+      0.22971918891062051
+    ],
+    "set_mp_wilson95": [
+      0.18329802341828694,
+      0.42273045714100926
+    ],
+    "complementarity": {
+      "both": 6,
+      "n_only": 0,
+      "mp_only": 9,
+      "neither": 37
+    },
+    "mcnemar_b_c": [
+      0,
+      9
+    ],
+    "mcnemar_exact_p_two_sided": 0.00390625,
+    "both_miss_count": 37,
+    "noether_blocks_used": [
+      "L_star",
+      "O_le"
+    ],
+    "metricplus_pairs_used": [
+      "(D1,R1)",
+      "(D2,R4)",
+      "(D6,R3)"
+    ]
+  },
+  "sbaggage": {
+    "subject": "sbaggage",
+    "n_mutants": 48,
+    "n_mrs_set_n": 8,
+    "n_mrs_set_mp": 12,
+    "samples_per_mr": 288,
+    "set_n_killed": 14,
+    "set_mp_killed": 13,
+    "set_n_rate": 0.2916666666666667,
+    "set_mp_rate": 0.2708333333333333,
+    "set_n_wilson95": [
+      0.18241416061863375,
+      0.4317952773616755
+    ],
+    "set_mp_wilson95": [
+      0.16565803561632889,
+      0.40997234616201117
+    ],
+    "complementarity": {
+      "both": 6,
+      "n_only": 8,
+      "mp_only": 7,
+      "neither": 27
+    },
+    "mcnemar_b_c": [
+      8,
+      7
+    ],
+    "mcnemar_exact_p_two_sided": 1.0,
+    "both_miss_count": 27,
+    "noether_blocks_used": [
+      "G",
+      "L_star",
+      "O_le"
+    ],
+    "metricplus_pairs_used": [
+      "(D1,R1)",
+      "(D2,R4)",
+      "(D6,R3)"
+    ]
+  },
+  "sexpense": {
+    "subject": "sexpense",
+    "n_mutants": 42,
+    "n_mrs_set_n": 11,
+    "n_mrs_set_mp": 18,
+    "samples_per_mr": 216,
+    "set_n_killed": 9,
+    "set_mp_killed": 9,
+    "set_n_rate": 0.21428571428571427,
+    "set_mp_rate": 0.21428571428571427,
+    "set_n_wilson95": [
+      0.11705668531051239,
+      0.3594013789804373
+    ],
+    "set_mp_wilson95": [
+      0.11705668531051239,
+      0.3594013789804373
+    ],
+    "complementarity": {
+      "both": 9,
+      "n_only": 0,
+      "mp_only": 0,
+      "neither": 33
+    },
+    "mcnemar_b_c": [
+      0,
+      0
+    ],
+    "mcnemar_exact_p_two_sided": 1.0,
+    "both_miss_count": 33,
+    "noether_blocks_used": [
+      "L_star",
+      "O_le"
+    ],
+    "metricplus_pairs_used": [
+      "(D1,R1)",
+      "(D2,R4)",
+      "(D6,R3)"
+    ]
+  },
+  "smeal": {
+    "subject": "smeal",
+    "n_mutants": 77,
+    "n_mrs_set_n": 8,
+    "n_mrs_set_mp": 9,
+    "samples_per_mr": 295,
+    "set_n_killed": 24,
+    "set_mp_killed": 24,
+    "set_n_rate": 0.3116883116883117,
+    "set_mp_rate": 0.3116883116883117,
+    "set_n_wilson95": [
+      0.2192713452192063,
+      0.42200245440870815
+    ],
+    "set_mp_wilson95": [
+      0.2192713452192063,
+      0.42200245440870815
+    ],
+    "complementarity": {
+      "both": 24,
+      "n_only": 0,
+      "mp_only": 0,
+      "neither": 53
+    },
+    "mcnemar_b_c": [
+      0,
+      0
+    ],
+    "mcnemar_exact_p_two_sided": 1.0,
+    "both_miss_count": 53,
+    "noether_blocks_used": [
+      "G",
+      "L_star",
+      "O_le"
+    ],
+    "metricplus_pairs_used": [
+      "(D2,R4)",
+      "(D4,R1)",
+      "(D6,R3)"
+    ]
+  },
+  "_pooled": {
+    "total_mutants": 219,
+    "set_n_killed": 53,
+    "set_mp_killed": 61,
+    "set_n_rate": 0.2420091324200913,
+    "set_mp_rate": 0.2785388127853881,
+    "set_n_wilson95": [
+      0.1900461912142815,
+      0.3028671606912873
+    ],
+    "set_mp_wilson95": [
+      0.22337468429517462,
+      0.34133854698659677
+    ],
+    "complementarity": {
+      "both": 45,
+      "n_only": 8,
+      "mp_only": 16,
+      "neither": 150
+    },
+    "mcnemar_b_c": [
+      8,
+      16
+    ],
+    "mcnemar_exact_p_two_sided": 0.15158963203430176
+  }
+}
