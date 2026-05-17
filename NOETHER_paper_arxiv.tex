@@ -2204,6 +2204,8 @@ For a numerical comparison-sort library, METRIC$+$'s eleven input-domain $\times
 \caption{Mapping of $11$ input-domain ($D$) $\times$ output-relation ($R$) METRIC$+$ category pairs~\cite{ChenMETRIC2016, SunMETRICplus2021} onto NOETHER blocks for a deterministic comparison-sort library under $\mathcal{A}_{\mathrm{sort}}$. The sort-specific specialisation is operationalised here; $9$ pairs collapse onto two non-empty blocks ($G$, $O_{\le}$); $2$ pairs ($D_5$, $R_4$) are out-of-scope.}
 \label{tab:metricplus-sorting}
 \small
+\adjustbox{max width=\textwidth}{%
+\small
 \begin{tabular}{lll}
 \toprule
 METRIC$+$ category pair & NOETHER block & Comment \\
@@ -2222,7 +2224,8 @@ $R_5$ (subset relation on output) & $O_{\le}$ & $m_{\mathrm{mono}}$ on subsets \
 \midrule
 \textit{Coverage summary} & $9 \to G \cup O_{\le}$, $2$ out-of-scope & NOETHER block compression: $11 \to 2$ non-empty MetaPatterns \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \paragraph{Small-scale manual METRIC$+$ derivation on three \S\ref{subsec:test-design} SUTs.}
@@ -2584,6 +2587,7 @@ We have not solved the upstream problem of distilling $\mathcal{A}_P$ from progr
 \end{tcolorbox}
 
 %% =========================================================
+\clearpage
 \appendix
 
 %% Appendices A, B, C-worked migrated to supplementary S9 for TOSEM length conformance.
@@ -2847,7 +2851,7 @@ This work was supported by the National Natural Science Foundation of China (NSF
 The authors declare no conflict of interest.
 \end{acks}
 
-\bibliographystyle{ACM-Reference-Format}
+\bibliographystyle{unsrtnat}    % numeric in citation order (arXiv variant)
 \bibliography{NOETHER_paper}
 
 \end{document}
