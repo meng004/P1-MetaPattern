@@ -43,7 +43,7 @@ This document describes every dataset and supplementary artefact referenced by t
 
 ## Data integrity
 
-The supplementary archive's SHA-256 content hash will be anchored in the camera-ready paper and `CITATION.cff` upon acceptance. The hash is computed over a sorted-file tar archive: `find supplementary -type f | sort | tar -czf - -T - | sha256sum`.
+The supplementary archive is permanently archived on Zenodo with DOI **`10.5281/zenodo.20250634`** (https://doi.org/10.5281/zenodo.20250634). Cite this DOI for the replication package; cite the arXiv ID for the manuscript. The SHA-256 content hash of the Zenodo-frozen archive is computed over a sorted-file tar: `find supplementary -type f | sort | tar -czf - -T - | sha256sum`; the value is anchored in the Zenodo deposit record and `CITATION.cff`.
 
 ## Replication ladder
 
