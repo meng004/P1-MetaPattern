@@ -37,6 +37,12 @@
 \newcommand{\tildemark}{\textbf{P}}
 \microtypesetup{expansion=false}
 
+%% ---- arXiv overflow safety: relax line-breaking; force overfull-tolerance ----
+\sloppy
+\setlength{\emergencystretch}{3em}
+%% Tables and figures auto-fit within \textwidth
+\usepackage{adjustbox}
+
 %% Theorem environments
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
@@ -66,13 +72,41 @@
 %% ---- Title and metadata ----
 \title{NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras}
 
-\author{Meng Li}
-\affiliation{%
-  \institution{School of Computing, University of South China}
-  \city{Hengyang}
-  \country{China}
+%% Shared three-affiliation macro
+\newcommand{\threeaffil}{%
+  \affiliation{%
+    \institution{School of Computing, University of South China}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
+  \affiliation{%
+    \institution{Hunan Engineering Research Center of Software Evaluation and Testing for Intellectual Equipment}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
+  \affiliation{%
+    \institution{CNNC Key Laboratory on High Trusted Computing}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
 }
+
+\author{Meng Li}
+\authornote{Corresponding author.}
 \email{mlemon@usc.edu.cn}
+\threeaffil
+
+\author{Xiaohua Yang}
+\threeaffil
+
+\author{Jie Liu}
+\threeaffil
+
+\author{Shiyu Yan}
+\threeaffil
 
 %% ---- Abstract ----
 \begin{abstract}
@@ -2783,12 +2817,24 @@ paper. Reproduction scripts (\texttt{setup.sh}, \texttt{run\_all.sh},
 collaboration record are bundled. Authoring repository and Zenodo
 DOI to be added in the camera-ready version.
 
-\begin{acks}
-[Anonymised for review.]
-\end{acks}
-
 %% =========================================================
 %% References
+%% ---- Acknowledgements / Funding / CRediT / COI ----
+\begin{acks}
+This work was supported by the National Natural Science Foundation of China (NSFC) General Program (grant no.\ 12575176), the Hunan Provincial Education Department Project, China (grant no.\ 202502000728), the Research Project on Degree and Graduate Education Reform of the University of South China (grant no.\ 2023JG030), the Natural Science Foundation of Hunan Province, China (grant no.\ 2025JJ70193), and an industry-funded research project (grant no.\ 230KHX060001).
+
+\smallskip
+\noindent\textbf{Author contributions (CRediT).}
+\textbf{Meng Li}: Conceptualization, Methodology, Software, Writing---original draft.
+\textbf{Xiaohua Yang}: Supervision, Formal analysis, Writing---review \& editing.
+\textbf{Jie Liu}: Investigation, Validation.
+\textbf{Shiyu Yan}: Data curation, Visualization.
+
+\smallskip
+\noindent\textbf{Declaration of competing interest.}
+The authors declare no conflict of interest.
+\end{acks}
+
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{NOETHER_paper}
 

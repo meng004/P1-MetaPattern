@@ -7,6 +7,15 @@ authors:
     family-names: "Li"
     email: "mlemon@usc.edu.cn"
     affiliation: "School of Computing, University of South China"
+  - given-names: "Xiaohua"
+    family-names: "Yang"
+    affiliation: "School of Computing, University of South China"
+  - given-names: "Jie"
+    family-names: "Liu"
+    affiliation: "School of Computing, University of South China"
+  - given-names: "Shiyu"
+    family-names: "Yan"
+    affiliation: "School of Computing, University of South China"
 abstract: >-
   NOETHER is a two-layer framework for metamorphic relation (MR) identification.
   The upstream layer is an eight-block decomposition over recurrent mathematical
