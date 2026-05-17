@@ -172,6 +172,7 @@ This paper proposes such a structural source. We introduce \textbf{NOETHER}, a c
 
 \begin{figure}[h]
 \centering
+\adjustbox{max width=\textwidth}{%
 \begin{tikzpicture}[
   font=\small,
   node distance=4mm and 6mm,
@@ -217,7 +218,8 @@ This paper proposes such a structural source. We introduce \textbf{NOETHER}, a c
   \node[fit=(prog)(decomp), draw=gray!50, dashed, rounded corners, inner sep=6pt, label={[layerlbl, gray!70!black]above left:UPSTREAM (empirical hypothesis)}] {};
   \node[fit=(mset)(mrset)(thm2)(thm1), draw=gray!50, dashed, rounded corners, inner sep=6pt, label={[layerlbl, gray!70!black]below left:DOWNSTREAM (mechanical, provable)}] {};
 \end{pgfonlayer}
-\end{tikzpicture}
+\end{tikzpicture}%
+}
 \caption{NOETHER framework architecture (two layers). The
 \emph{upstream layer} curates the program family's operator algebra
 $\mathcal{A}_P$ and its eight-block decomposition as an empirical
@@ -1697,6 +1699,7 @@ underpowered for a paired hypothesis test at $\alpha = 0.05$ in
 two-sided form.}}
 \label{tab:algebra-rich-pooled}
 \small
+\adjustbox{max width=\textwidth}{%
 \begin{tabular}{lcccccl}
 \toprule
 SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & note \\
@@ -1714,7 +1717,8 @@ SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & not
 \midrule
 \textbf{pooled (head-to-head, n=62)}     &    & \textbf{26} & \textbf{40} & \textbf{39} & $-14$ & McNemar two-sided $p = 0.0043$ (30-min) \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \paragraph{Per-block head-to-head and complementarity (Primary, PIT arm).}
@@ -1742,6 +1746,7 @@ the table-5-reconstruction fallback assigns D1 but does not specify
 broken blocks; lower-bound caveat, not a participating row).}
 \label{tab:per-block-headtohead}
 \small
+\adjustbox{max width=\textwidth}{%
 \begin{tabular}{lrrlrlrrrr}
 \toprule
 Block & $n_{b}$ & Set~N kills & rate (95\% CI) & Set~G kills & rate (95\% CI) & both & $N$-only & $G$-only & neither \\
@@ -1753,7 +1758,8 @@ $\mathcal{T}^{*}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\
 \textit{D1 aggregate, PIT-covered blocks (secondary)}            & 52 & 26 & $0.500$ $[0.369,\,0.631]$ & 37 & $0.712$ $[0.577,\,0.817]$ & 22 & 4 & 15 & 11 \\
 \textit{unmapped (lower-bound caveat)}                           & 25 & --- & --- & --- & --- & --- & --- & --- & --- \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 The unmapped auxiliary row counts $25$ PIT mutants from cells whose D1/D2 override table does not specify broken blocks; it is a lower-bound caveat on per-block denominators (each unmapped mutant is D1-classified but its block membership is unknown), not an additional denominator added to the $G + \mathcal{L}^{*} + \mathcal{T}^{*}$ union. The D1 pool is $n = 52$ pre and post equivalent-mutant exclusion (Table~\ref{tab:two-stratum} row~1).
@@ -1934,6 +1940,7 @@ D2 = algebra-preserving. Complementarity cells report mutant counts;
 the operative test for H3a.2 is the $N$-only column on D1.}
 \label{tab:two-stratum}
 \small
+\adjustbox{max width=\textwidth}{%
 \begin{tabular}{lcccccccc}
 \toprule
 Stratum & $n$ (post-exclusion) & equivalents excluded & Set~N kill / surv. & Set~N rate \scriptsize{[Wilson 95\%]} & Set~G kill / surv. & Set~G rate \scriptsize{[Wilson 95\%]} & both / $N$-only / $G$-only / neither & McNemar $p$ \\
@@ -1943,7 +1950,8 @@ D2 & 5 & 5 & 0 / 5 & $0.000$ \scriptsize{$[0.000, 0.434]$} & 3 / 2 & $0.600$ \sc
 \midrule
 pooled & 57 & 5 & 26 / 31 & $0.456$ \scriptsize{$[0.334, 0.584]$} & 40 / 17 & $0.702$ \scriptsize{$[0.573, 0.805]$} & 22 / 4 / 18 / 13 & $0.0043$ \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \paragraph{H3a verdict split into three sub-claims.}
@@ -2096,6 +2104,7 @@ NOETHER's cost profile differs qualitatively from each of the three SOTA-categor
 \caption{MR-generation cost components for the four methods compared in this section. ``Cost dimension'' rows are independent (an LLM-arm token cost does not amortise GP wall-time and vice versa); the NOETHER human-effort estimate aggregates Set~N's 30-MR derivation across 10 SUTs at $\approx 1$~h per SUT under CONSTRUCT-MP's four-step procedure, amortising across SUTs that share an operator algebra. Full methodology in supplementary~S4 (\texttt{cost\_breakdown.md}).}
 \label{tab:gen-cost}
 \small
+\adjustbox{max width=\textwidth}{%
 \begin{tabular}{lcccc}
 \toprule
 Cost component & NOETHER & GP (GenMorph) & LLM (Xu 2024) & Mining (MR-Scout) \\
@@ -2107,7 +2116,8 @@ Seed-corpus dependency       & none                                             
 Determinism                  & deterministic                                           & seed-/budget-dependent      & prompt-/temperature-dependent & corpus-dependent \\
 Cold-start capable           & yes                                                    & yes (after harness)         & yes (after prompt)         & no (needs corpus) \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 The table operationalises three structural advantages of NOETHER as distinct cost-axis arguments rather than as a single ``best'' verdict: (i) vs.\ GP, polynomial-time deterministic construction (Theorem~\ref{thm:decidable}) replaces a 30-min stochastic per-SUT search, with one-time human cost amortising across same-algebra SUTs; (ii) vs.\ LLM-assisted, the $\mathrm{coverage}_{\mathrm{NOETHER}}$ diagnostic on \S\ref{subsec:case-study} (1.00 vs.\ 0.40) operationalises the algebraic-prior gap that prompt-based generation does not close, at zero token cost; (iii) vs.\ mining-based, NOETHER is operative at cold start (no seed test suite required), the regime in which most algebra-rich scientific-computing programs arrive on a tester's desk. These are cost-profile and coverage-profile claims that hold within the framework's scope precondition, not fault-detection-superiority claims.
