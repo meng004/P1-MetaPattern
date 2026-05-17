@@ -5,8 +5,8 @@
 **Track**: Testing & Analysis
 **Submission category**: Foundational research paper
 **Manuscript**: NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras
-**Pages**: 75 (declared, see §3)
-**Companion artefacts**: supplementary S1–S9 (algorithm reference impl, PWR corpus, case-study harness, reproducibility scripts, GenMorph pilot, query-optimiser instantiation, Defects4J substrate, Sun 2021 METRIC+ subjects with PIT+Major dual-tool replication, migrated appendices)
+**Pages**: 71 (declared, see §3)
+**Companion artefacts**: supplementary S1–S9 (algorithm reference impl, PWR corpus including the 12-MR elementwise enumeration, case-study harness, reproducibility scripts including the cost-component methodology, GenMorph pilot, query-optimiser instantiation, Defects4J substrate, Sun 2021 METRIC+ subjects with PIT+Major dual-tool replication, migrated appendices including the PMCM Case A-bis full per-class decoding)
 
 ---
 
@@ -41,17 +41,17 @@ The paper's central methodological contribution is therefore a **two-layer frame
 
 ## 3. Length declaration
 
-The manuscript is 75 pages in `acmart` manuscript single-column mode, which exceeds the TOSEM 30–50 page recommendation. We respectfully ask the EIC to consider this submission under the foundational-paper category, where the length is justified by the following structural breakdown:
+The manuscript is 71 pages in `acmart` manuscript single-column mode, which exceeds the TOSEM 30–50 page recommendation. We respectfully ask the EIC to consider this submission under the foundational-paper category. After consolidating the original eight body sections into a standard IMRaD structure (Introduction, Related Work, NOETHER Framework, Empirical Evaluation, Threats, Future Work, Conclusion), and after a Tier 2 round of compression that migrated illustrative material to supplementary S2/S4/S9, the length is justified by the following structural breakdown:
 
 | Section | Pages | Why load-bearing |
 |---|---|---|
-| §1–§4 framework + formal preliminaries | ~16 | Theorems 1, 2 and the construction algorithm |
-| §5–§6 three instantiations (Boltzmann, equi-ML, RDB) | ~24 | Each tests a distinct algebraic skeleton; deletion would forfeit C4 transferability |
-| §7 empirical $\mathcal{L}^{*}$-blindness test + head-to-head | ~22 | Pre-registered prediction + per-block + cost-axis + D2-prediction layers; tables are the load-bearing evidence base for H3 |
-| §8 discussion + METRIC+ comparison + scope | ~7 | METRIC+ comparison is the most-requested reviewer item (Path A) |
-| §9 + Appendix C proofs (C.1–C.6) | ~6 | Theorem 1' falsification's five-extension per-block exhaustion proof — load-bearing for the negative theory |
+| §1 Introduction + §2 Related Work | ~7 | Origin–closure–transferability gap framing, four lines of prior work |
+| §3 The NOETHER framework (theory consolidation) | ~22 | Operator-algebraic preliminaries + CONSTRUCT-MP + Theorems 1, 2 + three structurally distinct instantiations (Boltzmann, equi-ML, RDB) + Theorem 1' falsification |
+| §4 Empirical evaluation (experiment consolidation) | ~26 | Five RQs: systematisation, cross-domain executability, $\mathcal{L}^{*}$-blindness 5/6 prediction, head-to-head vs GenMorph, head-to-head vs METRIC+ at three substrate tiers |
+| §5 Threats to validity and limitations | ~3 | Construct, internal, external, conclusion; practical guidance; artefact statement |
+| §6 Conclusion + Appendix C proofs | ~8 | Theorem 1' falsification five-extension per-block exhaustion proof, load-bearing for the negative theory |
 
-Six illustrative appendices (A, B, C-worked, C.7, D, E) totaling ~10 pp. have already been migrated to supplementary S9 to compress; the remaining 75 pp. is what each section requires to support its specific contribution. We are happy to discuss further reductions with the EIC if needed.
+A two-stage compression has been applied. The IMRaD restructure consolidates theory (was §3+§4+§5+§6.1-§6.8) into §3 and experiment (was §6.6+§7+§8.2-§8.3) into §4, eliminating section-level mixing of derivation and validation. Tier 2 migrations move 12-MR elementwise enumeration, cost-component methodology, PMCM Case A-bis per-class decoding, and Apache Commons Math pilot details to supplementary~S2/S4/S9. The remaining 71 pp. is what each section requires to support its specific contribution. We are happy to discuss further reductions with the EIC if needed.
 
 ## 4. Differentiation from related prior art
 

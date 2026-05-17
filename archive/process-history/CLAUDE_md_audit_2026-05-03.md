@@ -104,7 +104,7 @@ chore(paper): apply CLAUDE.md A5/A6/B3 cleanup
 - Folder reorg: archive/{process-history,pre-noether-research}
 - Add README.md, REPRODUCTION.md, LICENSE, .gitignore
 - Add arxiv/ preprint variant with placeholder author block
-- Sanitize hardcoded /Users/limeng paths in S3 + .env.example template
+- Sanitize hardcoded <HOME> paths in S3 + .env.example template
 
 PDF rebuild deferred until libertinus-otf + newtx are installed
 in TeX Live.

@@ -104,3 +104,17 @@ AGENTS.md
 !arxiv/NOETHER_paper_arxiv.pdf
 !supplementary/**/*.csv
 !supplementary/**/*.json
+
+# === IMRaD restructure intermediates (kept locally for safety, not in git) ===
+NOETHER_paper_imrad.tex
+NOETHER_paper_imrad.pdf
+NOETHER_paper_pre_imrad.tex
+comment.cut
+hyperxmp.tar.xz
+missfont.log
+arxiv/comment.cut
+arxiv/*.aux
+arxiv/*.bbl
+arxiv/*.blg
+arxiv/*.log
+arxiv/*.out

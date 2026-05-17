@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "noether"
+version = "0.1.0"
+description = "NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras (reference implementation + replication harness)"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Meng Li", email = "mlemon@usc.edu.cn" },
+]
+keywords = [
+    "metamorphic testing",
+    "operator algebras",
+    "metamorphic relation identification",
+    "scientific computing",
+    "equivariant machine learning",
+    "Boltzmann transport",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "pandas",
+    "statsmodels",
+]
+
+[project.optional-dependencies]
+equivariant-ml = ["torch", "e3nn"]
+case-study = ["torch", "e3nn", "matplotlib"]
+dev = ["pytest", "pytest-cov", "ruff"]
+all = ["torch", "e3nn", "matplotlib", "pytest", "pytest-cov", "ruff"]
+
+[project.urls]
+homepage = "https://github.com/meng004/P1-MetaPattern"
+repository = "https://github.com/meng004/P1-MetaPattern"
+preprint = "https://arxiv.org/abs/<ARXIV_ID>"
+
+[tool.setuptools]
+package-dir = { "" = "supplementary/S1_construct_mp" }
+
+[tool.setuptools.packages.find]
+where = ["supplementary/S1_construct_mp"]
+
+[tool.pytest.ini_options]
+testpaths = ["supplementary/S1_construct_mp", "supplementary/S8_metricplus_sun2021_subjects"]
+python_files = "test_*.py"
+addopts = "-q --strict-markers"

@@ -274,7 +274,7 @@ Expected: H3a, H3b, H3c, H4 all present with the new wording.
 - [ ] **Step A8: Compile and verify Group A edits don't break paper**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   xelatex -interaction=nonstopmode NOETHER_paper.tex > /tmp/groupA.log 2>&1; \
   echo "undef: $(grep -c 'Reference.*undefined\|Citation.*undefined' /tmp/groupA.log)"; \
   echo "missCh: $(grep -c 'Missing character' /tmp/groupA.log)"
@@ -543,7 +543,7 @@ Read NOETHER_paper.tex offset=1465 limit=80
 - [ ] **Step B3.1: Locate Comparator scope paragraph**
 
 ```bash
-grep -n "Comparator scope" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
+grep -n "Comparator scope" <PROJECT_ROOT>/NOETHER_paper.tex
 ```
 
 - [ ] **Step B3.2: Read 30 lines around the located line**
@@ -616,7 +616,7 @@ the 30-min budget is the only paired hypothesis test reported.
 Locate `tab:future-work` table body (after Group A item (d) row), and add a row (e) for D1/D2 stratification.
 
 ```bash
-grep -n "Add Set~M (MR-Scout)" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
+grep -n "Add Set~M (MR-Scout)" <PROJECT_ROOT>/NOETHER_paper.tex
 ```
 
 old_string:
@@ -639,8 +639,8 @@ new_string:
 - [ ] **Step B3.5: Verify**
 
 ```bash
-grep -n "three-SOTA-category" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
-grep -n "D1/D2 mutant labelling" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
+grep -n "three-SOTA-category" <PROJECT_ROOT>/NOETHER_paper.tex
+grep -n "D1/D2 mutant labelling" <PROJECT_ROOT>/NOETHER_paper.tex
 ```
 
 Both should return at least one match.
@@ -650,7 +650,7 @@ Both should return at least one match.
 - [ ] **Step B4: Compile and verify**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   xelatex -interaction=nonstopmode NOETHER_paper.tex > /tmp/groupB.log 2>&1; \
   echo "undef: $(grep -c 'Reference.*undefined\|Citation.*undefined' /tmp/groupB.log)"; \
   echo "missCh: $(grep -c 'Missing character' /tmp/groupB.log)"
@@ -696,7 +696,7 @@ Read NOETHER_paper.tex offset=1543 limit=20
 - [ ] **Step C2: Compile**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   xelatex -interaction=nonstopmode NOETHER_paper.tex > /tmp/groupC.log 2>&1; \
   echo "undef: $(grep -c 'Reference.*undefined\|Citation.*undefined' /tmp/groupC.log)"; \
   echo "missCh: $(grep -c 'Missing character' /tmp/groupC.log)"
@@ -792,7 +792,7 @@ Read NOETHER_paper.tex offset=841 limit=15
 - [ ] **Step D3: Compile**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   xelatex -interaction=nonstopmode NOETHER_paper.tex > /tmp/groupD.log 2>&1; \
   echo "undef: $(grep -c 'Reference.*undefined\|Citation.*undefined' /tmp/groupD.log)"; \
   echo "missCh: $(grep -c 'Missing character' /tmp/groupD.log)"
@@ -812,7 +812,7 @@ Note: a new \cite{NRCRG177} reference is added; it must already exist in `NOETHE
 - [ ] **Step E1.1: Locate "relocates induction"**
 
 ```bash
-grep -n "relocates induction\|moves induction\|relocate induction" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
+grep -n "relocates induction\|moves induction\|relocate induction" <PROJECT_ROOT>/NOETHER_paper.tex
 ```
 
 - [ ] **Step E1.2: Edit Abstract closing sentence (typically near line 78)**
@@ -830,7 +830,7 @@ NOETHER lifts induction from per-program MR sampling to a stable per-domain alge
 - [ ] **Step E1.3: Edit §1 line 114 area "moves it one level up"**
 
 ```bash
-grep -n "moves it one level up\|moves induction one level up" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
+grep -n "moves it one level up\|moves induction one level up" <PROJECT_ROOT>/NOETHER_paper.tex
 ```
 
 old_string:
@@ -846,7 +846,7 @@ A catalogue of observed invariants can sometimes be replaced by a derivation pro
 - [ ] **Step E1.4: Verify**
 
 ```bash
-grep -n "lifts induction\|lifts the empirical step" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
+grep -n "lifts induction\|lifts the empirical step" <PROJECT_ROOT>/NOETHER_paper.tex
 ```
 
 ### Task E2: M10 — Set N 单人推导披露
@@ -884,7 +884,7 @@ Already partially handled by A3 (H1 verdict reframe as structural-prior diagnost
 - [ ] **Step E3.1: grep current state**
 
 ```bash
-grep -n "structural-prior diagnostic\|structural-coverage diagnostic" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
+grep -n "structural-prior diagnostic\|structural-coverage diagnostic" <PROJECT_ROOT>/NOETHER_paper.tex
 ```
 
 If A3's edit landed, no further action needed; mark E3 done. Otherwise, add to abstract.
@@ -935,7 +935,7 @@ plausible threshold variation.
 - [ ] **Step E5.1: Append Zenodo anchor sentence to pre-registration paragraph**
 
 ```bash
-grep -n "auditable proof of pre-registration" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
+grep -n "auditable proof of pre-registration" <PROJECT_ROOT>/NOETHER_paper.tex
 ```
 
 old_string:
@@ -962,7 +962,7 @@ against the criterion file directly.
 - [ ] **Step E5.2: Check NRCRG177 cite exists in bib**
 
 ```bash
-grep -n "NRCRG177\|@misc{NRCRG177\|@techreport{NRCRG177" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.bib
+grep -n "NRCRG177\|@misc{NRCRG177\|@techreport{NRCRG177" <PROJECT_ROOT>/NOETHER_paper.bib
 ```
 
 If 0 results, append to bib:
@@ -982,8 +982,8 @@ If 0 results, append to bib:
 - [ ] **Step E5.3: Verify**
 
 ```bash
-grep -n "SHA-256 hash\|deposited in supplementary" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.tex
-grep -c "NRCRG177" /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.bib
+grep -n "SHA-256 hash\|deposited in supplementary" <PROJECT_ROOT>/NOETHER_paper.tex
+grep -c "NRCRG177" <PROJECT_ROOT>/NOETHER_paper.bib
 ```
 
 Expected: ≥1 match for SHA-256; 1 match for NRCRG177 (definition).
@@ -993,7 +993,7 @@ Expected: ≥1 match for SHA-256; 1 match for NRCRG177 (definition).
 - [ ] **Step E6: Compile + verify (xelatex + bibtex chain since bib changed)**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   xelatex -interaction=nonstopmode NOETHER_paper.tex > /tmp/groupE_1.log 2>&1 && \
   bibtex NOETHER_paper > /tmp/groupE_b.log 2>&1 && \
   xelatex -interaction=nonstopmode NOETHER_paper.tex > /tmp/groupE_2.log 2>&1 && \
@@ -1014,7 +1014,7 @@ Expected: undef = 0; missCh = 0; bibtex 0 errors.
 - [ ] **Step F1.1: Bib all-cited check (CLAUDE.md §3 步骤 2a)**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && python3 -c "
+cd "<PROJECT_ROOT>" && python3 -c "
 import re, pathlib
 tex = pathlib.Path('NOETHER_paper.tex').read_text()
 bib = pathlib.Path('NOETHER_paper.bib').read_text()
@@ -1036,7 +1036,7 @@ Expected: undefined = ∅. uncited may be small (legacy unused entries are toler
 - [ ] **Step F1.2: Final compile chain (CLAUDE.md §3 步骤 2b)**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   xelatex -interaction=nonstopmode NOETHER_paper.tex > /tmp/final_1.log 2>&1 && \
   bibtex NOETHER_paper > /tmp/final_b.log 2>&1 && \
   xelatex -interaction=nonstopmode NOETHER_paper.tex > /tmp/final_2.log 2>&1 && \
@@ -1052,7 +1052,7 @@ Expected: undef = 0; missCh = 0; bibtex errors = 0; pages ≈ 41–42 (was 40; n
 - [ ] **Step F1.3: Anonymous-companion-paper grep (CLAUDE.md §3 步骤 2c)**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   grep -nE 'Anonymous2025|Anonymous2026|anonymous reference|\[1\]\s*$|\[2\]\s*$' NOETHER_paper.tex NOETHER_paper.bib | head -20
 ```
 
@@ -1061,7 +1061,7 @@ Expected: no matches.
 - [ ] **Step F1.4: Sensitive-info grep (CLAUDE.md §3 步骤 2e)**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   grep -rIn -E "(/Users/[^/]+|sk-[A-Za-z0-9]{16,}|Bearer\s+[A-Za-z0-9]+|api_key\s*=\s*['\"][^'\"]{8,})" \
     --exclude-dir=.git --exclude-dir=.venv* --exclude-dir=texmf-dist --exclude-dir=node_modules \
     --include="*.tex" --include="*.bib" --include="*.md"
@@ -1072,7 +1072,7 @@ Expected: empty output.
 - [ ] **Step F1.5: Em-dash zero-tolerance grep (CLAUDE.md §3 步骤 4)**
 
 ```bash
-cd "/Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式" && \
+cd "<PROJECT_ROOT>" && \
   grep -cn $'—' NOETHER_paper.tex
 ```
 
@@ -1090,7 +1090,7 @@ echo ""
 echo "Tasks completed: 17 (M1, M-strat, M-cost, M1', M2, M3, M4, M5, M6, M7, M8, M9-M14, F1-F2)"
 echo ""
 echo "Compile health:"
-echo "  PDF pages: $(pdfinfo /Users/limeng/Library/CloudStorage/OneDrive-个人/0-论文/MR识别/MR元模式/NOETHER_paper.pdf 2>/dev/null | grep '^Pages' | awk '{print $2}')"
+echo "  PDF pages: $(pdfinfo <PROJECT_ROOT>/NOETHER_paper.pdf 2>/dev/null | grep '^Pages' | awk '{print $2}')"
 echo "  Undef refs: $(grep -c 'Reference.*undefined\|Citation.*undefined' /tmp/final_3.log)"
 echo "  Missing chars: $(grep -c 'Missing character' /tmp/final_3.log)"
 echo ""

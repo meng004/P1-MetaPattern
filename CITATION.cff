@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+title: "NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras"
+message: "If you use NOETHER in your research, please cite this preprint."
+type: software
+authors:
+  - given-names: "Meng"
+    family-names: "Li"
+    email: "mlemon@usc.edu.cn"
+    affiliation: "School of Computing, University of South China"
+abstract: >-
+  NOETHER is a two-layer framework for metamorphic relation (MR) identification.
+  The upstream layer is an eight-block decomposition over recurrent mathematical
+  structures (symmetry, order, self-adjoint, time-reversal, limit,
+  qualitative-dynamics, method-comparison, relational equivalence), stated as
+  an empirical hypothesis. The downstream layer is the CONSTRUCT-MP algorithm
+  with two formal guarantees: algebraic closure under the Translate operator
+  (Theorem 1) and polynomial-time decidability under a finite generating set
+  (Theorem 2). The framework is instantiated on three structurally distinct
+  operator algebras (Boltzmann reactor physics, equivariant machine learning,
+  relational query optimisers) and the absolute-completeness conjecture
+  (Theorem 1') is falsified on a fourth program family (PWR core diffusion)
+  via two pairwise-independent counterexamples.
+keywords:
+  - metamorphic testing
+  - operator algebras
+  - metamorphic relation identification
+  - scientific computing
+  - equivariant machine learning
+  - Boltzmann transport
+  - PWR core diffusion
+license: MIT
+version: "0.1.0"
+date-released: "2026-05-17"
+url: "https://github.com/meng004/P1-MetaPattern"
+repository-code: "https://github.com/meng004/P1-MetaPattern"
+preferred-citation:
+  type: article
+  title: "NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras"
+  authors:
+    - given-names: "Meng"
+      family-names: "Li"
+      email: "mlemon@usc.edu.cn"
+      affiliation: "School of Computing, University of South China"
+  year: 2026
+  url: "https://arxiv.org/abs/<ARXIV_ID>"
+  notes: "arXiv preprint; under review at ACM Transactions on Software Engineering and Methodology"

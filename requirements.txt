@@ -1,0 +1,25 @@
+# NOETHER runtime dependencies (unpinned for cross-platform installs).
+# For exact reproduction, use requirements-frozen.txt (frozen on 2026-05-17).
+
+# === Core numerical ===
+numpy
+scipy
+
+# === §3.5.1 Boltzmann instantiation + §4.5 head-to-head analysis ===
+pandas
+matplotlib
+
+# === §3.5.2 equivariant-ML instantiation (SE(3) case study, §4.3) ===
+torch
+e3nn
+
+# === §4.5 statistical analysis ===
+statsmodels   # McNemar exact, Fisher exact, Wilson CIs
+
+# === Test infrastructure ===
+pytest
+pytest-cov
+
+# === LaTeX building (system-level, listed for completeness) ===
+# xelatex (via MacTeX 2026, TeX Live 2026, or BasicTeX + tlmgr install)
+# bibtex (bundled with TeX distributions)
