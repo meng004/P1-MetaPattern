@@ -1413,12 +1413,10 @@ mutation testing parsed to a per-mutant kill vector.
 
 \paragraph{Pre-registered SUT criterion.}
 The selection rule is committed in
-\texttt{configs/d4j\_algebra\_rich\_criterion.json} on branch
-\texttt{feat/d4j-algebra-rich} of the experiment repository
+\path{configs/d4j_algebra_rich_criterion.json} on branch
+\path{feat/d4j-algebra-rich} of the experiment repository
 \emph{before} any new evaluation data existed. The criterion
-references package roots
-(\texttt{org.apache.commons.math3.\{ode,linear,transform,analysis.solvers,distribution,optim,fitting,stat.regression,complex,geometry,fraction\}}
-plus their \texttt{math.*} legacy counterparts), per-package
+references package roots (under \path{org.apache.commons.math3.*}, covering subpackages \path{ode}, \path{linear}, \path{transform}, \path{analysis.solvers}, \path{distribution}, \path{optim}, \path{fitting}, \path{stat.regression}, \path{complex}, \path{geometry}, \path{fraction}, plus their \path{math.*} legacy counterparts), per-package
 block-coverage hypotheses, and method-signature constraints; it
 contains no bug-id and no kill-rate references and cannot be tuned by
 evaluation outcomes. The git timestamp chain (criterion
@@ -2272,6 +2270,7 @@ contribution; a full PIT execution to confirm this is committed as
 follow-up~(i).}
 \label{tab:metricplus-headtohead-small}
 \footnotesize
+\adjustbox{max width=\textwidth}{%
 \begin{tabular}{l l l l}
 \toprule
 METRIC$+$ pair & \texttt{midpoint} & \texttt{hypotSig} & \texttt{powerSig} \\
@@ -2293,7 +2292,8 @@ $R_5$ (output subset)          & -- (scalar) & -- (scalar) & -- (scalar) \\
 \textit{Set-N coverage of those blocks} & yes ($m_{\mathrm{inv}}$, $m_{\mathrm{mono}}$) & yes ($m_{\mathrm{inv}}$, $L_{\mathrm{scale}}$) & yes ($m_{\mathrm{inv}}$, $L_{\mathrm{scale}}$) \\
 \textit{Set-N MRs without Set-MP counterpart} & $m_{\mathrm{adj}}$, $m_{\mathrm{train\text{-}rev}}$, $m_{\mathrm{conv}}$ (at limits) & same three blocks & same three blocks \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 The structural finding from Table~\ref{tab:metricplus-headtohead-small} is
