@@ -1,0 +1,9 @@
+# S5-aligned experiment — Python dependencies
+# (installed automatically by experiment/s5_aligned/setup.sh; versions unpinned,
+#  matching setup.sh `pip3 install --user pandas numpy scipy statsmodels`)
+# To pin for exact reproduction, freeze after first successful run:
+#   pip3 freeze | grep -iE 'pandas|numpy|scipy|statsmodels' > requirements.lock.txt
+pandas
+numpy
+scipy
+statsmodels
