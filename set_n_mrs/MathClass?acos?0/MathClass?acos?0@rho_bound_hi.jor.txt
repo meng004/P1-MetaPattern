@@ -1,1 +1,1 @@
-(((double) o_return_s) <= ((double) i_this_s.PI))
+(((double) o_return_s) <= ((double) Math.PI))
