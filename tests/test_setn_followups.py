@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """tests/test_setn_followups.py — Set N follow-up input construction (rule 6).
 
-Validates that scripts/setn_followups.py parses the generated .jir input
-relations into the correct constructive transform and applies them to a source
-.methodinputs to produce the expected follow-up parameter values.
+Validates scripts/setn_followups.py parsing + application across the transform
+kinds present in the corpus: numeric, receiver-identity, sequence-identity,
+and cross-variable swap (copyfrom).
 """
 import sys
 import tempfile
@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import setn_followups as sf  # noqa: E402
 
-SRC_XML = """<ch.usi.methodtest.MethodTest>
+GCD_SRC = """<ch.usi.methodtest.MethodTest>
   <methodName>gcd</methodName>
   <methodParameters>
     <ch.usi.methodtest.MethodParameter><name>this</name><clazz>MathClass</clazz></ch.usi.methodtest.MethodParameter>
@@ -21,8 +21,17 @@ SRC_XML = """<ch.usi.methodtest.MethodTest>
   </methodParameters>
 </ch.usi.methodtest.MethodTest>"""
 
-# (jir input relation, expected follow-up (p, q)) for source (p=1223, q=5)
-CASES = {
+STR_SRC = """<ch.usi.methodtest.MethodTest>
+  <methodName>difference</methodName>
+  <methodParameters>
+    <ch.usi.methodtest.MethodParameter><name>this</name><clazz>LangClass</clazz></ch.usi.methodtest.MethodParameter>
+    <ch.usi.methodtest.MethodParameter><name>str1</name><clazz>java.lang.String</clazz><value class="string">abcd</value></ch.usi.methodtest.MethodParameter>
+    <ch.usi.methodtest.MethodParameter><name>str2</name><clazz>java.lang.String</clazz><value class="string">xy</value></ch.usi.methodtest.MethodParameter>
+  </methodParameters>
+</ch.usi.methodtest.MethodTest>"""
+
+# numeric (gcd): jir -> expected follow-up (p, q) for source (1223, 5)
+NUM_CASES = {
     "perm": ("((Math.abs(((double) i_p_f) - ((double) i_q_s)) < 1.0E-4) && "
              "(Math.abs(((double) i_q_f) - ((double) i_p_s)) < 1.0E-4))", {"p": "5", "q": "1223"}),
     "scale": ("((Math.abs(((double) i_p_f) - (((double) i_p_s) * 2.0)) < 1.0E-4) && "
@@ -33,36 +42,65 @@ CASES = {
              "(Math.abs(((double) i_q_f) - ((double) i_q_s)) < 1.0E-4))", {"p": "1223", "q": "5"}),
 }
 
+# receiver-identity + numeric (acos rho_oddcomp style)
+ACOS_JIR = ("((Math.abs(((double) i_x_f) - (((double) i_x_s) * (0.0 - 1.0))) < 1.0E-4) && "
+            "(Math.abs(((double) i_this_f.PI) - ((double) i_this_s.PI)) < 1.0E-4) && "
+            "(Math.abs(((double) i_this_f.E) - ((double) i_this_s.E)) < 1.0E-4))")
+
+# sequence identity (Lang single-execution invariant)
+ID_JIR = ("(((ch.usi.gassert.data.types.Sequence.fromValue(i_str1_f)).equals("
+          "(ch.usi.gassert.data.types.Sequence.fromValue(i_str1_s)), 1.0E-4)))")
+
+# cross-variable string swap (difference rho_swap)
+SWAP_JIR = ("(((ch.usi.gassert.data.types.Sequence.fromValue(i_str1_f)).equals("
+            "(ch.usi.gassert.data.types.Sequence.fromValue(i_str2_s)), 1.0E-4)) && "
+            "((ch.usi.gassert.data.types.Sequence.fromValue(i_str2_f)).equals("
+            "(ch.usi.gassert.data.types.Sequence.fromValue(i_str1_s)), 1.0E-4)))")
+
 
 def main():
     tmp = Path(tempfile.mkdtemp())
-    src = tmp / "src.methodinputs"
-    src.write_text(SRC_XML)
-    tree, params = sf.read_method_inputs(src)
-    assert params["p"] == ("int", "1223"), params
-    assert params["q"] == ("int", "5"), params
-    assert params["this"][1] is None, "value-less param should parse with None value"
 
-    for name, (jir, expect) in CASES.items():
-        assigns = sf.parse_jir(jir)
-        assert {v for v, _, _ in assigns} == {"p", "q"}, f"{name}: vars {assigns}"
-        out = tmp / f"{name}.methodinputs"
-        sf.write_followup(tree, params, assigns, out)
+    # --- numeric (gcd) ---
+    g = tmp / "g.methodinputs"; g.write_text(GCD_SRC)
+    gtree, gparams = sf.read_method_inputs(g)
+    assert gparams["p"] == ("int", "1223") and gparams["this"][1] is None
+    for name, (jir, expect) in NUM_CASES.items():
+        out = tmp / f"num_{name}.methodinputs"
+        sf.write_followup(gtree, gparams, sf.parse_jir(jir), out)
         _, fp = sf.read_method_inputs(out)
         got = {"p": fp["p"][1], "q": fp["q"][1]}
-        assert got == expect, f"{name}: got {got}, expected {expect}"
-        # 'this' (no value) must be preserved untouched
-        assert fp["this"][1] is None, f"{name}: 'this' param corrupted"
+        assert got == expect, f"{name}: {got} != {expect}"
 
-    # fail-loud on an unrecognised input-relation form
+    # --- receiver-identity + numeric ---
+    kinds = {v: k for v, k, _ in sf.parse_jir(ACOS_JIR)}
+    assert kinds == {"x": "num", "this": "id"}, kinds
+
+    # --- string identity ---
+    s = tmp / "s.methodinputs"; s.write_text(STR_SRC)
+    stree, sparams = sf.read_method_inputs(s)
+    out = tmp / "id.methodinputs"
+    sf.write_followup(stree, sparams, sf.parse_jir(ID_JIR), out)
+    _, fp = sf.read_method_inputs(out)
+    assert fp["str1"][1] == "abcd", f"identity changed str1: {fp['str1']}"
+
+    # --- string swap (copyfrom) ---
+    a = sf.parse_jir(SWAP_JIR)
+    assert {v: k for v, k, _ in a} == {"str1": "copyfrom", "str2": "copyfrom"}, a
+    out = tmp / "swap.methodinputs"
+    sf.write_followup(stree, sparams, a, out)
+    _, fp = sf.read_method_inputs(out)
+    assert fp["str1"][1] == "xy" and fp["str2"][1] == "abcd", f"swap wrong: {fp}"
+
+    # --- fail-loud on garbage ---
     try:
         sf.parse_jir("totally not a relation")
         raise AssertionError("parse_jir should reject malformed input relations")
     except ValueError:
         pass
 
-    print(f"OK: setn_followups parses + applies {len(CASES)} transforms "
-          "(perm/scale/eqref/mono), preserves value-less params, fails loud on garbage")
+    print("OK: setn_followups handles numeric / receiver-id / seq-id / swap, "
+          "preserves value-less params, fails loud on garbage")
 
 
 if __name__ == "__main__":

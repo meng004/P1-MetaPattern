@@ -10,21 +10,23 @@ set and with the same kill definition as Set G (CLAUDE.md: substrate held
 constant, only the MR set varies).
 
 For each Set N MR `<subject>@<name>`:
-  * parse its input relation (.jir) into a constructive transform
-        i_<var>_f = expr(i_*_s)
+  * parse its input relation (.jir) into a per-argument constructive transform
   * for each upstream source `.methodinputs`, write a follow-up `.methodinputs`
-    with the transformed parameter values, named `<subject>@<testid>@<name>`
+    with the transformed values, named `<subject>@<testid>@<name>`
   * write the `<subject>@<name>.cmrip` marker PITestGenerator enumerates MRs by
   * stage the MR's `.jir`/`.jor` into the mrs dir under `<experiment>/<subject>/`
 
-The Set N .jir forms emitted by generate_set_n_mrs.py are regular conjunctions:
-    numeric:  (Math.abs(((double) i_<v>_f) - (<EXPR over _s>)) < 1.0E-4)
-    boolean:  (i_<v>_f == (<EXPR over _s>))
-Each conjunct fixes one follow-up variable. Anything that does not match a known
-form raises (fail-loud) rather than silently skipping a relation.
+Input-relation conjunct grammar emitted by generate_set_n_mrs.py
+(one conjunct fixes one follow-up variable):
+  numeric          Math.abs(((double) i_<v>_f) - <EXPR over _s>) < 1.0E-4
+  receiver-ident   Math.abs(((double) i_this_f.<C>) - ((double) i_this_s.<C>)) < 1.0E-4
+  sequence-ident   Sequence.fromValue(i_<v>_f)).equals((..Sequence.fromValue(i_<v>_s)), 1.0E-4)
+  sequence-reverse Sequence.fromValue(i_<v>_f)).equals((..Sequence.fromValue(i_<v>_s)).flip(), 1.0E-4)
+Every follow-up variable must be covered by exactly one recognised conjunct,
+otherwise parse_jir raises (fail-loud) rather than silently leaving it untouched.
 """
-
 import argparse
+import copy
 import math
 import re
 import sys
@@ -32,56 +34,63 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 SEP = "@"  # ch.usi.gassert.util.FileUtils SEPARATORS[0]
+_NUMERIC_CLASSES = {"int", "long", "short", "byte", "double", "float",
+                    "java.lang.Integer", "java.lang.Long", "java.lang.Double",
+                    "java.lang.Float", "java.lang.Short", "java.lang.Byte"}
 
 # ---------------------------------------------------------------------------
-# .jir input-relation parsing  ->  {var: java_expr_over_source_vars}
+# .jir input-relation parsing  ->  [(var, kind, spec)]
+#   kind 'num'  spec = python expression over source vars dict `s`
+#   kind 'id'   spec = None   (follow-up value == source value)
+#   kind 'rev'  spec = None   (follow-up value == reversed source sequence)
 # ---------------------------------------------------------------------------
-# numeric:  Math.abs( ((double) i_<v>_f) - <EXPR> ) < 1.0E-4
 _NUM = re.compile(
-    r"Math\.abs\(\s*\(\((?:double|float|int|long)\)\s*i_(\w+)_f\)\s*-\s*(.+?)\)\s*<\s*1\.0E-4"
-)
-# boolean / exact:  ( i_<v>_f == <EXPR> )
-_BOOL = re.compile(r"i_(\w+)_f\s*==\s*(.+?)\s*\)")
+    r"Math\.abs\(\(\((?:double|float|int|long)\)\s*i_(\w+)_f\)\s*-\s*(.+?)\)\s*<\s*1\.0E-4")
+_RECV = re.compile(r"i_this_f\.\w+")
+_SEQ = re.compile(
+    r"Sequence\.fromValue\(i_(\w+)_f\)\)\.equals\(\([^,]*?Sequence\.fromValue\(i_(\w+)_s\)\)(\.flip\(\))?\s*,")
+_BOOL = re.compile(r"\(\s*i_(\w+)_f\s*==\s*(.+?)\)\s*(?:&&|\)\s*$)")
 
 
 def _java_expr_to_py(expr: str) -> str:
-    """Translate the (small, generated) Java arithmetic grammar to Python."""
-    # ((double) i_VAR_s) and friends -> s['VAR']
-    expr = re.sub(r"\(\((?:double|float|int|long|short|byte)\)\s*i_(\w+)_s\)",
-                  r"s['\1']", expr)
-    # any stray cast token (TYPE) -> drop
+    expr = re.sub(r"\(\((?:double|float|int|long|short|byte)\)\s*i_(\w+)_s\)", r"s['\1']", expr)
     expr = re.sub(r"\((?:double|float|int|long|short|byte)\)\s*", "", expr)
-    # bare i_VAR_s -> s['VAR']
     expr = re.sub(r"i_(\w+)_s", r"s['\1']", expr)
-    # Math.* -> abs(...) / math.*
     expr = expr.replace("Math.abs", "abs")
     expr = re.sub(r"Math\.(\w+)", r"math.\1", expr)
     return expr
 
 
 def parse_jir(jir_text: str):
-    """Return list of (var, py_expr, java_expr) constructive assignments."""
-    jir_text = jir_text.strip()
-    assigns = []
-    for var, java_expr in _NUM.findall(jir_text):
-        assigns.append((var, _java_expr_to_py(java_expr), java_expr.strip()))
-    if not assigns:
-        # try boolean/exact form, conjunct by conjunct
-        for conj in re.split(r"\)\s*&&\s*\(", jir_text):
-            m = _BOOL.search(conj)
-            if m:
-                var, java_expr = m.group(1), m.group(2)
-                assigns.append((var, _java_expr_to_py(java_expr), java_expr.strip()))
+    t = jir_text.strip()
+    assigns = {}
+    for var, expr in _NUM.findall(t):
+        assigns[var] = ("num", _java_expr_to_py(expr.strip()))
+    for vf, vs, flip in _SEQ.findall(t):
+        if vf == vs:
+            assigns[vf] = ("rev" if flip else "id", None)
+        elif not flip:
+            assigns[vf] = ("copyfrom", vs)        # swap: i_<vf>_f == i_<vs>_s
+        else:
+            raise ValueError(f"unsupported flip+swap for i_{vf}_f in:\n{jir_text}")
+    if _RECV.search(t):
+        assigns["this"] = ("id", None)
+    for var, expr in _BOOL.findall(t):
+        assigns.setdefault(var, ("num", _java_expr_to_py(expr.strip())))
     if not assigns:
         raise ValueError(f"unrecognised .jir input-relation form:\n{jir_text}")
-    return assigns
+    # coverage: every i_<v>_f mentioned must be assigned
+    mentioned = set(re.findall(r"i_(\w+)_f", t))
+    missing = mentioned - set(assigns)
+    if missing:
+        raise ValueError(f"unhandled follow-up vars {sorted(missing)} in:\n{jir_text}")
+    return [(v, k, s) for v, (k, s) in assigns.items()]
 
 
 # ---------------------------------------------------------------------------
-# .methodinputs  (XStream-serialised ch.usi.methodtest.MethodTest)
+# .methodinputs (XStream-serialised ch.usi.methodtest.MethodTest)
 # ---------------------------------------------------------------------------
 def read_method_inputs(path: Path):
-    """-> (ElementTree, {param_name: (clazz, value_or_None)})."""
     tree = ET.parse(path)
     params = {}
     for mp in tree.getroot().findall(".//ch.usi.methodtest.MethodParameter"):
@@ -92,28 +101,50 @@ def read_method_inputs(path: Path):
     return tree, params
 
 
+def _is_numeric(clazz):
+    return clazz in _NUMERIC_CLASSES
+
+
 def _cast(value: float, clazz: str):
-    if clazz in ("int", "long", "short", "byte", "java.lang.Integer", "java.lang.Long"):
+    if clazz in ("int", "long", "short", "byte", "java.lang.Integer",
+                 "java.lang.Long", "java.lang.Short", "java.lang.Byte"):
         return str(int(round(value)))
     if clazz in ("double", "float", "java.lang.Double", "java.lang.Float"):
         return repr(float(value))
     return str(value)
 
 
-def write_followup(src_tree: ET.ElementTree, src_params: dict,
-                   assigns, out_path: Path):
-    """Apply the transform to a copy of the source inputs; write follow-up."""
-    # numeric source bindings for expression evaluation
-    s = {n: float(v) for n, (c, v) in src_params.items() if v is not None}
-    # compute all follow-up values from the *source* state first
+def _reverse_value(val, clazz):
+    if val is None:
+        return None
+    if clazz in ("string", "java.lang.String", "String"):
+        return val[::-1]
+    raise NotImplementedError(f"reverse not implemented for clazz={clazz!r} "
+                              "(need the .methodinputs array serialisation)")
+
+
+def write_followup(src_tree, src_params, assigns, out_path: Path):
+    s = {n: float(v) for n, (c, v) in src_params.items()
+         if v is not None and _is_numeric(c)}
     new_vals = {}
-    for var, py_expr, _ in assigns:
+    for var, kind, spec in assigns:
         if var not in src_params:
             raise KeyError(f"transform sets i_{var}_f but source has no param {var}")
-        val = eval(py_expr, {"__builtins__": {}}, {"s": s, "abs": abs, "math": math})  # noqa: S307
-        new_vals[var] = _cast(val, src_params[var][0])
-    # serialise a modified copy
-    import copy
+        clazz, val = src_params[var]
+        if kind == "id":
+            continue                       # follow-up == source: leave untouched
+        if kind == "num":
+            r = eval(spec, {"__builtins__": {}}, {"s": s, "abs": abs, "math": math})  # noqa: S307
+            new_vals[var] = _cast(r, clazz)
+        elif kind == "rev":
+            new_vals[var] = _reverse_value(val, clazz)
+        elif kind == "copyfrom":
+            src_val = src_params.get(spec, (None, None))[1]
+            if src_val is None:
+                raise ValueError(f"copyfrom source {spec} has no value")
+            new_vals[var] = src_val
+        else:
+            raise ValueError(f"unknown transform kind {kind!r}")
     tree = copy.deepcopy(src_tree)
     for mp in tree.getroot().findall(".//ch.usi.methodtest.MethodParameter"):
         name = mp.findtext("name")
@@ -126,60 +157,74 @@ def write_followup(src_tree: ET.ElementTree, src_params: dict,
     tree.write(out_path, encoding="unicode")
 
 
+def _cmrip_lines(assigns):
+    out = []
+    for var, kind, spec in assigns:
+        if kind == "id":
+            out.append(f"(i_{var}_f == i_{var}_s)\n")
+        elif kind == "rev":
+            out.append(f"(i_{var}_f == reverse(i_{var}_s))\n")
+        elif kind == "copyfrom":
+            out.append(f"(i_{var}_f == i_{spec}_s)\n")
+        else:  # num
+            expr = spec.replace("s['", "i_").replace("']", "_s")
+            out.append(f"(i_{var}_f == ({expr}))\n")
+    return "".join(out)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Construct Set N follow-up inputs.")
     ap.add_argument("--subject", required=True, help="e.g. 'MathClass?gcd?0'")
     ap.add_argument("--set-n-dir", required=True, type=Path)
-    ap.add_argument("--sources-dir", required=True, type=Path,
-                    help="evaluation_test_inputs_seed<seed> (contains <subject>/)")
-    ap.add_argument("--followups-dir", required=True, type=Path,
-                    help="evaluation_test_inputs_transform_seed<seed>")
+    ap.add_argument("--sources-dir", required=True, type=Path)
+    ap.add_argument("--followups-dir", required=True, type=Path)
     ap.add_argument("--mrs-dir", required=True, type=Path)
     ap.add_argument("--experiment", default="setn_seed11")
+    ap.add_argument("--strict", action="store_true",
+                    help="abort on the first MR whose transform is unsupported")
     args = ap.parse_args()
 
     subject = args.subject
-    src_sut_dir = args.sources_dir / subject
-    sources = sorted(src_sut_dir.glob(f"{subject}{SEP}*.methodinputs"))
+    sources = sorted((args.sources_dir / subject).glob(f"{subject}{SEP}*.methodinputs"))
     if not sources:
-        sys.exit(f"FATAL: no source .methodinputs in {src_sut_dir}")
+        sys.exit(f"FATAL: no source .methodinputs in {args.sources_dir / subject}")
 
-    fu_sut_dir = args.followups_dir / args.experiment / subject
-    mrs_sut_dir = args.mrs_dir / args.experiment / subject
-    mrs_sut_dir.mkdir(parents=True, exist_ok=True)
-    fu_sut_dir.mkdir(parents=True, exist_ok=True)
+    fu_dir = args.followups_dir / args.experiment / subject
+    mrs_dir = args.mrs_dir / args.experiment / subject
+    fu_dir.mkdir(parents=True, exist_ok=True)
+    mrs_dir.mkdir(parents=True, exist_ok=True)
 
-    mrs = sorted(p.name[:-len(".jir.txt")] for p in args.set_n_dir.glob(f"{subject}{SEP}*.jir.txt"))
+    mrs = sorted(p.name[:-len(".jir.txt")]
+                 for p in args.set_n_dir.glob(f"{subject}{SEP}*.jir.txt"))
     print(f"[{subject}] {len(sources)} source inputs, {len(mrs)} Set N MRs")
 
+    staged, skipped = 0, []
     for mr in mrs:
-        name = mr.split(SEP, 1)[1]              # transform name (after '<subject>@')
+        name = mr.split(SEP, 1)[1]
         jir = (args.set_n_dir / f"{mr}.jir.txt").read_text()
         jor = (args.set_n_dir / f"{mr}.jor.txt").read_text()
-        assigns = parse_jir(jir)
+        try:
+            assigns = parse_jir(jir)
+            for src in sources:
+                testid = src.name[len(f"{subject}{SEP}"):-len(".methodinputs")]
+                tree, params = read_method_inputs(src)
+                write_followup(tree, params, assigns,
+                               fu_dir / f"{subject}{SEP}{testid}{SEP}{name}.methodinputs")
+            (fu_dir / f"{subject}{SEP}{name}.cmrip").write_text(_cmrip_lines(assigns))
+            (mrs_dir / f"{mr}.jir.txt").write_text(jir)
+            (mrs_dir / f"{mr}.jor.txt").write_text(jor)
+            staged += 1
+            print(f"  {name}: staged ({', '.join(f'{v}:{k}' for v, k, _ in assigns)})")
+        except (ValueError, KeyError, NotImplementedError) as e:
+            skipped.append((name, str(e).splitlines()[0]))
+            print(f"  {name}: UNSUPPORTED — {str(e).splitlines()[0]}", file=sys.stderr)
+            if args.strict:
+                raise
 
-        # follow-up inputs, one per source test
-        n_ok = 0
-        for src in sources:
-            testid = src.name[len(f"{subject}{SEP}"):-len(".methodinputs")]
-            tree, params = read_method_inputs(src)
-            out = fu_sut_dir / f"{subject}{SEP}{testid}{SEP}{name}.methodinputs"
-            write_followup(tree, params, assigns, out)
-            n_ok += 1
-
-        # .cmrip marker (records the relation; PITestGenerator enumerates by filename)
-        cmrip = fu_sut_dir / f"{subject}{SEP}{name}.cmrip"
-        cmrip.write_text("".join(
-            f"(i_{v}_f == ({je}))\n".replace("(double) ", "").replace("(int) ", "")
-            for v, _, je in assigns))
-
-        # stage MR DSL into the mrs dir where PITestGenerator reads the .jor
-        (mrs_sut_dir / f"{mr}.jir.txt").write_text(jir)
-        (mrs_sut_dir / f"{mr}.jor.txt").write_text(jor)
-        print(f"  {name}: {n_ok} follow-ups + cmrip + jor staged")
-
-    print(f"[{subject}] done -> {fu_sut_dir}")
+    print(f"[{subject}] staged {staged}/{len(mrs)} MRs"
+          + (f"; UNSUPPORTED: {[n for n, _ in skipped]}" if skipped else ""))
+    return 1 if (skipped and args.strict) else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
