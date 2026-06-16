@@ -26,6 +26,7 @@ Every follow-up variable must be covered by exactly one recognised conjunct,
 otherwise parse_jir raises (fail-loud) rather than silently leaving it untouched.
 """
 import argparse
+import base64
 import copy
 import math
 import re
@@ -133,45 +134,70 @@ def _cast(value: float, clazz: str):
     return str(value)
 
 
-def _reverse_value(val, clazz):
-    if val is None:
-        return None
-    if clazz in ("string", "java.lang.String", "String"):
-        return val[::-1]
-    raise NotImplementedError(f"reverse not implemented for clazz={clazz!r} "
-                              "(need the .methodinputs array serialisation)")
+def _reverse_node(vnode):
+    """Reverse a sequence value in place: element-arrays (<int>/<double>/...),
+    Base64 byte-arrays, or string/char text."""
+    cls = vnode.get("class", "")
+    if cls.endswith("-array"):
+        children = list(vnode)
+        if children:                          # <int>1</int><int>2</int>...
+            for c in children:
+                vnode.remove(c)
+            for c in reversed(children):
+                vnode.append(c)
+        else:                                 # byte-array: Base64 text
+            raw = base64.b64decode(vnode.text or "")
+            vnode.text = base64.b64encode(raw[::-1]).decode()
+    elif vnode.text is not None:              # string / char
+        vnode.text = vnode.text[::-1]
+
+
+def _copy_value_into(vnode, src_vnode):
+    """Replace vnode's content (attrs/text/children) with a copy of src_vnode."""
+    vnode.attrib.clear()
+    vnode.attrib.update(src_vnode.attrib)
+    vnode.text = src_vnode.text
+    for c in list(vnode):
+        vnode.remove(c)
+    for c in src_vnode:
+        vnode.append(copy.deepcopy(c))
 
 
 def write_followup(src_tree, src_params, assigns, out_path: Path):
     s = {n: float(v) for n, (c, v) in src_params.items()
          if v is not None and _is_numeric(c)}
-    new_vals = {}
-    for var, kind, spec in assigns:
+    amap = {var: (kind, spec) for var, kind, spec in assigns}
+    for var in amap:
         if var not in src_params:
             raise KeyError(f"transform sets i_{var}_f but source has no param {var}")
-        clazz, val = src_params[var]
-        if kind == "id":
-            continue                       # follow-up == source: leave untouched
-        if kind == "num":
-            r = eval(spec, {"__builtins__": {}}, {"s": s, "abs": abs, "math": math})  # noqa: S307
-            new_vals[var] = _cast(r, clazz)
-        elif kind == "rev":
-            new_vals[var] = _reverse_value(val, clazz)
-        elif kind == "copyfrom":
-            src_val = src_params.get(spec, (None, None))[1]
-            if src_val is None:
-                raise ValueError(f"copyfrom source {spec} has no value")
-            new_vals[var] = src_val
-        else:
-            raise ValueError(f"unknown transform kind {kind!r}")
+    src_vnodes = {mp.findtext("name"): mp.find("value")
+                  for mp in src_tree.getroot().findall(".//ch.usi.methodtest.MethodParameter")}
     tree = copy.deepcopy(src_tree)
     for mp in tree.getroot().findall(".//ch.usi.methodtest.MethodParameter"):
         name = mp.findtext("name")
-        if name in new_vals:
-            vnode = mp.find("value")
-            if vnode is None:
-                raise ValueError(f"param {name} has no <value> to transform")
-            vnode.text = new_vals[name]
+        if name not in amap:
+            continue
+        kind, spec = amap[name]
+        if kind == "id":
+            continue                          # follow-up == source: leave untouched
+        vnode = mp.find("value")
+        if vnode is None:
+            # null/absent value (e.g. null array): nothing to transform —
+            # reverse(null)=null, and the deepcopy already preserves it.
+            if kind == "num":
+                raise ValueError(f"numeric param {name} has no <value> to transform")
+            continue
+        if kind == "num":
+            r = eval(spec, {"__builtins__": {}}, {"s": s, "abs": abs, "math": math})  # noqa: S307
+            vnode.text = _cast(r, src_params[name][0])
+        elif kind == "rev":
+            _reverse_node(vnode)
+        elif kind == "copyfrom":
+            if src_vnodes.get(spec) is None:
+                raise ValueError(f"copyfrom source {spec} has no value")
+            _copy_value_into(vnode, src_vnodes[spec])
+        else:
+            raise ValueError(f"unknown transform kind {kind!r}")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     tree.write(out_path, encoding="unicode")
 
