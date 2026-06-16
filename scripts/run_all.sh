@@ -1,229 +1,143 @@
 #!/usr/bin/env bash
 # ============================================================================
-# S5 Aligned Experiment — main orchestrator
+# S5 Aligned Experiment — Set N (NOETHER) vs Set G (GenMorph) detection compare
 # ============================================================================
-# Runs the aligned pipeline for all 23 GenMorph subjects with seed 11.
+# Thin orchestrator over GenMorph's own toolchain (see PLANS/003). Per subject:
+#   1. substrate   : eval_substrate.py  -> source .methodinputs (Randoop, seed)
+#   2. Set N follow-ups : setn_followups.py (constructed from each MR's .jir)
+#   3. score Set N : eval_mr_set.py -> PITestGenerator + PIT (upstream-native)
+#   4. Set G       : adopt upstream-published pitest_seed<seed>/<subj>/mutants_killed.csv
+# Then compare_sets.py aggregates Set N vs Set G on the shared mutant set.
 #
-# Two stages:
-#   Stage 1 (--reproduce): Randoop + PIT — slow (~4-7 h total), run once.
-#   Stage 2 (--evaluate):  inject Set N MRs + re-run EvaluateMRs — fast (~30 min),
-#                          repeatable as Set N evolves.
-#   --all                  runs both in sequence (default).
+# GAssert MR-learning and the per-mutant gen loop are skipped on this path: we
+# use published Set G MRs and hand-authored Set N MRs, so no MR is *learned*.
 #
 # Usage:
-#   bash run_all.sh                  # full pipeline (Stage 1 + Stage 2)
-#   bash run_all.sh --reproduce      # only Stage 1
-#   bash run_all.sh --evaluate       # only Stage 2 (assumes Stage 1 done)
-#   bash run_all.sh --subject 'MathClass?gcd?0'   # single subject
-#
-# Long cloud runs (Stage 1 ~4–7 h): launch with nohup so it survives session
-# disconnects, e.g.:
-#   nohup bash scripts/run_all.sh --reproduce > results/seed11/_logs/run.log 2>&1 &
-#
-# Resume after a crash: just re-run; per-subject artifacts are cached
-# (Randoop states + PIT mutants_killed.csv are checked before regenerating).
-#
-# Output: results/seed11/<subject>/{aligned_metrics.json, mutants_killed.csv}
-#         results/seed11/_logs/{stage1_*,stage2_*}.log  (per-subject logs)
-#         results/aligned_summary.json                  (cross-subject)
+#   bash scripts/run_all.sh                         # all 23, --jobs 2
+#   bash scripts/run_all.sh --subjects 'MathClass?gcd?0,MathClass?pow?0'
+#   bash scripts/run_all.sh --jobs 3 --randoop-budget 300
+#   bash scripts/run_all.sh --compare-only          # just re-aggregate results/
+# Long runs: nohup bash scripts/run_all.sh > results/seed11/_logs/run.log 2>&1 &
+# Resumable: a subject whose results/seed<seed>/<subj>/setn_mutants_killed.csv
+# already exists is skipped.
 
 set -euo pipefail
-
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-# Source .env
-if [[ ! -f .env ]]; then
-    echo "FATAL: .env not found. Run 'bash setup.sh' first."
-    exit 1
-fi
+[[ -f .env ]] || { echo "FATAL: .env not found. Run setup.sh first."; exit 1; }
 set -a; source .env; set +a
+: "${GENMORPH:?}"; : "${MAJOR_HOME:?}"; : "${SEED:=11}"
+export JAVA_HOME="${JAVA8:?}"; export PATH="$JAVA_HOME/bin:$PATH"; export MAJOR_HOME
 
-# Sanity checks
-[[ -d "$GENMORPH" ]]            || { echo "FATAL: GENMORPH=$GENMORPH not found"; exit 2; }
-[[ -f "$GASSERT_JAR" ]]         || { echo "FATAL: GASSERT_JAR=$GASSERT_JAR not built"; exit 2; }
-[[ -d "$REPO_ROOT/set_n_mrs" ]] || { echo "FATAL: set_n_mrs/ not found"; exit 2; }
+PILOT="${GENMORPH%/genmorph_full/genmorph}"
+SETG_PITEST_DIR="$PILOT/evaluation/pitest_seed${SEED}"
+RESULTS_DIR="$REPO_ROOT/results/seed${SEED}"
+LOG_DIR="$RESULTS_DIR/_logs"
+CONF_DIR="$GENMORPH/configs"
 
-export JAVA_HOME=$JAVA8
-export PATH=$JAVA_HOME/bin:$PATH
+JOBS=2
+RANDOOP_BUDGET=120
+RANDOOP_EXECS=1
+COMPARE_ONLY=0
+SUBJECTS_ARG="all"
 
-# All 23 subjects (matching GenMorph's published evaluation)
 ALL_SUBJECTS=(
-    'MathClass?gcd?0' 'MathClass?sin?0' 'MathClass?acos?0'
-    'MathClass?log10?0' 'MathClass?millerRabinPrimeTest?0'
-    'MathClass?nextPrime?0' 'MathClass?pow?0' 'MathClass?sinh?0'
-    'MathClass?stirlingS2?0' 'MathClass?tan?0'
-    'LangClass?abbreviate?0' 'LangClass?capitalize?0'
-    'LangClass?center?0' 'LangClass?difference?0' 'LangClass?isSorted?0'
+    'MathClass?gcd?0' 'MathClass?sin?0' 'MathClass?acos?0' 'MathClass?log10?0'
+    'MathClass?millerRabinPrimeTest?0' 'MathClass?nextPrime?0' 'MathClass?pow?0'
+    'MathClass?sinh?0' 'MathClass?stirlingS2?0' 'MathClass?tan?0'
+    'LangClass?abbreviate?0' 'LangClass?capitalize?0' 'LangClass?center?0'
+    'LangClass?difference?0' 'LangClass?isSorted?0'
     'GuavaClass?indexOf?0' 'GuavaClass?join?0' 'GuavaClass?meanOf?0'
     'GuavaClass?min?0' 'GuavaClass?padStart?0' 'GuavaClass?repeat?0'
     'GuavaClass?sort?0' 'GuavaClass?truncate?0'
 )
 
-# Argument parsing
-DO_REPRODUCE=0
-DO_EVALUATE=0
-SINGLE_SUBJECT=""
-case "${1:-}" in
-    --reproduce) DO_REPRODUCE=1 ;;
-    --evaluate)  DO_EVALUATE=1 ;;
-    --all|"")    DO_REPRODUCE=1; DO_EVALUATE=1 ;;
-    --subject)
-        SINGLE_SUBJECT="${2:?--subject requires a name}"
-        DO_REPRODUCE=1; DO_EVALUATE=1
-        ;;
-    *) echo "Usage: $0 [--reproduce|--evaluate|--all] [--subject <name>]"; exit 1 ;;
-esac
-
-# Determine subject list
-if [[ -n "$SINGLE_SUBJECT" ]]; then
-    SUBJECTS=("$SINGLE_SUBJECT")
-else
-    SUBJECTS=("${ALL_SUBJECTS[@]}")
-fi
-
-# Map subject → library (for which scripts/configs to use)
-subject_library() {
+while [[ $# -gt 0 ]]; do
     case "$1" in
-        MathClass*) echo "math" ;;
-        LangClass*) echo "lang" ;;
-        GuavaClass*) echo "guava" ;;
-        *) echo "FATAL: unknown subject $1" >&2; exit 1 ;;
+        --subjects) SUBJECTS_ARG="$2"; shift 2 ;;
+        --jobs) JOBS="$2"; shift 2 ;;
+        --randoop-budget) RANDOOP_BUDGET="$2"; shift 2 ;;
+        --randoop-execs) RANDOOP_EXECS="$2"; shift 2 ;;
+        --compare-only) COMPARE_ONLY=1; shift ;;
+        *) echo "Usage: $0 [--subjects all|csv] [--jobs N] [--randoop-budget S] [--compare-only]"; exit 1 ;;
     esac
-}
+done
 
-RESULTS_DIR="$REPO_ROOT/results/seed${SEED}"
-LOG_DIR="$RESULTS_DIR/_logs"
 mkdir -p "$RESULTS_DIR" "$LOG_DIR"
+if [[ "$SUBJECTS_ARG" == "all" ]]; then SUBJECTS=("${ALL_SUBJECTS[@]}"); else IFS=',' read -r -a SUBJECTS <<< "$SUBJECTS_ARG"; fi
 
-# Sanitize subject name to a filesystem-safe slug for log files.
-# GenMorph subjects contain '?' (e.g. MathClass?gcd?0); fine on Linux but
-# noisy for tab-completion / glob, so log files use '_' instead.
+subject_lib()  { case "$1" in MathClass*) echo math;; LangClass*) echo lang;; GuavaClass*) echo guava;; *) echo "FATAL unknown $1" >&2; exit 1;; esac; }
 slug() { echo "$1" | tr '?' '_'; }
 
-# ----------------------------------------------------------------------------
-# Stage 1: Reproduce upstream's pipeline state (Randoop + PIT)
-# ----------------------------------------------------------------------------
-if [[ $DO_REPRODUCE -eq 1 ]]; then
-    echo ""
-    echo "=== [$(date +%Y-%m-%dT%H:%M:%S)] Stage 1: Reproduce upstream pipeline (Randoop + PIT 1.7.4) ==="
-    cd "$GENMORPH"
-    for subject in "${SUBJECTS[@]}"; do
-        lib=$(subject_library "$subject")
-        config="configs/evaluation-config-${lib}.json"
-        s=$(slug "$subject")
-        echo ""
-        echo "--- [$(date +%H:%M:%S)] Subject: $subject (lib=$lib) ---"
-        # Randoop test generation + state capture
-        if [[ -d "$GENMORPH/output_dir_${lib}/states_seed${SEED}/source/${subject}" ]]; then
-            echo "  Randoop states already present, skip"
-        else
-            randoop_log="$LOG_DIR/stage1_randoop_${s}.log"
-            echo "  Running Randoop (seed=${SEED}); full log → $randoop_log"
-            python3 scripts/run/randoop.py \
-                --config "$config" \
-                --seed  "$SEED" \
-                --subject "$subject" 2>&1 \
-                | tee "$randoop_log" | tail -5 || \
-                echo "  WARN: Randoop failed for $subject (see $randoop_log)"
-        fi
-        # PIT mutation testing
-        if [[ -f "$GENMORPH/output_dir_${lib}/pitest_seed${SEED}/${subject}/mutants_killed.csv" ]]; then
-            echo "  PIT mutants already present, skip"
-        else
-            pit_log="$LOG_DIR/stage1_pit_${s}.log"
-            echo "  Running PIT 1.7.4 (seed=${SEED}); full log → $pit_log"
-            python3 scripts/run/pitest.py \
-                --config "$config" \
-                --seed  "$SEED" \
-                --subject "$subject" 2>&1 \
-                | tee "$pit_log" | tail -5 || \
-                echo "  WARN: PIT failed for $subject (see $pit_log)"
-        fi
+# Emit a one-subject SUT config into the upstream configs/ dir; echo its repo-rel path.
+emit_sut_config() {
+    local subj="$1" lib cls method idx cfg
+    lib=$(subject_lib "$subj")
+    cls="${subj%%\?*}"; method="$(echo "$subj" | cut -d'?' -f2)"; idx="$(echo "$subj" | cut -d'?' -f3)"
+    cfg="$CONF_DIR/sut-config-${lib}-$(echo "$method")-${idx}.json"
+    cat > "$cfg" <<JSON
+{
+    "root": "configs/${lib}-sut",
+    "classpaths": ["configs/${lib}-sut/target/classes"],
+    "sources": "configs/${lib}-sut/src/main/java",
+    "suts": { "${cls}": { "${method}": [${idx}] } }
+}
+JSON
+    echo "configs/$(basename "$cfg")"
+}
+
+run_subject() {
+    local subj="$1" s lib outdir setn_out setg_src setn_dst setg_dst sut_cfg
+    s=$(slug "$subj"); lib=$(subject_lib "$subj")
+    outdir="output_dir_${lib}"
+    local res="$RESULTS_DIR/$subj"; mkdir -p "$res"
+    setn_dst="$res/setn_mutants_killed.csv"
+    if [[ -f "$setn_dst" ]]; then echo "[$subj] cached, skip"; return 0; fi
+    local log="$LOG_DIR/run_${s}.log"
+    {
+        echo "=== [$(date -u +%H:%M:%S)] $subj (lib=$lib) ==="
+        sut_cfg=$(emit_sut_config "$subj")
+        echo "-- substrate --"
+        python3 scripts/eval_substrate.py --genmorph "$GENMORPH" --sut-config "$sut_cfg" \
+            --output-dir "$outdir" --seed "$SEED" \
+            --randoop-budget "$RANDOOP_BUDGET" --randoop-execs "$RANDOOP_EXECS" --max-tests 100
+        echo "-- Set N follow-ups --"
+        rm -rf "$GENMORPH/$outdir/setn_followups/setn_seed${SEED}/$subj" \
+               "$GENMORPH/$outdir/setn_mrs/setn_seed${SEED}/$subj" 2>/dev/null || true
+        python3 scripts/setn_followups.py --subject "$subj" \
+            --set-n-dir "set_n_mrs/$subj" \
+            --sources-dir "$GENMORPH/$outdir/evaluation_test_inputs_seed${SEED}" \
+            --followups-dir "$GENMORPH/$outdir/setn_followups" \
+            --mrs-dir "$GENMORPH/$outdir/setn_mrs" --experiment "setn_seed${SEED}"
+        echo "-- score Set N (PITestGenerator + PIT) --"
+        python3 scripts/eval_mr_set.py --genmorph "$GENMORPH" --sut-config "$sut_cfg" \
+            --output-dir "$outdir" --experiment-template "setn_seed{seed}" --seed "$SEED" \
+            --sources-subdir "evaluation_test_inputs_seed${SEED}" \
+            --followups-subdir setn_followups --mrs-subdir setn_mrs \
+            --pitest-suite-subdir "pitest_setn_suite_${s}" --pitest-workdir "pitest_setn_${s}"
+        setn_out="$GENMORPH/$outdir/pitest_setn_${s}/$subj/mutants_killed.csv"
+        [[ -f "$setn_out" ]] && cp "$setn_out" "$setn_dst" || { echo "WARN: no Set N CSV for $subj"; }
+        # Set G: adopt upstream-published seed-<seed> result
+        setg_src="$SETG_PITEST_DIR/$subj/mutants_killed.csv"
+        [[ -f "$setg_src" ]] && cp "$setg_src" "$res/setg_mutants_killed.csv" || echo "WARN: no published Set G for $subj"
+        [[ -f "$SETG_PITEST_DIR/$subj/mrs_status.csv" ]] && cp "$SETG_PITEST_DIR/$subj/mrs_status.csv" "$res/setg_mrs_status.csv" || true
+        echo "=== [$(date -u +%H:%M:%S)] $subj done ==="
+    } > "$log" 2>&1 && echo "[$subj] OK (-> $log)" || echo "[$subj] FAILED (see $log)"
+}
+
+if [[ $COMPARE_ONLY -eq 0 ]]; then
+    echo "=== Stage: per-subject Set N scoring (${#SUBJECTS[@]} subjects, --jobs $JOBS) ==="
+    pids=()
+    for subj in "${SUBJECTS[@]}"; do
+        run_subject "$subj" &
+        pids+=($!)
+        while (( $(jobs -rp | wc -l) >= JOBS )); do wait -n 2>/dev/null || true; done
     done
-    cd "$REPO_ROOT"
-    echo ""
-    echo "=== [$(date +%Y-%m-%dT%H:%M:%S)] Stage 1 done ==="
+    wait
 fi
 
-# ----------------------------------------------------------------------------
-# Stage 2: Inject Set N MRs and re-run EvaluateMRs
-# ----------------------------------------------------------------------------
-if [[ $DO_EVALUATE -eq 1 ]]; then
-    echo ""
-    echo "=== [$(date +%Y-%m-%dT%H:%M:%S)] Stage 2: Inject Set N MRs + re-run EvaluateMRs ==="
-
-    for subject in "${SUBJECTS[@]}"; do
-        lib=$(subject_library "$subject")
-        s=$(slug "$subject")
-        echo ""
-        echo "--- [$(date +%H:%M:%S)] Subject: $subject ---"
-
-        # Locate upstream MR directory + state directories
-        UPSTREAM_MRS_DIR="$GENMORPH/output_dir_${lib}/assertions_seed${SEED}/${subject}"
-        STATES_SRC="$GENMORPH/output_dir_${lib}/states_seed${SEED}/source/${subject}"
-        STATES_FOL="$GENMORPH/output_dir_${lib}/states_seed${SEED}/followup/${subject}"
-        CLS_SRC="$GENMORPH/output_dir_${lib}/states_seed${SEED}/source_classification/${subject}"
-        CLS_FOL="$GENMORPH/output_dir_${lib}/states_seed${SEED}/followup_classification/${subject}"
-
-        # Skip if upstream pipeline state missing
-        if [[ ! -d "$UPSTREAM_MRS_DIR" ]] || [[ ! -d "$STATES_SRC" ]]; then
-            echo "  SKIP: upstream pipeline state missing (run Stage 1 first)"
-            continue
-        fi
-
-        # Source class name (strip ?xxx?N)
-        SRC_CLASS=$(echo "$subject" | cut -d'?' -f1)
-
-        # Inject our Set N MRs
-        SET_N_DIR="$REPO_ROOT/set_n_mrs/${subject}"
-        if [[ -d "$SET_N_DIR" ]]; then
-            cp "$SET_N_DIR"/*.jir.txt "$UPSTREAM_MRS_DIR/" 2>/dev/null || true
-            cp "$SET_N_DIR"/*.jor.txt "$UPSTREAM_MRS_DIR/" 2>/dev/null || true
-            n_set_n=$(ls "$SET_N_DIR"/*.jir.txt 2>/dev/null | wc -l | tr -d ' ')
-            echo "  Injected $n_set_n Set N MRs into $UPSTREAM_MRS_DIR"
-        else
-            echo "  WARN: no Set N MRs for $subject, evaluating Set G only"
-        fi
-
-        # Output directory for this subject's results
-        OUT_DIR="$REPO_ROOT/results/seed${SEED}/${subject}"
-        mkdir -p "$OUT_DIR"
-
-        # Invoke EvaluateMRs
-        eval_log="$LOG_DIR/stage2_evaluate_${s}.log"
-        echo "  Running EvaluateMRs; full log → $eval_log"
-        java -cp "$GASSERT_JAR" \
-             ch.usi.gassert.EvaluateMRs \
-             "$UPSTREAM_MRS_DIR" \
-             "$STATES_SRC" "$STATES_FOL" \
-             "$CLS_SRC" "$CLS_FOL" \
-             "$SRC_CLASS" \
-             "$OUT_DIR/" 2>&1 \
-             | tee "$eval_log" | tail -3 || \
-             echo "  WARN: EvaluateMRs failed for $subject (see $eval_log)"
-
-        # Parse per-subject metrics
-        if [[ -f "$OUT_DIR/mutants_killed.csv" ]]; then
-            python3 "$REPO_ROOT/scripts/parse_results.py" \
-                --csv "$OUT_DIR/mutants_killed.csv" \
-                --status "$OUT_DIR/mrs_status.csv" \
-                --set-n-dir "$SET_N_DIR" \
-                --output "$OUT_DIR/aligned_metrics.json"
-        fi
-    done
-
-    # ------------------------------------------------------------------------
-    # Aggregate across subjects
-    # ------------------------------------------------------------------------
-    echo ""
-    echo "=== Aggregating cross-subject metrics ==="
-    python3 "$REPO_ROOT/scripts/aggregate_metrics.py" \
-        --results-dir "$REPO_ROOT/results/seed${SEED}" \
-        --output "$REPO_ROOT/results/aligned_summary.json"
-fi
-
-echo ""
-echo "=== Done ==="
-echo "Per-subject results: $REPO_ROOT/results/seed${SEED}/<subject>/aligned_metrics.json"
-echo "Cross-subject summary: $REPO_ROOT/results/aligned_summary.json"
+echo "=== Stage: compare Set N vs Set G ==="
+python3 scripts/compare_sets.py --results-dir "$RESULTS_DIR" \
+    --output "$REPO_ROOT/results/comparison_seed${SEED}.json"
+echo "=== Done. Summary: results/comparison_seed${SEED}.json ==="
