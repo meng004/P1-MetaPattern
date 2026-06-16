@@ -1,0 +1,597 @@
+{
+  "seed": 11,
+  "n_subjects": 23,
+  "strata": {
+    "ALL": {
+      "subjects": 23,
+      "mutants_total": 562,
+      "setn": {
+        "kills": 176,
+        "rate": 0.3132,
+        "wilson95": [
+          0.2762,
+          0.3527
+        ],
+        "valid_mrs": 51
+      },
+      "setg_seed": {
+        "kills": 204,
+        "rate": 0.363,
+        "wilson95": [
+          0.3243,
+          0.4036
+        ],
+        "valid_mrs": 44,
+        "subjects_with_zero_valid_mr": 6
+      },
+      "setg_allseeds": {
+        "kills": 341,
+        "rate": 0.6068,
+        "wilson95": [
+          0.5658,
+          0.6463
+        ]
+      },
+      "mcnemar_vs_seed": {
+        "b_setg_only": 77,
+        "c_setn_only": 46,
+        "exact_p": 0.0066
+      },
+      "mcnemar_vs_allseeds": {
+        "b_setg_only": 189,
+        "c_setn_only": 21,
+        "exact_p": 0.0
+      }
+    },
+    "Guava": {
+      "subjects": 8,
+      "mutants_total": 81,
+      "setn": {
+        "kills": 57,
+        "rate": 0.7037,
+        "wilson95": [
+          0.5969,
+          0.7921
+        ],
+        "valid_mrs": 21
+      },
+      "setg_seed": {
+        "kills": 43,
+        "rate": 0.5309,
+        "wilson95": [
+          0.4233,
+          0.6357
+        ],
+        "valid_mrs": 15,
+        "subjects_with_zero_valid_mr": 2
+      },
+      "setg_allseeds": {
+        "kills": 44,
+        "rate": 0.5432,
+        "wilson95": [
+          0.4352,
+          0.6473
+        ]
+      },
+      "mcnemar_vs_seed": {
+        "b_setg_only": 5,
+        "c_setn_only": 16,
+        "exact_p": 0.0266
+      },
+      "mcnemar_vs_allseeds": {
+        "b_setg_only": 5,
+        "c_setn_only": 15,
+        "exact_p": 0.0414
+      }
+    },
+    "Lang": {
+      "subjects": 5,
+      "mutants_total": 78,
+      "setn": {
+        "kills": 32,
+        "rate": 0.4103,
+        "wilson95": [
+          0.3078,
+          0.5211
+        ],
+        "valid_mrs": 12
+      },
+      "setg_seed": {
+        "kills": 35,
+        "rate": 0.4487,
+        "wilson95": [
+          0.3433,
+          0.5589
+        ],
+        "valid_mrs": 10,
+        "subjects_with_zero_valid_mr": 2
+      },
+      "setg_allseeds": {
+        "kills": 48,
+        "rate": 0.6154,
+        "wilson95": [
+          0.5044,
+          0.7155
+        ]
+      },
+      "mcnemar_vs_seed": {
+        "b_setg_only": 17,
+        "c_setn_only": 14,
+        "exact_p": 0.7201
+      },
+      "mcnemar_vs_allseeds": {
+        "b_setg_only": 19,
+        "c_setn_only": 3,
+        "exact_p": 0.0009
+      }
+    },
+    "Math": {
+      "subjects": 10,
+      "mutants_total": 403,
+      "setn": {
+        "kills": 87,
+        "rate": 0.2159,
+        "wilson95": [
+          0.1785,
+          0.2586
+        ],
+        "valid_mrs": 18
+      },
+      "setg_seed": {
+        "kills": 126,
+        "rate": 0.3127,
+        "wilson95": [
+          0.2693,
+          0.3595
+        ],
+        "valid_mrs": 19,
+        "subjects_with_zero_valid_mr": 2
+      },
+      "setg_allseeds": {
+        "kills": 249,
+        "rate": 0.6179,
+        "wilson95": [
+          0.5695,
+          0.664
+        ]
+      },
+      "mcnemar_vs_seed": {
+        "b_setg_only": 55,
+        "c_setn_only": 16,
+        "exact_p": 0.0
+      },
+      "mcnemar_vs_allseeds": {
+        "b_setg_only": 165,
+        "c_setn_only": 3,
+        "exact_p": 0.0
+      }
+    }
+  },
+  "per_subject": [
+    {
+      "subject": "GuavaClass?indexOf?0",
+      "domain": "Guava",
+      "n_mutants": 12,
+      "setn_kills": 8,
+      "setn_valid_mrs": 3,
+      "setg_seed_kills": 0,
+      "setg_seed_valid_mrs": 1,
+      "setg_allseeds_kills": 0,
+      "setg_seeds_with_valid_mr": 0,
+      "setg_seed_kill_dist": {
+        "11": 0
+      }
+    },
+    {
+      "subject": "GuavaClass?join?0",
+      "domain": "Guava",
+      "n_mutants": 5,
+      "setn_kills": 3,
+      "setn_valid_mrs": 3,
+      "setg_seed_kills": null,
+      "setg_seed_valid_mrs": 0,
+      "setg_allseeds_kills": null,
+      "setg_seeds_with_valid_mr": 0,
+      "setg_seed_kill_dist": {}
+    },
+    {
+      "subject": "GuavaClass?meanOf?0",
+      "domain": "Guava",
+      "n_mutants": 12,
+      "setn_kills": 10,
+      "setn_valid_mrs": 2,
+      "setg_seed_kills": 10,
+      "setg_seed_valid_mrs": 3,
+      "setg_allseeds_kills": 10,
+      "setg_seeds_with_valid_mr": 3,
+      "setg_seed_kill_dist": {
+        "11": 10,
+        "12": 10,
+        "13": 10
+      }
+    },
+    {
+      "subject": "GuavaClass?min?0",
+      "domain": "Guava",
+      "n_mutants": 9,
+      "setn_kills": 6,
+      "setn_valid_mrs": 3,
+      "setg_seed_kills": 5,
+      "setg_seed_valid_mrs": 2,
+      "setg_allseeds_kills": 6,
+      "setg_seeds_with_valid_mr": 3,
+      "setg_seed_kill_dist": {
+        "11": 5,
+        "12": 6,
+        "13": 5
+      }
+    },
+    {
+      "subject": "GuavaClass?padStart?0",
+      "domain": "Guava",
+      "n_mutants": 7,
+      "setn_kills": 5,
+      "setn_valid_mrs": 2,
+      "setg_seed_kills": 6,
+      "setg_seed_valid_mrs": 3,
+      "setg_allseeds_kills": 6,
+      "setg_seeds_with_valid_mr": 2,
+      "setg_seed_kill_dist": {
+        "11": 6,
+        "13": 6
+      }
+    },
+    {
+      "subject": "GuavaClass?repeat?0",
+      "domain": "Guava",
+      "n_mutants": 18,
+      "setn_kills": 13,
+      "setn_valid_mrs": 4,
+      "setg_seed_kills": 16,
+      "setg_seed_valid_mrs": 3,
+      "setg_allseeds_kills": 16,
+      "setg_seeds_with_valid_mr": 3,
+      "setg_seed_kill_dist": {
+        "11": 16,
+        "12": 16,
+        "13": 16
+      }
+    },
+    {
+      "subject": "GuavaClass?sort?0",
+      "domain": "Guava",
+      "n_mutants": 8,
+      "setn_kills": 6,
+      "setn_valid_mrs": 2,
+      "setg_seed_kills": 0,
+      "setg_seed_valid_mrs": 1,
+      "setg_allseeds_kills": 0,
+      "setg_seeds_with_valid_mr": 0,
+      "setg_seed_kill_dist": {
+        "11": 0,
+        "13": 0
+      }
+    },
+    {
+      "subject": "GuavaClass?truncate?0",
+      "domain": "Guava",
+      "n_mutants": 10,
+      "setn_kills": 6,
+      "setn_valid_mrs": 2,
+      "setg_seed_kills": 6,
+      "setg_seed_valid_mrs": 2,
+      "setg_allseeds_kills": 6,
+      "setg_seeds_with_valid_mr": 2,
+      "setg_seed_kill_dist": {
+        "11": 6,
+        "13": 4
+      }
+    },
+    {
+      "subject": "LangClass?abbreviate?0",
+      "domain": "Lang",
+      "n_mutants": 39,
+      "setn_kills": 11,
+      "setn_valid_mrs": 1,
+      "setg_seed_kills": 18,
+      "setg_seed_valid_mrs": 4,
+      "setg_allseeds_kills": 19,
+      "setg_seeds_with_valid_mr": 3,
+      "setg_seed_kill_dist": {
+        "11": 18,
+        "12": 19,
+        "13": 19
+      }
+    },
+    {
+      "subject": "LangClass?capitalize?0",
+      "domain": "Lang",
+      "n_mutants": 10,
+      "setn_kills": 8,
+      "setn_valid_mrs": 3,
+      "setg_seed_kills": 0,
+      "setg_seed_valid_mrs": 0,
+      "setg_allseeds_kills": 9,
+      "setg_seeds_with_valid_mr": 2,
+      "setg_seed_kill_dist": {
+        "12": 9,
+        "13": 7
+      }
+    },
+    {
+      "subject": "LangClass?center?0",
+      "domain": "Lang",
+      "n_mutants": 12,
+      "setn_kills": 6,
+      "setn_valid_mrs": 3,
+      "setg_seed_kills": 8,
+      "setg_seed_valid_mrs": 3,
+      "setg_allseeds_kills": 8,
+      "setg_seeds_with_valid_mr": 2,
+      "setg_seed_kill_dist": {
+        "11": 8,
+        "13": 7
+      }
+    },
+    {
+      "subject": "LangClass?difference?0",
+      "domain": "Lang",
+      "n_mutants": 6,
+      "setn_kills": 4,
+      "setn_valid_mrs": 2,
+      "setg_seed_kills": 0,
+      "setg_seed_valid_mrs": 1,
+      "setg_allseeds_kills": 3,
+      "setg_seeds_with_valid_mr": 2,
+      "setg_seed_kill_dist": {
+        "11": 0,
+        "12": 3,
+        "13": 3
+      }
+    },
+    {
+      "subject": "LangClass?isSorted?0",
+      "domain": "Lang",
+      "n_mutants": 11,
+      "setn_kills": 3,
+      "setn_valid_mrs": 3,
+      "setg_seed_kills": 9,
+      "setg_seed_valid_mrs": 2,
+      "setg_allseeds_kills": 9,
+      "setg_seeds_with_valid_mr": 2,
+      "setg_seed_kill_dist": {
+        "11": 9,
+        "12": 9
+      }
+    },
+    {
+      "subject": "MathClass?acos?0",
+      "domain": "Math",
+      "n_mutants": 76,
+      "setn_kills": 0,
+      "setn_valid_mrs": 0,
+      "setg_seed_kills": 0,
+      "setg_seed_valid_mrs": 0,
+      "setg_allseeds_kills": 39,
+      "setg_seeds_with_valid_mr": 3,
+      "setg_seed_kill_dist": {
+        "13": 36,
+        "33": 35,
+        "41": 38
+      }
+    },
+    {
+      "subject": "MathClass?gcd?0",
+      "domain": "Math",
+      "n_mutants": 25,
+      "setn_kills": 13,
+      "setn_valid_mrs": 4,
+      "setg_seed_kills": 11,
+      "setg_seed_valid_mrs": 2,
+      "setg_allseeds_kills": 21,
+      "setg_seeds_with_valid_mr": 12,
+      "setg_seed_kill_dist": {
+        "11": 11,
+        "12": 20,
+        "13": 19,
+        "21": 20,
+        "22": 18,
+        "23": 20,
+        "31": 19,
+        "32": 18,
+        "33": 19,
+        "41": 20,
+        "42": 20,
+        "43": 12
+      }
+    },
+    {
+      "subject": "MathClass?log10?0",
+      "domain": "Math",
+      "n_mutants": 15,
+      "setn_kills": 5,
+      "setn_valid_mrs": 2,
+      "setg_seed_kills": 8,
+      "setg_seed_valid_mrs": 1,
+      "setg_allseeds_kills": 9,
+      "setg_seeds_with_valid_mr": 4,
+      "setg_seed_kill_dist": {
+        "11": 8,
+        "13": 8,
+        "21": 8,
+        "32": 8
+      }
+    },
+    {
+      "subject": "MathClass?millerRabinPrimeTest?0",
+      "domain": "Math",
+      "n_mutants": 25,
+      "setn_kills": 3,
+      "setn_valid_mrs": 1,
+      "setg_seed_kills": 0,
+      "setg_seed_valid_mrs": 0,
+      "setg_allseeds_kills": 18,
+      "setg_seeds_with_valid_mr": 9,
+      "setg_seed_kill_dist": {
+        "12": 17,
+        "13": 17,
+        "21": 17,
+        "22": 8,
+        "23": 9,
+        "31": 8,
+        "32": 8,
+        "33": 8,
+        "42": 17
+      }
+    },
+    {
+      "subject": "MathClass?nextPrime?0",
+      "domain": "Math",
+      "n_mutants": 20,
+      "setn_kills": 17,
+      "setn_valid_mrs": 3,
+      "setg_seed_kills": 15,
+      "setg_seed_valid_mrs": 2,
+      "setg_allseeds_kills": 19,
+      "setg_seeds_with_valid_mr": 12,
+      "setg_seed_kill_dist": {
+        "11": 15,
+        "12": 16,
+        "13": 16,
+        "21": 16,
+        "22": 16,
+        "23": 16,
+        "31": 16,
+        "32": 15,
+        "33": 16,
+        "41": 15,
+        "42": 13,
+        "43": 16
+      }
+    },
+    {
+      "subject": "MathClass?pow?0",
+      "domain": "Math",
+      "n_mutants": 10,
+      "setn_kills": 0,
+      "setn_valid_mrs": 0,
+      "setg_seed_kills": 7,
+      "setg_seed_valid_mrs": 3,
+      "setg_allseeds_kills": 7,
+      "setg_seeds_with_valid_mr": 12,
+      "setg_seed_kill_dist": {
+        "11": 7,
+        "12": 7,
+        "13": 7,
+        "21": 7,
+        "22": 7,
+        "23": 7,
+        "31": 7,
+        "32": 7,
+        "33": 7,
+        "41": 7,
+        "42": 7,
+        "43": 7
+      }
+    },
+    {
+      "subject": "MathClass?sin?0",
+      "domain": "Math",
+      "n_mutants": 26,
+      "setn_kills": 7,
+      "setn_valid_mrs": 1,
+      "setg_seed_kills": 16,
+      "setg_seed_valid_mrs": 3,
+      "setg_allseeds_kills": 18,
+      "setg_seeds_with_valid_mr": 12,
+      "setg_seed_kill_dist": {
+        "11": 16,
+        "12": 17,
+        "13": 16,
+        "21": 16,
+        "22": 16,
+        "23": 15,
+        "31": 16,
+        "32": 17,
+        "33": 16,
+        "41": 17,
+        "42": 16,
+        "43": 17
+      }
+    },
+    {
+      "subject": "MathClass?sinh?0",
+      "domain": "Math",
+      "n_mutants": 123,
+      "setn_kills": 24,
+      "setn_valid_mrs": 2,
+      "setg_seed_kills": 36,
+      "setg_seed_valid_mrs": 2,
+      "setg_allseeds_kills": 68,
+      "setg_seeds_with_valid_mr": 11,
+      "setg_seed_kill_dist": {
+        "11": 36,
+        "12": 44,
+        "13": 52,
+        "21": 45,
+        "23": 47,
+        "31": 40,
+        "32": 41,
+        "33": 54,
+        "41": 40,
+        "42": 31,
+        "43": 32
+      }
+    },
+    {
+      "subject": "MathClass?stirlingS2?0",
+      "domain": "Math",
+      "n_mutants": 46,
+      "setn_kills": 8,
+      "setn_valid_mrs": 4,
+      "setg_seed_kills": 17,
+      "setg_seed_valid_mrs": 3,
+      "setg_allseeds_kills": 30,
+      "setg_seeds_with_valid_mr": 12,
+      "setg_seed_kill_dist": {
+        "11": 17,
+        "12": 18,
+        "13": 15,
+        "21": 9,
+        "22": 16,
+        "23": 16,
+        "31": 13,
+        "32": 18,
+        "33": 20,
+        "41": 19,
+        "42": 13,
+        "43": 16
+      }
+    },
+    {
+      "subject": "MathClass?tan?0",
+      "domain": "Math",
+      "n_mutants": 37,
+      "setn_kills": 10,
+      "setn_valid_mrs": 1,
+      "setg_seed_kills": 16,
+      "setg_seed_valid_mrs": 3,
+      "setg_allseeds_kills": 20,
+      "setg_seeds_with_valid_mr": 12,
+      "setg_seed_kill_dist": {
+        "11": 16,
+        "12": 13,
+        "13": 16,
+        "21": 13,
+        "22": 13,
+        "23": 14,
+        "31": 18,
+        "32": 13,
+        "33": 19,
+        "41": 13,
+        "42": 13,
+        "43": 14
+      }
+    }
+  ]
+}

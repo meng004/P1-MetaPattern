@@ -1,0 +1,5 @@
+stratum,subjects,mutants,setn_kills,setn_rate,setg_seed_kills,setg_seed_rate,setg_allseeds_kills,setg_allseeds_rate,mcnemar_b_setg_only,mcnemar_c_setn_only,mcnemar_p
+ALL,23,562,176,0.3132,204,0.363,341,0.6068,77,46,0.0066
+Math,10,403,87,0.2159,126,0.3127,249,0.6179,55,16,0.0
+Lang,5,78,32,0.4103,35,0.4487,48,0.6154,17,14,0.7201
+Guava,8,81,57,0.7037,43,0.5309,44,0.5432,5,16,0.0266
