@@ -8,15 +8,17 @@
 
 ## 0. 双场对照:为什么需要"NOETHER 主场"
 
-| 维度 | GenMorph 占优场景(已建,S5)| NOETHER 占优场景(本清单,扩域)|
+| 维度 | GenMorph 占优场景(S5 pilot + s5-aligned)| NOETHER 占优场景(本清单,扩域)|
 |---|---|---|
-| 被测对象 | 单方法、标量 I/O 的纯函数(`MathClass.gcd`、`sin`)| 算子代数丰富的 PDE/科学计算求解器(热工、流体、反应流、输运)|
+| 被测对象 | 单方法、标量 I/O 的纯函数(`MathClass.gcd`、`sin`);s5-aligned 锁定 GenMorph 自家 **23-subject 公开基准**(Math10+Lang5+Guava8,~557 mutants,71 条 Set N MR)| 算子代数丰富的 PDE/科学计算求解器(热工、流体、反应流、输运)|
 | I/O 形态 | 标量 → 标量 | 场(N×N 数组)、轨迹、本征值 |
 | 单次执行成本 | 微秒级 | 一次求解即毫秒–秒级(隐式解 / 谱步 / Monte-Carlo)|
-| NOETHER 取胜判据 | **时间成本** + **初次获得真实 MR 的时间**(即便在对手主场,代数推导 600 s 仍快于 GP ~3600 s)| **MR 产出量 × 结构块覆盖** + **检出率(Wilson CI)** + **GenMorph 在此类 SUT 上的可行性退化** |
-| GenMorph 状态 | 可运行、可进化出 4 条 MR/subject(其主场)| 进化式 assertion 搜索在场值 I/O + 高成本求解上**退化或不可行**(见 §1.D)|
+| 对比设计 | **单变量 0-confounder**:固定 JDK8 / Randoop / PIT 1.7.4 / GAssert evaluator / seed=11,仅变 MR 来源(Set N vs Set G)| 同法移植:固定同一 SUT + 同一变异/跨实现 oracle + 同一 evaluator,仅变 MR 来源(见 §2.1)|
+| NOETHER 取胜判据 | **生成时间成本** + **初次获得真实 MR 的时间**(代数推导 ~10 min vs GP ~1 h/subject 上游估计)| **MR 产出量 × 结构块覆盖** + **检出率(Wilson CI / McNemar)** + **GenMorph 在此类 SUT 上的可行性退化** |
+| GenMorph 状态 | 可运行、每 subject 进化 4 条 MR,但**仅限两执行 (jir,jor) 关系层**(见 §1.D4)| 进化式 assertion 搜索在场值 I/O + 高成本求解上**退化或不可行**(见 §1.D)|
 
-S5 已证明的命题(GenMorph 主场):*即便在 GenMorph 自选的标量函数上,NOETHER 的生成成本与"首条真实 MR 出现时间"仍占优*。本清单服务的下一步命题(NOETHER 主场):*在算子代数丰富的科学计算 SUT 上,NOETHER 按块机械产出大量可证 MR,而 GenMorph 的进化搜索因 I/O 维度与求解成本而退化*。两场合并 → 覆盖"对手主场 + 本方主场"的完整证据弧。
+**执行状态(诚实分级)**:S5 pilot(`java_bridge/`,gcd/sin)**已执行**——产出 gcd/sin 的 per-mutant kill 数据 + 生成成本估计(`efficiency_metrics.py`:Set N ~600 s vs Set G ~3600 s,后者为上游 GP 运行时估计)。s5-aligned(23-subject,`supplementary/S5_genmorph_pilot/aligned/`)**设计/代码就绪、`results/` 待执行**——它是化解 reviewer "单一代码库 / 作者自选 SUT / substrate-bias" 的最高 ROI 中立证据(在对手公开基准上**单变量**对比;runbook 见 `s5_aligned_cloud_runbook.md`)。
+本清单服务的**对称命题**(NOETHER 主场):*在算子代数丰富的科学计算 SUT 上,NOETHER 按块机械产出大量可证 MR 并填满 ≥4 块,而 GenMorph 的进化搜索因 I/O 维度、求解成本与两执行表达层限制而退化*。两场用**同一套单变量 aligned 方法论**(§2.1)合并 → 覆盖"对手主场 + 本方主场"的完整证据弧。
 
 ---
 
@@ -31,6 +33,7 @@ S5 已证明的命题(GenMorph 主场):*即便在 GenMorph 自选的标量函数
   - **D1 I/O 维度**:GAssert/GP 在标量/小元组 I/O 上进化布尔 assertion;场值(N×N)/轨迹 I/O 无可处理的 assertion 文法。
   - **D2 单次成本**:GP 需数千次 fitness 评估,每次需一整次 PDE 求解 → 时间预算爆炸;NOETHER 代数推导与求解次数解耦(每条 MR 只需 O(1) 次结构化执行)。
   - **D3 多执行变换**:守恒/标度/网格细化/坐标系变换类 MR 需关联**多次**执行(源 vs 跟随),GP 以单次执行的 mutation-kill 适应度无法发现这类关系。
+  - **D4 表达层受限(s5-aligned 实证)**:GenMorph 的 GP 进化 MR 天然只活在**两执行 (jir,jor) 关系层**(源→跟随);NOETHER 算子代数同时产出(i)两执行关系(ρ_perm/ρ_scale/ρ_eqref…)、(ii)**单执行不变量**(极大值原理、正定性、`gcd≤min(|p|,|q|)`、`|sin|≤1` 类)、(iii)**多网格/多坐标系结构关系**(Richardson 自收敛、标度律、Galilean)。在 PDE SUT 上,(ii)(iii) 正是检出算子级缺陷的主力,而 GP 的两执行层无法表达——这是**表达空间**差异,独立于 kill-rate(依据 `supplementary/S5_genmorph_pilot/aligned/README.md` §"expressiveness limit":单执行不变量在对齐对比中以 framework-extension 单列)。
 
 ---
 
@@ -43,9 +46,18 @@ NOETHER 主场对比上报以下度量(均为 **generation/detection 命题**,**
 | **M-yield** | 每 SUT 可机械导出的非平凡 MR 条数(按块) | NOETHER(按块产出) |
 | **M-block** | 8 块中被非空填充的块数(结构覆盖) | NOETHER(可证覆盖) |
 | **M-ttf**(time-to-first-real-MR)| 产出首条通过 SUT 原始程序 sanity 的真实 MR 的墙钟 | NOETHER(代数推导近即时;GP 须跑完一轮进化)|
-| **M-cost** | 生成整套 MR 的墙钟 / CPU(沿用 S5 `efficiency_metrics.py` 口径)| NOETHER |
-| **M-detect** | 注入变异 + 跨实现差分下的检出率 + **Wilson 95% CI**;n<10 标 underpowered(§6.9 / CLAUDE.md C6)| 证据点(诚实分级)|
-| **M-feasible** | GenMorph 在该 SUT 上能否运行 / 产出非空 MR(可行性退化的二元/定性记录)| 揭示主场不对称 |
+| **M-cost** | 生成整套 MR 的墙钟 / CPU(沿用 S5 `efficiency_metrics.py` 口径;pilot 为上游估计 ~600 s vs ~3600 s)| NOETHER |
+| **M-detect** | 注入变异 + 跨实现差分下的检出率 + **Wilson 95% CI** + **paired McNemar p**(配对设计)+ **per-block 分解**;n<10 标 underpowered(§6.9 / CLAUDE.md C6)| 证据点(诚实分级)|
+| **M-feasible** | GenMorph 在该 SUT 上能否运行 / 产出非空 MR + 落在哪个表达层(可行性退化的二元/定性记录)| 揭示主场不对称 |
+
+### 2.1 沿用 s5-aligned 的"单变量 0-confounder"方法论(硬约束)
+
+s5-aligned 的金标准设计是:**除 MR 来源外所有混淆变量全部固定**——其早期并行 `java_bridge/` 管线遗留 5 个未控混淆(PIT 版本 / 测试输入 / evaluator / 变异范围 / 变异字节码),aligned 设计用上游原工具链把混淆降为 **0**。NOETHER 主场实验**同法移植**到 PDE SUT:
+
+- **单变量**:同一 SUT、同一注入变异池 / 同一跨实现差分 oracle、同一检测 harness 与 evaluator;唯一变量 = MR 来源(Set N vs 对照 arm,如 LLM-MR / GenMorph 可行时)。
+- **中立 oracle 优先**:能用跨实现差分(M-FV vs M-SP / FE vs FV / Cantera vs scipy / OpenMC vs OpenMOC)处即用**真实差分**当 oracle,而非仅注入变异(对应 s5-aligned 复用上游 published mutant set)。
+- **对齐验证(alignment gate)**:对照 arm 必须在**未注入**情形复现 SUT 原始程序 sanity(全 MR 通过);若对齐破裂则判"实验不可信"并停(对应 s5-aligned 重跑 Set G 须**精确**复现上游 `mutants_killed.csv`,否则数据不可信)。
+- **统计与诚实**:per-subject + **per-block** 分解;配对设计上报 **paired McNemar p** + Wilson 95% CI;n<10 一律标 underpowered;**只报 detection(generation 命题)**,不报 k\* / 最小子集 / domination(T2 selection 命题)。
 
 ---
 
@@ -160,6 +172,7 @@ NOETHER 主场对比上报以下度量(均为 **generation/detection 命题**,**
 
 - 本清单**扩充** `protocol_domain_extension.md` §3「实验 A — 多域 generation→detection」的候选域:原列(热传导 p1 / 波动 p2 / Burgers p7 / qchem-RHF)→ 扩为本表的热工 6 + 流体 6 候选,并给出 §6.2 的 8 选推荐子集。
 - 跨实现真 oracle(§3/§4 标"是"者)直接服务 `protocol_domain_extension.md` §4「实验 B — 跨实现差分真 oracle」,把原仅 OpenMC↔OpenMOC 一例扩到 advdiff/radxfer/fefv/Gray-Scott/combustion/detonation 多例。
-- 度量(§2)沿用 S5 `efficiency_metrics.py`(M-cost / M-ttf)+ 新增 M-yield / M-block / M-detect(Wilson CI)/ M-feasible。
+- 度量(§2)沿用 S5 `efficiency_metrics.py`(M-cost / M-ttf)+ 新增 M-yield / M-block / M-detect(Wilson CI / McNemar)/ M-feasible。
+- **与 s5-aligned 对称**:GenMorph 主场已有 `supplementary/S5_genmorph_pilot/aligned/`(23-subject 单变量 0-confounder;runbook `s5_aligned_cloud_runbook.md`;`results/` 待执行);本主场实验沿用同一 aligned 设计(§2.1),与之构成"对手主场 + 本方主场"的对称证据弧,共同回应 substrate-bias 批评。
 
 > **下一步(未在本任务范围,待拍板)**:把 §6.2 选定子集接上 NOETHER 的 CONSTRUCT-MP 生成桥 + T2 变异 harness,落 `results/`(generation→detection),并对每 SUT 记录 GenMorph 可行性(M-feasible)。本文件只交付**候选清单 + SUT 选择**,不含执行结果。
