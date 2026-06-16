@@ -1,6 +1,10 @@
 # ISSUE-003: scripts/run_all.sh cannot run end-to-end (interface mismatch with GenMorph upstream)
 
-**Status**: in-progress
+**Status**: done — pipeline rewritten + runs end-to-end; experiment executed
+(seed 11, all 23 subjects). Results: `docs/SECTION_6_6_RESULTS.md`
+(+ `docs/results/`). Remaining method refinements (encoding tolerance, domain
+guards, subject-level stats, input-fairness calibration) are tracked in
+`docs/SUBMISSION_READINESS.md`, not pipeline bugs.
 **Owner**: cloud Claude Code session (rewrite authorized by repo owner — see Update)
 **Branch**: claude/inspiring-pascal-1gkf8q
 **Plan**: PLANS/003-run-all-pipeline-broken.md (authored this session; Rule 4's
