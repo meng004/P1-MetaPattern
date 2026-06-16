@@ -1,0 +1,165 @@
+# NOETHER 主场基准候选清单(home-field benchmark candidates)
+
+> 2026-06-16 · 任务:为"NOETHER 方法占优场景"的对比实验**挑选可用 SUT** 并**扩充主场基准候选清单(含热工、流体方程)**。
+> 配套文档:`protocol_domain_extension.md`(扩域协议)、`empirical_reuse_from_T2.md`(T2 资产复用评估)、`differentiation_and_disclosure_draft.md`(salami 划界与披露)。
+> SUT substrate 来源:姊妹仓库 T2(Minimum-MR-SubSet)`experiments/puts/`、`scripts/mcmr/*/`、`data/raw/`。本清单只复用**被测程序 + 变异/检测 harness**,NOETHER **自跑 generation→detection**;不搬 T2 的 selection 结论(k\*/reduction/collapse/domination)。
+
+---
+
+## 0. 双场对照:为什么需要"NOETHER 主场"
+
+| 维度 | GenMorph 占优场景(已建,S5)| NOETHER 占优场景(本清单,扩域)|
+|---|---|---|
+| 被测对象 | 单方法、标量 I/O 的纯函数(`MathClass.gcd`、`sin`)| 算子代数丰富的 PDE/科学计算求解器(热工、流体、反应流、输运)|
+| I/O 形态 | 标量 → 标量 | 场(N×N 数组)、轨迹、本征值 |
+| 单次执行成本 | 微秒级 | 一次求解即毫秒–秒级(隐式解 / 谱步 / Monte-Carlo)|
+| NOETHER 取胜判据 | **时间成本** + **初次获得真实 MR 的时间**(即便在对手主场,代数推导 600 s 仍快于 GP ~3600 s)| **MR 产出量 × 结构块覆盖** + **检出率(Wilson CI)** + **GenMorph 在此类 SUT 上的可行性退化** |
+| GenMorph 状态 | 可运行、可进化出 4 条 MR/subject(其主场)| 进化式 assertion 搜索在场值 I/O + 高成本求解上**退化或不可行**(见 §1.D)|
+
+S5 已证明的命题(GenMorph 主场):*即便在 GenMorph 自选的标量函数上,NOETHER 的生成成本与"首条真实 MR 出现时间"仍占优*。本清单服务的下一步命题(NOETHER 主场):*在算子代数丰富的科学计算 SUT 上,NOETHER 按块机械产出大量可证 MR,而 GenMorph 的进化搜索因 I/O 维度与求解成本而退化*。两场合并 → 覆盖"对手主场 + 本方主场"的完整证据弧。
+
+---
+
+## 1. "主场"判据(home-field selection criteria)
+
+一个 SUT 进入 NOETHER 主场候选,需满足(A)(B)且尽量满足(C)(D):
+
+- **(A) 算子代数丰富**:`\mathcal{D}(\mathcal{A}_P)` 至少 **3 个非空块**(`G / O_{\le} / T^{*} / \mathcal{T}^{*}_{\mathrm{rev}} / \mathcal{L}^{*} / \mathcal{D}^{*} / \mathcal{E}^{*} / \mathcal{B}^{*}_{\mathrm{rel}}`)。守恒律(Noether)/对称/自伴/单调/极限/定性动力学中至少 3 类同时存在。
+- **(B) 可执行**:T2 已有可跑 adapter(纯 numpy/scipy 即跑,或 Cantera/PySCF/OpenMC/torch 重运行时)。
+- **(C) 跨实现真 oracle 可得**:存在两个独立实现(M-FV vs M-SP / FE vs FV / Cantera vs scipy / OpenMC vs OpenMOC),可用**真实差分**当中立 oracle,而非仅注入变异(化解 G1-b 之"缺中立真缺陷正面证据")。
+- **(D) GenMorph 失效面清晰**:能明确说明 GP 进化式 MR 合成为何在该 SUT 退化——
+  - **D1 I/O 维度**:GAssert/GP 在标量/小元组 I/O 上进化布尔 assertion;场值(N×N)/轨迹 I/O 无可处理的 assertion 文法。
+  - **D2 单次成本**:GP 需数千次 fitness 评估,每次需一整次 PDE 求解 → 时间预算爆炸;NOETHER 代数推导与求解次数解耦(每条 MR 只需 O(1) 次结构化执行)。
+  - **D3 多执行变换**:守恒/标度/网格细化/坐标系变换类 MR 需关联**多次**执行(源 vs 跟随),GP 以单次执行的 mutation-kill 适应度无法发现这类关系。
+
+---
+
+## 2. 度量设计(对应"通过 X 可证明优势")
+
+NOETHER 主场对比上报以下度量(均为 **generation/detection 命题**,**不**上报 selection 的 k\*/reduction):
+
+| 度量 | 含义 | 偏向方 |
+|---|---|---|
+| **M-yield** | 每 SUT 可机械导出的非平凡 MR 条数(按块) | NOETHER(按块产出) |
+| **M-block** | 8 块中被非空填充的块数(结构覆盖) | NOETHER(可证覆盖) |
+| **M-ttf**(time-to-first-real-MR)| 产出首条通过 SUT 原始程序 sanity 的真实 MR 的墙钟 | NOETHER(代数推导近即时;GP 须跑完一轮进化)|
+| **M-cost** | 生成整套 MR 的墙钟 / CPU(沿用 S5 `efficiency_metrics.py` 口径)| NOETHER |
+| **M-detect** | 注入变异 + 跨实现差分下的检出率 + **Wilson 95% CI**;n<10 标 underpowered(§6.9 / CLAUDE.md C6)| 证据点(诚实分级)|
+| **M-feasible** | GenMorph 在该 SUT 上能否运行 / 产出非空 MR(可行性退化的二元/定性记录)| 揭示主场不对称 |
+
+---
+
+## 3. 候选清单 — 热工(Thermal / 热工)
+
+> ⊕ = 相对原候选(`protocol_domain_extension.md` §3 仅列 热传导 p1 / 波动 p2 / Burgers p7 / qchem)**新增**的热工候选。
+> 块符号:`G`=对称, `O≤`=序/单调/线性, `T*`=自伴, `Trev*`=时间反演, `L*`=极限/收敛, `D*`=定性动力学, `E*`=方法对比;`守恒`=Noether 守恒律(质量/能量/元素)。
+
+| SUT | 方程 / 物理 | 数值方法 | NOETHER 非空块 | 跨实现 oracle | 可用性 | GenMorph 失效面 | T2 路径 |
+|---|---|---|---|---|---|---|---|
+| **P1 heat** | 1D 热传导(抛物)`u_t=αu_xx` | 显式 FDM | `G,O≤,T*,L*,D*`;`Trev*=∅`(不可逆,负 MR 边界)| 单实现(可加隐式 arm)| 纯 numpy,即跑 | D1 场值 u(x);D3 极值原理/标度需多执行 | `experiments/puts/p1_heat.py` |
+| ⊕ **P6 Poisson** | 稳态导热 / 泊松(椭圆)`-u''=f` | 3 点中心 FDM(真解)| `O≤,T*,L*,G` | ⊕ FE vs FV(见 fefv)| 纯 numpy,即跑(`solve_poisson_fdm` 带 residual)| D1 场值;D2 线性解需多右端项关联 | `experiments/puts/p6_poisson.py` |
+| ⊕ **fefv** | G 群线性扩散-反应(稳态)`-∇·(D∇φ)+σ_aφ-Σσ_sφ=S` | FE / FV 双解器 | `O≤,T*,L*,E*` | **是**(FE vs FV)| 纯 numpy/scipy | D1 多群场;D3 群-叠加需多执行 | `scripts/mcmr/fefv/` |
+| ⊕ **advdiff** | 2D 对流-扩散(对流换热的扩散侧)`u_t+c·∇u=α∇²u` | M-FV(CN 隐式 upwind)/ M-SP(谱 ETD)| `G,O≤,L*,E*` + `守恒` | **是**(M-FV vs M-SP)| 纯 numpy/scipy,即跑 | D1 N×N 场;D2 隐式 LU/谱步成本;D3 标度/平移/Galilean/Richardson 全需多执行 | `scripts/mcmr/pde_xeval/`(10-MR battery,见 §5)|
+| ⊕ **radxfer** | 多群辐射扩散(热辐射输运,耗散)`(1/c)∂E_g/∂t=∇·(D_g∇E_g)-σ_{a,g}E_g+Σσ_sE+S` | FD-θ / 谱 双解器 | `O≤,T*,L*,E*`;`Trev*=∅` | **是**(FD-θ vs 谱)| 纯 numpy/scipy | D1 G×N×N 场;D3 群耦合/正定性 | `scripts/mcmr/radxfer/` |
+| ⊕ **combustion-gri30** | 绝热定容 0-D 反应器(燃烧反应热,GRI-Mech 3.0,53 种 325 反应)| Cantera CVODE / scipy BDF | `O≤,E*` + `守恒`(元素/能量)| **是**(Cantera vs scipy-BDF)| 重运行时(Cantera)| D2 刚性 ODE 积分;非线性 → 无叠加/标度(诚实) | `scripts/mcmr/combustion/` |
+| ⊕ **diffusion2D-PINN** | 2D 热扩散(Neumann 零通量)PINN 代理 | 点式 MLP PINN | `守恒`(Neumann 质量), `L*/O≤`(光滑/参考)| 单模型(参考包络)| 重运行时(torch + 子模块)| D1 场代理;GP 无法对 PINN 推断结构 MR | `experiments/diffusion2d_pinn_mrs.py`(5 MR,已读)|
+
+**热工方程小结**(供论文"主场方程"枚举):热传导(抛物)、稳态导热/泊松(椭圆)、多群中子/线性扩散-反应(fefv)、多群辐射扩散(radxfer)、对流-扩散/对流换热(advdiff)、燃烧反应热(combustion)。
+反应堆侧的**热工水力**经验锚点见文献语料 `data/raw/_mr_corpus/S3_Zhao2026.json`(HTGR 高温气冷堆:功率-温度单调、流量-温度反单调,正是 `O≤`/`D*` 类热工 MR)。
+
+---
+
+## 4. 候选清单 — 流体(Fluid / 流体)
+
+| SUT | 方程 / 物理 | 数值方法 | NOETHER 非空块 | 跨实现 oracle | 可用性 | GenMorph 失效面 | T2 路径 |
+|---|---|---|---|---|---|---|---|
+| **P7 Burgers** | 1D 无粘 Burgers 守恒律 `u_t+(u²/2)_x=0` | FVM(通量差分)| `G,O≤,D*` + `守恒`(质量)| 单实现 | 纯 numpy,即跑 | D1 场值 u(x);D3 Galilean/标度需多执行;非线性 → 无叠加 | `experiments/puts/p7_burgers.py` |
+| ⊕ **advdiff**(对流侧)| 2D 对流-扩散的**对流**算子 `c·∇u` | M-FV upwind / M-SP 谱 | `G`(Galilean/平移/相位标度), `E*` | **是**(M-FV vs M-SP)| 纯 numpy/scipy | 同 §3 advdiff | `scripts/mcmr/pde_xeval/` |
+| ⊕ **cylinder-flow** | 不可压 Navier-Stokes 圆柱绕流(COMSOL 轨迹,速度+压力场,600 步)| MeshGraphNet 代理(训练对照)| `G,D*`(涡脱周期), `E*` + `守恒`(∇·u=0)| 代理 vs 参考轨迹 | 重运行时(图网络 / torch)| D1 非结构网格场;D2 轨迹推演;GP 无文法 | `data/raw/cylinder_flow_deepmind/`, `scripts/mcmr/cylinder_flow/` |
+| ⊕ **detonation-znd** | 1D 反应欧拉 / 爆轰(Arrhenius 反应流)| 多通量格式(Rusanov/HLL/Lax)| `O≤`(正定性), `E*`, `D*` + `守恒`(质量/动量/能量)| **是**(多通量差分)| 纯 numpy(反应流)| D1 守恒量场;非线性 → 仅守恒/正定类 MR(诚实)| `scripts/mcmr/detonation/` |
+| ⊕ **Burgers2D-PINN** | 2D 粘性 Burgers `ν=0.05` PINN 代理 | 点式 PINN(子模块)| `守恒`, `L*/O≤`(光滑/参考)| 单模型(参考包络)| 重运行时(torch + 子模块)| D1 场代理;GP 无法对 PINN 推断结构 MR | `experiments/puts/p_burgers2d_pinn.py` |
+| ⊕ **Gray-Scott / rdscan** | 2D 反应-扩散(图灵斑图 / N 种循环竞争-扩散)| FD-IMEX / 谱 双解器 | `G,D*,E*` + `守恒`(物种/质量)| **是**(FD-IMEX vs 谱)| 纯 numpy/scipy | D1 多物种场;D3 斑图定性不变量;非线性 | `scripts/mcmr/grayscott/`, `scripts/mcmr/rdscan/` |
+| **P2 wave**(声学/波动,邻接)| 1D 波动(双曲)`u_tt=c²u_xx` | 蛙跳 FDM | `G,Trev*,D*` + `守恒`(能量)| 单实现 | 纯 numpy,即跑 | D1 场值;D3 能量/时反需多执行 | `experiments/puts/p2_wave.py` |
+
+**流体方程小结**:Burgers(无粘 1D / 粘性 2D)、对流-扩散(advdiff)、不可压 Navier-Stokes(圆柱绕流)、反应欧拉/爆轰(detonation)、反应-扩散输运(Gray-Scott/rdscan)、压力泊松(投影步,见 P6)、波动/声学(P2,邻接)。
+
+> **P2 wave 的独特价值**:它是少数 `\mathcal{T}^{*}_{\mathrm{rev}}` **非空**(波动可逆)的候选,正好与 P1/radxfer 的 `\mathcal{T}^{*}_{\mathrm{rev}}=∅`(耗散不可逆)形成对照——一次性展示 NOETHER 既能在可逆系统产出时反 MR、又能在耗散系统**可证地**判定该块为空(论文"证明自己导不出什么"的卖点)。
+
+---
+
+## 5. 实证锚:advdiff 的 10-MR 代数 battery → NOETHER 块映射
+
+`scripts/mcmr/pde_xeval/mr_battery.py` 已实现的 10 条 MR,**每条都注明"derived from the operator's algebra"**,且全部 **oracle-free**(只比较程序自身多次输出),与 NOETHER 的"从算子代数 Translate 出 MR"叙事逐条同构,可作主场最强单点证据:
+
+| battery MR | derived_from(原码)| NOETHER 块 |
+|---|---|---|
+| linearity-scale | `L(βu)=βLu` 齐次 | `O≤` |
+| superposition | `L(u+v)=Lu+Lv` 可加 | `O≤` |
+| translation-inv | 周期平移与算子对易 | `G` |
+| reflection-sym | Laplacian 在 x 反射下的宇称 | `G` |
+| mass-conservation | 周期域散度定理 `d/dt∫u=0` | `守恒`(Noether)|
+| energy-decay | `α>0` 时 `∇²` 耗散 `d/dt‖u‖²≤0` | `O≤ / L*` |
+| max-principle | 对流-扩散比较原理 | `O≤` |
+| spectral-decay-scaling | 扩散符号齐次 `λ(2k)=4λ(k)` | `G`(标度)|
+| phase-scaling | 对流符号线性 `φ(2k)=2φ(k)` | `G` |
+| galilean-inv | 动坐标系把对流-扩散约化为纯扩散 | `G` |
+| richardson-self | Richardson 自收敛(一致性)| `L*` |
+| (M-FV vs M-SP)| 双独立实现差分 | `E*` |
+
+这 10 条 + 跨实现 = 单 SUT 即填满 `G/O≤/L*/E*` 4 块 + 守恒;GP 因 D1/D2/D3 在同一 SUT 上无法企及。
+
+---
+
+## 6. 可用性分级 + 推荐选定子集(挑选可用 SUT)
+
+### 6.1 三级可用性
+
+- **Tier-A 纯 Python 即跑**(numpy/scipy,无重依赖):P1, P2, P6, P7, advdiff, radxfer, fefv, Gray-Scott/rdscan, detonation。
+- **Tier-B 跨实现真 oracle**(Tier-A 中自带双解器):advdiff(M-FV/M-SP)、radxfer(FD-θ/谱)、fefv(FE/FV)、Gray-Scott/rdscan(FD-IMEX/谱)、combustion(Cantera/scipy)、detonation(多通量)。
+- **Tier-C 重运行时**:combustion(Cantera)、diffusion2D/Burgers2D-PINN(torch+子模块)、cylinder-flow(图网络)。
+
+### 6.2 推荐选定子集(最大化代表性,覆盖 PDE 类型 × 域 × 可用性)
+
+| 选定 SUT | PDE 类型 | 域 | 选入理由 |
+|---|---|---|---|
+| **P1 heat** | 抛物 | 热工 | 最简热传导;直接对齐论文 `T*` 自伴扩散算子 + `Trev*=∅` |
+| **P6 Poisson** | 椭圆 | 热工 | 稳态导热;带 residual 一致性 oracle |
+| **advdiff** | 抛物+对流 | 热工×流体 | **跨实现真 oracle** + 已实现 10-MR 代数 battery(最强单点)|
+| **P7 Burgers** | 非线性双曲守恒律 | 流体 | 无粘守恒律;Galilean/激波定性动力学 |
+| **radxfer** | 多群抛物(耗散)| 热工(辐射)| 多群 + 跨实现;`T*+L*+Trev*=∅` |
+| **detonation-znd** | 反应欧拉 | 流体(反应流)| 非线性守恒/正定;多通量跨实现 |
+| **P2 wave** | 双曲(可逆)| 流体邻接(声学)| 唯一填充 `Trev*` 非空,与耗散系统对照 |
+| **combustion-gri30** | 刚性反应 ODE | 热工×流体(燃烧)| 真实机理 + Cantera/scipy 跨实现(工业现实性)|
+
+> 该 8 选子集:抛物/椭圆/双曲/非线性守恒律/反应流/刚性 ODE 全覆盖;热工 4 + 流体 4(含交叉);Tier-A 6 + Tier-C 2;跨实现真 oracle ≥ 4。化解 G1-a(域执行 1/3 → 多域)与 reviewer 的"作者自选 SUT / substrate selection bias"。
+
+---
+
+## 7. 可提议的扩展方程(暂未在 substrate,future candidate)
+
+为把"热工/流体"覆盖做厚,以下经典方程是自然增量(当前 T2 substrate **尚无**对应 adapter,列为提议,**不得**当作已有证据):
+
+- **热工**:共轭传热(固-流耦合)、自然对流 Boussinesq、瞬态对流换热(Nu-Re-Pr 标度律,`G`+`O≤`)。
+- **流体**:可压缩欧拉激波管(Sod,`守恒`+`D*`)、浅水方程(`守恒`+`G` Galilean)、不可压 NS 顶盖驱动方腔(`G`+`D*`)。
+
+提议方程一旦落地为可执行 adapter,按 §1 判据与 §2 度量并入正表。
+
+---
+
+## 8. salami 红线与披露(硬约束)
+
+- ✅ **可复用**:T2 的公开第三方/自建被测程序、PUT adapter 代码、变异 harness、双实现求解器、kill-matrix schema、`_mr_corpus` 文献语料(注明出处)。
+- ⛔ **禁搬**:T2 的 k\*/reduction/domination/collapse(R1-R3)judgement、见证 register、A/B/D claim ledger、`_eval` 对 T2-MR 的评分、support-domination/NP-hard/FPT 定理——一律 `\cite` 作 companion。
+- **同一 kill matrix 双问题分离**:T2 问"最小完备子集多大"(selection);NOETHER 问"算子代数导出的 MR 是否充分检出"(generation)。矩阵/harness 共享,问题与结论各自独立。
+- **scope precondition**:`csmith / sql / dnn` 已被 T2 移出核心(超出算子代数,违反 NOETHER scope 前置)——**不纳入**本主场清单。
+- **披露**:同作者群同主题,**必须**在 cover letter 主动披露共享实验基础设施(措辞见 `differentiation_and_disclosure_draft.md`),并引用上游(OpenMC/OpenMOC/PySCF/Cantera/DeepMind cylinder-flow)。
+
+---
+
+## 9. 与 protocol_domain_extension.md 的衔接
+
+- 本清单**扩充** `protocol_domain_extension.md` §3「实验 A — 多域 generation→detection」的候选域:原列(热传导 p1 / 波动 p2 / Burgers p7 / qchem-RHF)→ 扩为本表的热工 6 + 流体 6 候选,并给出 §6.2 的 8 选推荐子集。
+- 跨实现真 oracle(§3/§4 标"是"者)直接服务 `protocol_domain_extension.md` §4「实验 B — 跨实现差分真 oracle」,把原仅 OpenMC↔OpenMOC 一例扩到 advdiff/radxfer/fefv/Gray-Scott/combustion/detonation 多例。
+- 度量(§2)沿用 S5 `efficiency_metrics.py`(M-cost / M-ttf)+ 新增 M-yield / M-block / M-detect(Wilson CI)/ M-feasible。
+
+> **下一步(未在本任务范围,待拍板)**:把 §6.2 选定子集接上 NOETHER 的 CONSTRUCT-MP 生成桥 + T2 变异 harness,落 `results/`(generation→detection),并对每 SUT 记录 GenMorph 可行性(M-feasible)。本文件只交付**候选清单 + SUT 选择**,不含执行结果。
