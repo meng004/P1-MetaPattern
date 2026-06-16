@@ -31,6 +31,7 @@ run_test "test_parse_results"    python3 tests/test_parse_results.py
 run_test "test_aggregate_metrics" python3 tests/test_aggregate_metrics.py
 run_test "test_setn_followups"   python3 tests/test_setn_followups.py
 run_test "test_setn_e2e"         python3 tests/test_setn_e2e.py
+run_test "test_compare_sets"     python3 tests/test_compare_sets.py
 
 # 1a. Shell syntax check for orchestration scripts
 echo ""
