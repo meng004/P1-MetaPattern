@@ -92,6 +92,22 @@ def main():
     _, fp = sf.read_method_inputs(out)
     assert fp["str1"][1] == "xy" and fp["str2"][1] == "abcd", f"swap wrong: {fp}"
 
+    # --- non-finite doubles serialize in Java format (NaN source from Randoop) ---
+    assert sf._cast(float("nan"), "double") == "NaN"
+    assert sf._cast(float("inf"), "double") == "Infinity"
+    assert sf._cast(float("-inf"), "double") == "-Infinity"
+    nan_src = tmp / "nan.methodinputs"
+    nan_src.write_text(GCD_SRC.replace('<value class="int">1223</value>',
+                                       '<value class="double">NaN</value>')
+                              .replace("<clazz>int</clazz>\n      <name>", "<clazz>double</clazz>\n      <name>"))
+    nt, np_ = sf.read_method_inputs(nan_src)
+    # identity on p (numeric) must round-trip NaN as "NaN", not "nan"
+    a = sf.parse_jir("((Math.abs(((double) i_p_f) - ((double) i_p_s)) < 1.0E-4) && "
+                     "(Math.abs(((double) i_q_f) - ((double) i_q_s)) < 1.0E-4))")
+    o = tmp / "nan_out.methodinputs"
+    sf.write_followup(nt, np_, a, o)
+    assert "nan</value>" not in o.read_text(), "Python 'nan' leaked into .methodinputs"
+
     # --- fail-loud on garbage ---
     try:
         sf.parse_jir("totally not a relation")
