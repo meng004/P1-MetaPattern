@@ -105,23 +105,29 @@ def main():
                                "g_all": 0, "b_all": 0, "c_all": 0,
                                "g_seed_zero_subjects": 0})
 
-    for setn_csv in sorted(glob.glob(os.path.join(args.results_dir, "*", "setn_mutants_killed.csv"))):
-        subj = os.path.basename(os.path.dirname(setn_csv))
-        setg_csv = os.path.join(os.path.dirname(setn_csv), "setg_mutants_killed.csv")
-        rn = _rows(setn_csv)
-        vn = union_vec(rn, setn_exp)
-        if vn is None:
-            continue
-        nmut = len(vn)
+    subj_dirs = sorted({os.path.dirname(p)
+                        for pat in ("setn_mutants_killed.csv", "setg_mutants_killed.csv")
+                        for p in glob.glob(os.path.join(args.results_dir, "*", pat))})
+    for d in subj_dirs:
+        subj = os.path.basename(d)
         dom = lib_of(subj)
+        setn_csv, setg_csv = (os.path.join(d, f"set{x}_mutants_killed.csv") for x in "ng")
+        rn = _rows(setn_csv) if os.path.isfile(setn_csv) else None
+        rg = _rows(setg_csv) if os.path.isfile(setg_csv) else None
+        if rn is None and rg is None:
+            continue
+        nmut = len((rg or rn)[0][2:-1])
+        # Set N is deterministic; no FP-free MR for this subject => detected nothing
+        vn = union_vec(rn, setn_exp) if rn else None
+        nv = valid_mrs(rn, setn_exp) if rn else 0
+        if vn is None:
+            vn = [0] * nmut
         setn_k = sum(vn)
-        nv = valid_mrs(rn, setn_exp)
 
         g_seed_vec = g_all_vec = None
         g_seed_valid = 0
         seed_dist = {}
-        if os.path.isfile(setg_csv):
-            rg = _rows(setg_csv)
+        if rg:
             g_seed_vec = union_vec(rg, setg_exp) or [0] * nmut
             g_all_vec = union_vec(rg, "*") or [0] * nmut
             g_seed_valid = valid_mrs(rg, setg_exp)
