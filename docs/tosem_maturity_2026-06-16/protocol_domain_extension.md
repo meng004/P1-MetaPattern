@@ -18,7 +18,7 @@
 | committed pin-cell 矩阵 | `data/raw/_metbench_pincell/` | runtime-free 检测数据(免重建 OpenMC) |
 
 ## 3. 实验 A — 多域 generation→detection(化解 G1-a)
-对 ≥4 个**非 reactor** 域(建议:热传导 p1 / 波动 p2 / Burgers p7 / 量子化学 qchem-RHF):
+对 ≥4 个**非 reactor** 域(建议起步:热传导 p1 / 波动 p2 / Burgers p7 / 量子化学 qchem-RHF;**热工/流体扩充候选**:稳态导热 p6 / 对流-扩散 advdiff(跨实现)/ 多群辐射扩散 radxfer / 多群扩散-反应 fefv / 反应欧拉爆轰 detonation / 燃烧 combustion / Gray-Scott 反应-扩散 / 圆柱绕流 Navier-Stokes;完整候选清单 + 8 选推荐子集 + 块映射见 `noether_homefield_benchmark_candidates.md`):
 1. NOETHER 从该域算子代数用 CONSTRUCT-MP **自行导出** MR 集(明示 Theorem 1 推导路径;**不照抄** T2 `mr_catalog.csv`);
 2. 注入变异(复用 harness 变异池);
 3. 测 detection rate + Wilson 95% CI(per-MR + per-block);
