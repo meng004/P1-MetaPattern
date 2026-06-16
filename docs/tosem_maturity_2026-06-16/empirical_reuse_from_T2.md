@@ -46,7 +46,10 @@ NOETHER G1 子项:(a) 只 1/3 域执行 head-to-head;(b) 唯一中立对比被 b
 | (b) head-to-head 被 GP 击败 | ❌ 不能 | T2 无 generation/detection 对比;其 baseline 是 selection baseline |
 | (c) METRIC+/MR-Scout 比较 | ❌ 不能 | T2 完全未执行这些(全仓仅 review doc 提及,bib 无条目),NOETHER 须自建执行器 |
 
-**额外发现(bonus)**:NOETHER **已有自己的 GenMorph head-to-head 基础设施** —— 本地 `experiment/s5/` 与 `s5_aligned/`(README 明示 "Set N vs GenMorph Set G",71 MR × 23 Java subject,OpenJDK8+PIT1.7.4+Major2.0.0)。即 G1-(c) 的 GenMorph arm 已自有(且比论文呈现的可能更全),不依赖 T2;建议核查 s5 数据是否已充分写进论文 §empirical。
+**额外发现(已核查,2026-06-16)**:
+- `experiment/s5/`(主实验)的 head-to-head 数据(8–10 个 algebra-rich SUT,n=62/70 mutants)+ commons-math pilot + L\*-blindness + per-block + κ **已写进论文 §empirical**——**无未用增量**(修正先前"可能比论文更全"的推测)。
+- `experiment/s5_aligned/`:NOETHER Set N vs GenMorph Set G 在 **GenMorph 自己发表的 23-subject 公开 benchmark**(Math10+Lang5+Guava8,557 mutants,71 NOETHER MR,单变量设计)上的对比,**设计/代码就绪但 `results/` 为空 = 未执行**。这是化解 reviewer G1"单一代码库 / 作者自选 SUT / substrate selection bias / 外部效度"批评的**最高 ROI 中立证据**(在对手公开 benchmark 上比),仅需执行(Stage1 reproduce ~4–7h + Stage2 evaluate ~30min),**不需新设计**。
+- **诚实**:s5_aligned 结果未落盘,不可声称已有;这是"就绪未跑"的实验,需真实执行。
 
 ## 4. 红线 + 披露(与 memory `noether-t2-salami-boundary` 一致)
 

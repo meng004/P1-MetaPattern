@@ -23,6 +23,7 @@ commit. Each item is independent and can be done in any order.
 - [ ] 插入 T2 differentiation 段 + cover letter 披露 — 草稿 `docs/tosem_maturity_2026-06-16/differentiation_and_disclosure_draft.md`(待确认插入位置)
 - [ ] 去 overclaim(标题/摘要/contributions) — 草案 `docs/tosem_maturity_2026-06-16/overclaim_revision_draft.md`(待用户拍板,属作者决策权)
 - [ ] 75 页压至 ≤50 + cover letter 篇幅辩护
+- [ ] **执行就绪的 `experiment/s5_aligned`**(NOETHER vs GenMorph,在 GenMorph 公开 23-subject benchmark / 557 mutants)——化解 G1 substrate-bias 的最高 ROI 中立证据;代码就绪、`results/` 空待执行(Stage1 ~4–7h + Stage2 ~30min);见 `docs/tosem_maturity_2026-06-16/protocol_domain_extension.md`
 
 ### 🔵 Open questions(待用户拍板)
 - [x] git 作者邮箱已更正为 `meng004@gmail.com`(2026-06-16;gamail 未进任何 commit,无需修历史)
