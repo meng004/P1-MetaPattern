@@ -49,7 +49,7 @@ all = ["torch", "e3nn", "matplotlib", "pytest", "pytest-cov", "ruff"]
 [project.urls]
 homepage = "https://github.com/meng004/P1-MetaPattern"
 repository = "https://github.com/meng004/P1-MetaPattern"
-preprint = "https://arxiv.org/abs/<ARXIV_ID>"
+preprint = "https://arxiv.org/abs/2605.17390"
 
 [tool.setuptools]
 package-dir = { "" = "supplementary/S1_construct_mp" }

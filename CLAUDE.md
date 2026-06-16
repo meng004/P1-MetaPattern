@@ -33,6 +33,85 @@
 
 ---
 
+## 0.5. 禁止自发生成与自发改写（AI乱改约束，次高优先级）
+
+### 核心原则：只做被要求做的事，不多做一分
+
+AI 的默认倾向是"顺便优化"——修一处 bug 时重写整段、加符号时改周边散文、打包时"整理"未被提到的文件。本节全部禁止。
+
+---
+
+### A. 数字前缀术语 — 零容忍规则
+
+**任何**形如 `\b\d+[-–]\w+` 的术语（如 "5-MP"、"12-PUT"、"60-cell"、"3-layer"、"two-stage"）：
+
+- **必须逐字来自原文或被引用文献**，不得由 AI 自行发明或"合理推断"
+- AI 生成的数字前缀术语往往听起来合理但与实际不符，一旦进入论文将造成事实错误
+- **发现即还原**：如果输出中出现了原文中不存在的数字前缀术语，立即指出并还原为原文措辞
+
+**投稿前 grep 自检**（必须 0 命中，除已记录在案的合法术语外）：
+
+```bash
+# 列出所有数字前缀术语候选，逐一对照原文核实
+grep -oP '\b\d+[-–]\w+' "$TEX" | sort -u
+```
+
+---
+
+### B. 禁止自发改写（只改被指定位置）
+
+| 被要求的操作 | 允许范围 | 禁止行为 |
+|---|---|---|
+| 修复 L123 的符号错误 | 仅改 L123 | 重写 L120–L130 整段"以更清晰" |
+| 修正拼写错误 | 仅改拼写目标 | "顺便"修改周边语序或标点 |
+| 修复 LaTeX overfull | 仅改溢出行 | 重写整个公式块或"优化"换行 |
+| 更新一处数字 | 仅改该数字 | 更新其他"看起来也过时"的数字 |
+| 打包 zip | 仅打包指定文件 | 删除/移动/重命名未被提及的文件 |
+
+**铁律**：每次 Edit 工具调用的 `old_string` 必须精确定位到被要求修改的位置；`new_string` 只改 delta，不引入任何其他变化。
+
+---
+
+### C. 禁止自发添加内容
+
+以下内容未被要求时**一律不添加**：
+
+- 额外的 caveat / disclaimer / limitation 句
+- "This is important because..." 类解释
+- 新的 transition sentence（"Moreover," / "In addition,"）
+- 注释、TODO、脚注
+- 新的参考文献条目
+- 任何新的章节、小节、bullet point
+
+---
+
+### D. 禁止自发删除内容
+
+以下内容未被明确要求删除时**一律保留**：
+
+- 已有的段落、句子、bullet point
+- 已有的 `\cite{}` 引用
+- 已有的 LaTeX 注释（`% ...`）
+- 已有的图、表、附录
+
+---
+
+### E. 违规检测
+
+每次完成编辑后，对照以下清单自检：
+
+```
+□ 改动范围是否超出被要求的位置？
+□ 是否引入了原文中不存在的术语（含数字前缀术语）？
+□ 是否删除了任何原有内容（未被要求删除的）？
+□ 是否添加了任何原文中不存在的句子或段落？
+□ 数字（效应量、p 值、计数、百分比）是否逐字来自数据源？
+```
+
+任何一项"是"→ 立即还原多余改动，重新仅执行被指定的操作。
+
+---
+
 ## 1. 写作规范
 
 ### Abstract / 摘要
@@ -445,3 +524,172 @@ ARS 是 *补充* 不是 *替代*——两者都必须执行。
 - 自引匿名：`Authors 2024 (under review)`
 - 仅有 URL 无作者 / 年份的 `@misc` 条目（除非是软件仓库或标准）
 - "personal communication" 进 References（应放脚注）
+
+---
+
+## 8. arxiv → 期刊投稿的同步审计（Post-arxiv Journal Submission Audit Policy）
+
+**背景（2026-05-19 教训）**：arxiv 上传时已精心做过 release-prep（占位符锚定、preamble overflow safety、bib 完整性），但向期刊投稿时**投稿用的 tex 文件与 arxiv 用的不是同一份**——IMRaD restructure 创建了独立的 `_imrad.tex` 分支，arxiv 准备阶段所有防护工作都没继承过来。一次典型复查暴露：5 处 reviewer-speak 残留（"this revision" / "Round 2 review observation"）+ 57 处 overfull（含 458pt 溢出）+ 编号混用（(1)(2)(3) / (a)(b)(c) / (i)(ii)(iii) 三种风格）+ 章节交叉引用悬空 + appendix 未起新页。
+
+### 8.1 触发条件
+
+任意一项满足即触发：
+
+- 论文已上 arxiv，准备投期刊
+- 论文经过 IMRaD restructure，准备投不同期刊（TOSEM/TSE/JSS/STVR 等）
+- 同一论文同时有 `_arxiv.tex` / `_imrad.tex` 等多个 tex 分支
+- 任何"用 Pandoc 从 markdown 重生成 LaTeX"的步骤之后
+
+### 8.2 强制规则：arxiv preamble 必须完整 propagate
+
+任何"投稿版 tex" **必须**从对应的 `NOETHER_paper_arxiv.tex` 复制以下防护段（按需调整 documentclass，但**不可省略**任一项）：
+
+```latex
+%% ---- Section numbering: 防止与 markdown 手动编号双重叠加 ----
+\setcounter{secnumdepth}{0}        % 如 markdown 章节标题含 "1." / "1.1" 手动编号
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\arabic{figure}}
+
+%% ---- Layout-overflow safety nets (REQUIRED, do not omit) ----
+\usepackage{adjustbox}
+\usepackage{fvextra}
+\sloppy
+\setlength{\emergencystretch}{3em}
+\fvset{breaklines=true,breakanywhere=true,fontsize=\small}
+\renewenvironment{verbatim}%
+  {\VerbatimEnvironment\begin{Verbatim}}%
+  {\end{Verbatim}}
+```
+
+如 arxiv 版本还有 `\adjustbox{max width=\textwidth}{...}` 包裹的表格或 `\resizebox` 包裹的图（NOETHER_paper_arxiv.tex 包了 6 张：lines 180, 1707, 1754, 1948, 2112, 2210），**逐一复制到投稿版相同位置**。
+
+**diff 验证命令**（投稿前必跑）：
+```bash
+diff <(sed '/^\\begin{document}/q' NOETHER_paper_arxiv.tex) \
+     <(sed '/^\\begin{document}/q' NOETHER_paper_imrad.tex)
+# 输出应仅含合规差异（双盲化的 \author{[Anonymised]} 等）
+# 不应有 \sloppy / \emergencystretch / \setcounter{secnumdepth} 丢失
+```
+
+### 8.3 强制 grep audit（投稿前必须全部 0 命中）
+
+```bash
+# A. Reviewer-speak 泄漏（§4 C1+C2+C3 已禁，再 grep 一次防 IMRaD restructure 引入）
+grep -nE 'this revision|prior revision|subsequent revisions|Round [0-9]|in response to a Round' NOETHER_paper_imrad.tex
+# 期望：0 命中
+
+# B. Reviewer-process 标记（response-letter 语言）
+grep -nE 'R[0-9]+ W[0-9]+|round-[0-9]|DA-MAJOR-[0-9]|in this revision|completed in this revision' NOETHER_paper_imrad.tex
+# 期望：0 命中
+
+# C. 占位符残留（arxiv-prep 已锚定 ID 但投稿版可能未同步）
+grep -nE '<ARXIV_ID>|<DOI>|placeholder|XXXX|TBD|Anonymous2025' NOETHER_paper_imrad.tex
+# 期望：0 命中（[Anonymised for Review] 除外——这是双盲必需）
+
+# D. 双盲 leak（TOSEM/ACM 硬约束）
+grep -nE 'Meng Li|Xiaohua Yang|Jie Liu|Shiyu Yan|mlemon|jieliu|yanshiyu|xiaohua1963|usc\.edu|University of South China|Hengyang|421001|CNNC' \
+    NOETHER_paper_imrad.tex NOETHER_paper_imrad.bbl
+# 期望：0 命中（cover_letter 与 NOETHER_paper_arxiv.tex 除外）
+
+# E. 章节交叉引用 IMRaD 后悬空（高发）
+# 对每个被 IMRaD 重命名的章节，grep 旧编号；例 §6.5.x → Appendix E.x：
+grep -nE '§6\.5\.[0-9]|§4\.6\.[0-9]' NOETHER_paper_imrad.tex
+# 期望：0 命中
+
+# F. 编号风格统一（见 §8.5.1）
+grep -nE '\(1\) [A-Z].*\(2\) [A-Z]|\(i\) [a-zA-Z].*\(ii\) [a-zA-Z]' NOETHER_paper_imrad.tex
+# 期望：0 命中（除 cat-(i) / follow-up (i) 类已锚定标签外）
+```
+
+### 8.4 强制编译 audit（投稿前必须满足）
+
+```bash
+# G. 编译健康
+pdflatex NOETHER_paper_imrad.tex && bibtex NOETHER_paper_imrad && \
+  pdflatex NOETHER_paper_imrad.tex && pdflatex NOETHER_paper_imrad.tex
+grep -c 'Missing character' NOETHER_paper_imrad.log         # 期望 0
+grep -c 'undefined' NOETHER_paper_imrad.log                  # 期望 0
+
+# H. 排版溢出严重项 = 0（>50pt 即视觉可察）
+LANG=C grep --binary-files=text -E 'Overfull \\hbox \([5-9][0-9]\.|Overfull \\hbox \([0-9]{3,}\.' \
+    NOETHER_paper_imrad.log
+# 期望：0 命中
+# 注意：CLAUDE.md §3 步骤 2b 原本只检查 "undefined" / "Missing character"，
+#      "Overfull" 是漏项，需在投稿前补这一道
+
+# I. Bib 完整性（§3 步骤 2a 已述）
+python scripts/bib_all_cited_check.py
+# 期望：cited == defined, 0 warnings
+```
+
+### 8.5 编号 / 排版一致性规则
+
+#### 8.5.1 有序编号统一 (a)(b)(c)
+
+**禁止**在同一篇论文中混用 `(1)(2)(3)` / `(a)(b)(c)` / `(i)(ii)(iii)` 作为内联枚举。**统一**使用 `(a)(b)(c)(d)...`，**例外**：
+
+- 数学变量下标（`D_1, D_2, ..., D_6`）——变量命名，不是枚举
+- 已有引用锚定的类别标签（`cat-(i)` 在表格列中作为列名；`follow-up (i)` 作为 future-work 锚点）——若改名需同步所有引用
+- 公式/定理/引理的官方编号（由 `\newtheorem` 自动；Theorem 1, 2, 1' 等）
+
+LaTeX 实现：
+
+```latex
+\begin{enumerate}[leftmargin=*,nosep,label=(\alph*)]
+  \item ...
+\end{enumerate}
+```
+
+而非默认 `1.2.3.` 或手动 `\item[(i)]`。
+
+#### 8.5.2 Appendix 新起一页
+
+`\appendix` 命令前**必须**有 `\clearpage`：
+
+```latex
+\end{tcolorbox}  % 或正文结尾
+
+\clearpage       % ← REQUIRED
+\appendix
+```
+
+不加 `\clearpage` 时，acmart 会让 appendix 紧跟正文末尾，产生"§5.4 → 大片空白 → §6 Conclusion"或"正文 → Appendix"无视觉分隔的问题。
+
+#### 8.5.3 Tcolorbox 内编号一致
+
+同一 tcolorbox 内的多个编号列表必须用同一种风格。例如"What this establishes / does not establish"两列表都用 `(a)(b)(c)`，禁止前者自动 `1.2.3` 后者 `(a)(b)(c)`。
+
+#### 8.5.4 章节自动 + 手动编号双重叠加
+
+如 markdown 源里章节标题已含"1. Introduction"/"1.1 Motivation"等手动编号，**必须**在 LaTeX preamble 加：
+
+```latex
+\setcounter{secnumdepth}{0}
+```
+
+否则 acmart 会再加一层自动编号，渲染为 `0.1. 1. Introduction` / `0.1.1. 1.1 Motivation`。
+
+### 8.6 元流程（5 步，必须按序）
+
+1. **从 arxiv 主分支检出投稿版** —— 不要从 markdown 重 Pandoc，要从最近的 `_arxiv.tex` 复制为 `_imrad.tex`（再做双盲化、IMRaD 重组、章节重命名等）。
+2. **diff 检查 preamble**（见 §8.2 命令）——不允许丢失任何 overflow safety / numbering depth 设置。
+3. **章节交叉引用 audit** —— 如做了 IMRaD restructure（如原 §6.5.x 移到 Appendix E.x），逐章扫旧编号 grep，确保所有 `§X.Y.Z` 引用都指向当前结构存在的章节。
+4. **跑 §8.3 + §8.4 全部 grep + 编译**，每条必须满足"期望"。
+5. **重编 PDF 并目视检查** —— 至少翻一遍前 30 页 + 表格密集页 + 附录开头页，确认：
+   - 无文字 / 表格溢出页边界
+   - 章节编号无双重叠加（`X.Y` 不是 `0.X.Y`）
+   - Appendix 在新页开始
+   - 有序编号统一 (a)(b)(c)
+   - 双盲匿名 PDF 中 grep 不到真实作者名
+
+### 8.7 失败回滚
+
+- 若 §8.3 任一 grep 命中：列出命中位置，按 §0 规则修复并回到 §8.3 重跑。
+- 若 §8.4 任一编译失败：先看是否 §8.2 preamble 复制不完整。
+- 若反复出现"同一 bug 在不同 tex 文件分别出现"：把本节 §8.3 清单加入下次的 release 检查表。
+
+### 8.8 与 §3 流水线的关系
+
+- §3 是写作 + 编译流水线，**§8 是 arxiv-prep → 期刊投稿的"接续" audit**
+- §3 步骤 2b 编译循环 + Undef 审计已存在；§8.4 在此基础上**补充 overfull >50pt = 0 这一道**——这是原 §3 漏项
+- **arxiv 上线 ≠ 期刊投稿就绪**；中间的这一步是 §8，不允许跳过

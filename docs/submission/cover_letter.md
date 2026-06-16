@@ -12,7 +12,7 @@
 
 Dear Editor-in-Chief and Handling Editor,
 
-We respectfully submit *NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras* for consideration in the Testing & Analysis track of ACM TOSEM. The manuscript is original work, has not been submitted elsewhere, and is not under consideration by any other venue. The supplementary code and data are provided for review and will be released publicly upon acceptance.
+We respectfully submit *NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras* for consideration in the Testing & Analysis track of ACM TOSEM. The manuscript is original work, has not been submitted elsewhere, and is not under consideration by any other venue. A non-anonymous companion preprint has been posted at [arXiv:2605.17390](https://arxiv.org/abs/2605.17390) [cs.SE] (per ACM's preprint policy), and the supplementary code and data are publicly archived on Zenodo at DOI [10.5281/zenodo.20250634](https://doi.org/10.5281/zenodo.20250634); the manuscript itself remains anonymous for double-blind review.
 
 ## 1. What the paper does
 
@@ -37,7 +37,7 @@ The paper's central methodological contribution is therefore a **two-layer frame
 
 5. **Methodological transparency at four explicit layers.** (a) Pre-registration: the $\mathcal{L}^{*}$-blindness prediction and its outlier-handling rule, the SUT-selection criterion, and the Path A protocol are all committed to git before the corresponding data was collected. (b) Failure-mode audit: Stage 4.5 Round 5 caught and corrected a Mode 1 + Mode 3 finding (Fisher exact $p = 1.0$ was a column-degenerate misuse of `scipy.stats.fisher_exact`; corrected to McNemar exact $p = 0.500$). (c) Construct-trace circularity acknowledged: the §6.x case study's H2 verdict is by-construction within case-study scope; the Appendix-E (now supplementary S9) construct-trace check is design-implied and not used as independent fault-detection evidence. (d) Scope-precondition discipline: the framework's scope is explicitly programs admitting an operator-algebraic description; four classes (web applications, RLHF reward models, distributed-consensus protocols, compiler-internal optimisations) are stated out-of-scope by construction.
 
-6. **Reproducibility.** All claims map to scripts in supplementary S1–S9. The dual-tool METRIC+ replication completes in ≈ 5 seconds wall-time (Major) plus ≈ 5 minutes (PIT 1.7.4) on a stock Java 8 + Maven + JDK 11 toolchain — reviewers can replicate the head-to-head end-to-end. The 84-MR PWR corpus, the 18-MR audit's Fleiss $\kappa = 0.857$ inputs, the Apache Commons Math pilot's per-mutant kill matrix, and all per-subject category-choice specifications used in the Path A enumeration are committed to the experiment repository.
+6. **Reproducibility.** All claims map to scripts in supplementary S1–S9, archived on Zenodo at DOI [10.5281/zenodo.20250634](https://doi.org/10.5281/zenodo.20250634). The dual-tool METRIC+ replication completes in ≈ 5 seconds wall-time (Major) plus ≈ 5 minutes (PIT 1.7.4) on a stock Java 8 + Maven + JDK 11 toolchain — reviewers can replicate the head-to-head end-to-end. The 84-MR PWR corpus, the 18-MR audit's Fleiss $\kappa = 0.857$ inputs, the Apache Commons Math pilot's per-mutant kill matrix, and all per-subject category-choice specifications used in the Path A enumeration are committed to the experiment repository.
 
 ## 3. Length declaration
 
@@ -75,7 +75,10 @@ We acknowledge that NOETHER's contribution is **systematisation**, not deduction
 We thank you for considering this work, and we look forward to your editorial decision.
 
 Sincerely,
-[Author list to be inserted per double-blind policy at submission time]
+
+**Meng Li** (corresponding author), Xiaohua Yang, Jie Liu, Shiyu Yan
+School of Computing, University of South China; Hunan Engineering Research Center of Software Evaluation and Testing for Intellectual Equipment; CNNC Key Laboratory on High Trusted Computing, Hengyang 421001, China
+Corresponding email: mlemon@usc.edu.cn (ORCID: 0000-0002-1074-1502)
 
 ---
 

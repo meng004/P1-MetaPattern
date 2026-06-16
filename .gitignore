@@ -118,3 +118,15 @@ arxiv/*.bbl
 arxiv/*.blg
 arxiv/*.log
 arxiv/*.out
+
+# ============================================================================
+# Local-only outputs (kept on disk, not version-controlled)
+#   .claude/              : Claude Code session settings (contains local abs paths)
+#   submission/           : packaged journal submission snapshots (derived; .zip already ignored)
+#   experiment/           : s5 experiment working data (archived at Zenodo DOI 10.5281/zenodo.20250634)
+#   arxiv/pdflatex_test/  : scratch LaTeX build directory
+# ============================================================================
+/.claude/
+/submission/
+/experiment/
+/arxiv/pdflatex_test/
