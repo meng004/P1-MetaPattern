@@ -1,0 +1,93 @@
+{
+  "subject": "GuavaClass?padStart?0",
+  "n_mutants": 7,
+  "n_total_mrs": 3,
+  "set_n": {
+    "n_mrs": 0,
+    "n_effective_mrs": 0,
+    "effective_mr_ratio": 0.0,
+    "kill_vector": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "n_killed": 0
+  },
+  "set_g": {
+    "n_mrs": 3,
+    "n_effective_mrs": 3,
+    "effective_mr_ratio": 1.0,
+    "kill_vector": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "n_killed": 6
+  },
+  "per_mr": [
+    {
+      "experiment": "assertions_seed11",
+      "mr": "GuavaClass?padStart?0@SequenceFlip??1",
+      "set": "G",
+      "fp": null,
+      "n_killed": 6,
+      "killed_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "experiment": "assertions_seed11",
+      "mr": "GuavaClass?padStart?0@NumericAddition?1.000000?2",
+      "set": "G",
+      "fp": null,
+      "n_killed": 6,
+      "killed_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "experiment": "assertions_seed11",
+      "mr": "GuavaClass?padStart?0@NumericAddition?-1.000000?2",
+      "set": "G",
+      "fp": null,
+      "n_killed": 6,
+      "killed_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "m_metrics": {
+    "M1_kill_rate_N": 0.0,
+    "M1_kill_rate_G": 0.8571428571428571,
+    "M2_kills_per_mr_N": 0.0,
+    "M2_kills_per_mr_G": 2.0,
+    "M3_unique_to_N": 0,
+    "M3_unique_to_G": 6,
+    "M3_overlap": 0,
+    "M4_jaccard_NG": 0.0,
+    "M5_complementarity_lift": 0.0
+  }
+}

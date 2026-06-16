@@ -1,0 +1,10 @@
+EXPERIMENT,MR,FP,MS
+assertions_seed11,GuavaClass?min?0@SequenceFlip??1,4.55%(1/22),nan%(0/0)
+assertions_seed11,GuavaClass?min?0@SequenceRemove?-1?1,0.00%(0/20),55.56%(5/9)
+assertions_seed11,GuavaClass?min?0@SequenceRemove?0?1,0.00%(0/20),55.56%(5/9)
+assertions_seed12,GuavaClass?min?0@SequenceFlip??1,0.00%(0/22),66.67%(6/9)
+assertions_seed12,GuavaClass?min?0@SequenceRemove?-1?1,10.00%(2/20),nan%(0/0)
+assertions_seed12,GuavaClass?min?0@SequenceRemove?0?1,0.00%(0/20),55.56%(5/9)
+assertions_seed13,GuavaClass?min?0@SequenceFlip??1,0.00%(0/22),55.56%(5/9)
+assertions_seed13,GuavaClass?min?0@SequenceRemove?-1?1,30.00%(6/20),nan%(0/0)
+assertions_seed13,GuavaClass?min?0@SequenceRemove?0?1,0.00%(0/20),55.56%(5/9)

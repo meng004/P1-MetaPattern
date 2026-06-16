@@ -1,0 +1,133 @@
+{
+  "subject": "GuavaClass?repeat?0",
+  "n_mutants": 18,
+  "n_total_mrs": 3,
+  "set_n": {
+    "n_mrs": 0,
+    "n_effective_mrs": 0,
+    "effective_mr_ratio": 0.0,
+    "kill_vector": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "n_killed": 0
+  },
+  "set_g": {
+    "n_mrs": 3,
+    "n_effective_mrs": 3,
+    "effective_mr_ratio": 1.0,
+    "kill_vector": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "n_killed": 16
+  },
+  "per_mr": [
+    {
+      "experiment": "assertions_seed11",
+      "mr": "GuavaClass?repeat?0@SequenceRemove?0?1",
+      "set": "G",
+      "fp": null,
+      "n_killed": 16,
+      "killed_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        13,
+        14,
+        15,
+        16,
+        17
+      ]
+    },
+    {
+      "experiment": "assertions_seed11",
+      "mr": "GuavaClass?repeat?0@NumericMultiplication?-1.000000?2",
+      "set": "G",
+      "fp": null,
+      "n_killed": 4,
+      "killed_indices": [
+        1,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "experiment": "assertions_seed11",
+      "mr": "GuavaClass?repeat?0@NumericAddition?1.000000?2",
+      "set": "G",
+      "fp": null,
+      "n_killed": 16,
+      "killed_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        13,
+        14,
+        15,
+        16,
+        17
+      ]
+    }
+  ],
+  "m_metrics": {
+    "M1_kill_rate_N": 0.0,
+    "M1_kill_rate_G": 0.8888888888888888,
+    "M2_kills_per_mr_N": 0.0,
+    "M2_kills_per_mr_G": 5.333333333333333,
+    "M3_unique_to_N": 0,
+    "M3_unique_to_G": 16,
+    "M3_overlap": 0,
+    "M4_jaccard_NG": 0.0,
+    "M5_complementarity_lift": 0.0
+  }
+}

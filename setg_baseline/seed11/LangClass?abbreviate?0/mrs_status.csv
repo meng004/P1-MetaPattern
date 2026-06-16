@@ -1,0 +1,13 @@
+EXPERIMENT,MR,FP,MS
+assertions_seed11,LangClass?abbreviate?0@NumericAddition?1.000000?4,0.00%(0/33),41.03%(16/39)
+assertions_seed11,LangClass?abbreviate?0@SequenceRemove?0?2,0.00%(0/33),38.46%(15/39)
+assertions_seed11,LangClass?abbreviate?0@SwitchParams??1@2,nan%(0/0),0.00%(0/39)
+assertions_seed11,LangClass?abbreviate?0@SwitchParams??3@4,nan%(0/0),0.00%(0/39)
+assertions_seed12,LangClass?abbreviate?0@NumericAddition?1.000000?3,0.00%(0/33),43.59%(17/39)
+assertions_seed12,LangClass?abbreviate?0@NumericAddition?1.000000?4,15.15%(5/33),nan%(0/0)
+assertions_seed12,LangClass?abbreviate?0@NumericMultiplication?-1.000000?3,0.00%(0/33),43.59%(17/39)
+assertions_seed12,LangClass?abbreviate?0@SequenceFlip??2,0.00%(0/33),43.59%(17/39)
+assertions_seed13,LangClass?abbreviate?0@NumericMultiplication?-1.000000?3,30.30%(10/33),nan%(0/0)
+assertions_seed13,LangClass?abbreviate?0@SequenceFlip??1,30.30%(10/33),nan%(0/0)
+assertions_seed13,LangClass?abbreviate?0@SequenceFlip??2,0.00%(0/33),48.72%(19/39)
+assertions_seed13,LangClass?abbreviate?0@SequenceRemove?0?2,21.21%(7/33),nan%(0/0)

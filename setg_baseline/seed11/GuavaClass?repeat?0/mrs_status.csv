@@ -1,0 +1,13 @@
+EXPERIMENT,MR,FP,MS
+assertions_seed11,GuavaClass?repeat?0@NumericAddition?-1.000000?2,5.88%(3/51),nan%(0/0)
+assertions_seed11,GuavaClass?repeat?0@NumericAddition?1.000000?2,0.00%(0/79),88.89%(16/18)
+assertions_seed11,GuavaClass?repeat?0@NumericMultiplication?-1.000000?2,0.00%(0/28),22.22%(4/18)
+assertions_seed11,GuavaClass?repeat?0@SequenceRemove?0?1,0.00%(0/79),88.89%(16/18)
+assertions_seed12,GuavaClass?repeat?0@NumericAddition?1.000000?2,0.00%(0/79),88.89%(16/18)
+assertions_seed12,GuavaClass?repeat?0@NumericMultiplication?-1.000000?2,0.00%(0/28),22.22%(4/18)
+assertions_seed12,GuavaClass?repeat?0@SequenceFlip??1,10.13%(8/79),nan%(0/0)
+assertions_seed12,GuavaClass?repeat?0@SequenceRemove?0?1,15.19%(12/79),nan%(0/0)
+assertions_seed13,GuavaClass?repeat?0@NumericAddition?-1.000000?2,5.88%(3/51),nan%(0/0)
+assertions_seed13,GuavaClass?repeat?0@SequenceFlip??1,0.00%(0/79),77.78%(14/18)
+assertions_seed13,GuavaClass?repeat?0@SequenceRemove?-1?1,0.00%(0/79),77.78%(14/18)
+assertions_seed13,GuavaClass?repeat?0@SequenceRemove?0?1,0.00%(0/79),88.89%(16/18)

@@ -1,0 +1,289 @@
+{
+  "experiment": "Set G (GenMorph seed11) DETECTION BASELINE ONLY",
+  "is_full_aligned_comparison": false,
+  "set_n_status": "NOT EVALUATED \u2014 requires states/classifications (absent from Zenodo package) + a functional Stage-1 pipeline. run_all.sh is non-functional (see ISSUES/003-run-all-pipeline-broken.md). All set_n_* fields are placeholders, NOT measured zeros.",
+  "provenance": "Adopted as-published from upstream evaluation/pitest_seed11/<subject>/mutants_killed.csv (EXPERIMENT==assertions_seed11, MR!='*'). NOT locally recomputed/aligned. Self-consistency check: per-subject union == upstream 'assertions_seed11,*' row (passed for all subjects with data).",
+  "n_subjects_benchmark": 23,
+  "n_subjects_with_setg_data": 22,
+  "subjects_missing_data": [
+    "GuavaClass?join?0"
+  ],
+  "subjects_no_valid_setg_mr_seed11": [
+    "LangClass?capitalize?0",
+    "MathClass?acos?0",
+    "MathClass?millerRabinPrimeTest?0"
+  ],
+  "total_mutants": 557,
+  "set_g": {
+    "kills": 204,
+    "kill_rate": 0.36624775583482944,
+    "wilson_95_ci": [
+      0.3272800016201008,
+      0.4070478371136878
+    ],
+    "effective_mrs_killing_ge1": 38,
+    "total_mrs_dsl": 83,
+    "effective_mr_ratio_dsl": 0.4578313253012048
+  },
+  "set_n": null,
+  "paired_mcnemar": null,
+  "per_subject": [
+    {
+      "subject": "GuavaClass?indexOf?0",
+      "status": "ok",
+      "n_mutants": 12,
+      "setg_kills": 0,
+      "setg_kill_rate": 0.0,
+      "setg_effective_mrs": 0,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.0,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "GuavaClass?join?0",
+      "status": "missing_mutants_killed_csv",
+      "n_mutants": null,
+      "setg_kills": null,
+      "setg_kill_rate": null,
+      "setg_effective_mrs": 0,
+      "setg_total_mrs_dsl": 4
+    },
+    {
+      "subject": "GuavaClass?meanOf?0",
+      "status": "ok",
+      "n_mutants": 12,
+      "setg_kills": 10,
+      "setg_kill_rate": 0.8333333333333334,
+      "setg_effective_mrs": 3,
+      "setg_total_mrs_dsl": 3,
+      "setg_effective_mr_ratio_dsl": 1.0,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "GuavaClass?min?0",
+      "status": "ok",
+      "n_mutants": 9,
+      "setg_kills": 5,
+      "setg_kill_rate": 0.5555555555555556,
+      "setg_effective_mrs": 2,
+      "setg_total_mrs_dsl": 3,
+      "setg_effective_mr_ratio_dsl": 0.6666666666666666,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "GuavaClass?padStart?0",
+      "status": "ok",
+      "n_mutants": 7,
+      "setg_kills": 6,
+      "setg_kill_rate": 0.8571428571428571,
+      "setg_effective_mrs": 3,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.75,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "GuavaClass?repeat?0",
+      "status": "ok",
+      "n_mutants": 18,
+      "setg_kills": 16,
+      "setg_kill_rate": 0.8888888888888888,
+      "setg_effective_mrs": 3,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.75,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "GuavaClass?sort?0",
+      "status": "ok",
+      "n_mutants": 8,
+      "setg_kills": 0,
+      "setg_kill_rate": 0.0,
+      "setg_effective_mrs": 0,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.0,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "GuavaClass?truncate?0",
+      "status": "ok",
+      "n_mutants": 10,
+      "setg_kills": 6,
+      "setg_kill_rate": 0.6,
+      "setg_effective_mrs": 2,
+      "setg_total_mrs_dsl": 3,
+      "setg_effective_mr_ratio_dsl": 0.6666666666666666,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "LangClass?abbreviate?0",
+      "status": "ok",
+      "n_mutants": 39,
+      "setg_kills": 18,
+      "setg_kill_rate": 0.46153846153846156,
+      "setg_effective_mrs": 2,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.5,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "LangClass?capitalize?0",
+      "status": "no_valid_setg_mr_in_seed11",
+      "n_mutants": 10,
+      "setg_kills": 0,
+      "setg_kill_rate": 0.0,
+      "setg_effective_mrs": 0,
+      "setg_total_mrs_dsl": 3,
+      "setg_effective_mr_ratio_dsl": 0.0,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "LangClass?center?0",
+      "status": "ok",
+      "n_mutants": 12,
+      "setg_kills": 8,
+      "setg_kill_rate": 0.6666666666666666,
+      "setg_effective_mrs": 2,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.5,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "LangClass?difference?0",
+      "status": "ok",
+      "n_mutants": 6,
+      "setg_kills": 0,
+      "setg_kill_rate": 0.0,
+      "setg_effective_mrs": 0,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.0,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "LangClass?isSorted?0",
+      "status": "ok",
+      "n_mutants": 11,
+      "setg_kills": 9,
+      "setg_kill_rate": 0.8181818181818182,
+      "setg_effective_mrs": 2,
+      "setg_total_mrs_dsl": 3,
+      "setg_effective_mr_ratio_dsl": 0.6666666666666666,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?acos?0",
+      "status": "no_valid_setg_mr_in_seed11",
+      "n_mutants": 76,
+      "setg_kills": 0,
+      "setg_kill_rate": 0.0,
+      "setg_effective_mrs": 0,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.0,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?gcd?0",
+      "status": "ok",
+      "n_mutants": 25,
+      "setg_kills": 11,
+      "setg_kill_rate": 0.44,
+      "setg_effective_mrs": 2,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.5,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?log10?0",
+      "status": "ok",
+      "n_mutants": 15,
+      "setg_kills": 8,
+      "setg_kill_rate": 0.5333333333333333,
+      "setg_effective_mrs": 1,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.25,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?millerRabinPrimeTest?0",
+      "status": "no_valid_setg_mr_in_seed11",
+      "n_mutants": 25,
+      "setg_kills": 0,
+      "setg_kill_rate": 0.0,
+      "setg_effective_mrs": 0,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.0,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?nextPrime?0",
+      "status": "ok",
+      "n_mutants": 20,
+      "setg_kills": 15,
+      "setg_kill_rate": 0.75,
+      "setg_effective_mrs": 2,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.5,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?pow?0",
+      "status": "ok",
+      "n_mutants": 10,
+      "setg_kills": 7,
+      "setg_kill_rate": 0.7,
+      "setg_effective_mrs": 3,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.75,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?sin?0",
+      "status": "ok",
+      "n_mutants": 26,
+      "setg_kills": 16,
+      "setg_kill_rate": 0.6153846153846154,
+      "setg_effective_mrs": 3,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.75,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?sinh?0",
+      "status": "ok",
+      "n_mutants": 123,
+      "setg_kills": 36,
+      "setg_kill_rate": 0.2926829268292683,
+      "setg_effective_mrs": 2,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.5,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?stirlingS2?0",
+      "status": "ok",
+      "n_mutants": 46,
+      "setg_kills": 17,
+      "setg_kill_rate": 0.3695652173913043,
+      "setg_effective_mrs": 3,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.75,
+      "union_matches_upstream_star_row": true
+    },
+    {
+      "subject": "MathClass?tan?0",
+      "status": "ok",
+      "n_mutants": 37,
+      "setg_kills": 16,
+      "setg_kill_rate": 0.43243243243243246,
+      "setg_effective_mrs": 3,
+      "setg_total_mrs_dsl": 4,
+      "setg_effective_mr_ratio_dsl": 0.75,
+      "union_matches_upstream_star_row": true
+    }
+  ],
+  "caveats": [
+    "Pooling treats each mutant as an independent Bernoulli trial; this underestimates variance (mutants within a subject share SUT/inputs/mutator).",
+    "GuavaClass?join?0 has no upstream seed11 mutants_killed.csv -> excluded from the pooled denominator; reported as missing (underpowered).",
+    "capitalize/acos/millerRabinPrimeTest have zero seed11 Set G MRs surviving upstream's FP filter -> Set G kills=0 is a real upstream outcome, not a parsing artifact.",
+    "Effective-MR ratio uses the DSL-dir MR count as denominator; the per-subject aligned_metrics.json effective_mr_ratio (parse_results.py) uses CSV-row count instead."
+  ]
+}
