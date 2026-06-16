@@ -105,6 +105,19 @@ def _is_numeric(clazz):
     return clazz in _NUMERIC_CLASSES
 
 
+def _is_finite_input(params):
+    """False if any numeric parameter is NaN/Infinity (degenerate input)."""
+    for clazz, val in params.values():
+        if val is None or clazz not in _NUMERIC_CLASSES:
+            continue
+        try:
+            if not math.isfinite(float(val)):
+                return False
+        except ValueError:
+            return False
+    return True
+
+
 def _cast(value: float, clazz: str):
     # Non-finite doubles must use Java's spelling (NaN/Infinity), not Python's
     # repr ('nan'/'inf'), or XStream's DoubleConverter throws NumberFormatException.
@@ -191,9 +204,19 @@ def main():
     args = ap.parse_args()
 
     subject = args.subject
-    sources = sorted((args.sources_dir / subject).glob(f"{subject}{SEP}*.methodinputs"))
-    if not sources:
+    raw_sources = sorted((args.sources_dir / subject).glob(f"{subject}{SEP}*.methodinputs"))
+    if not raw_sources:
         sys.exit(f"FATAL: no source .methodinputs in {args.sources_dir / subject}")
+    # Drop degenerate non-finite (NaN/Infinity) inputs: they are not meaningful
+    # test cases and spuriously fail otherwise-valid relations (e.g. acos(NaN) <= PI).
+    sources, n_nonfinite = [], 0
+    for src in raw_sources:
+        if _is_finite_input(read_method_inputs(src)[1]):
+            sources.append(src)
+        else:
+            n_nonfinite += 1
+    if not sources:
+        sys.exit(f"FATAL: all source inputs non-finite for {subject}")
 
     fu_dir = args.followups_dir / args.experiment / subject
     mrs_dir = args.mrs_dir / args.experiment / subject
@@ -202,7 +225,9 @@ def main():
 
     mrs = sorted(p.name[:-len(".jir.txt")]
                  for p in args.set_n_dir.glob(f"{subject}{SEP}*.jir.txt"))
-    print(f"[{subject}] {len(sources)} source inputs, {len(mrs)} Set N MRs")
+    print(f"[{subject}] {len(sources)} source inputs"
+          + (f" ({n_nonfinite} non-finite dropped)" if n_nonfinite else "")
+          + f", {len(mrs)} Set N MRs")
 
     staged, skipped = 0, []
     for mr in mrs:

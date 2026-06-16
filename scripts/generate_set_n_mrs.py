@@ -56,7 +56,16 @@ def OSEQ(side):  # Sequence-wrap return value (string/array return)
 def OASEQ(arg, side):  # Sequence-wrap output array (in-place mutators like sort)
     return f"(ch.usi.gassert.data.types.Sequence.fromValue(o_{arg}_{side}))"
 
-def CONST(side, name):  # class constant via this
+_JAVA_CONST = {"PI": "Math.PI", "E": "Math.E"}
+
+
+def CONST(side, name):  # class constant
+    # PI/E are JDK constants (MathClass exposes no such instance field, so
+    # i_this.PI would not compile in the generated PITest assertion). Other
+    # names (e.g. PRIMES_LAST) stay instance-qualified; they appear only in
+    # input relations (.jir), which are not compiled into the test suite.
+    if name in _JAVA_CONST:
+        return f"((double) {_JAVA_CONST[name]})"
     return f"((double) i_this_{side}.{name})"
 
 def eq_d(a, b):
