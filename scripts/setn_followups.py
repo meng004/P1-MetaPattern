@@ -106,6 +106,12 @@ def _is_numeric(clazz):
 
 
 def _cast(value: float, clazz: str):
+    # Non-finite doubles must use Java's spelling (NaN/Infinity), not Python's
+    # repr ('nan'/'inf'), or XStream's DoubleConverter throws NumberFormatException.
+    if isinstance(value, float) and not math.isfinite(value):
+        if math.isnan(value):
+            return "NaN"
+        return "Infinity" if value > 0 else "-Infinity"
     if clazz in ("int", "long", "short", "byte", "java.lang.Integer",
                  "java.lang.Long", "java.lang.Short", "java.lang.Byte"):
         return str(int(round(value)))
