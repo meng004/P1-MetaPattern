@@ -1,0 +1,113 @@
+[
+  {
+    "model": "gpt-5-chat-latest",
+    "ok": true,
+    "sec": 4.2,
+    "tok": 1646,
+    "review": {
+      "score": 38,
+      "verdict": "Reject",
+      "top_blockers": [
+        "Empirical evaluation is underpowered, partial, and largely deferred to follow-up protocols",
+        "Core theoretical results are by-construction or trivial algorithmic bounds, lacking novelty commensurate with TOSEM standards",
+        "Comparative performance shows framework dominated by baseline in executed head-to-head",
+        "Domain instantiations have limited execution depth and no de novo discoveries"
+      ],
+      "key_strengths": [
+        "Clear articulation of scope boundaries and falsifiable predictions",
+        "Interesting cross-domain framing leveraging operator algebra structures",
+        "Negative result on absolute completeness with identified obstruction dimensions"
+      ],
+      "one_line": "Framework offers a conceptually intriguing algebraic grounding for metamorphic pattern discovery but current theoretical novelty and empirical maturity fall well short of archival TOSEM expectations."
+    }
+  },
+  {
+    "model": "deepseek-v3.2-exp",
+    "ok": true,
+    "sec": 7.6,
+    "tok": 1635,
+    "review": {
+      "score": 55,
+      "verdict": "Major Revision",
+      "top_blockers": [
+        "Inadequate empirical validation (only 1/3 domains executed head-to-head, underpowered pilots)",
+        "Unclear novelty vs companion paper and prior work (4-line related work section)",
+        "Overclaims framework generality while authors acknowledge empirical upstream layer remains human-curated",
+        "Reliance on LLMs for reliability assessment without independent human validation"
+      ],
+      "key_strengths": [
+        "Novel algebraic framework with constructive algorithm and theoretical guarantees",
+        "Rigorous falsification of absolute-completeness conjecture with identified structural obstructions",
+        "Multi-domain instantiation demonstrating transferability potential"
+      ],
+      "one_line": "Theoretical framework shows promise but requires substantial empirical strengthening and clearer positioning to meet TOSEM standards."
+    }
+  },
+  {
+    "model": "grok-4.1",
+    "ok": true,
+    "sec": 5.1,
+    "tok": 1818,
+    "review": {
+      "score": 32,
+      "verdict": "Reject",
+      "top_blockers": [
+        "Empirical evaluation is under-powered and incomplete: only one domain has a head-to-head execution; two others are analytical or tiny pilots (n=5, n=3); pre-registered larger comparisons are missing.",
+        "Central claims rest on an empirical upstream block list whose sufficiency is explicitly disclaimed by the authors; absolute-completeness conjecture is falsified and no replacement completeness argument is supplied.",
+        "Contribution boundary is largely negative or relocated (induction not eliminated, human curation remains, engineering payoff deferred); theorems are by-construction or standard union-find bounds.",
+        "Related-work section is four lines; no differentiation from the authors' own companion NP-hard MR-subset paper; inter-rater reliability relies on LLMs with shared corpora and lacks independent human validation."
+      ],
+      "key_strengths": [
+        "Clean algebraic framing and explicit negative result (Thm 1' falsified) that usefully bounds the approach.",
+        "Concrete instantiation on reactor-physics catalogue with systematic re-classification.",
+        "Polynomial-time decidability result (Thm 2) is straightforward but correctly stated."
+      ],
+      "one_line": "An ambitious but immature algebraic re-grounding whose empirical support, completeness argument, and positioning against prior work remain too thin for TOSEM."
+    }
+  },
+  {
+    "model": "qwen3-max-preview",
+    "ok": true,
+    "sec": 10.4,
+    "tok": 1747,
+    "review": {
+      "score": 58,
+      "verdict": "Major Revision",
+      "top_blockers": [
+        "Empirical validation is fragmented: only one domain has full head-to-head; others are analytical or underpowered pilots.",
+        "Critical comparisons (METRIC+, LLM replication, sufficiency claims) deferred to 'follow-up' or pre-registration, violating TOSEM's archival standard.",
+        "Theorems 1/2 are technically narrow (by-construction closure, union-find bound) and lack depth expected for TOSEM theory contribution.",
+        "No differentiation from companion paper on NP-hard MR-subset problem creates scope/contribution ambiguity."
+      ],
+      "key_strengths": [
+        "Novel algebraic framing of metamorphic patterns with falsifiable conjectures and counterexamples.",
+        "Cross-domain structural transferability demonstrated conceptually across three non-trivial SE contexts.",
+        "Honest boundary-setting and negative results (Thm 1’ falsification) show scholarly maturity."
+      ],
+      "one_line": "Promising theoretical re-grounding of metamorphic testing via operator algebras, but empirically immature and theoretically shallow for TOSEM archival standards without major revision."
+    }
+  },
+  {
+    "model": "kimi-k2.5",
+    "ok": true,
+    "sec": 10.7,
+    "tok": 1782,
+    "review": {
+      "score": 58,
+      "verdict": "Major Revision",
+      "top_blockers": [
+        "Empirical validation severely underpowered: only ONE domain has executed head-to-head, ONE has n=5 pilot, ONE is purely analytical with no execution—far below TOSEM archival standards for multi-domain claims",
+        "Critical comparative results deferred to 'pre-registered protocol' rather than executed: METRIC+ comparison, MR-Scout full run, third-vendor LLM replication all absent",
+        "Inter-rater reliability uses only LLM judges with shared training corpora (k=0.857) and no independent human validation—methodologically compromised for empirical SE claims",
+        "Theorem 1 is 'by-construction' closure within explicit scope, not a substantive mathematical advance; Theorem 2 is standard union-find complexity—technical depth insufficient for theory contribution at TOSEM level",
+        "75 pages with 4-line related work section signals structural imbalance; heavy theoretical framing masks thin empirical substance across claimed three-domain transfer"
+      ],
+      "key_strengths": [
+        "Honest falsification of Thm 1' with concrete counterexamples demonstrates scientific integrity rare in SE submissions",
+        "Explicit boundary statement and resubmission obligations show mature meta-scientific stance",
+        "Block decomposition as empirical hypothesis is conceptually interesting for MR identification"
+      ],
+      "one_line": "Ambitious theoretical framing and commendable honesty about limitations cannot compensate for empirically thin, structurally unbalanced submission where most comparative validation is deferred rather than executed."
+    }
+  }
+]

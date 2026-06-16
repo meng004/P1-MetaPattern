@@ -73,6 +73,9 @@ The track's existing handling editors with theory-of-testing or metamorphic-test
 We acknowledge that NOETHER's contribution is **systematisation**, not deduction from first principles — induction is *relocated* from MR-instance level to algebra-block level rather than eliminated. We believe this re-grounding is a productive direction for the metamorphic-testing community, and we have prepared the submission with four rounds of self-review (5-reviewer panel + Devil's Advocate + Stage 4.5 integrity audit + cross-tool replication) and explicit transparency on every methodological choice.
 
 We thank you for considering this work, and we look forward to your editorial decision.
+## Disclosure of related work by the authors
+
+For full transparency, a separate manuscript by some of the present authors addresses an orthogonal problem in metamorphic testing: selecting a minimum complete subset from a *given* metamorphic-relation pool (an NP-hard optimisation problem, with approximation and ILP solvers). The present submission, NOETHER, concerns the complementary upstream question of constructively *deriving* metamorphic relations and MetaPatterns from a program-induced operator algebra. The two manuscripts share experimental infrastructure (the operator-algebraic substrate and reactor-physics witnesses) but make disjoint technical claims — generation/closure here, subset-minimality there — and target distinct reviewer audiences. The related manuscript is available to the editor on request (arXiv:XXXX.XXXXX).
 
 Sincerely,
 
