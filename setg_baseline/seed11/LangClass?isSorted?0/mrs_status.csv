@@ -1,0 +1,10 @@
+EXPERIMENT,MR,FP,MS
+assertions_seed11,LangClass?isSorted?0@SequenceFlip??1,0.00%(0/43),72.73%(8/11)
+assertions_seed11,LangClass?isSorted?0@SequenceRemove?-1?1,0.00%(0/43),81.82%(9/11)
+assertions_seed11,LangClass?isSorted?0@SequenceRemove?0?1,4.65%(2/43),nan%(0/0)
+assertions_seed12,LangClass?isSorted?0@SequenceFlip??1,86.05%(37/43),nan%(0/0)
+assertions_seed12,LangClass?isSorted?0@SequenceRemove?-1?1,0.00%(0/43),81.82%(9/11)
+assertions_seed12,LangClass?isSorted?0@SequenceRemove?0?1,86.05%(37/43),nan%(0/0)
+assertions_seed13,LangClass?isSorted?0@SequenceFlip??1,4.65%(2/43),nan%(0/0)
+assertions_seed13,LangClass?isSorted?0@SequenceRemove?-1?1,4.65%(2/43),nan%(0/0)
+assertions_seed13,LangClass?isSorted?0@SequenceRemove?0?1,4.65%(2/43),nan%(0/0)

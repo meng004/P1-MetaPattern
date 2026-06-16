@@ -1,0 +1,10 @@
+EXPERIMENT,MR,FP,MS
+assertions_seed11,LangClass?capitalize?0@SequenceFlip??1,8.00%(8/100),nan%(0/0)
+assertions_seed11,LangClass?capitalize?0@SequenceRemove?-1?1,20.00%(20/100),nan%(0/0)
+assertions_seed11,LangClass?capitalize?0@SequenceRemove?0?1,5.00%(5/100),nan%(0/0)
+assertions_seed12,LangClass?capitalize?0@SequenceFlip??1,23.00%(23/100),nan%(0/0)
+assertions_seed12,LangClass?capitalize?0@SequenceRemove?-1?1,1.00%(1/100),nan%(0/0)
+assertions_seed12,LangClass?capitalize?0@SequenceRemove?0?1,0.00%(0/100),90.00%(9/10)
+assertions_seed13,LangClass?capitalize?0@SequenceFlip??1,0.00%(0/100),70.00%(7/10)
+assertions_seed13,LangClass?capitalize?0@SequenceRemove?-1?1,20.00%(20/100),nan%(0/0)
+assertions_seed13,LangClass?capitalize?0@SequenceRemove?0?1,2.00%(2/100),nan%(0/0)

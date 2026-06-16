@@ -1,0 +1,91 @@
+{
+  "subject": "LangClass?isSorted?0",
+  "n_mutants": 11,
+  "n_total_mrs": 2,
+  "set_n": {
+    "n_mrs": 0,
+    "n_effective_mrs": 0,
+    "effective_mr_ratio": 0.0,
+    "kill_vector": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "n_killed": 0
+  },
+  "set_g": {
+    "n_mrs": 2,
+    "n_effective_mrs": 2,
+    "effective_mr_ratio": 1.0,
+    "kill_vector": [
+      1,
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "n_killed": 9
+  },
+  "per_mr": [
+    {
+      "experiment": "assertions_seed11",
+      "mr": "LangClass?isSorted?0@SequenceRemove?-1?1",
+      "set": "G",
+      "fp": null,
+      "n_killed": 9,
+      "killed_indices": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10
+      ]
+    },
+    {
+      "experiment": "assertions_seed11",
+      "mr": "LangClass?isSorted?0@SequenceFlip??1",
+      "set": "G",
+      "fp": null,
+      "n_killed": 8,
+      "killed_indices": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ]
+    }
+  ],
+  "m_metrics": {
+    "M1_kill_rate_N": 0.0,
+    "M1_kill_rate_G": 0.8181818181818182,
+    "M2_kills_per_mr_N": 0.0,
+    "M2_kills_per_mr_G": 4.5,
+    "M3_unique_to_N": 0,
+    "M3_unique_to_G": 9,
+    "M3_overlap": 0,
+    "M4_jaccard_NG": 0.0,
+    "M5_complementarity_lift": 0.0
+  }
+}

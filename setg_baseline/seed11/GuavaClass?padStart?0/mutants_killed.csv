@@ -1,0 +1,4 @@
+EXPERIMENT,MR,M1,M2,M3,M4,M5,M6,M7,COUNT
+assertions_seed11,GuavaClass?padStart?0@SequenceFlip??1,0,1,1,1,1,1,1,6
+assertions_seed11,GuavaClass?padStart?0@NumericAddition?1.000000?2,0,1,1,1,1,1,1,6
+assertions_seed11,GuavaClass?padStart?0@NumericAddition?-1.000000?2,0,1,1,1,1,1,1,6

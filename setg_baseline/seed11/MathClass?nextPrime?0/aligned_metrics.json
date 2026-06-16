@@ -1,0 +1,117 @@
+{
+  "subject": "MathClass?nextPrime?0",
+  "n_mutants": 20,
+  "n_total_mrs": 2,
+  "set_n": {
+    "n_mrs": 0,
+    "n_effective_mrs": 0,
+    "effective_mr_ratio": 0.0,
+    "kill_vector": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "n_killed": 0
+  },
+  "set_g": {
+    "n_mrs": 2,
+    "n_effective_mrs": 2,
+    "effective_mr_ratio": 1.0,
+    "kill_vector": [
+      0,
+      1,
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1
+    ],
+    "n_killed": 15
+  },
+  "per_mr": [
+    {
+      "experiment": "assertions_seed11",
+      "mr": "MR0",
+      "set": "G",
+      "fp": null,
+      "n_killed": 15,
+      "killed_indices": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "experiment": "assertions_seed11",
+      "mr": "MR2",
+      "set": "G",
+      "fp": null,
+      "n_killed": 10,
+      "killed_indices": [
+        1,
+        2,
+        4,
+        5,
+        7,
+        8,
+        9,
+        17,
+        18,
+        19
+      ]
+    }
+  ],
+  "m_metrics": {
+    "M1_kill_rate_N": 0.0,
+    "M1_kill_rate_G": 0.75,
+    "M2_kills_per_mr_N": 0.0,
+    "M2_kills_per_mr_G": 7.5,
+    "M3_unique_to_N": 0,
+    "M3_unique_to_G": 15,
+    "M3_overlap": 0,
+    "M4_jaccard_NG": 0.0,
+    "M5_complementarity_lift": 0.0
+  }
+}
