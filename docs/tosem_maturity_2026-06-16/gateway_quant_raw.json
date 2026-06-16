@@ -1,0 +1,138 @@
+[
+  {
+    "model": "gpt-5-chat-latest",
+    "ok": true,
+    "sec": 2.5,
+    "r": {
+      "scores": {
+        "scope_fit": 8,
+        "novelty": 9,
+        "technical_soundness": 7,
+        "evaluation_rigor": 5,
+        "related_work": 4,
+        "reproducibility": 6,
+        "honesty_threats": 8,
+        "presentation_length": 4,
+        "format_compliance": 9
+      },
+      "overall_maturity_0_100": 67,
+      "tosem_accept_bar_0_100": 75,
+      "gap_to_bar": 8,
+      "verdict": "Major Revision",
+      "biggest_gaps": [
+        "evaluation_rigor: only one executed head-to-head and partial domain coverage lowers empirical credibility",
+        "related_work: breadth and differentiation remain thin for TOSEM archival standards",
+        "presentation_length: manuscript at 73pp exceeds recommended range and dilutes focus"
+      ]
+    }
+  },
+  {
+    "model": "deepseek-v3.2-exp",
+    "ok": true,
+    "sec": 8.8,
+    "r": {
+      "scores": {
+        "scope_fit": 8,
+        "novelty": 9,
+        "technical_soundness": 7,
+        "evaluation_rigor": 5,
+        "related_work": 4,
+        "reproducibility": 7,
+        "honesty_threats": 6,
+        "presentation_length": 6,
+        "format_compliance": 9
+      },
+      "overall_maturity_0_100": 65,
+      "tosem_accept_bar_0_100": 75,
+      "gap_to_bar": -10,
+      "verdict": "Major Revision",
+      "biggest_gaps": [
+        "evaluation_rigor: Only 1 of 3 domains has head-to-head comparison; ML and relational evaluations are limited case studies/analytical mappings",
+        "related_work: Coverage is thin (~4 lines) despite added differentiation; lacks comprehensive positioning in metamorphic testing literature",
+        "technical_soundness: Strongest theorem falsified; constructive theorems have limited scope; theoretical contributions need strengthening"
+      ]
+    }
+  },
+  {
+    "model": "grok-4.1",
+    "ok": true,
+    "sec": 3.6,
+    "r": {
+      "scores": {
+        "scope_fit": 7,
+        "novelty": 6,
+        "technical_soundness": 8,
+        "evaluation_rigor": 4,
+        "related_work": 3,
+        "reproducibility": 6,
+        "honesty_threats": 8,
+        "presentation_length": 4,
+        "format_compliance": 9
+      },
+      "overall_maturity_0_100": 58,
+      "tosem_accept_bar_0_100": 78,
+      "gap_to_bar": 20,
+      "verdict": "Major Revision",
+      "biggest_gaps": [
+        "evaluation_rigor: only 1/3 domains has executed head-to-head; remaining SOTA comparisons (METRIC+, MR-Scout, LLM) are still only pre-registered commitments; ML case-study is small (n=20+5)",
+        "related_work: remains extremely thin (~4 lines + minimal differentiation paragraph); inadequate breadth/depth for TOSEM archival standard",
+        "presentation_length: 73pp greatly exceeds TOSEM's 30-50pp recommendation with no commensurate gain in contribution density"
+      ]
+    }
+  },
+  {
+    "model": "qwen3-max-preview",
+    "ok": true,
+    "sec": 6.9,
+    "r": {
+      "scores": {
+        "scope_fit": 8,
+        "novelty": 7,
+        "technical_soundness": 6,
+        "evaluation_rigor": 5,
+        "related_work": 4,
+        "reproducibility": 9,
+        "honesty_threats": 10,
+        "presentation_length": 5,
+        "format_compliance": 9
+      },
+      "overall_maturity_0_100": 63,
+      "tosem_accept_bar_0_100": 85,
+      "gap_to_bar": 22,
+      "verdict": "Major Revision",
+      "biggest_gaps": [
+        "evaluation_rigor: only 1/3 domains has head-to-head; SOTA comparisons not executed",
+        "technical_soundness: core theorems are by-construction or union-find; strongest falsified",
+        "related_work: breadth thin despite recent differentiation paragraph",
+        "presentation_length: 73pp exceeds TOSEM recommendation without strong justification"
+      ]
+    }
+  },
+  {
+    "model": "kimi-k2.5",
+    "ok": true,
+    "sec": 10.9,
+    "r": {
+      "scores": {
+        "scope_fit": 7,
+        "novelty": 6,
+        "technical_soundness": 6,
+        "evaluation_rigor": 4,
+        "related_work": 3,
+        "reproducibility": 6,
+        "honesty_threats": 7,
+        "presentation_length": 3,
+        "format_compliance": 8
+      },
+      "overall_maturity_0_100": 56,
+      "tosem_accept_bar_0_100": 75,
+      "gap_to_bar": 19,
+      "verdict": "Major Revision",
+      "biggest_gaps": [
+        "evaluation_rigor: Only 1/3 domains has executed head-to-head; dominant baseline actually wins (Set G > Set N, p=0.0043); ML is small pilot; relational is analytical only; pre-registered comparisons not executed—TOSEM requires convincing empirical validation for constructive frameworks",
+        "related_work: ~4 lines thematically thin; differentiation paragraph added but insufficient breadth for archival venue; missing systematic positioning against MR generation, metamorphic testing theory, and operator-algebra program analysis literatures",
+        "presentation_length: 73pp vs 30-50 recommendation; constructive framework with union-find decidability and falsified conjecture does not warrant 1.5x upper bound; signals scope drift or insufficient compression"
+      ]
+    }
+  }
+]

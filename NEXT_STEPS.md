@@ -5,6 +5,32 @@ commit. Each item is independent and can be done in any order.
 
 ---
 
+## ⭐ TOSEM submission readiness — independent maturity review (2026-06-16)
+
+> 6 个互相隔离的 Opus subagent 独立重审,综合裁决 **Major Revision**(评分 38–72),显著低于仓库 Round-4 自评(Accept / 65–75%)。
+> 详见 `docs/tosem_maturity_2026-06-16/maturity_review_summary.md`。
+
+### 🔴 Blockers(投 TOSEM 前必解,多数需投入实验)
+- [ ] 理论内核偏平凡 + CONSTRUCT-MP Step 3/4 定义级 bug(L529-530);最强定理 Thm 1′ 被自证伪 — 补非平凡定理或改论文类型为 systematisation
+- [ ] 唯一真实 head-to-head 被 baseline 显著击败(McNemar p=0.0043) — 需中立真实缺陷上的正面证据点,或收缩 fault-detection 主张
+- [ ] 缺独立**人类** inter-rater κ(κ=1.000 是共享语料 LLM 循环) — 自招 ≥2 名独立 rater 做 Cohen's κ
+- [ ] 与姊妹论文 T2(Minimum-MR-SubSet,TSE)的 salami 未声明 — 草稿已备(见下)
+- [ ] 大量经验主张是 protocol 非 result;"three domains tested" overclaim — 如实分级或补执行
+
+### 🟡 草稿已备 / 进行中(零实验成本)
+- [x] 删 4 处 reviewer-process 残留 — 主稿 `NOETHER_paper_arxiv.tex` 已改(2026-06-16)
+- [ ] 同步删除投稿版残留:`submission/TOSEM_2026-05-20/manuscript_singleblind/` + `manuscript_anonymized/` + 06-16 singleblind humanized zip
+- [ ] 插入 T2 differentiation 段 + cover letter 披露 — 草稿 `docs/tosem_maturity_2026-06-16/differentiation_and_disclosure_draft.md`(待确认插入位置)
+- [ ] 去 overclaim(标题/摘要/contributions) — 草案 `docs/tosem_maturity_2026-06-16/overclaim_revision_draft.md`(待用户拍板,属作者决策权)
+- [ ] 75 页压至 ≤50 + cover letter 篇幅辩护
+
+### 🔵 Open questions(待用户拍板)
+- [x] git 作者邮箱已更正为 `meng004@gmail.com`(2026-06-16;gamail 未进任何 commit,无需修历史)
+- [x] 多厂商交叉评审已完成(网关 5 厂商:gpt-5 / grok-4.1 / deepseek / qwen / kimi → 2 Reject + 3 Major,确认 Opus panel;`docs/tosem_maturity_2026-06-16/gateway_panel_raw.json`)
+- [ ] 100% 联网逐条 bib 真实性校验(见 §C)尚未执行 — 投真实期刊前 hard-block
+
+---
+
 ## A. arXiv preprint upload (when ready to publish)
 
 Status: `arxiv/` directory contains a preprint-ready variant. Author
