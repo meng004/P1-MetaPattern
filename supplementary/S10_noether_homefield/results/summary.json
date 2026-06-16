@@ -1,0 +1,45 @@
+{
+  "heat-1d": {
+    "M_yield": 6,
+    "M_block": 3,
+    "blocks": [
+      "G",
+      "L*",
+      "O_le"
+    ],
+    "M_detect": {
+      "killed": 5,
+      "n_real_mutants": 6,
+      "rate": 0.8333333333333334,
+      "wilson95": [
+        0.4365,
+        0.9699
+      ],
+      "underpowered": true
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
+  "advdiff-2d": {
+    "M_yield": 11,
+    "M_block": 4,
+    "blocks": [
+      "Conservation",
+      "G",
+      "L*",
+      "O_le"
+    ],
+    "M_detect": {
+      "killed": 13,
+      "n_real_mutants": 29,
+      "rate": 0.4482758620689655,
+      "wilson95": [
+        0.2841,
+        0.6245
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  }
+}

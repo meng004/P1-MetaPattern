@@ -200,4 +200,9 @@ s5-aligned 的金标准设计是:**除 MR 来源外所有混淆变量全部固�
 
 ---
 
-> **下一步(未在本任务范围,待拍板)**:把 §6.2 选定子集接上 NOETHER 的 CONSTRUCT-MP 生成桥 + T2 变异 harness,落 `results/`(generation→detection),并对每 SUT 记录 GenMorph 可行性(M-feasible)。本文件只交付**候选清单 + SUT 选择**,不含执行结果。
+> **执行进展**:§6.2 选定子集的首个可执行切片已落地 `supplementary/S10_noether_homefield/`,产出 generation→detection 实测:
+> - **heat-1d**(自包含,纯 numpy,无 T2 依赖):M-yield 6 / M-block 3(O≤,G,L\*)/ M-detect 5/6=0.833,Wilson CI [0.436,0.970](n=6,underpowered);
+> - **advdiff-2d**(复用 T2 `mcmr.pde_xeval` substrate):M-yield 11 / M-block 4(O≤,G,L\*,守恒)/ M-detect 13/29=0.448,Wilson CI [0.284,0.625];per-block + per-fault-class 分解见 `results/`。
+>
+> 两 SUT alignment gate 均 PASS(baseline_control 全存活);**只报 detection,不报 selection**(k\*/min-cover/collapse);self-consistent 故障(heat coeff×1.1;advdiff diffusion-coeff 0/2、advection-speed 0/3)如实未检出,印证 §10.2。
+> **后续增量**:其余 SUT(radxfer / fefv / detonation / combustion / P2 / P6)+ 跨实现差分 oracle(§10.2 容差校准)+ LLM-MR 对比 arm(paired McNemar)。
