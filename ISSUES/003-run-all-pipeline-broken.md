@@ -1,10 +1,52 @@
 # ISSUE-003: scripts/run_all.sh cannot run end-to-end (interface mismatch with GenMorph upstream)
 
-**Status**: open
-**Owner**: cloud Claude Code session (discovery) → local session (fix, per Rule 4)
-**Branch**: claude/inspiring-pascal-1gkf8q (discovery + Set G baseline only)
-**Plan**: PLANS/003-run-all-pipeline-broken.md — **MUST be authored in a LOCAL session (Rule 4)**; touches the pipeline.
+**Status**: in-progress
+**Owner**: cloud Claude Code session (rewrite authorized by repo owner — see Update)
+**Branch**: claude/inspiring-pascal-1gkf8q
+**Plan**: PLANS/003-run-all-pipeline-broken.md (authored this session; Rule 4's
+local-only clause explicitly waived by the repo owner for this cloud rewrite, and
+the GenMorph upstream sources the rule protects are present at /tmp/genmorph_pilot/).
 **Opened**: 2026-06-16
+
+## Update 2026-06-16 — environment unblocked, path chosen
+
+Investigation since the original write-up materially changed the picture:
+
+* **Real entry point is upstream's own orchestrator.** The faithful flow is
+  `scripts/run/genmorph.py {gen,eval,all} <config…>`; `evaluation()` in
+  `scripts/strategy/genmorph.py` writes `mutants_killed.csv` via PITestGenerator
+  + `mvn org.pitest:pitest-maven:mutationCoverage`. The rewrite will be a thin
+  orchestrator over this, not the hand-wired randoop/pitest call (the original
+  defect).
+* **Nothing intermediate ships.** The Zenodo package holds only MR DSL
+  (`*.jir/*.jor`) + result CSVs — zero `.state.json` / `.methodinputs` /
+  `.transformations.txt`. All execution state must be regenerated locally.
+* **Blocker ① (Major missing) RESOLVED.** The repo owner supplied the download;
+  `setup.sh` now installs **Major 2.0.0 (jre8)** — the version GenMorph's README
+  pins and that produced the published results, and the JDK-8-matched build.
+  Verified: the full upstream `genmorph all` now runs end-to-end on
+  `MathClass?gcd?0` (EvoSuite 23 s, Major 26 s, then state-gen → GAssert →
+  PITestGenerator → PIT).
+* **Blocker ② (Set N has no follow-up generator).** Every upstream evaluator
+  derives follow-up inputs from a constructive transformation spec, not from a
+  bare `.jir` predicate. Set N (hand-authored predicates) therefore needs its
+  follow-up inputs constructed from each MR's input relation.
+* **Chosen path (repo owner's decision): custom/hybrid detection harness.**
+  Substrate + a faithful Set G come from the upstream native flow (Set G
+  calibrated against the published seed-11 `mutants_killed.csv`); Set N
+  follow-ups are constructed from input relations and scored on the **same PIT
+  mutant set** with the **same kill definition** (`genmorph.py:345`) so the
+  Set N vs Set G comparison is apples-to-apples on identical mutants.
+* **Speed levers (4 cores / 15 GB, no swap).** The main path skips GAssert
+  (`-Xmx16g`, ~30 min×4/subject) *and* gen's per-mutant state loop — both exist
+  only for MR *learning*, which we don't do (we use published Set G MRs).
+  Remaining cost is PIT (one `mvn pitest` per MR); parallelize at the subject
+  level (`--jobs`, cap 2–3, RAM-bound). Subagents do NOT add compute
+  parallelism (shared cores/RAM) and risk OOM — not used.
+
+Next: author `PLANS/003`, rewrite `scripts/run_all.sh` over `genmorph.py` with a
+Set N follow-up emitter + `--jobs N`, add a real single-subject end-to-end test
+(Rule 6).
 
 ## Why
 

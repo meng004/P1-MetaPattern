@@ -9,7 +9,8 @@
 #   2. detect JVM paths and write them into .env
 #   3. pip install pandas numpy scipy statsmodels
 #   4. download GenMorph Zenodo replication package (~80 MB, idempotent)
-#   5. build GAssert fat-jar if absent
+#   5. install Major 2.0.0 (jre8) — JDK-matched mutation framework
+#   6. build GAssert fat-jar if absent
 
 set -euo pipefail
 
@@ -68,6 +69,7 @@ GASSERT_JAR=/tmp/genmorph_pilot/genmorph_full/genmorph/build/libs/GAssert-1.0-SN
 PITEST_WRAPPER=/tmp/genmorph_pilot/genmorph_full/genmorph/pitest-wrapper-1.7.4.jar
 RANDOOP_JAR=/tmp/genmorph_pilot/genmorph_full/genmorph/randoop-all-4.3.0.jar
 EVOSUITE_JAR=/tmp/genmorph_pilot/genmorph_full/genmorph/evosuite-1.1.0.jar
+MAJOR_HOME=/tmp/major
 
 S5_ROOT=$REPO_ROOT
 SEED=11
@@ -102,9 +104,33 @@ done
 [[ -d genmorph_full ]] || unzip -q genmorph.zip -d genmorph_full
 
 # ----------------------------------------------------------------------------
-# 5. Build GAssert jar
+# 5. Major mutation framework (JDK-matched build)
 # ----------------------------------------------------------------------------
-echo "[5/5] Building GAssert jar (if absent)..."
+# GenMorph's generation stage uses Major to produce mutants. We pin Major 2.0.0
+# — the version GenMorph's README specifies and that produced the published
+# Set G results — and pick the jre8 build to match our JDK 8 toolchain. The
+# latest Major (3.0.1) is a jre11 build: it would both mismatch the JDK and
+# diverge from the pinned version, so we deliberately do NOT use it.
+echo "[5/6] Installing Major 2.0.0 (jre8)..."
+MAJOR_HOME=/tmp/major
+if [[ -x "$MAJOR_HOME/bin/major" && -f "$MAJOR_HOME/lib/major.jar" ]]; then
+    echo "  Major already installed at $MAJOR_HOME, skip"
+else
+    mkdir -p /tmp/genmorph_pilot
+    MAJOR_ZIP=/tmp/genmorph_pilot/major-2.0.0_jre8.zip
+    [[ -f "$MAJOR_ZIP" ]] || curl -fSL --retry 3 --retry-delay 2 \
+        -o "$MAJOR_ZIP" \
+        "https://mutation-testing.org/downloads/files/major-2.0.0_jre8.zip"
+    rm -rf "$MAJOR_HOME"
+    unzip -q "$MAJOR_ZIP" -d /tmp/
+    chmod +x "$MAJOR_HOME"/bin/* 2>/dev/null || true
+    echo "  Major → $MAJOR_HOME"
+fi
+
+# ----------------------------------------------------------------------------
+# 6. Build GAssert jar
+# ----------------------------------------------------------------------------
+echo "[6/6] Building GAssert jar (if absent)..."
 GENMORPH=/tmp/genmorph_pilot/genmorph_full/genmorph
 GASSERT_JAR=$GENMORPH/build/libs/GAssert-1.0-SNAPSHOT-all.jar
 if [[ -f "$GASSERT_JAR" ]]; then
@@ -123,6 +149,7 @@ echo "=== Setup complete ==="
 echo "  JAVA_HOME    = $JAVA8"
 echo "  GENMORPH     = $GENMORPH"
 echo "  GASSERT_JAR  = $GASSERT_JAR"
+echo "  MAJOR_HOME   = $MAJOR_HOME"
 echo "  S5_ROOT      = $REPO_ROOT"
 echo ""
 echo "Next: bash $REPO_ROOT/scripts/run_all.sh"
