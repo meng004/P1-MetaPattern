@@ -467,6 +467,11 @@ $$\mathcal{D}(\mathcal{A}_P) = G \,\dot\cup\, O_{\le} \,\dot\cup\, T^{*} \,\dot\
 is sufficient: every operator in $\mathcal{A}_P$ relevant to MR derivation is assigned to at least one block. Hypothesis~\ref{hyp:seven-blocks} is an empirical hypothesis open to refutation.
 \end{hypothesis}
 
+\begin{remark}[Single-class instances]
+\label{rem:single-class-instances}
+For each of the three operator algebras instantiated in this paper ($\mathcal{A}_{\mathrm{Boltz}}$, $\mathcal{A}_{\mathrm{equi}}$, $\mathcal{A}_{\mathrm{rel}}$), we adopt a canonical $\pi$-template per non-empty block under which $|\mathcal{I}_s/\sim_s|=1$ (Boltzmann's $G$ block, for example, is treated as a single $\sim_s$ class with a $\pi$-template covering both geometric quarter-rotations and energy-group permutations). Under this instance-level grouping, $|\mathbb{M}(\mathcal{A}_P)|$ equals the number of non-empty blocks for each instance, so the empirical material that reports a fixed per-instance MetaPattern count (\S\S\ref{sec:reactor}, \ref{sec:cross-domain}, \ref{subsec:third-domain}) refers to these per-instance class counts and not to a general single-class assumption. A finer treatment (separating geometric and energy-group symmetry into two $\sim_s$ classes, for example) is permitted by Step~3 of CONSTRUCT-MP and would split the corresponding MetaPattern accordingly.
+\end{remark}
+
 \begin{remark}[Block sufficiency vs.\ \texttt{Translate} sufficiency]
 \label{rem:block-vs-translate}
 Hypothesis~\ref{hyp:seven-blocks} asserts that the eight blocks suffice to \emph{assign} every operator in $\mathcal{A}_P$ relevant to MR derivation. It does not assert that every MR formulable over $\mathcal{A}_P$'s operators is reachable through the framework's \texttt{Translate} operator from a single block invariant. Section~\ref{subsec:negative-pwr} exhibits, on the PWR core diffusion algebra $\mathcal{A}_{\mathrm{PWR}}$, two MRs whose constituent operators are individually assigned to blocks of $\mathcal{D}(\mathcal{A}_{\mathrm{PWR}})$ (rod-insertion semigroup; boration and moderator-temperature scaling), yet whose MR content is not in $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$ in the sense of Definition~\ref{def:alg-induced}. The block decomposition is therefore a necessary but not sufficient input to MetaPattern construction: \texttt{Translate}'s expressive form (single-block invariants, first-order $\pi$-template, single partial-order direction, operating on $P(x)$ tuples rather than on operator-spectrum quantities) is a second, independent constraint on the framework's reach. This distinction between ``block sufficiency'' (Hypothesis~\ref{hyp:seven-blocks}) and ``\texttt{Translate} sufficiency'' (open) is made explicit in \S\ref{subsec:negative-pwr}.
@@ -543,13 +548,13 @@ We present the deductive procedure CONSTRUCT-MP that maps an algebra-decompositi
 \begin{description}
   \item[Step 1 --- Invariant extraction.] For each block $s$ in $\mathcal{D}(\mathcal{A}_P)$, compute the set of invariants $\mathcal{I}_s$ of $\mathcal{A}_P$ under $s$.
   \item[Step 2 --- MR derivation.] For each invariant $\iota \in \mathcal{I}_s$, derive the MR family $\mathcal{R}(\iota) = \{\,\rho \in \mathrm{MR}(\mathcal{A}_P) \mid \rho = \mathrm{Translate}(\iota', s),\; \iota' \sim_s \iota\,\}$.
-  \item[Step 3 --- Quotient and per-block aggregation.] Form the MetaPattern of block $s$ as the union over its $\sim_s$-equivalence classes, $m_s = \bigcup_{[\iota] \in \mathcal{I}_s/\sim_s} \mathcal{R}(\iota)$; thus $m_s$ aggregates all algebra-induced MR families in block $s$.
-  \item[Step 4 --- Aggregation.] Return $\mathbb{M}(\mathcal{A}_P) = \{\, m_s : s \in \mathcal{D}(\mathcal{A}_P)\,\}$, so $|\mathbb{M}(\mathcal{A}_P)|$ equals the number of non-empty blocks.
+  \item[Step 3 --- Quotient (per equivalence class).] For each $\sim_s$-equivalence class $[\iota] \in \mathcal{I}_s/\sim_s$, form the MetaPattern $m_{s,[\iota]} = \mathcal{R}(\iota)$.
+  \item[Step 4 --- Aggregation.] Return $\mathbb{M}(\mathcal{A}_P) = \bigcup_{s \in \mathcal{D}(\mathcal{A}_P)} \{\, m_{s,[\iota]} : [\iota] \in \mathcal{I}_s/\sim_s \,\}$, so $|\mathbb{M}(\mathcal{A}_P)| = \sum_s |\mathcal{I}_s/\sim_s| \ge $ the number of non-empty blocks.
 \end{description}
 
-\begin{remark}[$m_s$ is a per-block aggregate]
-\label{rem:mp-aggregate}
-A block may carry several $\sim_s$-inequivalent invariant families (for instance geometric and energy-group symmetry within $G$, \S\ref{sec:reactor}); $m_s$ aggregates them, which fixes the cardinality of $\mathbb{M}(\mathcal{A}_P)$ as one MetaPattern per non-empty block. The Invariance-Blindness analysis (\S\ref{subsec:ibt}) operates at the finer per-invariant level, and a block's detection kernel is the intersection of its constituents' kernels (Remark~\ref{rem:ibt-mp}).
+\begin{remark}[MetaPattern granularity]
+\label{rem:mp-per-class}
+Each MetaPattern $m_{s,[\iota]}$ corresponds to a single $\sim_s$-equivalence class of invariants in block $s$. A block carrying $k_s > 1$ such classes (for instance geometric quarter-rotations and energy-group permutations within $G$ on $\mathcal{A}_{\mathrm{Boltz}}$, when treated as separate $\sim_s$ classes) contributes $k_s$ distinct MetaPatterns. In the three instances of \S\S\ref{sec:reactor}--\ref{subsec:third-domain} we group invariants within a block under a single $\sim_s$-equivalence class (a single canonical $\pi$-template per non-empty block; see Remark~\ref{rem:single-class-instances}), so $|\mathbb{M}(\mathcal{A}_{P})|$ equals the number of non-empty blocks in those instances. The Invariance-Blindness analysis (\S\ref{subsec:ibt}) applies directly to each $m_{s,[\iota]}$ at its native per-class granularity.
 \end{remark}
 
 \subsubsection{Algebraic closure under Translate, the canonical-block ordering, and out-of-scope MRs}

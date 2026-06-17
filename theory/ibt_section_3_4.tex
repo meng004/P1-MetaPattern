@@ -103,15 +103,15 @@ W^{\mathrm{test}}_s$, so $\rho_{\iota,s}$ passes and $L\in\ker$.
 $L\in\mathcal{C}(T_s)$.
 \end{proof}
 
-\begin{remark}[From per-invariant MRs to block MetaPatterns]
+\begin{remark}[Per-MetaPattern granularity]
 \label{rem:ibt-mp}
-\texttt{CONSTRUCT-MP} aggregates per block: a MetaPattern $m_s$ is the union of the
-MR families of all invariants in block $s$ (Step~3). Its kernel is the intersection
-$\ker(m_s)=\bigcap_{\iota}\ker(\rho_{\iota,s})$ (the aggregate detects a fault iff some
-constituent MR does). By Theorem~\ref{thm:ibt},
-$\ker(m_s)=\{L : P_L \text{ preserves the full structure } T_s\}$. The theorem thus
-operates at the per-invariant level while remaining consistent with the coarser
-block-level MetaPattern granularity, so no re-counting of MetaPatterns is required.
+Under Step~3 of \texttt{CONSTRUCT-MP}, each MetaPattern $m_{s,[\iota]}$ corresponds
+to a single $\sim_s$-equivalence class of invariants; the per-invariant statement
+of Theorem~\ref{thm:ibt} therefore applies \emph{directly} to each $m_{s,[\iota]}$
+without aggregation. When the per-instance grouping of
+Remark~\ref{rem:single-class-instances} treats a non-empty block $s$ as a single
+$\sim_s$ class, $m_{s,[\iota]}$ coincides with the block-level MetaPattern reported
+in the empirical sections.
 \end{remark}
 
 \begin{remark}[Worked instance: advection--diffusion, translation block]

@@ -4,9 +4,25 @@
 > 仅给出可直接替换的修订文本 + 影响分析,供作者在 A/B/C 中选定。
 > 决定性事实须作者判断,标 **[需作者数学判断]**。
 
-> **决策记录(2026-06-17,/goal 自主推进)**
+> **决策记录(2026-06-17,经作者拍板)**
 >
-> ~~初判:采纳 Option B~~ → **更正:采纳 Option A + 两级粒度声明**。
+> 历程:初判 B → /goal 自主推进时为保 "7 MP" 实证主线一度更正为 A 落入正文(commits
+> decb014, b5ee3a3)→ 作者明确选择 **B(每等价类一 MP,推荐)** → 翻转为 B。
+> **最终采纳 Option B**;下方"采纳 A"段已被覆盖,以本记录为准。
+>
+> **B 实现(最小爆面)**:
+> 1. Step 3/4 翻 B 语义:$m_{s,[\iota]}=\mathcal{R}(\iota)$,$\mathbb{M}=\bigcup_s\{m_{s,[\iota]}\}$,
+>    $|\mathbb{M}|=\sum_s|\mathcal{I}_s/\sim_s|$。
+> 2. 新 Remark `rem:mp-per-class`(MP 每等价类一)+ `rem:single-class-instances`(在
+>    Hypothesis 1 之后):**三域均采单一 $\sim_s$ 类的 $\pi$-template**(Boltzmann 把几何
+>    旋转 + 能群置换合并),使每域 $|\mathbb{M}|=$ 非空块数,**保住已发表的 "7 MP" 实证主线
+>    与 $\kappa=0.857$ 审计**,但允许将来在更细处理下拆分。
+> 3. 片段 `rem:ibt-mp` 改写:B 下每 MP=不变量类,**IBT 直接逐 MP 适用,无需聚合**。
+> 4. Theorem 1/2 不动(B 下唯一性 / poly-time 在每块类数 $O(1)$ 时不变;per-instance
+>    单类已满足)。
+>
+> **N1 的 $\ge 2$ 类证据**:支持 B 的一般性(框架允许多类),实例层面通过 `rem:single-class-
+> instances` 选定单类 $\pi$-template;符合"框架一般、实例可选"的诚实呈现。
 >
 > **更正缘由(读 `.tex` 后的新证据)**:论文的 "seven MetaPatterns" 实为 **Option A 语义**
 > —— `NOETHER_paper_arxiv.tex` L654/L690/L739 把**每个非空块计一个 MP**(G 块将"几何 +
