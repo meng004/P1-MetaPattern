@@ -1,0 +1,12 @@
+{
+  "comparison": "grayscott: algebra-MR battery (A) vs neutral cross-impl differential oracle (B), matched real mutants",
+  "mr_side": "reused-committed-matrix",
+  "n_matched_mutants": 44,
+  "A_MR_battery_killed": 41,
+  "B_differential_killed": 28,
+  "b_only_MR": 16,
+  "c_only_differential": 3,
+  "both": 25,
+  "neither": 0,
+  "mcnemar_exact_p": 0.004425048828125
+}

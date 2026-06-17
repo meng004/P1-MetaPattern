@@ -44,13 +44,15 @@ generation. `provenance` in each `detection_metrics.json` records the source run
 | poisson-1d | thermal | exec | 5 | 3 (O≤,G,L\*) | 5/6=0.833 | [0.436,0.970] | PASS |
 | advdiff-2d | thermal×fluid | exec | 11 | 4 (O≤,G,L\*,Cons) | 13/29=0.448 | [0.284,0.625] | PASS |
 | advdiff-xeval-diff | thermal×fluid | exec | 1 | 1 (E\*) | 12/29=0.414 | [0.255,0.593] | PASS |
+| radxfer-G2-diff | thermal | exec | 1 | 1 (E\*) | 10/31=0.323 | [0.186,0.499] | PASS |
+| grayscott-diff | fluid | exec | 1 | 1 (E\*) | 28/44=0.636 | [0.489,0.762] | PASS |
 | radxfer-G2 | thermal | reused | 16 | 4 (O≤,G,L\*,Cons) | 25/31=0.806 | [0.637,0.908] | PASS |
 | grayscott | fluid | reused | 20 | 4 (O≤,G,L\*,Cons) | 41/44=0.932 | [0.818,0.977] | PASS |
 | detonation-znd | fluid | reused | 18 | 2 (O≤,Cons) | 12/36=0.333 | [0.202,0.497] | PASS |
 | combustion-gri30 | thermal | reused | 16 | 2 (O≤,Cons) | 34/54=0.630 | [0.496,0.746] | PASS |
 | pincell-xeval | reactor | reused | 22 | 3 (O≤,G,L\*) | 24/86=0.279 | [0.195,0.382] | **FAIL** |
 
-9 SUTs pass the alignment gate; **pincell-xeval FAILS it** (see Honesty).
+11 SUTs pass the alignment gate; **pincell-xeval FAILS it** (see Honesty).
 heat/wave/poisson are underpowered (n=6, CLAUDE.md C6).
 
 ## Cross-implementation differential oracle (§10.2, live)
@@ -89,9 +91,33 @@ mutants):** MR 13/29, differential 12/29; **MR-only=6, differential-only=5**
   τ=0.925, i.e. the legitimate discretisation gap masks the defect. This is the
   §10.2 thesis made quantitative.
 
-Blind spot (§10.2): faults in code shared by both implementations are
-common-mode and invisible to this oracle; here every mutation targets one
-implementation, so that case is not exercised.
+**Live multi-SUT confirmation (radxfer, grayscott).** The differential oracle is
+run live on two further multi-implementation SUTs and paired against the
+algebra-MR battery on the same real mutants (differential side always live; MR
+side reused-committed for radxfer/grayscott):
+
+| SUT | MR | diff | MR-only | diff-only | both | neither | union | McNemar p |
+|---|---|---|---|---|---|---|---|---|
+| advdiff-2d | 13/29 | 12/29 | 6 | 5 | 7 | 11 | 18/29 | 1.0 |
+| radxfer-G2 | 25/31 | 10/31 | 17 | 2 | 8 | 4 | 27/31 | 7.3e-4 |
+| grayscott | 41/44 | 28/44 | 16 | 3 | 25 | **0** | **44/44** | 4.4e-3 |
+
+- **Common-mode kernel, confirmed:** the differential oracle misses exactly the
+  faults that patch operators shared by both implementations — radxfer
+  absorption/scatter/source 0/18, grayscott feed/reaction-rate 0/12 — while
+  implementation-specific faults are detected (radxfer diffusion 8/8, grayscott
+  diffusion 15/15). This is the differential oracle's structural blind spot, the
+  dual of the MR battery's invariance blind spot.
+- **diff-only > 0 on every SUT (5/2/3):** the neutral oracle catches faults the
+  MR battery misses, even where the battery has higher recall.
+- **Union approaches completeness:** on grayscott neither=0, union=44/44 — the two
+  oracles' kernels intersect trivially. (Honest direction: on radxfer/grayscott the
+  MR battery has significantly higher raw recall, p<0.01; the claim is
+  complementarity, not differential superiority.)
+
+These three paired comparisons are the empirical backing for the
+Invariance-Blindness Theorem draft
+(`docs/tosem_maturity_2026-06-16/invariance_blindness_theorem_draft.md`, IBT-1/2/3).
 
 ## Run
 

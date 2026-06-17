@@ -220,4 +220,14 @@ s5-aligned 的金标准设计是:**除 MR 来源外所有混淆变量全部固�
 > - self-consistent 故障如实未检出(heat/poisson coeff×1.1;advdiff diffusion 0/2、speed 0/3)→ §10.2;**wave 独占 Conservation+Trev\***(耗散 SUT 的 Trev\* 为空)→ 块随物理。
 >
 > **§10.2 跨实现微分 oracle(已真跑,`advdiff-xeval-diff`)**:M-FV vs M-SP 逐场中立 oracle(无 ground truth),容差按初始振幅归一、δ_pristine=0.185、τ=5·δ=0.925(a-priori)。与代数 MR battery 在同 29 个真故障上配对:MR 13/29、微分 12/29,**MR-only=6、微分-only=5**(McNemar exact p=1.0)→ **二者互补**:微分独抓 advection-speed / wavenumber-sign 故障(MR 因平移/Galilean 不变性结构性致盲),MR 独抓 conservation / boundary / inhomogeneity(场扰动 <τ 但破坏不变量);二者皆漏 self-consistent 系数误差(`fv_lap_coeff_x2` 场变 0.31,介于 δ=0.185 与 τ=0.925 之间 → 离散差掩盖缺陷,§10.2 量化佐证)。容差敏感度(safety 1.5→10:检出 16→7,baseline 假阳 0/2 恒为 0)见 `results/advdiff-xeval-diff/`。
-> **后续增量**:LLM-MR 对比 arm(paired McNemar 机制已就绪、缺 LLM 产出对照 MR)、fefv(需补变异池)、跨实现微分 oracle 推广到 radxfer/grayscott 双实现 SUT。
+>
+> **§10.2 微分 oracle 已推广到 radxfer / grayscott(真跑)**:三 SUT 配对(微分侧均真跑;radxfer/grayscott 的 MR 侧用 committed 矩阵):
+>
+> | SUT | MR | 微分 | MR-only | diff-only | both | neither | union | McNemar p |
+> |---|---|---|---|---|---|---|---|---|
+> | advdiff-2d | 13/29 | 12/29 | 6 | 5 | 7 | 11 | 18/29 | 1.0 |
+> | radxfer-G2 | 25/31 | 10/31 | 17 | 2 | 8 | 4 | 27/31 | 7.3e-4 |
+> | grayscott | 41/44 | 28/44 | 16 | 3 | 25 | **0** | **44/44** | 4.4e-3 |
+>
+> 微分 oracle 的核 = **共模故障**(实证 3 SUT):radxfer absorption/scatter/source 0/18、grayscott feed/reaction 0/12(改的是两实现共享算子,共模 → 不可分);impl-specific 扩散故障被检(radxfer 8/8、grayscott 15/15)。**grayscott neither=0、union=44/44** → 两 oracle 的核平凡相交,代数 MR battery(41/44)+ 互补对称 oracle 闭合余下缺口 —— Invariance-Blindness Theorem 草稿(`invariance_blindness_theorem_draft.md`,IBT-1/2/3)的实证支撑。诚实方向:radxfer/grayscott 的 MR 侧 raw recall 显著更高(p<0.01),主张是**互补**非微分更优。
+> **后续增量**:招1 定理形式化(待作者数学判断)、LLM-MR 对比 arm(机制已就绪、缺 LLM 产出对照 MR)、fefv(需补变异池)。
