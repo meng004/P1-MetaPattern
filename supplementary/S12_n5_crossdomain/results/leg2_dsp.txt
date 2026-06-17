@@ -1,0 +1,14 @@
+N5 leg-2b: digital signal processing (SUT = numpy.fft), N=16.
+
+  [G           ] time-shift -> modulation           executable-hold: True
+  [G           ] modulation -> shift                executable-hold: True
+  [T*          ] symmetric filter -> real response  executable-hold: True
+  [Conservation] Parseval energy                    executable-hold: True
+  [L*          ] truncated-Fourier limit            executable-hold: True
+  [O<=         ] filter-gain monotonicity           executable-hold: True
+  [E*          ] direct vs FFT convolution          executable-hold: True
+
+  blocks populated: ['G', 'T*', 'Conservation', 'L*', 'O<=', 'E*']  (count 6)
+  FA-rank G (cyclic shift Z_16): rank(1 gen)=240 == rank(all 15 shifts)=240: True; kernel dim=16 (circulant = N)
+
+  leg-2b consistent (multi-block + FA tight on G): True
