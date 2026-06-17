@@ -4,6 +4,12 @@
 > 仅给出可直接替换的修订文本 + 影响分析,供作者在 A/B/C 中选定。
 > 决定性事实须作者判断,标 **[需作者数学判断]**。
 
+> **决策记录(2026-06-17,/goal 自主推进)**:**采纳 Option B**(每等价类一 MP)。
+> 理由:(i) IBT 在 per-invariant 粒度陈述,B 与之自洽(§3);(ii) G 块在 equivariant ML
+> (SO(3) 旋转)与 Boltzmann(几何旋转 + 能群置换)合理含 $\ge 2$ 个 $\sim_s$ 不等价类,
+> 使 C 单类假设在一般情形为假、A 捆绑异质语义。B 为唯一诚实且自洽选择。
+> 该 $\ge 2$ 类断言由实验协议 **N1**(逐域 $\sim_s$ 类数枚举)出证据,见 `experiment_design_protocol.md`。
+
 ---
 
 ## 0. 缺陷复述(protocol_theory T1)
