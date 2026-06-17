@@ -1,0 +1,33 @@
+Faithfulness rank check (IBT-G): undetected subspace = commutant; FA = finite generators pin the full commutant.
+
+=== Translation Z_N  (advdiff translation-inv) (N=8) ===
+  fault-space dim |Theta| = N^2 = 64
+  test witnesses (generators): 1   dense witnesses (whole group): 7
+  rank(J_test) =  56   rank(J_dense) =  56
+  undetected (kernel) dim: test =   8   dense =   8
+  -> FA holds (finite test pins full commutant): True
+  kernel == equivariant subspace?  dim 8 == analytic 8: True
+
+=== Reflection Z_2   (advdiff reflection-sym) (N=8) ===
+  fault-space dim |Theta| = N^2 = 64
+  test witnesses (generators): 1   dense witnesses (whole group): 1
+  rank(J_test) =  32   rank(J_dense) =  32
+  undetected (kernel) dim: test =  32   dense =  32
+  -> FA holds (finite test pins full commutant): True
+  kernel == equivariant subspace?  dim 32 == analytic 32: True
+
+=== Dihedral D_N     (translation + reflection) (N=8) ===
+  fault-space dim |Theta| = N^2 = 64
+  test witnesses (generators): 2   dense witnesses (whole group): 16
+  rank(J_test) =  59   rank(J_dense) =  59
+  undetected (kernel) dim: test =   5   dense =   5
+  -> FA holds (finite test pins full commutant): True
+
+--- bridge to S10 advdiff (translation block) ---
+  uniform advection-speed change c->c': operator stays constant-coeff
+  => circulant => IN the Z_N kernel => UNDETECTED by translation MR
+     (matches S10: advection_speed_error 0/n).
+  inhomogeneous coeff c(x): operator non-circulant => OUTSIDE kernel
+     => DETECTED (matches S10: coeff_inhomogeneity detected).
+
+FA holds on all three symmetry instances: True
