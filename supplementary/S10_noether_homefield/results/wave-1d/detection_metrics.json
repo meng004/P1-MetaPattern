@@ -1,41 +1,67 @@
 {
-  "sut": "heat-1d",
-  "equation": "u_t = alpha*u_xx (1-D heat conduction, Dirichlet), explicit FDM",
+  "sut": "wave-1d",
+  "equation": "u_tt = c^2 u_xx (1-D wave, fixed ends), leapfrog FDM",
   "impls": [
     "FDM"
   ],
-  "domain": "thermal",
+  "domain": "fluid",
   "execution_mode": "executed-here",
   "provenance": null,
   "cross_impl": null,
   "genmorph": {
     "feasible": false,
-    "reason": "array-valued field I/O u(x); GP assertion grammar targets scalar/tuple I/O (D1). Conservation/scaling/reflection MRs relate multiple structured executions (D3).",
-    "expr_tier": "single-exec invariants + multi-exec structured relations (beyond GenMorph's two-execution (jir,jor) tier, D4)"
+    "reason": "field-valued u(x,t) I/O (D1); energy-conservation and time-reversal MRs relate multiple structured executions (D3).",
+    "expr_tier": "incl. time-reversal (multi-exec) -- beyond two-execution (jir,jor) tier (D4)"
   },
   "alignment_ok": true,
   "baseline_killers": [],
-  "M_yield": 6,
-  "M_block": 3,
+  "M_yield": 5,
+  "M_block": 4,
   "blocks_covered": [
+    "Conservation",
     "G",
-    "L*",
-    "O_le"
+    "O_le",
+    "T_rev*"
   ],
   "M_detect": {
-    "killed": 5,
+    "killed": 6,
     "n_real_mutants": 6,
-    "rate": 0.8333333333333334,
+    "rate": 1.0,
     "wilson95": [
-      0.4365,
-      0.9699
+      0.6097,
+      1.0
     ],
     "underpowered": true
   },
   "per_block": {
+    "Conservation": {
+      "mrs": [
+        "rho_energy_conserve"
+      ],
+      "detected": 6,
+      "n": 6,
+      "rate": 1.0,
+      "wilson95": [
+        0.6097,
+        1.0
+      ]
+    },
     "G": {
       "mrs": [
         "rho_reflect"
+      ],
+      "detected": 4,
+      "n": 6,
+      "rate": 0.6666666666666666,
+      "wilson95": [
+        0.3,
+        0.9032
+      ]
+    },
+    "O_le": {
+      "mrs": [
+        "rho_linearity",
+        "rho_superpose"
       ],
       "detected": 2,
       "n": 6,
@@ -45,10 +71,9 @@
         0.7
       ]
     },
-    "L*": {
+    "T_rev*": {
       "mrs": [
-        "rho_energy_decay",
-        "rho_steady_limit"
+        "rho_time_reversal"
       ],
       "detected": 3,
       "n": 6,
@@ -57,24 +82,10 @@
         0.1876,
         0.8124
       ]
-    },
-    "O_le": {
-      "mrs": [
-        "rho_linearity",
-        "rho_maxprinciple",
-        "rho_superpose"
-      ],
-      "detected": 4,
-      "n": 6,
-      "rate": 0.6666666666666666,
-      "wilson95": [
-        0.3,
-        0.9032
-      ]
     }
   },
   "per_fault_class": {
-    "boundary_source_fault": {
+    "advective_contamination": {
       "detected": 1,
       "n": 1,
       "rate": 1.0
@@ -84,12 +95,7 @@
       "n": 1,
       "rate": 1.0
     },
-    "diffusion_coeff_error": {
-      "detected": 0,
-      "n": 1,
-      "rate": 0.0
-    },
-    "sign_error": {
+    "dissipation_fault": {
       "detected": 1,
       "n": 1,
       "rate": 1.0
@@ -103,31 +109,32 @@
       "detected": 1,
       "n": 1,
       "rate": 1.0
+    },
+    "wave_speed_error": {
+      "detected": 1,
+      "n": 1,
+      "rate": 1.0
     }
   },
   "per_mr": {
     "rho_linearity": {
       "block": "O_le",
-      "kills": 3
+      "kills": 2
     },
     "rho_superpose": {
       "block": "O_le",
-      "kills": 3
+      "kills": 2
     },
     "rho_reflect": {
       "block": "G",
-      "kills": 2
+      "kills": 4
     },
-    "rho_maxprinciple": {
-      "block": "O_le",
-      "kills": 3
+    "rho_energy_conserve": {
+      "block": "Conservation",
+      "kills": 6
     },
-    "rho_energy_decay": {
-      "block": "L*",
-      "kills": 3
-    },
-    "rho_steady_limit": {
-      "block": "L*",
+    "rho_time_reversal": {
+      "block": "T_rev*",
       "kills": 3
     }
   }

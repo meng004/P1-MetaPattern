@@ -1,6 +1,6 @@
 {
-  "sut": "heat-1d",
-  "equation": "u_t = alpha*u_xx (1-D heat conduction, Dirichlet), explicit FDM",
+  "sut": "poisson-1d",
+  "equation": "-u'' = f (1-D Poisson / steady heat, Dirichlet), 3-point FDM",
   "impls": [
     "FDM"
   ],
@@ -10,12 +10,12 @@
   "cross_impl": null,
   "genmorph": {
     "feasible": false,
-    "reason": "array-valued field I/O u(x); GP assertion grammar targets scalar/tuple I/O (D1). Conservation/scaling/reflection MRs relate multiple structured executions (D3).",
-    "expr_tier": "single-exec invariants + multi-exec structured relations (beyond GenMorph's two-execution (jir,jor) tier, D4)"
+    "reason": "field-valued u(x) I/O (D1); grid-convergence MR relates multiple structured executions across grids (D3).",
+    "expr_tier": "single-exec invariants + multi-grid relations -- beyond two-execution (jir,jor) tier (D4)"
   },
   "alignment_ok": true,
   "baseline_killers": [],
-  "M_yield": 6,
+  "M_yield": 5,
   "M_block": 3,
   "blocks_covered": [
     "G",
@@ -47,8 +47,21 @@
     },
     "L*": {
       "mrs": [
-        "rho_energy_decay",
-        "rho_steady_limit"
+        "rho_grid_convergence"
+      ],
+      "detected": 0,
+      "n": 6,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.3903
+      ]
+    },
+    "O_le": {
+      "mrs": [
+        "rho_linearity",
+        "rho_positivity",
+        "rho_superpose"
       ],
       "detected": 3,
       "n": 6,
@@ -57,37 +70,28 @@
         0.1876,
         0.8124
       ]
-    },
-    "O_le": {
-      "mrs": [
-        "rho_linearity",
-        "rho_maxprinciple",
-        "rho_superpose"
-      ],
-      "detected": 4,
-      "n": 6,
-      "rate": 0.6666666666666666,
-      "wilson95": [
-        0.3,
-        0.9032
-      ]
     }
   },
   "per_fault_class": {
-    "boundary_source_fault": {
-      "detected": 1,
-      "n": 1,
-      "rate": 1.0
-    },
     "coeff_inhomogeneity": {
       "detected": 1,
       "n": 1,
       "rate": 1.0
     },
-    "diffusion_coeff_error": {
+    "coefficient_error": {
       "detected": 0,
       "n": 1,
       "rate": 0.0
+    },
+    "consistency_fault": {
+      "detected": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "rhs_affine_fault": {
+      "detected": 1,
+      "n": 1,
+      "rate": 1.0
     },
     "sign_error": {
       "detected": 1,
@@ -98,37 +102,28 @@
       "detected": 1,
       "n": 1,
       "rate": 1.0
-    },
-    "time_integration_fault": {
-      "detected": 1,
-      "n": 1,
-      "rate": 1.0
     }
   },
   "per_mr": {
     "rho_linearity": {
       "block": "O_le",
-      "kills": 3
+      "kills": 1
     },
     "rho_superpose": {
       "block": "O_le",
-      "kills": 3
+      "kills": 1
     },
     "rho_reflect": {
       "block": "G",
       "kills": 2
     },
-    "rho_maxprinciple": {
+    "rho_positivity": {
       "block": "O_le",
-      "kills": 3
+      "kills": 2
     },
-    "rho_energy_decay": {
+    "rho_grid_convergence": {
       "block": "L*",
-      "kills": 3
-    },
-    "rho_steady_limit": {
-      "block": "L*",
-      "kills": 3
+      "kills": 0
     }
   }
 }

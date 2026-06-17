@@ -200,9 +200,21 @@ s5-aligned 的金标准设计是:**除 MR 来源外所有混淆变量全部固�
 
 ---
 
-> **执行进展**:§6.2 选定子集的首个可执行切片已落地 `supplementary/S10_noether_homefield/`,产出 generation→detection 实测:
-> - **heat-1d**(自包含,纯 numpy,无 T2 依赖):M-yield 6 / M-block 3(O≤,G,L\*)/ M-detect 5/6=0.833,Wilson CI [0.436,0.970](n=6,underpowered);
-> - **advdiff-2d**(复用 T2 `mcmr.pde_xeval` substrate):M-yield 11 / M-block 4(O≤,G,L\*,守恒)/ M-detect 13/29=0.448,Wilson CI [0.284,0.625];per-block + per-fault-class 分解见 `results/`。
+> **执行进展**:§6.2 选定子集已扩到 **9 个 SUT**(`supplementary/S10_noether_homefield/`),覆盖热工/流体/反应堆;**只报 generation/detection,不报 selection**(k\*/min-cover/collapse):
 >
-> 两 SUT alignment gate 均 PASS(baseline_control 全存活);**只报 detection,不报 selection**(k\*/min-cover/collapse);self-consistent 故障(heat coeff×1.1;advdiff diffusion-coeff 0/2、advection-speed 0/3)如实未检出,印证 §10.2。
-> **后续增量**:其余 SUT(radxfer / fefv / detonation / combustion / P2 / P6)+ 跨实现差分 oracle(§10.2 容差校准)+ LLM-MR 对比 arm(paired McNemar)。
+> | SUT | 域 | 模式 | M-yield | M-block | M-detect | Wilson95 | alignment |
+> |---|---|---|---|---|---|---|---|
+> | heat-1d | 热工 | exec | 6 | 3 | 5/6 | [.436,.970] | PASS |
+> | wave-1d | 流体 | exec | 5 | 4(含 Trev\*) | 6/6 | [.610,1.000] | PASS |
+> | poisson-1d | 热工 | exec | 5 | 3 | 5/6 | [.436,.970] | PASS |
+> | advdiff-2d | 热工×流体 | exec | 11 | 4 | 13/29 | [.284,.625] | PASS |
+> | radxfer-G2 | 热工 | reused | 16 | 4 | 25/31 | [.637,.908] | PASS |
+> | grayscott | 流体 | reused | 20 | 4 | 41/44 | [.818,.977] | PASS |
+> | detonation-znd | 流体 | reused | 18 | 2 | 12/36 | [.202,.497] | PASS |
+> | combustion-gri30 | 热工 | reused | 16 | 2 | 34/54 | [.496,.746] | PASS |
+> | pincell-xeval | 反应堆 | reused | 22 | 3 | 24/86 | [.195,.382] | **FAIL** |
+>
+> - **exec** = 本 harness 执行(heat/wave/poisson 自包含纯 numpy;advdiff 经 T2 substrate);**reused** = 复用 T2 已提交 `kill_matrix.csv` 重算 generation 指标(未重跑;provenance 记录来源;不读其 selection 产物)。
+> - **alignment gate 有牙**:pincell-xeval FAIL —— T2 committed 矩阵 3 个 `…-identity` baseline 被判杀(resid 1.0>tol 0.5),其检出率不作可信结论,保留并标注。
+> - self-consistent 故障如实未检出(heat/poisson coeff×1.1;advdiff diffusion 0/2、speed 0/3)→ §10.2;**wave 独占 Conservation+Trev\***(耗散 SUT 的 Trev\* 为空)→ 块随物理。
+> **后续增量**:跨实现差分逐场 oracle(§10.2 容差校准)、LLM-MR 对比 arm(paired McNemar)、fefv(需补变异池)。

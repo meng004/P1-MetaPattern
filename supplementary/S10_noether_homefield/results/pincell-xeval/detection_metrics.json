@@ -1,0 +1,250 @@
+{
+  "sut": "pincell-xeval",
+  "equation": "2-group neutron transport, pin-cell (OpenMC vs OpenMOC)",
+  "impls": [
+    "openmc",
+    "openmoc"
+  ],
+  "domain": "reactor",
+  "execution_mode": "reused-committed-matrix",
+  "provenance": "T2 committed detection matrix: runs/abd-witness-metbench-pincell-xeval-2g_uo2_offcentre-20260613T154614Z/kill_matrix.csv (detection-only reuse; selection artefacts not read).",
+  "cross_impl": {
+    "impls": [
+      "openmc",
+      "openmoc"
+    ],
+    "enabled": true
+  },
+  "genmorph": {
+    "feasible": false,
+    "reason": "field / trajectory / eigenvalue I/O; per-eval is a full PDE / kinetics / transport solve; structural MRs relate multiple executions (D1\u2013D3).",
+    "expr_tier": "beyond two-execution (jir,jor) tier (D4)"
+  },
+  "alignment_ok": false,
+  "baseline_killers": [
+    {
+      "mutant_id": "Mut37-openmc-adapter-fuel-sigma-s-identity",
+      "killed_by": [
+        "openmc-pincell-fuel-sigma-s"
+      ]
+    },
+    {
+      "mutant_id": "Mut10-openmoc-adapter-nsf-identity",
+      "killed_by": [
+        "openmoc-pincell-nu-sigma-f"
+      ]
+    },
+    {
+      "mutant_id": "Mut32-openmoc-adapter-fuel-sigma-s-identity",
+      "killed_by": [
+        "openmoc-pincell-fuel-sigma-s"
+      ]
+    }
+  ],
+  "M_yield": 22,
+  "M_block": 3,
+  "blocks_covered": [
+    "G",
+    "L*",
+    "O_le"
+  ],
+  "M_detect": {
+    "killed": 24,
+    "n_real_mutants": 86,
+    "rate": 0.27906976744186046,
+    "wilson95": [
+      0.1953,
+      0.3817
+    ],
+    "underpowered": false
+  },
+  "per_block": {
+    "G": {
+      "mrs": [
+        "openmc-pincell-group-permute",
+        "openmc-pincell-mirror-x",
+        "openmc-pincell-mirror-y",
+        "openmc-pincell-rotate-90",
+        "openmoc-pincell-group-permute",
+        "openmoc-pincell-mirror-x",
+        "openmoc-pincell-mirror-y",
+        "openmoc-pincell-rotate-90"
+      ],
+      "detected": 7,
+      "n": 86,
+      "rate": 0.08139534883720931,
+      "wilson95": [
+        0.04,
+        0.1586
+      ]
+    },
+    "L*": {
+      "mrs": [
+        "openmc-pincell-particles-refine",
+        "openmoc-pincell-refine-ray-tracks"
+      ],
+      "detected": 4,
+      "n": 86,
+      "rate": 0.046511627906976744,
+      "wilson95": [
+        0.0182,
+        0.1136
+      ]
+    },
+    "O_le": {
+      "mrs": [
+        "openmc-pincell-fuel-radius",
+        "openmc-pincell-fuel-sigma-s",
+        "openmc-pincell-fuel-sigma-t",
+        "openmc-pincell-moderator-sigma-a",
+        "openmc-pincell-nu-sigma-f",
+        "openmc-pincell-sigma-a",
+        "openmoc-pincell-fuel-radius",
+        "openmoc-pincell-fuel-sigma-s",
+        "openmoc-pincell-fuel-sigma-t",
+        "openmoc-pincell-moderator-sigma-a",
+        "openmoc-pincell-nu-sigma-f",
+        "openmoc-pincell-sigma-a"
+      ],
+      "detected": 19,
+      "n": 86,
+      "rate": 0.22093023255813954,
+      "wilson95": [
+        0.1462,
+        0.3195
+      ]
+    }
+  },
+  "per_fault_class": {
+    "absorption_cross_section": {
+      "detected": 1,
+      "n": 4,
+      "rate": 0.25
+    },
+    "fuel_geometry_radius": {
+      "detected": 2,
+      "n": 4,
+      "rate": 0.5
+    },
+    "geometry_symmetry_transform": {
+      "detected": 2,
+      "n": 4,
+      "rate": 0.5
+    },
+    "moderator_material_response": {
+      "detected": 2,
+      "n": 8,
+      "rate": 0.25
+    },
+    "monte_carlo_sampling_refinement": {
+      "detected": 2,
+      "n": 4,
+      "rate": 0.5
+    },
+    "neutron_source_spectrum": {
+      "detected": 6,
+      "n": 14,
+      "rate": 0.42857142857142855
+    },
+    "pincell_physics_fault": {
+      "detected": 9,
+      "n": 44,
+      "rate": 0.20454545454545456
+    },
+    "thermal_feedback_coupling": {
+      "detected": 0,
+      "n": 4,
+      "rate": 0.0
+    }
+  },
+  "per_mr": {
+    "openmc-pincell-nu-sigma-f": {
+      "block": "O_le",
+      "kills": 2
+    },
+    "openmc-pincell-sigma-a": {
+      "block": "O_le",
+      "kills": 3
+    },
+    "openmc-pincell-group-permute": {
+      "block": "G",
+      "kills": 3
+    },
+    "openmc-pincell-fuel-sigma-t": {
+      "block": "O_le",
+      "kills": 1
+    },
+    "openmc-pincell-moderator-sigma-a": {
+      "block": "O_le",
+      "kills": 2
+    },
+    "openmc-pincell-fuel-sigma-s": {
+      "block": "O_le",
+      "kills": 3
+    },
+    "openmc-pincell-fuel-radius": {
+      "block": "O_le",
+      "kills": 2
+    },
+    "openmc-pincell-particles-refine": {
+      "block": "L*",
+      "kills": 2
+    },
+    "openmc-pincell-rotate-90": {
+      "block": "G",
+      "kills": 0
+    },
+    "openmc-pincell-mirror-x": {
+      "block": "G",
+      "kills": 1
+    },
+    "openmc-pincell-mirror-y": {
+      "block": "G",
+      "kills": 1
+    },
+    "openmoc-pincell-nu-sigma-f": {
+      "block": "O_le",
+      "kills": 5
+    },
+    "openmoc-pincell-sigma-a": {
+      "block": "O_le",
+      "kills": 4
+    },
+    "openmoc-pincell-group-permute": {
+      "block": "G",
+      "kills": 4
+    },
+    "openmoc-pincell-fuel-sigma-t": {
+      "block": "O_le",
+      "kills": 2
+    },
+    "openmoc-pincell-moderator-sigma-a": {
+      "block": "O_le",
+      "kills": 3
+    },
+    "openmoc-pincell-fuel-sigma-s": {
+      "block": "O_le",
+      "kills": 4
+    },
+    "openmoc-pincell-fuel-radius": {
+      "block": "O_le",
+      "kills": 5
+    },
+    "openmoc-pincell-rotate-90": {
+      "block": "G",
+      "kills": 2
+    },
+    "openmoc-pincell-mirror-x": {
+      "block": "G",
+      "kills": 2
+    },
+    "openmoc-pincell-mirror-y": {
+      "block": "G",
+      "kills": 2
+    },
+    "openmoc-pincell-refine-ray-tracks": {
+      "block": "L*",
+      "kills": 2
+    }
+  }
+}

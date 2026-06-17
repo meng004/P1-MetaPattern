@@ -21,7 +21,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
 import noether_metrics as nm
-from suts import heat_sut, advdiff_sut
+from suts import heat_sut, wave_sut, poisson_sut, advdiff_sut, killmatrix_sut
 
 RESULTS = _HERE / "results"
 
@@ -32,7 +32,10 @@ def _report_md(s: dict) -> str:
         f"# NOETHER home-field detection -- {s['sut']}",
         "",
         f"**Equation**: {s['equation']}",
+        f"**Domain**: {s.get('domain')}",
         f"**Implementations**: {', '.join(s['impls'])}",
+        f"**Execution mode**: {s.get('execution_mode')}",
+        (f"**Provenance**: {s.get('provenance')}" if s.get('provenance') else ""),
         f"**Alignment gate (baseline_control all survive)**: "
         f"{'PASS' if s['alignment_ok'] else 'FAIL'}",
         "",
@@ -85,10 +88,11 @@ def run_one(name: str, evaluate) -> dict | None:
     (out / "REPORT.md").write_text(_report_md(s), encoding="utf-8")
     flag = "OK" if s["alignment_ok"] else "ALIGNMENT-FAIL"
     md = s["M_detect"]
-    print(f"[{flag}] {s['sut']}: M-yield={s['M_yield']} M-block={s['M_block']} "
-          f"M-detect={md['killed']}/{md['n_real_mutants']}={md['rate']:.3f} "
-          f"CI[{md['wilson95'][0]:.3f},{md['wilson95'][1]:.3f}] "
-          f"-> {out.relative_to(_HERE)}")
+    mode = "exec" if s.get("execution_mode") == "executed-here" else "reused"
+    print(f"[{flag}] {s['sut']:14} ({s.get('domain') or '-':7} {mode:6}): "
+          f"M-yield={s['M_yield']:2} M-block={s['M_block']} "
+          f"M-detect={md['killed']:2}/{md['n_real_mutants']:2}={md['rate']:.3f} "
+          f"CI[{md['wilson95'][0]:.3f},{md['wilson95'][1]:.3f}]")
     return s
 
 
@@ -98,7 +102,11 @@ def main(argv=None):
                     help="comma list: heat,advdiff (default: all available)")
     args = ap.parse_args(argv)
 
-    registry = {"heat": heat_sut.evaluate, "advdiff": advdiff_sut.evaluate}
+    registry = {"heat": heat_sut.evaluate, "wave": wave_sut.evaluate,
+                "poisson": poisson_sut.evaluate, "advdiff": advdiff_sut.evaluate}
+    # committed-matrix SUTs (reused detection data; runtime-free)
+    for _km in killmatrix_sut.SPECS:
+        registry[_km] = killmatrix_sut.make_evaluate(_km)
     want = list(registry) if args.sut == "all" else [s.strip() for s in args.sut.split(",")]
 
     summaries = {}
@@ -109,6 +117,8 @@ def main(argv=None):
         s = run_one(name, registry[name])
         if s is not None:
             summaries[s["sut"]] = {
+                "domain": s.get("domain"),
+                "execution_mode": s.get("execution_mode"),
                 "M_yield": s["M_yield"], "M_block": s["M_block"],
                 "blocks": s["blocks_covered"],
                 "M_detect": s["M_detect"], "alignment_ok": s["alignment_ok"],

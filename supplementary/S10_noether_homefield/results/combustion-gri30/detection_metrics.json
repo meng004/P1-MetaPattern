@@ -1,0 +1,174 @@
+{
+  "sut": "combustion-gri30",
+  "equation": "adiabatic const-UV 0-D reactor, GRI-Mech 3.0 (53 sp.)",
+  "impls": [
+    "M-CANTERA",
+    "M-PYODE"
+  ],
+  "domain": "thermal",
+  "execution_mode": "reused-committed-matrix",
+  "provenance": "T2 committed detection matrix: runs/abd-witness-combustion-gri30-B-20260616T075927Z/kill_matrix.csv (detection-only reuse; selection artefacts not read).",
+  "cross_impl": {
+    "impls": [
+      "M-CANTERA",
+      "M-PYODE"
+    ],
+    "enabled": true
+  },
+  "genmorph": {
+    "feasible": false,
+    "reason": "field / trajectory / eigenvalue I/O; per-eval is a full PDE / kinetics / transport solve; structural MRs relate multiple executions (D1\u2013D3).",
+    "expr_tier": "beyond two-execution (jir,jor) tier (D4)"
+  },
+  "alignment_ok": true,
+  "baseline_killers": [],
+  "M_yield": 16,
+  "M_block": 2,
+  "blocks_covered": [
+    "Conservation",
+    "O_le"
+  ],
+  "M_detect": {
+    "killed": 34,
+    "n_real_mutants": 54,
+    "rate": 0.6296296296296297,
+    "wilson95": [
+      0.4963,
+      0.7458
+    ],
+    "underpowered": false
+  },
+  "per_block": {
+    "Conservation": {
+      "mrs": [
+        "ct-element_conservation_C",
+        "ct-element_conservation_H",
+        "ct-element_conservation_N",
+        "ct-element_conservation_O",
+        "ct-energy_conservation",
+        "ct-equilibrium_consistency",
+        "ct-mass_conservation",
+        "ode-element_conservation_C",
+        "ode-element_conservation_H",
+        "ode-element_conservation_N",
+        "ode-element_conservation_O",
+        "ode-energy_conservation",
+        "ode-equilibrium_consistency",
+        "ode-mass_conservation"
+      ],
+      "detected": 34,
+      "n": 54,
+      "rate": 0.6296296296296297,
+      "wilson95": [
+        0.4963,
+        0.7458
+      ]
+    },
+    "O_le": {
+      "mrs": [
+        "ct-positivity",
+        "ode-positivity"
+      ],
+      "detected": 4,
+      "n": 54,
+      "rate": 0.07407407407407407,
+      "wilson95": [
+        0.0292,
+        0.1755
+      ]
+    }
+  },
+  "per_fault_class": {
+    "missing_reaction_fault": {
+      "detected": 0,
+      "n": 4,
+      "rate": 0.0
+    },
+    "rate_constant_fault": {
+      "detected": 0,
+      "n": 12,
+      "rate": 0.0
+    },
+    "stoichiometry_fault": {
+      "detected": 28,
+      "n": 28,
+      "rate": 1.0
+    },
+    "thermo_fault": {
+      "detected": 6,
+      "n": 6,
+      "rate": 1.0
+    },
+    "thirdbody_fault": {
+      "detected": 0,
+      "n": 4,
+      "rate": 0.0
+    }
+  },
+  "per_mr": {
+    "ct-element_conservation_C": {
+      "block": "Conservation",
+      "kills": 6
+    },
+    "ct-element_conservation_H": {
+      "block": "Conservation",
+      "kills": 6
+    },
+    "ct-element_conservation_O": {
+      "block": "Conservation",
+      "kills": 6
+    },
+    "ct-element_conservation_N": {
+      "block": "Conservation",
+      "kills": 4
+    },
+    "ct-mass_conservation": {
+      "block": "Conservation",
+      "kills": 14
+    },
+    "ct-energy_conservation": {
+      "block": "Conservation",
+      "kills": 17
+    },
+    "ct-equilibrium_consistency": {
+      "block": "Conservation",
+      "kills": 9
+    },
+    "ct-positivity": {
+      "block": "O_le",
+      "kills": 0
+    },
+    "ode-element_conservation_C": {
+      "block": "Conservation",
+      "kills": 6
+    },
+    "ode-element_conservation_H": {
+      "block": "Conservation",
+      "kills": 6
+    },
+    "ode-element_conservation_O": {
+      "block": "Conservation",
+      "kills": 6
+    },
+    "ode-element_conservation_N": {
+      "block": "Conservation",
+      "kills": 4
+    },
+    "ode-mass_conservation": {
+      "block": "Conservation",
+      "kills": 14
+    },
+    "ode-energy_conservation": {
+      "block": "Conservation",
+      "kills": 0
+    },
+    "ode-equilibrium_consistency": {
+      "block": "Conservation",
+      "kills": 12
+    },
+    "ode-positivity": {
+      "block": "O_le",
+      "kills": 4
+    }
+  }
+}

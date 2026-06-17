@@ -1,5 +1,7 @@
 {
   "heat-1d": {
+    "domain": "thermal",
+    "execution_mode": "executed-here",
     "M_yield": 6,
     "M_block": 3,
     "blocks": [
@@ -20,7 +22,56 @@
     "alignment_ok": true,
     "genmorph_feasible": false
   },
+  "wave-1d": {
+    "domain": "fluid",
+    "execution_mode": "executed-here",
+    "M_yield": 5,
+    "M_block": 4,
+    "blocks": [
+      "Conservation",
+      "G",
+      "O_le",
+      "T_rev*"
+    ],
+    "M_detect": {
+      "killed": 6,
+      "n_real_mutants": 6,
+      "rate": 1.0,
+      "wilson95": [
+        0.6097,
+        1.0
+      ],
+      "underpowered": true
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
+  "poisson-1d": {
+    "domain": "thermal",
+    "execution_mode": "executed-here",
+    "M_yield": 5,
+    "M_block": 3,
+    "blocks": [
+      "G",
+      "L*",
+      "O_le"
+    ],
+    "M_detect": {
+      "killed": 5,
+      "n_real_mutants": 6,
+      "rate": 0.8333333333333334,
+      "wilson95": [
+        0.4365,
+        0.9699
+      ],
+      "underpowered": true
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
   "advdiff-2d": {
+    "domain": "thermal\u00d7fluid",
+    "execution_mode": "executed-here",
     "M_yield": 11,
     "M_block": 4,
     "blocks": [
@@ -40,6 +91,121 @@
       "underpowered": false
     },
     "alignment_ok": true,
+    "genmorph_feasible": false
+  },
+  "radxfer-G2": {
+    "domain": "thermal",
+    "execution_mode": "reused-committed-matrix",
+    "M_yield": 16,
+    "M_block": 4,
+    "blocks": [
+      "Conservation",
+      "G",
+      "L*",
+      "O_le"
+    ],
+    "M_detect": {
+      "killed": 25,
+      "n_real_mutants": 31,
+      "rate": 0.8064516129032258,
+      "wilson95": [
+        0.6372,
+        0.9081
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
+  "grayscott": {
+    "domain": "fluid",
+    "execution_mode": "reused-committed-matrix",
+    "M_yield": 20,
+    "M_block": 4,
+    "blocks": [
+      "Conservation",
+      "G",
+      "L*",
+      "O_le"
+    ],
+    "M_detect": {
+      "killed": 41,
+      "n_real_mutants": 44,
+      "rate": 0.9318181818181818,
+      "wilson95": [
+        0.8177,
+        0.9765
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
+  "detonation-znd": {
+    "domain": "fluid",
+    "execution_mode": "reused-committed-matrix",
+    "M_yield": 18,
+    "M_block": 2,
+    "blocks": [
+      "Conservation",
+      "O_le"
+    ],
+    "M_detect": {
+      "killed": 12,
+      "n_real_mutants": 36,
+      "rate": 0.3333333333333333,
+      "wilson95": [
+        0.2021,
+        0.4967
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
+  "combustion-gri30": {
+    "domain": "thermal",
+    "execution_mode": "reused-committed-matrix",
+    "M_yield": 16,
+    "M_block": 2,
+    "blocks": [
+      "Conservation",
+      "O_le"
+    ],
+    "M_detect": {
+      "killed": 34,
+      "n_real_mutants": 54,
+      "rate": 0.6296296296296297,
+      "wilson95": [
+        0.4963,
+        0.7458
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
+  "pincell-xeval": {
+    "domain": "reactor",
+    "execution_mode": "reused-committed-matrix",
+    "M_yield": 22,
+    "M_block": 3,
+    "blocks": [
+      "G",
+      "L*",
+      "O_le"
+    ],
+    "M_detect": {
+      "killed": 24,
+      "n_real_mutants": 86,
+      "rate": 0.27906976744186046,
+      "wilson95": [
+        0.1953,
+        0.3817
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": false,
     "genmorph_feasible": false
   }
 }
