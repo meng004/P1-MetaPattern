@@ -1,0 +1,24 @@
+=== Per-SUT paired (MR battery A vs differential oracle B) ===
+SUT            n   MR  diff b(MR-only) c(diff-only)  both neither union  McNemar p
+advdiff-2d    29   13    12          6            5     7      11    18          1
+radxfer-G2    31   25    10         17            2     8       4    27  0.0007286
+grayscott     44   41    28         16            3    25       0    44   0.004425
+
+=== Pooled (N3) ===
+  total real mutants N        = 104
+  MR-only b = 39   differential-only c = 10   (discordant = 49)
+  pooled McNemar exact p (b=c): 3.846e-05
+  stratified CMH chi^2(1df)   : 17.16   p = 3.430e-05
+  --> asymmetry: MR has higher RECALL (b>>c); reported honestly.
+
+  RQ4 complementarity (kernels cross): b>0 AND c>0 in EVERY stratum and pooled: True
+      -> differential-only contributes 10 faults no MR caught (not nested).
+
+  RQ5 union vs best single oracle (IBT-2):
+      union   = 89/104 = 0.856
+      MR      = 79/104 = 0.760   (best single)
+      diff    = 50/104 = 0.481
+      union - best = 10 (= pooled c); neither = 15/104
+      -> combining complementary-kernel oracles strictly improves recall.
+
+[written] results/paired_pooled_analysis.json

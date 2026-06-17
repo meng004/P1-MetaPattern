@@ -1,0 +1,59 @@
+{
+  "strata": [
+    {
+      "sut": "advdiff-2d",
+      "n": 29,
+      "MR": 13,
+      "diff": 12,
+      "b_MR_only": 6,
+      "c_diff_only": 5,
+      "both": 7,
+      "neither": 11,
+      "union": 18,
+      "p": 1.0
+    },
+    {
+      "sut": "radxfer-G2",
+      "n": 31,
+      "MR": 25,
+      "diff": 10,
+      "b_MR_only": 17,
+      "c_diff_only": 2,
+      "both": 8,
+      "neither": 4,
+      "union": 27,
+      "p": 0.000728607177734375
+    },
+    {
+      "sut": "grayscott",
+      "n": 44,
+      "MR": 41,
+      "diff": 28,
+      "b_MR_only": 16,
+      "c_diff_only": 3,
+      "both": 25,
+      "neither": 0,
+      "union": 44,
+      "p": 0.004425048828125
+    }
+  ],
+  "pooled": {
+    "N": 104,
+    "b_MR_only": 39,
+    "c_diff_only": 10,
+    "pooled_mcnemar_exact_p": 3.845911694355664e-05,
+    "cmh_chi2_1df": 17.163265306122447,
+    "cmh_p": 3.430056223401306e-05,
+    "complementarity_all_strata_cross": true,
+    "union": 89,
+    "MR_best_single": 79,
+    "diff": 50,
+    "neither": 15,
+    "union_minus_best": 10
+  },
+  "interpretation": {
+    "RQ4_kernels_cross": true,
+    "RQ5_union_exceeds_best": true,
+    "honest_note": "significant McNemar/CMH = MR higher recall, NOT differential superiority; thesis = complementarity + union>best."
+  }
+}
