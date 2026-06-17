@@ -1,0 +1,187 @@
+{
+  "sut": "detonation-znd",
+  "equation": "1-D reactive Euler / ZND detonation (Arrhenius)",
+  "impls": [
+    "reactive_euler_znd"
+  ],
+  "domain": "fluid",
+  "execution_mode": "reused-committed-matrix",
+  "provenance": "T2 committed detection matrix: runs/abd-witness-detonation-znd-1d-B-20260616T0235Z/kill_matrix.csv (detection-only reuse; selection artefacts not read).",
+  "cross_impl": {
+    "impls": [
+      "reactive_euler_znd"
+    ],
+    "enabled": false
+  },
+  "genmorph": {
+    "feasible": false,
+    "reason": "field / trajectory / eigenvalue I/O; per-eval is a full PDE / kinetics / transport solve; structural MRs relate multiple executions (D1\u2013D3).",
+    "expr_tier": "beyond two-execution (jir,jor) tier (D4)"
+  },
+  "alignment_ok": true,
+  "baseline_killers": [],
+  "M_yield": 18,
+  "M_block": 2,
+  "blocks_covered": [
+    "Conservation",
+    "O_le"
+  ],
+  "M_detect": {
+    "killed": 12,
+    "n_real_mutants": 36,
+    "rate": 0.3333333333333333,
+    "wilson95": [
+      0.2021,
+      0.4967
+    ],
+    "underpowered": false
+  },
+  "per_block": {
+    "Conservation": {
+      "mrs": [
+        "D1-energy_conservation",
+        "D1-mass_conservation",
+        "D1-momentum_conservation",
+        "D1-positivity",
+        "D1-realizability",
+        "D2-energy_conservation",
+        "D2-mass_conservation",
+        "D2-momentum_conservation",
+        "D2-positivity",
+        "D2-realizability",
+        "D3-energy_conservation",
+        "D3-mass_conservation",
+        "D3-momentum_conservation",
+        "D3-positivity",
+        "D3-realizability"
+      ],
+      "detected": 6,
+      "n": 36,
+      "rate": 0.16666666666666666,
+      "wilson95": [
+        0.0787,
+        0.3189
+      ]
+    },
+    "O_le": {
+      "mrs": [
+        "D1-entropy",
+        "D2-entropy",
+        "D3-entropy"
+      ],
+      "detected": 12,
+      "n": 36,
+      "rate": 0.3333333333333333,
+      "wilson95": [
+        0.2021,
+        0.4967
+      ]
+    }
+  },
+  "per_fault_class": {
+    "entropy_fault": {
+      "detected": 3,
+      "n": 6,
+      "rate": 0.5
+    },
+    "flux_conservation_fault": {
+      "detected": 6,
+      "n": 6,
+      "rate": 1.0
+    },
+    "galilean_fault": {
+      "detected": 0,
+      "n": 6,
+      "rate": 0.0
+    },
+    "positivity_fault": {
+      "detected": 0,
+      "n": 6,
+      "rate": 0.0
+    },
+    "progress_realizability_fault": {
+      "detected": 3,
+      "n": 6,
+      "rate": 0.5
+    },
+    "reaction_rate_fault": {
+      "detected": 0,
+      "n": 6,
+      "rate": 0.0
+    }
+  },
+  "per_mr": {
+    "D1-mass_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D1-momentum_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D1-energy_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D1-positivity": {
+      "block": "Conservation",
+      "kills": 0
+    },
+    "D1-realizability": {
+      "block": "Conservation",
+      "kills": 0
+    },
+    "D1-entropy": {
+      "block": "O_le",
+      "kills": 4
+    },
+    "D2-mass_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D2-momentum_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D2-energy_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D2-positivity": {
+      "block": "Conservation",
+      "kills": 0
+    },
+    "D2-realizability": {
+      "block": "Conservation",
+      "kills": 0
+    },
+    "D2-entropy": {
+      "block": "O_le",
+      "kills": 4
+    },
+    "D3-mass_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D3-momentum_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D3-energy_conservation": {
+      "block": "Conservation",
+      "kills": 2
+    },
+    "D3-positivity": {
+      "block": "Conservation",
+      "kills": 0
+    },
+    "D3-realizability": {
+      "block": "Conservation",
+      "kills": 0
+    },
+    "D3-entropy": {
+      "block": "O_le",
+      "kills": 4
+    }
+  }
+}

@@ -1,7 +1,10 @@
 # NOETHER home-field detection -- advdiff-2d
 
 **Equation**: u_t + c.grad(u) = alpha*lap(u) (2-D advection-diffusion, periodic; N=64, alpha=0.01, c=(1.0,0.5), T=0.5)
+**Domain**: thermal×fluid
 **Implementations**: M-FV, M-SP
+**Execution mode**: executed-here
+**Provenance**: substrate: Minimum-MR-SubSet mcmr.pde_xeval (solvers, mr_battery, mutations); detection-only, no selection.
 **Alignment gate (baseline_control all survive)**: PASS
 
 ## Generation / detection (no selection / k* reported)

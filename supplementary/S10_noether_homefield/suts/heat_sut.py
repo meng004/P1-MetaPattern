@@ -273,6 +273,7 @@ def evaluate() -> dict:
 
     return {
         "sut": "heat-1d",
+        "domain": "thermal",
         "equation": "u_t = alpha*u_xx (1-D heat conduction, Dirichlet), explicit FDM",
         "impls": ["FDM"],
         "mr_blocks": MR_BLOCKS,

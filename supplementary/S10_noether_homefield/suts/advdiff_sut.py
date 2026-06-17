@@ -120,6 +120,7 @@ def evaluate() -> dict:
     cfg = solvers.CONFIG
     return {
         "sut": "advdiff-2d",
+        "domain": "thermal×fluid",
         "equation": ("u_t + c.grad(u) = alpha*lap(u) (2-D advection-diffusion, "
                      f"periodic; N={cfg['N']}, alpha={cfg['alpha']}, "
                      f"c=({cfg['cx']},{cfg['cy']}), T={cfg['T']})"),

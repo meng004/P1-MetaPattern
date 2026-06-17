@@ -1,0 +1,203 @@
+{
+  "sut": "radxfer-G2",
+  "equation": "multigroup radiation diffusion (1/c)\u2202E_g/\u2202t=\u2207\u00b7(D_g\u2207E_g)-\u03c3_a,gE_g+scatter (2-D periodic), G=2",
+  "impls": [
+    "M-FD-theta",
+    "M-SP-IMEX"
+  ],
+  "domain": "thermal",
+  "execution_mode": "reused-committed-matrix",
+  "provenance": "T2 committed detection matrix: runs/abd-witness-radxfer-G2-2d-B-20260615T084600Z/kill_matrix.csv (detection-only reuse; selection artefacts not read).",
+  "cross_impl": {
+    "impls": [
+      "M-FD-theta",
+      "M-SP-IMEX"
+    ],
+    "enabled": true
+  },
+  "genmorph": {
+    "feasible": false,
+    "reason": "field / trajectory / eigenvalue I/O; per-eval is a full PDE / kinetics / transport solve; structural MRs relate multiple executions (D1\u2013D3).",
+    "expr_tier": "beyond two-execution (jir,jor) tier (D4)"
+  },
+  "alignment_ok": true,
+  "baseline_killers": [],
+  "M_yield": 16,
+  "M_block": 4,
+  "blocks_covered": [
+    "Conservation",
+    "G",
+    "L*",
+    "O_le"
+  ],
+  "M_detect": {
+    "killed": 25,
+    "n_real_mutants": 31,
+    "rate": 0.8064516129032258,
+    "wilson95": [
+      0.6372,
+      0.9081
+    ],
+    "underpowered": false
+  },
+  "per_block": {
+    "Conservation": {
+      "mrs": [
+        "fd-scatter_conservation",
+        "fd-total_energy_balance",
+        "sp-scatter_conservation",
+        "sp-total_energy_balance"
+      ],
+      "detected": 16,
+      "n": 31,
+      "rate": 0.5161290322580645,
+      "wilson95": [
+        0.3484,
+        0.6803
+      ]
+    },
+    "G": {
+      "mrs": [
+        "fd-fundamental_mode_eigenvalue",
+        "fd-rotation_invariance",
+        "fd-translation_invariance",
+        "sp-fundamental_mode_eigenvalue",
+        "sp-rotation_invariance",
+        "sp-translation_invariance"
+      ],
+      "detected": 18,
+      "n": 31,
+      "rate": 0.5806451612903226,
+      "wilson95": [
+        0.4077,
+        0.7358
+      ]
+    },
+    "L*": {
+      "mrs": [
+        "fd-refinement_self_convergence",
+        "sp-refinement_self_convergence"
+      ],
+      "detected": 3,
+      "n": 31,
+      "rate": 0.0967741935483871,
+      "wilson95": [
+        0.0335,
+        0.249
+      ]
+    },
+    "O_le": {
+      "mrs": [
+        "fd-linearity_superposition",
+        "fd-scaling_homogeneity",
+        "sp-linearity_superposition",
+        "sp-scaling_homogeneity"
+      ],
+      "detected": 2,
+      "n": 31,
+      "rate": 0.06451612903225806,
+      "wilson95": [
+        0.0179,
+        0.2072
+      ]
+    }
+  },
+  "per_fault_class": {
+    "absorption_opacity_fault": {
+      "detected": 4,
+      "n": 8,
+      "rate": 0.5
+    },
+    "diffusion_coefficient_fault": {
+      "detected": 6,
+      "n": 8,
+      "rate": 0.75
+    },
+    "scatter_entry_fault": {
+      "detected": 6,
+      "n": 6,
+      "rate": 1.0
+    },
+    "source_fault": {
+      "detected": 4,
+      "n": 4,
+      "rate": 1.0
+    },
+    "stencil_fault": {
+      "detected": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "time_weight_fault": {
+      "detected": 3,
+      "n": 3,
+      "rate": 1.0
+    }
+  },
+  "per_mr": {
+    "fd-linearity_superposition": {
+      "block": "O_le",
+      "kills": 1
+    },
+    "fd-scaling_homogeneity": {
+      "block": "O_le",
+      "kills": 1
+    },
+    "fd-total_energy_balance": {
+      "block": "Conservation",
+      "kills": 4
+    },
+    "fd-scatter_conservation": {
+      "block": "Conservation",
+      "kills": 3
+    },
+    "fd-fundamental_mode_eigenvalue": {
+      "block": "G",
+      "kills": 10
+    },
+    "fd-translation_invariance": {
+      "block": "G",
+      "kills": 1
+    },
+    "fd-rotation_invariance": {
+      "block": "G",
+      "kills": 1
+    },
+    "fd-refinement_self_convergence": {
+      "block": "L*",
+      "kills": 2
+    },
+    "sp-linearity_superposition": {
+      "block": "O_le",
+      "kills": 1
+    },
+    "sp-scaling_homogeneity": {
+      "block": "O_le",
+      "kills": 1
+    },
+    "sp-total_energy_balance": {
+      "block": "Conservation",
+      "kills": 6
+    },
+    "sp-scatter_conservation": {
+      "block": "Conservation",
+      "kills": 3
+    },
+    "sp-fundamental_mode_eigenvalue": {
+      "block": "G",
+      "kills": 7
+    },
+    "sp-translation_invariance": {
+      "block": "G",
+      "kills": 1
+    },
+    "sp-rotation_invariance": {
+      "block": "G",
+      "kills": 1
+    },
+    "sp-refinement_self_convergence": {
+      "block": "L*",
+      "kills": 1
+    }
+  }
+}
