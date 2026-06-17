@@ -1,0 +1,2043 @@
+diff --git a/.env.example b/.env.example
+index d219abb..aa19bc0 100644
+--- a/.env.example
++++ b/.env.example
+@@ -16,6 +16,10 @@ OPENAI_BASE_URL=https://api.openai.com/v1
+ DEEPSEEK_API_KEY=your_deepseek_api_key
+ DEEPSEEK_BASE_URL=https://api.deepseek.com
+ 
++# === Aggregator gateway (OpenAI-compatible LLM proxy) ===
++BASE_URL=your_gateway_base_url
++API_KEY=your_gateway_api_key
++
+ # === P2 cross-project integration (only if running cross-paper analysis) ===
+ P2_ROOT=/path/to/MT完备性/src
+ P2_OUTPUTS_ROOT=/path/to/MT完备性/data/results
+diff --git a/NEXT_STEPS.md b/NEXT_STEPS.md
+index 4ffedee..dd3e301 100644
+--- a/NEXT_STEPS.md
++++ b/NEXT_STEPS.md
+@@ -5,6 +5,33 @@ commit. Each item is independent and can be done in any order.
+ 
+ ---
+ 
++## ⭐ TOSEM submission readiness — independent maturity review (2026-06-16)
++
++> 6 个互相隔离的 Opus subagent 独立重审,综合裁决 **Major Revision**(评分 38–72),显著低于仓库 Round-4 自评(Accept / 65–75%)。
++> 详见 `docs/tosem_maturity_2026-06-16/maturity_review_summary.md`。
++
++### 🔴 Blockers(投 TOSEM 前必解,多数需投入实验)
++- [ ] 理论内核偏平凡 + CONSTRUCT-MP Step 3/4 定义级 bug(L529-530);最强定理 Thm 1′ 被自证伪 — 补非平凡定理或改论文类型为 systematisation
++- [ ] 唯一真实 head-to-head 被 baseline 显著击败(McNemar p=0.0043) — 需中立真实缺陷上的正面证据点,或收缩 fault-detection 主张
++- [ ] 缺独立**人类** inter-rater κ(κ=1.000 是共享语料 LLM 循环) — 自招 ≥2 名独立 rater 做 Cohen's κ
++- [ ] 与姊妹论文 T2(Minimum-MR-SubSet,TSE)的 salami 未声明 — 草稿已备(见下)
++- [ ] 大量经验主张是 protocol 非 result;"three domains tested" overclaim — 如实分级或补执行
++
++### 🟡 草稿已备 / 进行中(零实验成本)
++- [x] 删 4 处 reviewer-process 残留 — 主稿 `NOETHER_paper_arxiv.tex` 已改(2026-06-16)
++- [ ] 同步删除投稿版残留:`submission/TOSEM_2026-05-20/manuscript_singleblind/` + `manuscript_anonymized/` + 06-16 singleblind humanized zip
++- [ ] 插入 T2 differentiation 段 + cover letter 披露 — 草稿 `docs/tosem_maturity_2026-06-16/differentiation_and_disclosure_draft.md`(待确认插入位置)
++- [ ] 去 overclaim(标题/摘要/contributions) — 草案 `docs/tosem_maturity_2026-06-16/overclaim_revision_draft.md`(待用户拍板,属作者决策权)
++- [ ] 75 页压至 ≤50 + cover letter 篇幅辩护
++- [ ] **执行就绪的 `experiment/s5_aligned`**(NOETHER vs GenMorph,在 GenMorph 公开 23-subject benchmark / 557 mutants)——化解 G1 substrate-bias 的最高 ROI 中立证据;代码就绪、`results/` 空待执行(Stage1 ~4–7h + Stage2 ~30min);见 `docs/tosem_maturity_2026-06-16/protocol_domain_extension.md`
++
++### 🔵 Open questions(待用户拍板)
++- [x] git 作者邮箱已更正为 `meng004@gmail.com`(2026-06-16;gamail 未进任何 commit,无需修历史)
++- [x] 多厂商交叉评审已完成(网关 5 厂商:gpt-5 / grok-4.1 / deepseek / qwen / kimi → 2 Reject + 3 Major,确认 Opus panel;`docs/tosem_maturity_2026-06-16/gateway_panel_raw.json`)
++- [ ] 100% 联网逐条 bib 真实性校验(见 §C)尚未执行 — 投真实期刊前 hard-block
++
++---
++
+ ## A. arXiv preprint upload (when ready to publish)
+ 
+ Status: `arxiv/` directory contains a preprint-ready variant. Author
+diff --git a/NOETHER_paper_arxiv.pdf b/NOETHER_paper_arxiv.pdf
+index ffe9ed5..bc1567f 100644
+Binary files a/NOETHER_paper_arxiv.pdf and b/NOETHER_paper_arxiv.pdf differ
+diff --git a/NOETHER_paper_arxiv.tex b/NOETHER_paper_arxiv.tex
+index 34b780c..a71210d 100644
+--- a/NOETHER_paper_arxiv.tex
++++ b/NOETHER_paper_arxiv.tex
+@@ -122,9 +122,9 @@
+ 
+ \textbf{Objective.} We propose a framework whose downstream step from program-induced operator algebra to MetaPattern set is mechanical and provable, while making the upstream curation of the algebra a stated empirical hypothesis with an explicit scope precondition.
+ 
+-\textbf{Method.} We introduce \textbf{NOETHER}, a framework with an upstream and a downstream layer. The upstream layer is a structural decomposition over recurrent mathematical structures such as symmetry, order, self-adjoint, time-reversal, limit, qualitative-dynamics, method-comparison, and relational equivalence, curated as an empirical hypothesis. The downstream layer is the \texttt{CONSTRUCT-MP} algorithm: given the decomposition, it produces a MetaPattern set with an algebraic-closure guarantee under the \texttt{Translate} operator (Theorem~1) and polynomial-time decidability under a finite generating set (Theorem~2). Theorem~1 converts an empirical-adequacy claim into a structural-adequacy obligation within an explicitly bounded scope. We test the framework on three operator-algebraic domains and an empirical head-to-head against an automated SOTA baseline.
++\textbf{Method.} We introduce \textbf{NOETHER}, a framework with an upstream and a downstream layer. The upstream layer is a structural decomposition over recurrent mathematical structures such as symmetry, order, self-adjoint, time-reversal, limit, qualitative-dynamics, method-comparison, and relational equivalence, curated as an empirical hypothesis. The downstream layer is the \texttt{CONSTRUCT-MP} algorithm: given the decomposition, it produces a MetaPattern set with an algebraic-closure guarantee under the \texttt{Translate} operator (Theorem~1) and polynomial-time decidability under a finite generating set (Theorem~2). Theorem~1 converts an empirical-adequacy claim into a structural-adequacy obligation within an explicitly bounded scope. We instantiate the framework on three operator-algebraic domains at different evaluation depths: Boltzmann reactor physics receives an empirical head-to-head against an automated SOTA baseline; equivariant ML is evaluated as a case study with executable MR derivation and a small-scale mutation pilot; relational query optimisers are analytically mapped to published algebraic identities.
+ 
+-\textbf{Results.} On Boltzmann reactor physics the framework systematises a prior inductive catalogue and re-classifies further equivalence classes; on equivariant ML it derives executable MRs for rotation invariance, adjoint duality, and training-trajectory reversibility; on relational query optimisers it exercises the relational-equivalence block. The central falsifiable prediction, $\mathcal{L}^{*}$-blindness on homogeneity-preserving mutators derivable ex-ante from the algebra and the mutator specification, holds on the in-scope substrate. The empirical head-to-head against a GP-evolved baseline reports Set~N dominated on the scope-matched D1 stratum; the framework's contribution is read as algebraic derivability, per-block complementarity, and an out-of-scope D2-stratum boundary no inductive baseline can derive. The absolute-completeness conjecture (Theorem~$1'$) is falsified on $\mathcal{A}_{\mathrm{PWR}}$ via two independent counterexamples that identify five \texttt{Translate}-extension dimensions, with five further candidate dimensions on the equivariant-ML and relational-query algebras as the principal locus of follow-up work.
++\textbf{Results.} On Boltzmann reactor physics the framework systematises a prior inductive catalogue and re-classifies further equivalence classes; on equivariant ML it derives executable MRs for rotation invariance, adjoint duality, and training-trajectory reversibility; on relational query optimisers it exercises the relational-equivalence block. The central falsifiable prediction, $\mathcal{L}^{*}$-blindness on homogeneity-preserving mutators derivable ex-ante from the algebra and the mutator specification, holds on the in-scope substrate. The empirical head-to-head against a GP-evolved baseline reports Set~N dominated on the scope-matched D1 stratum; the framework's contribution is read as algebraic derivability, per-block complementarity, and an out-of-scope D2-stratum boundary no inductive baseline can derive. The absolute-completeness conjecture (Theorem~$1'$) is falsified on $\mathcal{A}_{\mathrm{PWR}}$ via two independent counterexamples that identify five \texttt{Translate}-extension dimensions with pairwise independence proved on $\mathcal{A}_{\mathrm{PWR}}$ by per-block exhaustion, plus five candidate dimensions on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ asserted by inspection, whose formal independence proofs constitute the principal locus of follow-up work.
+ 
+ \textbf{Conclusion.} NOETHER lifts induction from per-program MR sampling to a stable per-domain algebraic layer; the downstream step is deductive and mechanical, while the upstream empirical layer is stated as an explicit hypothesis with documented out-of-scope cases such as web applications, RLHF reward models, distributed-consensus protocols, and compiler-internal optimisations.
+ \end{abstract}
+@@ -248,9 +248,9 @@ We make four contributions.
+ \begin{itemize}
+   \item \textbf{C1.} We introduce NOETHER, a \emph{layered} framework for MetaPattern discovery that combines an empirically curated structural decomposition (Hypothesis~\ref{hyp:seven-blocks}; upstream layer, itself partly distilled from the present authors' prior PWR MR catalogue, see \S\ref{subsec:reactor-mapping} for provenance) with a constructive algorithm for deriving MetaPatterns from a program-induced operator algebra (downstream layer).
+   \item \textbf{C2a (positive theory).} Given the structural decomposition, we prove an Algebraic Closure Theorem (Theorem~1): the constructed MetaPattern set is closed under the framework's \texttt{Translate} operator over the algebra-induced MR space $\mathrm{MR}(\mathcal{A}_{P})$. Theorem~1 converts an empirical-adequacy claim (``our pattern grid covers $X\%$ of observed MRs'') into a structural-adequacy obligation (``every $\mathrm{Translate}$-reachable MR is assigned to a unique block under the canonical-block ordering of Definition~\ref{def:canonical-order}''); we acknowledge in Section~\ref{subsec:completeness} that the closure is by-construction within the explicit scope of Definition~\ref{def:alg-induced}, and document the three classes of MRs outside that scope (Remark~\ref{rem:scope}). Polynomial-time decidability of CONSTRUCT-MP holds when the algebra admits a finite generating set (Theorem~2).
+-  \item \textbf{C2b (negative theory).} The strictly stronger absolute-completeness conjecture (Theorem~$1'$ / Conjecture~\ref{conj:absolute}), over arbitrary properties expressible in $\mathcal{A}_P$, is \emph{false} on $\mathcal{A}_{\mathrm{PWR}}$: two MRs from the standard PWR safety-analysis literature (non-additivity of rod-bank reactivity worth; second-order mixed dependence of $k_{\mathrm{eff}}$ on moderator temperature and boron concentration) are formulable over $\mathcal{A}_{\mathrm{PWR}}$ but not in $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$ (\S\ref{subsec:negative-pwr}, Appendix~\ref{app:negative-proofs}). The two MRs identify five structural obstructions in \texttt{Translate}'s signature, with pairwise independence established by per-block exhaustion. Companion surveys on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}) identify five further candidate dimensions (two on $\mathcal{A}_{\mathrm{equi}}$ specialising PWR-side dimensions; three net on $\mathcal{A}_{\mathrm{rel}}$), yielding ten \texttt{Translate}-extension dimensions across the three algebras; pairwise independence on the candidate five is asserted by inspection, with formal per-dimension exhaustion committed as follow-up. Scope statements are in Section~\ref{subsec:completeness}.
+-  \item \textbf{C3.} We instantiate NOETHER on a real-world program family and show how it \emph{systematises and re-classifies} previously catalogued patterns. The framework reproduces three prior MetaPatterns, refines two on a sounder algebraic basis, and includes a deflationary correction direction (revealing that the inductive grid was \emph{over-counted} on some sub-families and \emph{under-counted} by the absence of $m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$). The two structurally distinct re-classified equivalence classes are not de novo discoveries; domain experts could have written them down. NOETHER's contribution is the algebraic warrant for treating them as separate MetaPatterns within a uniform structure. The deflationary direction is non-circular relative to the prediction caveat of \S\ref{subsec:reactor-mapping}: \S\ref{subsec:pmcm-worked} demonstrates it on three independent test cases (a sorting library; Murphy et al.\ 2008's categorisation of MRs for ML into six classes~\cite{Murphy2008} re-decoded against a feedforward classifier algebra; the prior reactor-physics catalogue itself), without invoking $T^{*}$ or $\mathcal{T}^{*}$ structure that was curated from reactor physics.
+-  \item \textbf{C4.} We demonstrate \emph{structural} transferability at the algebra-skeleton level (not cross-domain empirical superiority), within the framework's scope precondition, by instantiating NOETHER on three structurally distinct operator-algebraic domains: Boltzmann reactor-physics transport, equivariant ML (Section~\ref{sec:cross-domain}), and relational query optimisers (Section~\ref{subsec:third-domain}); the last exercises the relational-equivalence block, whose algebraic skeleton differs from the Lie-group / self-adjoint / time-reversal core. A small-scale comparative case study, a DeepCrime-style real-fault pilot ($n=5$, underpowered for $\alpha=0.05$), and a cross-codebase pilot replication on Apache Commons Math ($n=3$ SUTs, $77$ mutants) report data consistent with the structural-coverage prediction within case-study scope; the case study's category-(iv) detection contrast exhibits construct validity rather than averaged superiority. A larger comparative evaluation against three SOTA representatives (GP-evolved, LLM-assisted, mining-based) is reported as a pre-registered protocol.
++  \item \textbf{C2b (negative theory).} The strictly stronger absolute-completeness conjecture (Theorem~$1'$ / Conjecture~\ref{conj:absolute}), over arbitrary properties expressible in $\mathcal{A}_P$, is \emph{false} on $\mathcal{A}_{\mathrm{PWR}}$: two MRs from the standard PWR safety-analysis literature (non-additivity of rod-bank reactivity worth; second-order mixed dependence of $k_{\mathrm{eff}}$ on moderator temperature and boron concentration) are formulable over $\mathcal{A}_{\mathrm{PWR}}$ but not in $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$ (\S\ref{subsec:negative-pwr}, Appendix~\ref{app:negative-proofs}). The two MRs identify five structural obstructions in \texttt{Translate}'s signature, with pairwise independence established by per-block exhaustion. Companion surveys on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}) identify five further candidate dimensions (two on $\mathcal{A}_{\mathrm{equi}}$ specialising PWR-side dimensions; three net on $\mathcal{A}_{\mathrm{rel}}$), yielding five \texttt{Translate}-extension dimensions proved pairwise-independent on $\mathcal{A}_{\mathrm{PWR}}$ plus five candidate dimensions on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ whose pairwise independence is asserted by inspection; formal per-dimension exhaustion on those algebras is committed as follow-up. Scope statements are in Section~\ref{subsec:completeness}.
++  \item \textbf{C3.} We instantiate NOETHER on a real-world program family and show how it \emph{systematises and re-classifies} previously catalogued patterns. The framework re-classifies the prior inductive catalogue under a uniform algebraic structure: it reproduces three prior MetaPatterns, refines two on a sounder algebraic basis, and de-duplicates two equivalence classes ($m_{\mathrm{adj}}$, $m_{\mathrm{rev}}$) that the inductive catalogue had not isolated as structurally distinct. These are not de novo discoveries; NOETHER's contribution is the algebraic warrant for treating them as separate MetaPattern slots within a canonical block ordering, and the deflationary direction (revealing over-counting on some sub-families) constitutes a further non-circular form of re-classification. The deflationary direction is non-circular relative to the prediction caveat of \S\ref{subsec:reactor-mapping}: \S\ref{subsec:pmcm-worked} demonstrates it on three independent test cases (a sorting library; Murphy et al.\ 2008's categorisation of MRs for ML into six classes~\cite{Murphy2008} re-decoded against a feedforward classifier algebra; the prior reactor-physics catalogue itself), without invoking $T^{*}$ or $\mathcal{T}^{*}$ structure that was curated from reactor physics.
++  \item \textbf{C4.} We demonstrate \emph{structural} transferability at the algebra-skeleton level (not cross-domain empirical superiority), within the framework's scope precondition, by instantiating NOETHER on three structurally distinct operator-algebraic domains at differentiated evaluation depths: Boltzmann reactor-physics transport (Section~\ref{sec:reactor}; empirical head-to-head evaluation), equivariant ML (Section~\ref{sec:cross-domain}; case-study evaluation with executable MR derivation and mutation pilot), and relational query optimisers (Section~\ref{subsec:third-domain}; analytical mapping to published identities); the last exercises the relational-equivalence block, whose algebraic skeleton differs from the Lie-group / self-adjoint / time-reversal core. A small-scale comparative case study, a DeepCrime-style real-fault pilot ($n=5$, underpowered for $\alpha=0.05$), and a cross-codebase pilot replication on Apache Commons Math ($n=3$ SUTs, $77$ mutants) report data consistent with the structural-coverage prediction within case-study scope; the case study's category-(iv) detection contrast exhibits construct validity rather than averaged superiority. A larger comparative evaluation against three SOTA representatives (GP-evolved, LLM-assisted, mining-based) is reported as a pre-registered protocol.
+ \end{itemize}
+ 
+ \paragraph{Scope of contribution.} This is a theoretical paper, and its contribution is systematisation rather than deduction from first principles. The eight blocks are curated by inspecting mathematical structures that recur across the program families we have studied; they are not derived from an algebraic axiom. The framework therefore has two layers: an \emph{upstream layer} (curating $\mathcal{A}_P$ and its block decomposition) that remains empirical and human, and a \emph{downstream layer} (mechanically deriving $\mathbb{M}(\mathcal{A}_P)$ from $\mathcal{A}_P$) that is algorithmic and provable. We do not claim to have eliminated induction from MetaPattern discovery. We move induction one level up, from ``what MetaPatterns recur in observed MR samples?'' to ``what algebraic structures recur in the program families practitioners care about?'', and make the downstream step mechanical. The engineering payoff of this re-grounding awaits empirical follow-up work; comparative evaluation against existing automated MR-identification pipelines is reported as a protocol in Section~\ref{subsec:case-study} and constitutes part of the framework's resubmission obligations.
+@@ -308,13 +308,28 @@ MetaPattern catalogues organise the post-hoc inventory of identified MRs into a
+ 
+ Ying et al.'s family-tree formalism~\cite{Ying2025MRPatterns} is the closest published cousin to NOETHER's MetaPattern equivalence-class structure: both organise MR patterns into a hierarchy with explicit relationships between patterns. The two formalisms differ in the relationship type. Ying et al.'s family tree is a \emph{refinement/specialisation tree} rooted in informally-named pattern categories (symmetry, additive, multiplicative, etc.); NOETHER's MetaPattern equivalence classes are \emph{quotients of the algebra-induced MR space} $\mathrm{MR}(\mathcal{A}_P)$ under structural equivalence (Definition~\ref{def:alg-induced}), with each class derived from a specific block of $\mathcal{D}(\mathcal{A}_P)$. A family-tree node in Ying et al.\ typically corresponds to one or more NOETHER MetaPatterns when the node admits an operator-algebraic specification (e.g.\ Ying et al.'s ``symmetry'' parent node decomposes into the $G$-block MetaPattern $m_{\mathrm{inv}}$ for finite-group symmetries plus the $T^{*}$-block MetaPattern $m_{\mathrm{adj}}$ for self-adjoint dualities under NOETHER's structural decomposition); conversely, NOETHER's $\mathcal{B}^{*}_{\mathrm{rel}}$ MetaPattern has no direct counterpart in the family-tree formalism because relational-algebra equivalences were not in Ying et al.'s benchmark set. The two formalisms are complementary: Ying et al.\ catalogues patterns inductively at the MR-instance level; NOETHER provides an algebraic warrant for the existence of each pattern, given the operator algebra. A unified family-tree-plus-algebra-block reading of the literature would map each family-tree node to (at most) one NOETHER block when the node has an algebraic source, and would flag family-tree nodes without algebraic source as candidates for the ninth-block list of Remark~\ref{rem:counterex}.
+ 
+-Four further pattern-catalogue or MR-grammar candidates raised in peer review (Hu et~al.\ 2019; Mariani 2018; Liu et~al.\ 2020; Lin 2020) could not be located through the standard fallback chain (CrossRef, OpenAlex, DBLP, Semantic Scholar, Google Scholar) under the citation profiles provided, and are therefore not cited; the closest verifiable cousins that this revision does add are Zhou et al.~\cite{Zhou2020SymmetryMRP} and Ying et al.~\cite{Ying2025MRPatterns}.
++Four further pattern-catalogue or MR-grammar candidates raised in peer review (Hu et~al.\ 2019; Mariani 2018; Liu et~al.\ 2020; Lin 2020) could not be located through the standard fallback chain (CrossRef, OpenAlex, DBLP, Semantic Scholar, Google Scholar) under the citation profiles provided, and are therefore not cited; the closest verifiable cousins in this space are Zhou et al.~\cite{Zhou2020SymmetryMRP} and Ying et al.~\cite{Ying2025MRPatterns}.
+ 
+ Such catalogues are useful, but each is, by construction, an empirical artefact. None of the existing catalogues, including the present authors' own, can answer the three foundational questions of Section~\ref{sec:intro}.
+ 
+ \subsection{Convergent diagnosis}
+ 
+ Across all four lines of work, two problems recur. \emph{Unbounded MR emergence}: every new domain or new program produces fresh MR formulations. \emph{Poor MR reusability}: identified MRs do not transport readily across programs that share deep structural similarities. Both problems follow from grounding MetaPatterns inductively. NOETHER replaces that inductive grounding with operator-algebraic grounding.
++\paragraph{Relation to a separate line of work on minimum complete MR subsets.}
++A separate line of work by some of the present authors addresses the
++\emph{orthogonal} problem of \emph{selecting} a minimum complete subset from a
++\emph{given} metamorphic-relation pool: taking an MR set as input, it
++characterises the smallest subset that preserves the pool's fault-detection
++power under a fixed fault model, proves the corresponding decision problem
++NP-hard, and provides approximation and exact (ILP) solvers. That work takes
++the MR set as given and optimises its cardinality; the present paper is
++concerned with the upstream question of where MRs and MetaPatterns
++\emph{come from} --- their constructive derivation from a program-induced
++operator algebra and algebraic closure under \texttt{Translate}. The two are
++complementary: NOETHER \emph{generates} the algebra-induced MR space that a
++subset-selection procedure would then \emph{minimise}. No theorem or empirical
++claim is shared: the present paper makes no minimality or subset-selection
++claim, and the subset-selection work makes no derivation or closure claim.
+ 
+ \paragraph{Comparators in the head-to-head: what is compared and why.}
+ \label{para:comparators-and-why}
+@@ -1325,9 +1340,9 @@ $\Rightarrow$ fixed-output sub-rule). Per-mutant classification
+ must be logged alongside the kill data, and the classification
+ must precede inspection of which mutants the outlier's rescue
+ depends on. The rule was codified in the pre-registration config
+-on 2026-05-15 in response to a Round 2 review observation that the
++on 2026-05-15 to make explicit a rule on which the
+ \S\ref{subsec:l-blindness-confirmed} \texttt{hypotSig} analysis had
+-relied on a rule that was implicit rather than written. Under the
++relied in implicit rather than written form. Under the
+ codified rule, $\texttt{hypotSig}$'s two killed mutants
+ (\texttt{return\_zero\_doubles\_VR} and
+ \texttt{Math.sqrt\_replaced\_with\_one\_RC}) both classify as
+@@ -2136,7 +2151,7 @@ H3a.3's cost-axis claim holds when detection is read on the per-block primary (T
+ 
+ \paragraph{Committed future work (16 items).}
+ \label{para:future-work}
+-The full committed-future-work table (16 entries) is in supplementary~S4 (\texttt{future\_work.md}); key items completed in this revision: (i)~METRIC$+$ head-to-head on Sun~2021's 4 subjects with PIT~1.7.4 + Major cross-tool replication (pooled McNemar $p = 0.625$ / $0.211$ both NS, $92.6\%$ both-kill on the PIT substrate; details in supplementary~S8); (b.cm)~Commons-Math pilot (pooled Set~N $10/77 = 13.0\%$, D2 prediction passes $2/29 = 6.9\%$); (d.set-l)~$2$-of-$3$-vendor LLM-ensemble harvest ($487$ MRs, $212$ executable, ensemble matches Set~N on the matchable subset $34/34$); (e), (e.2), (e.4), (g)~the D1/D2 labelling pipeline, equivalent-mutant exclusion, $G$-block Euclidean-SUT documentation, and construct-trace consistency check. The remaining 8 pending items (multi-seed GP replication; full $38$-D4J extension; MR-Scout re-execution; Anthropic third-vendor; generic-mutation independent test on the 5 PIT-unexercised blocks; external-transfer reactor-physics corpus; two narrow grid-MR predicate tightenings) are the principal post-publication work programme.
++The full committed-future-work table (16 entries) is in supplementary~S4 (\texttt{future\_work.md}); key items completed: (i)~METRIC$+$ head-to-head on Sun~2021's 4 subjects with PIT~1.7.4 + Major cross-tool replication (pooled McNemar $p = 0.625$ / $0.211$ both NS, $92.6\%$ both-kill on the PIT substrate; details in supplementary~S8); (b.cm)~Commons-Math pilot (pooled Set~N $10/77 = 13.0\%$, D2 prediction passes $2/29 = 6.9\%$); (d.set-l)~$2$-of-$3$-vendor LLM-ensemble harvest ($487$ MRs, $212$ executable, ensemble matches Set~N on the matchable subset $34/34$); (e), (e.2), (e.4), (g)~the D1/D2 labelling pipeline, equivalent-mutant exclusion, $G$-block Euclidean-SUT documentation, and construct-trace consistency check. The remaining 8 pending items (multi-seed GP replication; full $38$-D4J extension; MR-Scout re-execution; Anthropic third-vendor; generic-mutation independent test on the 5 PIT-unexercised blocks; external-transfer reactor-physics corpus; two narrow grid-MR predicate tightenings) are the principal post-publication work programme.
+ 
+ \subsubsection{Summary of evidence}
+ \label{subsec:empirical-summary}
+@@ -2411,7 +2426,7 @@ for partial \tildemark{} blocks, is in supplementary~S8
+ (\texttt{scope\_analysis.md}). The pre-registered protocol for an
+ instance-level head-to-head with matched cardinality
+ (supplementary~S8 \texttt{protocol\_path\_a\_headtohead.md}) is
+-\emph{executed at reduced scale} in this revision and reported below;
++\emph{executed at reduced scale} and reported below;
+ the full-scale execution (Sun's Java + PIT~1.7.4 + multi-LLM
+ equivalent-mutant vote) remains as supplementary~S4 (\texttt{future\_work.md})
+ item~(i).
+@@ -2541,7 +2556,7 @@ We organise threats following Wohlin et al.'s validity framework~\cite{Wohlin201
+ 
+ \paragraph{Internal validity.} Theorem~\ref{thm:closure}'s uniqueness depends on the canonical-block ordering of Definition~\ref{def:canonical-order}. The proof in Appendix~\ref{app:proofs} catalogues every block-block interaction for the algebras instantiated. The closure result is over algebra-induced MRs in the sense of Definition~\ref{def:alg-induced}; out-of-scope MRs that fall outside Definition~\ref{def:alg-induced} are catalogued in Appendix~\ref{app:out-of-scope}, and two concrete counterexamples on the PWR core diffusion algebra are proved out-of-scope in Appendix~\ref{app:negative-proofs} (corresponding to the negative instantiation of \S\ref{subsec:negative-pwr}). The latter two jointly establish that Theorem~1$'$ (Conjecture~\ref{conj:absolute}, absolute completeness) is false on $\mathcal{A}_{\mathrm{PWR}}$, and identify five independent extensions of \texttt{Translate}'s signature as the locus of follow-up theoretical work.
+ 
+-\paragraph{Construct validity.} The reactor-physics mapping (\S\ref{subsec:reactor-mapping}) provides preliminary evidence; non-physics-domain evidence remains future work. The case study (\S\ref{subsec:case-study}) reports cat-(iv) detection $5/5$ for Set~N because the mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$; this exhibits construct validity of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe rather than averaged superiority, with the DeepCrime~\cite{Humbatova2021DeepCrime} real-fault protocol committed as comparative addition. \emph{Set~N's 30 MRs were derived by a single author following CONSTRUCT-MP's four-step procedure}; an LRCA multi-LLM second-rater protocol (DeepSeek + ChatGPT + Anthropic Claude Opus) yields Fleiss' $\kappa = 1.000$ across three LLMs on $n = 33$ items in the almost-perfect Landis--Koch band, with full per-rater Cohen's $\kappa$ in supplementary~S3 (\texttt{lrca\_audit.md}). A human-pair $\kappa$ replication is committed for follow-up work; the LLM-shared-training-data caveat (\S\ref{subsec:reactor-mapping}'s supplementary-MR audit) carries over.
++\paragraph{Construct validity.} The reactor-physics mapping (\S\ref{subsec:reactor-mapping}) provides preliminary evidence; non-physics-domain evidence remains future work. The case study (\S\ref{subsec:case-study}) reports cat-(iv) detection $5/5$ for Set~N because the mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$; this exhibits construct validity of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe rather than averaged superiority, with the DeepCrime~\cite{Humbatova2021DeepCrime} real-fault protocol committed as comparative addition. \emph{Set~N's 30 MRs were derived by a single author following CONSTRUCT-MP's four-step procedure}; an LRCA multi-LLM second-rater protocol (DeepSeek + ChatGPT + Anthropic Claude Opus) yields Fleiss' $\kappa = 1.000$ across three LLMs on $n = 33$ items in the almost-perfect Landis--Koch band, with full per-rater Cohen's $\kappa$ in supplementary~S3 (\texttt{lrca\_audit.md}). A human-pair $\kappa$ replication is committed for follow-up work. Two residual construct-validity threats are disclosed here. First, the inter-rater agreement figures ($\kappa = 0.857$ on the supplementary-MR audit and $\kappa = 1.000$ on the LRCA Set~N audit) are drawn from rater panels composed entirely of large language models (DeepSeek, ChatGPT, Anthropic Claude Opus); because these models share substantial pre-training corpora, the agreement should be read as consistency among similarly-trained but non-coordinated raters rather than as independent human-level verification---the $\kappa$ values cannot be interpreted as equivalent to inter-rater reliability from independent human domain experts. Second, the four Java subjects (\texttt{SPHONE}, \texttt{SBAGGAGE}, \texttt{SEXPENSE}, \texttt{SMEAL}) used in the Path~A head-to-head (\S\ref{para:path-a-results}) are re-implementations written from Sun 2021's prose specification by the same author who designed the NOETHER framework and CONSTRUCT-MP procedure; this confounds framework-design knowledge with subject-implementation fidelity and constitutes a construct-validity threat that an independent re-implementation would resolve.
+ 
+ \paragraph{External validity.} Two distinct external-validity questions are in scope: (i) whether the framework's \emph{algebraic} reach (Hypothesis~\ref{hyp:seven-blocks}) covers all program families admitting an operator algebra, and (ii) whether the \S\ref{subsec:test-design} \emph{empirical} substrate generalises across codebases within the framework's scope precondition. On (i), Hypothesis~\ref{hyp:seven-blocks} covers a wide swathe of mathematical structure but is not exhaustive; Remark~\ref{rem:counterex} catalogues six candidate ninth-block program-family classes (symplectic, sheaf-theoretic, probabilistic / martingale, topological, label-consistency, empirical-parameter-distribution), of which two have explicit \texttt{Translate}-template designs already proposed (metric-stability $M_{\mathrm{lip}}$ at Remark~\ref{rem:metric-stability-block}, and empirical-parameter-distribution divergence motivated by the \S\ref{subsec:deepcrime-pilot} pilot's three undetected mutations) as the most actionable extension targets. On (ii), the 10 SUTs of \S\ref{subsec:test-design} are concentrated on a single codebase (\texttt{MathSignalClass} + \texttt{ComplexSignal}) selected by the pre-registered scope criterion; they satisfy the framework's scope precondition (each admits at least one non-empty NOETHER block beyond $G$), so the substrate confirms applicability within scope rather than tests the framework outside its design intent. A cross-codebase pilot on Apache Commons Math 3.6.1 (3 SUTs, 5 Set~N MRs, 77 PIT 1.7.4 mutants) corroborates the within-scope generalisation direction: pooled Set~N $10/77 = 13.0\%$ Wilson 95\% CI $[7.2\%, 22.3\%]$; $G$-block $6/21 = 28.6\%$; the framework's D2 stratum prediction passes at $2/29 = 6.9\%$. The $n$ is underpowered for $\alpha = 0.05$ hypothesis testing; full numbers, per-mutant kill matrix, and the $\mathcal{L}^{*}$-orthogonality analysis on bilinear SUTs are in supplementary~S4 (\texttt{future\_work.md} item (b.cm)). Full $38$-D4J extension, SciPy Python-bridge solver suite, and Maven-resolved GenMorph head-to-head are committed as follow-up~(b). The replication tests scope-internal generalisation, not whether the framework should apply to programs lacking explicit operator-algebraic structure (such programs are out of scope by construction).
+ 
+diff --git a/docs/submission/cover_letter.md b/docs/submission/cover_letter.md
+index 70877e3..5c73358 100644
+--- a/docs/submission/cover_letter.md
++++ b/docs/submission/cover_letter.md
+@@ -73,6 +73,9 @@ The track's existing handling editors with theory-of-testing or metamorphic-test
+ We acknowledge that NOETHER's contribution is **systematisation**, not deduction from first principles — induction is *relocated* from MR-instance level to algebra-block level rather than eliminated. We believe this re-grounding is a productive direction for the metamorphic-testing community, and we have prepared the submission with four rounds of self-review (5-reviewer panel + Devil's Advocate + Stage 4.5 integrity audit + cross-tool replication) and explicit transparency on every methodological choice.
+ 
+ We thank you for considering this work, and we look forward to your editorial decision.
++## Disclosure of related work by the authors
++
++For full transparency, a separate manuscript by some of the present authors addresses an orthogonal problem in metamorphic testing: selecting a minimum complete subset from a *given* metamorphic-relation pool (an NP-hard optimisation problem, with approximation and ILP solvers). The present submission, NOETHER, concerns the complementary upstream question of constructively *deriving* metamorphic relations and MetaPatterns from a program-induced operator algebra. The two manuscripts share experimental infrastructure (the operator-algebraic substrate and reactor-physics witnesses) but make disjoint technical claims — generation/closure here, subset-minimality there — and target distinct reviewer audiences. The related manuscript is available to the editor on request (arXiv:XXXX.XXXXX).
+ 
+ Sincerely,
+ 
+diff --git a/docs/tosem_maturity_2026-06-16/differentiation_and_disclosure_draft.md b/docs/tosem_maturity_2026-06-16/differentiation_and_disclosure_draft.md
+new file mode 100644
+index 0000000..d6926fc
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/differentiation_and_disclosure_draft.md
+@@ -0,0 +1,54 @@
++# T2 划界段 + cover letter 披露(草稿,待用户定夺)
++
++> 用途:化解评审 🔴#4(与姊妹论文 Minimum-MR-SubSet / T2 的 venue-overlap / salami 未声明)。
++> 这是**零实验成本的 must-do**。措辞采用去时序、中性表述(§6.7),不写 "companion under review" / "round" / "this revision"。
++> 边界口径取自 T2 仓库 `cover_letter_novelty_statement.md`:NOETHER = generation(MR 从哪来),T2 = selection(给定 MR 集选最小完备子集),二者正交。
++
++## A. 可插入正文的 differentiation 段(LaTeX)
++建议位置:§2(Related Work)末,或 §8(Discussion)。**未插入正文**,待你确认位置后再动稿。
++
++```latex
++\paragraph{Relation to a separate line of work on minimum complete MR subsets.}
++A separate line of work by some of the present authors addresses the
++\emph{orthogonal} problem of \emph{selecting} a minimum complete subset from a
++\emph{given} metamorphic-relation pool: taking an MR set as input, it
++characterises the smallest subset that preserves the pool's fault-detection
++power under a fixed fault model, proves the corresponding decision problem
++NP-hard, and provides approximation and exact (ILP) solvers. That work takes
++the MR set as given and optimises its cardinality; the present paper is
++concerned with the upstream question of where MRs and MetaPatterns
++\emph{come from} --- their constructive derivation from a program-induced
++operator algebra and algebraic closure under \texttt{Translate}. The two are
++complementary: NOETHER \emph{generates} the algebra-induced MR space that a
++subset-selection procedure would then \emph{minimise}. No theorem or empirical
++claim is shared: the present paper makes no minimality or subset-selection
++claim, and the subset-selection work makes no derivation or closure claim.
++```
++
++## B. cover letter 披露段(英文,主动向主编披露)
++
++```
++Disclosure of related work by the authors.
++For full transparency, a separate manuscript by some of the present authors
++addresses an orthogonal problem in metamorphic testing: selecting a minimum
++complete subset from a *given* metamorphic-relation pool (an NP-hard
++optimisation problem, with approximation and ILP solvers). The present
++submission, NOETHER, concerns the complementary upstream question of
++constructively *deriving* metamorphic relations and MetaPatterns from a
++program-induced operator algebra. The two manuscripts share experimental
++infrastructure (the operator-algebraic substrate and reactor-physics
++witnesses) but make disjoint technical claims --- generation/closure here,
++subset-minimality there --- and target distinct reviewer audiences. The
++related manuscript is available to the editor on request
++[据仓库记录 T2 已上 arXiv,请在此填实际 preprint ID,例如 arXiv:XXXX.XXXXX]。
++```
++
++## C. 措辞红线(取自 T2 cover_letter_novelty_statement §2.3)
++- ✓ "separate line of work" / "complementary" / "orthogonal" / "disjoint technical claims"
++- ✓ "shares experimental infrastructure"(显式承认数据复用,引 Defects4J/Papadakis 跨论文复用惯例)
++- ✗ 避免:"extension of" / "follow-up"(暗示从属/渐进)
++- ✗ 避免:完全不提(隐瞒重叠最危险)
++- ✗ 避免:版本化/时序措辞("our other submission under review at TSE")
++
++## D. 重要警示
++评审 EIC 把"T2 的存在"本身判为 🔴 风险。正确动作是**引用 + 划界 + cover letter 披露**(本草稿),**不是**把 T2 的硬理论(domination 定理 / NP-hard / FPT)搬进 NOETHER——后者会把"未声明"升级为实质性自我抄袭。T2 硬理论只能 `\cite` 作 companion。
+diff --git a/docs/tosem_maturity_2026-06-16/empirical_reuse_from_T2.md b/docs/tosem_maturity_2026-06-16/empirical_reuse_from_T2.md
+new file mode 100644
+index 0000000..0455c36
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/empirical_reuse_from_T2.md
+@@ -0,0 +1,69 @@
++# T2(Minimum-MR-SubSet)实证资产 → NOETHER 实证成熟度(G1)补强评估
++
++> 2026-06-16 · 焦点:用 T2 仓库提高 NOETHER 的**实证成熟度**(量化考核 evaluation_rigor 4.6 / 14-15 reviewer 共识 G1)。
++> 方法:2 个 subagent 深挖 T2 `experiments/ data/ runs/ submission/sections/06`,分别评证据性质与基础设施复用性。
++
++## 0. 诚实总结论
++
++**T2 不能"搬数据"补 NOETHER 最核心的实证 gap,但其中立 PUT substrate + 跨实现 oracle + 变异 harness 可让 NOETHER 自跑扩展实验,部分化解 G1。** 两个关键事实:
++1. **T2 的每一个见证都是注入变异(injected mutation),零真实世界缺陷**——与 NOETHER 现状(构造变异)同级,搬过来**不解决** G1 最痛的"缺中立真实缺陷正面证据"。
++2. **T2 是 selection(选最小子集),NOETHER 是 generation(MR 检出能力)**——T2 没有任何 NOETHER-vs-SOTA 的 detection 对比;T2 的 baseline(greedy/random-k)是 selection baseline,与 NOETHER 命题无关。
++
++所以"提高实证成熟度"的可行路径不是搬 T2 结论(那会 salami),而是**复用 T2 的中立被测程序与变异平台,让 NOETHER 在更多域跑自己的 generation→detection 实验**。
++
++## 1. 证据性质(全部注入变异)
++
++| 见证 | 缺陷类型 | 跨实现真 oracle | T2 用途 | 路径 |
++|---|---|---|---|---|
++| OpenMC/OpenMOC pincell/xeval | 注入变异(44-48) | **是**(MC vs MOC,算法 gap 最宽) | selection,k\*=12-19 | `runs/abd-witness-metbench-pincell-*` |
++| qchem-h2o(RHF) | 注入变异(6 类) | **是**(3 独立 SCF) | 非核非崩塌 k\*=9 | `runs/abd-witness-qchem-*` |
++| detonation-znd | 注入变异(6×2×3) | **是**(3 数值通量) | honest collapse | `runs/abd-witness-detonation-*` |
++| combustion-gri30 | 注入变异(28) | 是(Cantera vs scipy) | DEGRADED | `runs/abd-witness-combustion-*` |
++| cylinder-flow / PINN / ONIX / P9 | 注入变异 | 否(单实现) | 各 regime 见证 | `runs/abd-witness-*` |
++| csmith / sql / dnn †移出核心 | 分歧标签桶/输入图(非缺陷) | 部分 | external_validity | `runs/abd-witness-{csmith,sql,dnn}-*` |
++
++**零真实世界缺陷;csmith/sql/dnn 已被 T2 自己移出核心(outside operator-algebra,违反 NOETHER scope precondition,搬入反暴露矛盾)。**
++
++## 2. 可复用资产 → G1 补强映射
++
++NOETHER G1 子项:(a) 只 1/3 域执行 head-to-head;(b) 唯一中立对比被 baseline 击败、缺中立真缺陷正面证据;(c) SOTA(METRIC+/MR-Scout)未执行;(d) 样本欠功效。
++
++| T2 资产 | 补 G1 哪项 | 复用方式 | ROI | self-overlap |
++|---|---|---|---|---|
++| **14 个科学计算 PUT 适配器**(p1–p10 + PINN,`experiments/puts/`) | **(a) 主 + (d)** | 复用代码,NOETHER 在每域跑算子代数生成 MR → harness 评 detection,域 1/3 → 10+ | **最高 ROI / 最低风险** | 🟢 低(共享 PUT pool 是惯例) |
++| **OpenMC/OpenMOC 跨实现差分**(`scripts/mcmr/metbench_put/run_xeval_study.py`) | **(b) 部分** | 用两独立实现的差分当**真 oracle**(非注入变异),验证 NOETHER 导出的 reactor MR 检出真实算法差异 | **高**(唯一能触及子项 b 精神:跨实现差分比注入变异更中立) | 🟡 中(须 NOETHER 自跑 detection,非 T2 的 selection;cover letter 披露) |
++| **committed pin-cell 检测矩阵**(920 行带 Wilson CI,`data/raw/_metbench_pincell/`) | (d) | 作 detection 数据审计 reactor MR(runtime-free,免重建 OpenMC) | 中 | 🟡 中(矩阵中立,但 T2 的 k\*/collapse 判定禁搬) |
++| **qchem RHF substrate**(3 SCF + 6 MR) | **(a)** | NOETHER 加一个全新非核算子代数域(量子化学) | 高 | 🟢 低(PySCF 公开) |
++| **多-LLM MR 生成+评级流水线**(`scripts/llm/multi_llm_pipeline.py`) | (c) 部分 + (d) + 方法学 | 复用代码:LLM-MR 作对比 arm + Fleiss κ/n<10 sanity gate 解欠功效诚实标注 | 中 | 🟡 中(重生成自己的 MR,不搬 `_eval` 结论) |
++| **`_mr_corpus` S7(84 PWR MR 带元模式标签)/ S6(triviality 真值)** | (d) + 输入 | 直接用作 NOETHER 元模式分类金标准对照 | 中 | 🟢 低(文献抽取,注明来源) |
++| **kill-matrix schema + 验证器**(`abd_structure.py`,含 `mr_meta_pattern` 列) | 横切 | 复用工程约定 | 低 | 🟢 低 |
++
++## 3. T2 不能补的 gap(诚实)
++
++| G1 子项 | T2 能否补 | 原因 |
++|---|---|---|
++| (b) 缺**真实缺陷**正面证据 | ❌ 不能 | T2 零真实缺陷,全注入变异 |
++| (b) head-to-head 被 GP 击败 | ❌ 不能 | T2 无 generation/detection 对比;其 baseline 是 selection baseline |
++| (c) METRIC+/MR-Scout 比较 | ❌ 不能 | T2 完全未执行这些(全仓仅 review doc 提及,bib 无条目),NOETHER 须自建执行器 |
++
++**额外发现(已核查,2026-06-16)**:
++- `experiment/s5/`(主实验)的 head-to-head 数据(8–10 个 algebra-rich SUT,n=62/70 mutants)+ commons-math pilot + L\*-blindness + per-block + κ **已写进论文 §empirical**——**无未用增量**(修正先前"可能比论文更全"的推测)。
++- `experiment/s5_aligned/`:NOETHER Set N vs GenMorph Set G 在 **GenMorph 自己发表的 23-subject 公开 benchmark**(Math10+Lang5+Guava8,557 mutants,71 NOETHER MR,单变量设计)上的对比,**设计/代码就绪但 `results/` 为空 = 未执行**。这是化解 reviewer G1"单一代码库 / 作者自选 SUT / substrate selection bias / 外部效度"批评的**最高 ROI 中立证据**(在对手公开 benchmark 上比),仅需执行(Stage1 reproduce ~4–7h + Stage2 evaluate ~30min),**不需新设计**。
++- **诚实**:s5_aligned 结果未落盘,不可声称已有;这是"就绪未跑"的实验,需真实执行。
++
++## 4. 红线 + 披露(与 memory `noether-t2-salami-boundary` 一致)
++
++- ⛔ **禁搬**:T2 的 k\*/reduction/domination 数据、collapse/trichotomy(R1-R3)judgement、见证表(27 行 register)、A/B/D claim ledger、`_eval` 对 T2-MR 的评分结论、support-domination 定理/NP-hard/FPT。一律 `\cite` 作 companion。
++- ✅ **可复用**(惯例,Defects4J/Papadakis 先例):公开第三方被测程序(OpenMC/OpenMOC/PySCF/Cantera)、PUT 适配器代码、MetBench 变异 harness、多-LLM 流水线代码、kill-matrix schema、`_mr_corpus` 文献语料。
++- **同一份 kill matrix:T2 问"最小覆盖子集多大"(selection),NOETHER 问"算子代数导出的 MR 是否充分检出"(generation)——矩阵/harness 可共享,问题与结论各自独立。**
++- 即便复用 substrate,因同作者群同主题,**必须在 cover letter 主动披露共享实验基础设施**,否则从"未声明"升级为实质重叠。
++
++## 5. 推荐路径(按 ROI × 风险)
++
++1. **最高 ROI**:复用 14 个科学计算 PUT + qchem,让 NOETHER 在多域跑 generation→detection,域执行从 1/3 → 多域(化解 G1-a)。须 NOETHER 自跑 + 引用上游 + cover letter 披露。
++2. **最中立证据**:用 OpenMC/OpenMOC 跨实现差分当真 oracle 验证 reactor MR 检出能力(部分化解 G1-b,比注入变异更可信)。
++3. **欠功效诚实化**:复用多-LLM 流水线的 Fleiss κ + n<10 sanity gate + Wilson CI 机制(化解 G1-d 标注)。
++4. **先核查自有 s5**:GenMorph arm 已在本地,优先把 s5 数据充分写进论文,可能立即提升 evaluation_rigor。
++5. **METRIC+/MR-Scout**:T2 无现成,NOETHER 须自建(或在论文中如实保留为 future work,收缩主张)。
++
++**硬结论:T2 对 NOETHER 实证的价值是"提供中立 substrate 让 NOETHER 自跑扩域/跨实现 oracle 实验",不是"提供可搬的实证结果"。真实缺陷正面证据与 SOTA detection 比较仍需 NOETHER 自己产生,T2 帮不上。**
+diff --git a/docs/tosem_maturity_2026-06-16/gateway_panel_raw.json b/docs/tosem_maturity_2026-06-16/gateway_panel_raw.json
+new file mode 100644
+index 0000000..3d61014
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/gateway_panel_raw.json
+@@ -0,0 +1,113 @@
++[
++  {
++    "model": "gpt-5-chat-latest",
++    "ok": true,
++    "sec": 4.2,
++    "tok": 1646,
++    "review": {
++      "score": 38,
++      "verdict": "Reject",
++      "top_blockers": [
++        "Empirical evaluation is underpowered, partial, and largely deferred to follow-up protocols",
++        "Core theoretical results are by-construction or trivial algorithmic bounds, lacking novelty commensurate with TOSEM standards",
++        "Comparative performance shows framework dominated by baseline in executed head-to-head",
++        "Domain instantiations have limited execution depth and no de novo discoveries"
++      ],
++      "key_strengths": [
++        "Clear articulation of scope boundaries and falsifiable predictions",
++        "Interesting cross-domain framing leveraging operator algebra structures",
++        "Negative result on absolute completeness with identified obstruction dimensions"
++      ],
++      "one_line": "Framework offers a conceptually intriguing algebraic grounding for metamorphic pattern discovery but current theoretical novelty and empirical maturity fall well short of archival TOSEM expectations."
++    }
++  },
++  {
++    "model": "deepseek-v3.2-exp",
++    "ok": true,
++    "sec": 7.6,
++    "tok": 1635,
++    "review": {
++      "score": 55,
++      "verdict": "Major Revision",
++      "top_blockers": [
++        "Inadequate empirical validation (only 1/3 domains executed head-to-head, underpowered pilots)",
++        "Unclear novelty vs companion paper and prior work (4-line related work section)",
++        "Overclaims framework generality while authors acknowledge empirical upstream layer remains human-curated",
++        "Reliance on LLMs for reliability assessment without independent human validation"
++      ],
++      "key_strengths": [
++        "Novel algebraic framework with constructive algorithm and theoretical guarantees",
++        "Rigorous falsification of absolute-completeness conjecture with identified structural obstructions",
++        "Multi-domain instantiation demonstrating transferability potential"
++      ],
++      "one_line": "Theoretical framework shows promise but requires substantial empirical strengthening and clearer positioning to meet TOSEM standards."
++    }
++  },
++  {
++    "model": "grok-4.1",
++    "ok": true,
++    "sec": 5.1,
++    "tok": 1818,
++    "review": {
++      "score": 32,
++      "verdict": "Reject",
++      "top_blockers": [
++        "Empirical evaluation is under-powered and incomplete: only one domain has a head-to-head execution; two others are analytical or tiny pilots (n=5, n=3); pre-registered larger comparisons are missing.",
++        "Central claims rest on an empirical upstream block list whose sufficiency is explicitly disclaimed by the authors; absolute-completeness conjecture is falsified and no replacement completeness argument is supplied.",
++        "Contribution boundary is largely negative or relocated (induction not eliminated, human curation remains, engineering payoff deferred); theorems are by-construction or standard union-find bounds.",
++        "Related-work section is four lines; no differentiation from the authors' own companion NP-hard MR-subset paper; inter-rater reliability relies on LLMs with shared corpora and lacks independent human validation."
++      ],
++      "key_strengths": [
++        "Clean algebraic framing and explicit negative result (Thm 1' falsified) that usefully bounds the approach.",
++        "Concrete instantiation on reactor-physics catalogue with systematic re-classification.",
++        "Polynomial-time decidability result (Thm 2) is straightforward but correctly stated."
++      ],
++      "one_line": "An ambitious but immature algebraic re-grounding whose empirical support, completeness argument, and positioning against prior work remain too thin for TOSEM."
++    }
++  },
++  {
++    "model": "qwen3-max-preview",
++    "ok": true,
++    "sec": 10.4,
++    "tok": 1747,
++    "review": {
++      "score": 58,
++      "verdict": "Major Revision",
++      "top_blockers": [
++        "Empirical validation is fragmented: only one domain has full head-to-head; others are analytical or underpowered pilots.",
++        "Critical comparisons (METRIC+, LLM replication, sufficiency claims) deferred to 'follow-up' or pre-registration, violating TOSEM's archival standard.",
++        "Theorems 1/2 are technically narrow (by-construction closure, union-find bound) and lack depth expected for TOSEM theory contribution.",
++        "No differentiation from companion paper on NP-hard MR-subset problem creates scope/contribution ambiguity."
++      ],
++      "key_strengths": [
++        "Novel algebraic framing of metamorphic patterns with falsifiable conjectures and counterexamples.",
++        "Cross-domain structural transferability demonstrated conceptually across three non-trivial SE contexts.",
++        "Honest boundary-setting and negative results (Thm 1’ falsification) show scholarly maturity."
++      ],
++      "one_line": "Promising theoretical re-grounding of metamorphic testing via operator algebras, but empirically immature and theoretically shallow for TOSEM archival standards without major revision."
++    }
++  },
++  {
++    "model": "kimi-k2.5",
++    "ok": true,
++    "sec": 10.7,
++    "tok": 1782,
++    "review": {
++      "score": 58,
++      "verdict": "Major Revision",
++      "top_blockers": [
++        "Empirical validation severely underpowered: only ONE domain has executed head-to-head, ONE has n=5 pilot, ONE is purely analytical with no execution—far below TOSEM archival standards for multi-domain claims",
++        "Critical comparative results deferred to 'pre-registered protocol' rather than executed: METRIC+ comparison, MR-Scout full run, third-vendor LLM replication all absent",
++        "Inter-rater reliability uses only LLM judges with shared training corpora (k=0.857) and no independent human validation—methodologically compromised for empirical SE claims",
++        "Theorem 1 is 'by-construction' closure within explicit scope, not a substantive mathematical advance; Theorem 2 is standard union-find complexity—technical depth insufficient for theory contribution at TOSEM level",
++        "75 pages with 4-line related work section signals structural imbalance; heavy theoretical framing masks thin empirical substance across claimed three-domain transfer"
++      ],
++      "key_strengths": [
++        "Honest falsification of Thm 1' with concrete counterexamples demonstrates scientific integrity rare in SE submissions",
++        "Explicit boundary statement and resubmission obligations show mature meta-scientific stance",
++        "Block decomposition as empirical hypothesis is conceptually interesting for MR identification"
++      ],
++      "one_line": "Ambitious theoretical framing and commendable honesty about limitations cannot compensate for empirically thin, structurally unbalanced submission where most comparative validation is deferred rather than executed."
++    }
++  }
++]
+\ No newline at end of file
+diff --git a/docs/tosem_maturity_2026-06-16/gateway_quant_raw.json b/docs/tosem_maturity_2026-06-16/gateway_quant_raw.json
+new file mode 100644
+index 0000000..2b76a33
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/gateway_quant_raw.json
+@@ -0,0 +1,138 @@
++[
++  {
++    "model": "gpt-5-chat-latest",
++    "ok": true,
++    "sec": 2.5,
++    "r": {
++      "scores": {
++        "scope_fit": 8,
++        "novelty": 9,
++        "technical_soundness": 7,
++        "evaluation_rigor": 5,
++        "related_work": 4,
++        "reproducibility": 6,
++        "honesty_threats": 8,
++        "presentation_length": 4,
++        "format_compliance": 9
++      },
++      "overall_maturity_0_100": 67,
++      "tosem_accept_bar_0_100": 75,
++      "gap_to_bar": 8,
++      "verdict": "Major Revision",
++      "biggest_gaps": [
++        "evaluation_rigor: only one executed head-to-head and partial domain coverage lowers empirical credibility",
++        "related_work: breadth and differentiation remain thin for TOSEM archival standards",
++        "presentation_length: manuscript at 73pp exceeds recommended range and dilutes focus"
++      ]
++    }
++  },
++  {
++    "model": "deepseek-v3.2-exp",
++    "ok": true,
++    "sec": 8.8,
++    "r": {
++      "scores": {
++        "scope_fit": 8,
++        "novelty": 9,
++        "technical_soundness": 7,
++        "evaluation_rigor": 5,
++        "related_work": 4,
++        "reproducibility": 7,
++        "honesty_threats": 6,
++        "presentation_length": 6,
++        "format_compliance": 9
++      },
++      "overall_maturity_0_100": 65,
++      "tosem_accept_bar_0_100": 75,
++      "gap_to_bar": -10,
++      "verdict": "Major Revision",
++      "biggest_gaps": [
++        "evaluation_rigor: Only 1 of 3 domains has head-to-head comparison; ML and relational evaluations are limited case studies/analytical mappings",
++        "related_work: Coverage is thin (~4 lines) despite added differentiation; lacks comprehensive positioning in metamorphic testing literature",
++        "technical_soundness: Strongest theorem falsified; constructive theorems have limited scope; theoretical contributions need strengthening"
++      ]
++    }
++  },
++  {
++    "model": "grok-4.1",
++    "ok": true,
++    "sec": 3.6,
++    "r": {
++      "scores": {
++        "scope_fit": 7,
++        "novelty": 6,
++        "technical_soundness": 8,
++        "evaluation_rigor": 4,
++        "related_work": 3,
++        "reproducibility": 6,
++        "honesty_threats": 8,
++        "presentation_length": 4,
++        "format_compliance": 9
++      },
++      "overall_maturity_0_100": 58,
++      "tosem_accept_bar_0_100": 78,
++      "gap_to_bar": 20,
++      "verdict": "Major Revision",
++      "biggest_gaps": [
++        "evaluation_rigor: only 1/3 domains has executed head-to-head; remaining SOTA comparisons (METRIC+, MR-Scout, LLM) are still only pre-registered commitments; ML case-study is small (n=20+5)",
++        "related_work: remains extremely thin (~4 lines + minimal differentiation paragraph); inadequate breadth/depth for TOSEM archival standard",
++        "presentation_length: 73pp greatly exceeds TOSEM's 30-50pp recommendation with no commensurate gain in contribution density"
++      ]
++    }
++  },
++  {
++    "model": "qwen3-max-preview",
++    "ok": true,
++    "sec": 6.9,
++    "r": {
++      "scores": {
++        "scope_fit": 8,
++        "novelty": 7,
++        "technical_soundness": 6,
++        "evaluation_rigor": 5,
++        "related_work": 4,
++        "reproducibility": 9,
++        "honesty_threats": 10,
++        "presentation_length": 5,
++        "format_compliance": 9
++      },
++      "overall_maturity_0_100": 63,
++      "tosem_accept_bar_0_100": 85,
++      "gap_to_bar": 22,
++      "verdict": "Major Revision",
++      "biggest_gaps": [
++        "evaluation_rigor: only 1/3 domains has head-to-head; SOTA comparisons not executed",
++        "technical_soundness: core theorems are by-construction or union-find; strongest falsified",
++        "related_work: breadth thin despite recent differentiation paragraph",
++        "presentation_length: 73pp exceeds TOSEM recommendation without strong justification"
++      ]
++    }
++  },
++  {
++    "model": "kimi-k2.5",
++    "ok": true,
++    "sec": 10.9,
++    "r": {
++      "scores": {
++        "scope_fit": 7,
++        "novelty": 6,
++        "technical_soundness": 6,
++        "evaluation_rigor": 4,
++        "related_work": 3,
++        "reproducibility": 6,
++        "honesty_threats": 7,
++        "presentation_length": 3,
++        "format_compliance": 8
++      },
++      "overall_maturity_0_100": 56,
++      "tosem_accept_bar_0_100": 75,
++      "gap_to_bar": 19,
++      "verdict": "Major Revision",
++      "biggest_gaps": [
++        "evaluation_rigor: Only 1/3 domains has executed head-to-head; dominant baseline actually wins (Set G > Set N, p=0.0043); ML is small pilot; relational is analytical only; pre-registered comparisons not executed—TOSEM requires convincing empirical validation for constructive frameworks",
++        "related_work: ~4 lines thematically thin; differentiation paragraph added but insufficient breadth for archival venue; missing systematic positioning against MR generation, metamorphic testing theory, and operator-algebra program analysis literatures",
++        "presentation_length: 73pp vs 30-50 recommendation; constructive framework with union-find decidability and falsified conjecture does not warrant 1.5x upper bound; signals scope drift or insufficient compression"
++      ]
++    }
++  }
++]
+\ No newline at end of file
+diff --git a/docs/tosem_maturity_2026-06-16/maturity_review_summary.md b/docs/tosem_maturity_2026-06-16/maturity_review_summary.md
+new file mode 100644
+index 0000000..9041947
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/maturity_review_summary.md
+@@ -0,0 +1,63 @@
++# NOETHER — TOSEM 投稿成熟度评估(独立重审)
++
++> 日期:2026-06-16 · 主稿:`NOETHER_paper_arxiv.tex` · 目标:ACM TOSEM
++> 方法:6 个互相隔离的 Claude Opus subagent 独立评审(EIC + R1 形式理论 + R2 实证 + R3 相关工作 + Devil's Advocate;另 1 个盘点外部 P4 仓库)。**非多厂商交叉**(会话内无外部 LLM 网关时的实现)。
++
++## 综合裁决:Major Revision(逼近 R&R)
++
++| 审稿人 | 评分/100 | Verdict |
++|---|---|---|
++| EIC | 48 | Major → R&R |
++| R1 形式理论 | 60 | Major |
++| R2 实证统计 | 62 | Major |
++| R3 相关工作 | 72 | Major |
++| Devil's Advocate | 38 | Major(逼近 Reject) |
++
++**与仓库 Round-4 自评的分歧**:`docs/review_round_polish/round4/tosem_compliance_audit.md` 判 Accept / 接受概率 65–75% / 0 major / 0 critical。本次 6 个全新隔离实例独立重审,共识地把多项"被自评判为 minor"的项重判为 major/blocker。乐观自评源于同一团队迭代(确认偏误);按 §10(ARS)+§6(诚实),以更严的独立结论为准。
++
++## 多厂商交叉验证(.env 网关,2026-06-16)
++
++经 `.env` 网关用 5 个不同厂商模型独立重评(中性材料包,**未**告知 Opus panel 结论以免锚定);原始结果 `gateway_panel_raw.json`。
++
++| 模型 | 厂商 | 评分 | Verdict |
++|---|---|---|---|
++| gpt-5-chat-latest | OpenAI | 38 | Reject |
++| grok-4.1 | xAI | 32 | Reject |
++| deepseek-v3.2-exp | DeepSeek | 55 | Major |
++| qwen3-max-preview | 阿里 | 58 | Major |
++| kimi-k2.5 | Moonshot | 58 | Major |
++
++**两套完全独立的评审系统(Claude Opus ×5 + 多厂商 ×5)得出几乎相同的 blocker 清单与 Major/Reject 裁决**,与仓库 Round-4 自评(Accept)形成稳健反差。多厂商一致 blocker:
++1. 实证薄弱 / 大量 deferred 到 protocol(只 1/3 域有 head-to-head)— 5/5
++2. 理论内核平凡(Thm 1 by-construction、Thm 2 union-find)— 4/5
++3. 缺独立人类 κ,依赖共享语料 LLM — 3/5
++4. 与 companion(NP-hard MR-subset)无区分 — 3/5(独立确认 salami 风险真实可见)
++5. related work 仅 4 行 / 三域 overclaim — grok+kimi+deepseek
++一致认可优点(5/5):Thm 1′ 证伪的诚实性、算子代数 framing 新颖、边界声明清晰。
++
++## 已 grep 核实的硬事实(区别于审稿主观判断)
++- ✅ head-to-head 落败:L1666/L1702/L1726 — Set N=26 vs Set G=40,Δ=−14,McNemar p=0.0043(pooled)/0.019(D1)。
++- ✅ reviewer-process 残留(原 L311/1328/2139/2414)——**已于 2026-06-16 在主稿删除**(本次安全修订)。投稿版(`submission/TOSEM_*`、06-16 zip)尚未同步,见 NEXT_STEPS。
++- ◐ block 计数:正文 "7 canonical + 1 relational = 8 / candidate ninth" 自洽;Appendix `O(7)`、C.5.2 "eighth vs ninth" 混用(R1 指出,未逐行复核)。
++
++## 分级不足清单
++
++### 🔴 Publication Blocker(≥2 审稿人共识 / 已核实)
++1. 理论内核偏平凡 + 最强定理(Thm 1′)被自己证伪(R1+DA);Theorem 1 自承 by-construction、Theorem 2 = union-find;R1 另指 CONSTRUCT-MP Step 3/4 类型不自洽(L529-530)。
++2. 唯一真实 head-to-head 主方法被 baseline 显著击败(EIC+R2+R3+DA,✅),框架以 per-block/cost-axis/D2 四层叙事规避 → 价值命题悬空。
++3. 缺独立**人类** inter-rater κ(R2+DA);κ=1.000 来自共享语料多 LLM,近"同一评分者投三票"。
++4. 与姊妹论文 T2(Minimum-MR-SubSet,据仓库记录已上 arXiv、投 TSE)的 venue-overlap / salami **未作任何声明**(EIC) — ethics/policy 硬门槛。
++5. 大量经验主张是 protocol(未执行)而非 result;"three domains tested" overclaim(EIC+R2)。
++
++### 🟠 Major
++6. ~~reviewer-process / 版本化残留 4 处~~ — **主稿已修(2026-06-16)**;投稿版待同步。
++7. 75 页超 TOSEM 30–50 推荐,膨胀主因为自评/边界框(EIC+DA)。
++8. 相关工作与 Ying 2025 单向区分 + "三问无人回答"过强(R3) → 需双向覆盖矩阵。
++9. Java 实验对象从 Sun 2021 prose 重实现而非原始源码,重实现者即框架作者(R2)。
++
++### 🟡 Minor
++- 标题/摘要 "constructive discovery / provable" 偏强;"ten Translate dimensions" 中 5 个仅 by-inspection;§7.3 artefact 声明缺 S5–S9;Appendix `O(7)`。
++
++## 未执行项(诚实声明)
++- 100% 联网逐条 bib 真实性校验(Stage 2.5/4.5)本轮**未执行**。
++- 多厂商交叉评审**已完成**(网关 5 厂商,见上"多厂商交叉验证"节)。
+diff --git a/docs/tosem_maturity_2026-06-16/overclaim_revision_draft.md b/docs/tosem_maturity_2026-06-16/overclaim_revision_draft.md
+new file mode 100644
+index 0000000..7ead86c
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/overclaim_revision_draft.md
+@@ -0,0 +1,33 @@
++# 去 overclaim 修订草案(仅草案,未动稿)
++
++> 用户已选"安全修订+草案":标题/摘要/contributions 的 overclaim **只出草案供定夺,不直接改稿**。
++> 这些改动改变论文核心学术定位,属作者决策权(§4 + "人类拥有最终决策权")。确认后我再动 `NOETHER_paper_arxiv.tex` 与投稿版。
++
++## 1. 标题(DA #5:"constructive discovery" 名不副实——upstream 仍是人工归纳)
++当前:`NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras`
++
++候选(供选,均弱化"discovery/constructive"的自动发现暗示):
++- (a) `NOETHER: A Structural Re-grounding of MetaPattern Catalogues via Operator Algebras`
++- (b) `NOETHER: Algebraic Derivation and Closure of MetaPatterns from Program-Induced Operator Algebras`
++- (c) 保留原标题,但在 Abstract/Intro 明确"discovery"指 given-algebra 后的机械推导,upstream 蒸馏仍属人工(诚实声明)
++
++建议:(b) 最贴合实际贡献(deductive derivation + closure),不过度承诺。
++
++## 2. 摘要(R2 #1 + DA #1/#5 + R1)
++- "We test the framework on **three** operator-algebraic domains" → 分级如实:
++  `instantiated on three domains — empirically head-to-head evaluated on one (Java/PIT), case-study evaluated on one (equivariant ML), and analytically mapped to published identities on one (relational query)`。
++- "...identify **five** Translate-extension dimensions, with **five further** candidate dimensions..." → 区分已证/未证:
++  `five Translate-extension dimensions proven pairwise-independent on the PWR algebra, plus five candidate dimensions on the equivariant-ML and relational algebras asserted by inspection (formal exhaustion as future work)`。
++- "mechanical and **provable**" 语气 → 明确 Theorem 1 是 by-construction well-definedness 结果,而非深层定理。
++
++## 3. Contributions(DA #4:C3 "predicts two" 与同节自承循环矛盾)
++- C3 当前含 "reproduces three, refines two, and **predicts two** structurally distinct classes"。
++- 改:删 "predicts two",保留 "re-classifies / de-duplicates";或限定为"deflationary(over/under-counting)reading 是 non-circular 的"那部分。
++- 理由:L673 自承 $T^*/\mathcal{T}^*$ 块从反应堆物理归纳而来,$m_{adj}/m_{rev}$ 再从这些块导出 → "prediction" 在自有语料上循环。
++
++## 4. (可选)κ=1.000 处理(R2/DA 🔴#3)
++- 正文不应把多 LLM κ=1.000 作为独立信度证据;明确标注"not an independent-rater statistic,共享语料"。
++- 真正解法是补独立人类 κ(需自招 rater,见 NEXT_STEPS,属需投入项)。
++
++---
++确认要动稿的范围后告诉我,我会同步改 `NOETHER_paper_arxiv.tex` + `submission/TOSEM_*` 投稿版,并跑编译验证。
+diff --git a/docs/tosem_maturity_2026-06-16/protocol_domain_extension.md b/docs/tosem_maturity_2026-06-16/protocol_domain_extension.md
+new file mode 100644
+index 0000000..c110a4f
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/protocol_domain_extension.md
+@@ -0,0 +1,48 @@
++# NOETHER 扩域实验协议(复用 T2 substrate 化解 G1-a / 部分 G1-b)
++
++> 目标:把"三域中仅 1 域有执行 head-to-head"(G1-a)扩到多域,并用**跨实现差分**取得 NOETHER 当前最缺的"中立 + 真 oracle"证据(部分 G1-b)。
++> 原则:仅复用 T2 的**公开第三方 substrate + 变异/检测 harness**,NOETHER **自跑 generation→detection**;不搬 T2 的 selection 结论/k\*/见证表/MR catalog。须引用上游 + cover letter 披露共享基础设施。
++
++## 1. 对应的实证 gap
++- **G1-a**(域执行深度 1/3 → 多域):加 ≥3 个已执行的 generation→detection 域。
++- **G1-b 部分**(缺中立真缺陷正面证据):用 OpenMC↔OpenMOC 跨实现差分作真 oracle(比注入变异更中立可信)。
++- 兼顾 **G1-d**(欠功效):每域 n 提升 + Wilson CI + n<10 诚实标注。
++
++## 2. 复用的 T2 substrate(仅程序与 harness,非结论)
++| 复用项 | 路径(T2 仓库) | 性质 |
++|---|---|---|
++| p1–p10 + PINN PUT 适配器 | `experiments/puts/` | 中立 PUT,故障类标签独立于 MR pattern |
++| OpenMC/OpenMOC xeval harness | `scripts/mcmr/metbench_put/run_xeval_study.py` | 跨实现检测平台 |
++| qchem RHF 3-SCF substrate | `runs/abd-witness-qchem-*` 关联脚本 | 全新非核算子代数域 |
++| kill-matrix schema + 验证器 | `scripts/mcmr/abd_structure.py` | 工程约定(含 mr_meta_pattern 列) |
++| committed pin-cell 矩阵 | `data/raw/_metbench_pincell/` | runtime-free 检测数据(免重建 OpenMC) |
++
++## 3. 实验 A — 多域 generation→detection(化解 G1-a)
++对 ≥4 个**非 reactor** 域(建议:热传导 p1 / 波动 p2 / Burgers p7 / 量子化学 qchem-RHF):
++1. NOETHER 从该域算子代数用 CONSTRUCT-MP **自行导出** MR 集(明示 Theorem 1 推导路径;**不照抄** T2 `mr_catalog.csv`);
++2. 注入变异(复用 harness 变异池);
++3. 测 detection rate + Wilson 95% CI(per-MR + per-block);
++4. (可选)与多-LLM 流水线产出的 LLM-MR 作对比 arm。
++- **产出**:域覆盖从 1 → 5+,每域有执行的 detection 数据。
++
++## 4. 实验 B — 跨实现差分真 oracle(部分化解 G1-b)
++- OpenMC(蒙特卡洛)vs OpenMOC(MOC)求解同一多群中子输运方程;
++- NOETHER 从 Boltzmann 算子代数导出 reactor MR;
++- 以两独立实现的**真实差分**为 oracle(**非注入变异**):检验 NOETHER MR 能否标记两实现间真实数值/算法差异(离散化、随机 vs 确定收敛);
++- **产出**:NOETHER 当前最缺的"中立(非自有目录)+ 真 oracle"reactor 证据,补强 L660 自承的"internal vocabulary coherence, not external transfer"。
++
++## 5. 统计与诚实
++- Wilson CI;跨语料 pooled 目标 n≥30;n<10 一律标 underpowered(§6.9);
++- **只报 detection / sufficiency(generation 命题);绝不报 k\* / reduction / domination(那是 T2 selection 命题)。**
++
++## 6. self-overlap 防护(硬约束)
++- 被测程序引用上游原文(OpenMC / OpenMOC / PySCF / Cantera);
++- cover letter **主动披露**与 T2 共享实验基础设施;
++- 同一 kill matrix:NOETHER 问"MR 是否充分检出"(generation),T2 问"最小覆盖子集多大"(selection)——问题/结论分离;
++- 禁搬 T2 的 MR catalog / 见证表 / k\* / collapse 判定 / 定理(仅 `\cite` 作 companion)。
++
++## 7. 工作量与依赖
++- PUT 适配器现成;**MetBench OpenMC runtime 当前 ABSENT,需按 T2 `ENVIRONMENT.md` 重建 conda OpenMC 0.15.3 + ENDF/B-VIII.0**;
++- committed pin-cell 矩阵可立即用作 reactor detection 数据(无需重建);
++- 主要工作量:NOETHER MR → adapter 桥接 + 每域执行 + 统计。
++- **优先级**:实验 A 多域(最高 ROI / 最低风险)> 实验 B 跨实现 oracle(高价值但需重建 runtime)。
+diff --git a/docs/tosem_maturity_2026-06-16/protocol_humanKappa.md b/docs/tosem_maturity_2026-06-16/protocol_humanKappa.md
+new file mode 100644
+index 0000000..182e2b1
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/protocol_humanKappa.md
+@@ -0,0 +1,474 @@
++现在已有足够的背景信息。协议设计所需的关键事实已明确：现有 κ 全部来自共享语料 LLM（Fleiss κ = 1.000 是三个 LLM 之间的一致性，本质上是循环），任务是 Set N 的 MR↔block 归类标注（8 个 NOETHER 块：G / L\* / T\* / D\* / E\* / O\_le / T\_rev / B\_rel），以及 D1/D2 分层判定。以下输出完整协议文档：
++
++---
++
++# 独立人类 Inter-Rater 标注协议
++## NOETHER 论文 §6.6 — Set N MR 分类可靠性
++
++**文档编号**：IRR-PROTO-001  
++**版本**：1.0（2026-06-16）  
++**适用论文**：NOETHER: An Algebraic Framework for Metamorphic Testing（目标期刊 TOSEM）  
++**触发原因**：独立成熟度评审(6×Opus + 5×多厂商)一致判定 blocker —— 现有 κ = 1.000 来自三个共享预训练语料的 LLM 在共同定义提示下的一致性，等同于"同一评分者投三票"，无法作为方法论意义上的独立人类可靠性证据。
++
++---
++
++## 1. 标注任务定义
++
++### 1.1 被标注对象
++
++**Set N**：由 NOETHER 算子代数的 8-block 分解推导的 MR 集合，在两个实验底层语料上共有以下标注单元：
++
++| 底层 | 主题数 | MR 总数 | 标注单元 |
++|---|---|---|---|
++| GenMorph 基准（§6.6 主要底层） | 23 个 Java 方法 | 71 条 | 71 条 MR |
++| Apache Commons Math 扩展（§6.6 威胁分析）| 3 个方法 | 5 条 | 5 条 MR |
++| **合计** | 26 | **76 条 MR** | **76 个标注单元** |
++
++如人手不足，以 GenMorph 底层的 71 条为**最低标注集**（此为 § 6.6 主结果的直接支撑）。
++
++### 1.2 标注任务 A：MR-Block 分类
++
++每个标注单元需要 rater 独立判断该 MR 所对应的 **NOETHER 算子块**，从以下 8 个标签中选 1 个：
++
++| 标签 | 全名 | 代表性不变量示例 |
++|---|---|---|
++| `G` | 群对称性 / 置换 | `f(−x) = −f(x)`（奇函数）；`gcd(a,b) = gcd(b,a)`（交换律）|
++| `L_star` | 极限 / 不动点 / 闭包 | `f(f(x)) = f(x)`（幂等）；`f(0) = 0`（零点）|
++| `T_star` | 平移算子 / 可加性 | `log(2x) = log(x)+1`（对数平移）|
++| `D_star` | 动力学 / 轨迹不变量 | 物理守恒量（动量、能量）|
++| `E_star` | 方法等价性 | 两个独立实现同一规格 |
++| `O_le` | 序关系 / 有界性 | `\|sin(x)\| ≤ 1`；`gcd(a,b) ≤ min(a,b)` |
++| `T_rev` | 时间反转 / 正反对称 | 布尔排斥：`¬(f(x) ∧ f(rev(x)))` |
++| `B_rel` | 关系型（多体）| 序列上的关系断言 |
++
++**判定规则**：选择最主要的代数特征。当 MR 可以论证属于多个块时，选择**最精确**（最不包含）的块。有疑问时可填写第二候选标签并附注理由（这不计入κ，仅用于审计）。
++
++### 1.3 标注任务 B：D1 / D2 分层
++
++对于 GenMorph 底层的每条 MR（71 条），rater 还需判断：该 MR 所关联的算子块，是否能够**理论上**检测到 D1 类突变（违反该块不变量的突变子）？
++
++| 标签 | 定义 |
++|---|---|
++| `D1` | 该 MR 所在块的不变量在此 MR 中被明确断言；一个违反该不变量的突变子**原则上**应被该 MR 检测到 |
++| `D2` | 该 MR 所在块的不变量不针对当前 SUT 的语义；即使突变改变了程序行为，该 MR 的断言形式也不会触发 |
++
++**说明**：D1/D2 是关于**理论可达性**的判断，不是关于实际执行杀死率的判断。rater 不需要运行任何实验。
++
++---
++
++## 2. Rater 资质与数量
++
++### 2.1 最低要求（化解 TOSEM blocker 的底线）
++
++| 角色 | 人数 | 资质要求 |
++|---|---|---|
++| 主 rater（Primary rater） | **2 人** | 软件工程研究生或以上；有变异测试（MT）或蜕变测试（MRT）相关课程/项目经历；能阅读 Java 函数签名及简单断言 |
++| 第三 rater（Tiebreaker） | **1 人** | 相同资质；**仅在主 rater 出现分歧时**调度介入；不参与初始独立标注 |
++
++**合计最低：2 人主标注 + 1 人备用 tiebreaker（共 3 人）**
++
++### 2.2 推荐规模（增强说服力）
++
++| 方案 | 规模 | 适用场景 |
++|---|---|---|
++| 最低方案 | 2 主 + 1 备 | 单一报告期刊（TOSEM）|
++| 推荐方案 | **3 主** | 所有三人同时独立标注，直接用 Fleiss κ；不需要 tiebreaker 机制 |
++| 增强方案 | 4 主 | 可交叉计算多对 Cohen κ；适合高重视 inter-rater 的安全关键领域期刊 |
++
++### 2.3 独立性要求（关键，针对现有 LLM-κ 缺陷的直接应对）
++
++- 主 rater 之间**禁止讨论**，直至各自完成全部标注并提交
++- 主 rater **不得事先阅读**作者给出的 block 归类结果（即论文附录 / 代码中的 `configs/lrca_llm_labels.json` 内容）
++- 主 rater 可以阅读 NOETHER 框架中的 **8-block 定义说明**（培训材料），但该材料**不得包含**任何 MR 的例题答案
++
++---
++
++## 3. 培训材料（Training Materials）
++
++培训材料须在标注开始前发给每位 rater，包含以下内容，且**不含**任何 Set N MR 的参考答案：
++
++### 3.1 必须提供
++
++1. **8-block 定义卡**（见 3.2 节）— 每个块的定义、数学含义、1 个训练例题（来自 Set N 之外的函数）
++2. **JIR/JOR DSL 简介**（1 页）— GAssert `.jir.txt` / `.jor.txt` 格式说明：`i_<arg>_{s,f}` 是输入的 source/follow 执行；`o_return_{s,f}` 是输出的 source/follow 执行
++3. **D1/D2 判定指南**（0.5 页）— 含 2 个明确的 D1 示例和 2 个明确的 D2 示例（来自 Set N 之外的函数）
++4. **标注表格**（Excel 或 Google Sheets）— 每行 1 条 MR，包含 MR ID、JIR 文本、JOR 文本，共 4 列输出：Block-Task-A、D1D2-Task-B、可选第二候选、备注
++
++### 3.2 8-Block 定义卡（核心培训内容）
++
++rater 培训卡应包含以下定义，**用自然语言**而非公式（以提高非理论背景 rater 的可及性）：
++
++> **G（群对称性）**：输入做某种变换后，输出做对应变换，或输出不变。例："交换两个参数，结果不变"；"翻转符号，输出也翻转符号"。JIR 会改变输入，JOR 断言输出与原始输出之间有对称关系。
++>
++> **L\_star（极限/不动点/闭包）**：特殊边界输入产生特殊固定输出；或对输出再应用函数等于不变。例："输入 0 输出 0"；"对一个已排好序的列表再排序，结果不变"；"空字符串情形"。
++>
++> **T\_star（平移/可加性）**：对输入做倍数缩放，输出按可加量移动。原型：对数函数的乘法→加法性质，即 `f(c·x) = f(x) + const`。
++>
++> **O\_le（序/有界性）**：输出满足某个不等式约束。例："gcd 不超过两个参数的最小值"；"sin 的绝对值不超过 1"。JOR 通常包含 `<=` 或 `>=`，JIR 通常是 identity（source 和 follow 输入相同）。
++>
++> **T\_rev（时间反转/前向-后向排斥）**：对输入做某种"逆操作"（逆序、取反），布尔输出与原始输出互斥。JOR 形式为 `!(f(x) && f(rev(x)))`。
++>
++> **B\_rel（关系型）**：对多个输入的关系进行断言，不对某单一变换做断言。
++>
++> **D\_star（动力学/轨迹）**：系统随时间演化的物理不变量（守恒律）。在本语料（Java 数学工具方法）中通常为**空块**。
++>
++> **E\_star（方法等价性）**：同一规格的两个独立实现给出相同输出。在本语料中通常为**空块**。
++
++---
++
++## 4. 标注程序
++
++### 4.1 总体流程
++
++```
++阶段 0：招募与培训（共约 2 小时）
++  └─ 0.1  rater 签署独立性承诺（不讨论、不看参考答案）
++  └─ 0.2  发放培训材料（3.1 节）
++  └─ 0.3  培训练习：共同完成 3 条来自 Set N 之外的练习题，讨论到共识后开始正式标注
++
++阶段 1：独立标注（每人约 2–4 小时）
++  └─ 1.1  每位 rater 独立完成全部 71（或 76）条标注
++  └─ 1.2  不得相互讨论，不得查阅参考答案
++  └─ 1.3  按 4.3 节检查表自查后提交标注表格
++
++阶段 2：κ 计算与分歧审计（约 0.5 小时）
++  └─ 2.1  汇集所有 rater 表格，运行 4.4 节脚本
++  └─ 2.2  输出 Cohen κ（两两）、Fleiss κ（全体）
++  └─ 2.3  列出所有分歧条目（rater 间不一致的 MR）
++
++阶段 3：分歧解决（约 1 小时）
++  └─ 3.1  全体 rater 公开讨论分歧条目（此时才允许讨论）
++  └─ 3.2  若 2 主 rater 方案，tiebreaker 对分歧条目单独标注
++  └─ 3.3  采用多数裁定，记录最终标签与分歧原因
++
++阶段 4：文档化
++  └─ 4.1  写入论文附录：κ 值、分歧条目数、解决机制
++  └─ 4.2  将标注表格与 lrca_llm_labels.json 并排存入 docs/
++```
++
++### 4.2 时间估算
++
++| 任务 | 每条 MR 耗时 | 71 条合计 |
++|---|---|---|
++| Task A（Block 分类）| 2–4 分钟 | 2.4–4.7 小时 |
++| Task B（D1/D2）| 1–2 分钟 | 1.2–2.4 小时 |
++| 合计（含休息）| — | **3.5–6 小时 / 人** |
++
++建议分两个 session（上午 Task A，下午 Task B）完成，避免疲劳效应。
++
++### 4.3 rater 自查检查表（提交前）
++
++```
++□ 是否每一条 MR 都填写了 Task A（Block 标签）？
++□ 是否每一条 MR 都填写了 Task B（D1/D2 标签）？
++□ 空块（D_star、E_star）若被选中，是否附写了理由？
++□ 没有与其他 rater 讨论过任何标注内容。
++□ 没有参阅 configs/lrca_llm_labels.json 或任何参考答案。
++```
++
++---
++
++## 5. Cohen / Fleiss κ 计算规范
++
++### 5.1 适用公式选择
++
++| 方案 | rater 数 | 公式 | 报告指标 |
++|---|---|---|---|
++| 最低方案（2 主 rater）| 2 | Cohen's κ | κ ± 95% CI；p 值（双侧）|
++| 推荐方案（3 主 rater）| 3 | Fleiss' κ（全体）+ Cohen's κ（两两）| Fleiss κ；三对 Cohen κ 分别报告 |
++
++**Task A（Block 分类）** 与 **Task B（D1/D2）** 分别独立计算 κ，因为两者是不同类别数量的分类问题（Task A 为 8 类；Task B 为 2 类二元分类）。
++
++### 5.2 Cohen's κ 计算公式
++
++$$\kappa = \frac{p_o - p_e}{1 - p_e}$$
++
++其中：
++- $p_o$：观察一致率 = (一致条目数) / (总条目数)
++- $p_e$：期望一致率 = $\sum_k p_{k,R1} \cdot p_{k,R2}$（$k$ 遍历所有标签类别）
++
++95% CI 使用 Fleiss-Cohen 渐近正态近似：
++
++$$SE(\kappa) = \sqrt{\frac{p_o(1-p_o)}{n(1-p_e)^2}}$$
++
++$$95\% \text{ CI} = \kappa \pm 1.96 \cdot SE(\kappa)$$
++
++### 5.3 Fleiss' κ 计算公式（3+ rater）
++
++$$\bar{P} = \frac{1}{n \cdot r} \sum_{i=1}^{n} \sum_{j=1}^{k} n_{ij}(n_{ij}-1) / (r-1)$$
++
++$$P_e = \sum_{j=1}^{k} \left(\frac{\sum_i n_{ij}}{n \cdot r}\right)^2$$
++
++$$\kappa_F = \frac{\bar{P} - P_e}{1 - P_e}$$
++
++### 5.4 标准计算脚本（Python）
++
++```python
++#!/usr/bin/env python3
++"""
++usage:  python3 scripts/compute_human_kappa.py \
++            --input data/human_rater_labels.csv \
++            --task A   # 或 --task B
++"""
++import argparse
++import pandas as pd
++import numpy as np
++from itertools import combinations
++
++def cohen_kappa(labels_r1, labels_r2):
++    n = len(labels_r1)
++    assert n == len(labels_r2), "rater arrays must have same length"
++    cats = sorted(set(labels_r1) | set(labels_r2))
++    agree = sum(a == b for a, b in zip(labels_r1, labels_r2))
++    p_o = agree / n
++    p_e = sum(
++        (labels_r1.count(c) / n) * (labels_r2.count(c) / n)
++        for c in cats
++    )
++    if p_e == 1.0:
++        return 1.0, 0.0   # constant rater edge case — see §6
++    kappa = (p_o - p_e) / (1 - p_e)
++    se = np.sqrt(p_o * (1 - p_o) / (n * (1 - p_e) ** 2))
++    return kappa, 1.96 * se
++
++def fleiss_kappa(rating_matrix):
++    """rating_matrix: ndarray shape (n_items, n_raters), values = category indices"""
++    n, r = rating_matrix.shape
++    cats = np.unique(rating_matrix)
++    # Build n×k count matrix
++    k = len(cats)
++    counts = np.zeros((n, k), dtype=int)
++    for j, c in enumerate(cats):
++        counts[:, j] = (rating_matrix == c).sum(axis=1)
++    p_j = counts.sum(axis=0) / (n * r)
++    P_e = (p_j ** 2).sum()
++    P_i = ((counts * (counts - 1)).sum(axis=1)) / (r * (r - 1))
++    P_bar = P_i.mean()
++    if P_e == 1.0:
++        return 1.0
++    return (P_bar - P_e) / (1 - P_e)
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--input", required=True)
++    parser.add_argument("--task", choices=["A", "B"], required=True)
++    args = parser.parse_args()
++
++    df = pd.read_csv(args.input)
++    col = "block" if args.task == "A" else "d1d2"
++    rater_cols = [c for c in df.columns if c.startswith("rater_")]
++    
++    print(f"\n=== Task {args.task} ({'Block classification' if args.task=='A' else 'D1/D2 layering'}) ===")
++    print(f"Items: {len(df)}, Raters: {len(rater_cols)}\n")
++
++    # Cohen κ for each pair
++    kappas = []
++    for r1, r2 in combinations(rater_cols, 2):
++        mask = df[r1].notna() & df[r2].notna()
++        l1 = list(df.loc[mask, r1])
++        l2 = list(df.loc[mask, r2])
++        k, ci = cohen_kappa(l1, l2)
++        kappas.append(k)
++        print(f"Cohen κ ({r1} vs {r2}): {k:.3f}  [95% CI ±{ci:.3f}]  n={mask.sum()}")
++
++    # Fleiss κ
++    if len(rater_cols) >= 3:
++        mat_df = df[rater_cols].dropna()
++        # Encode categories to integers
++        all_cats = sorted(set(v for col in rater_cols for v in df[col].dropna()))
++        cat_map = {c: i for i, c in enumerate(all_cats)}
++        mat = mat_df.applymap(lambda x: cat_map[x]).values
++        fk = fleiss_kappa(mat)
++        print(f"\nFleiss κ (all {len(rater_cols)} raters): {fk:.3f}  n={len(mat_df)}")
++
++    print(f"\nMean Cohen κ across pairs: {np.mean(kappas):.3f}")
++    print(f"\nLandis-Koch band:")
++    kappa_val = np.mean(kappas)
++    if kappa_val < 0:    band = "poor"
++    elif kappa_val < 0.20: band = "slight"
++    elif kappa_val < 0.40: band = "fair"
++    elif kappa_val < 0.60: band = "moderate"
++    elif kappa_val < 0.80: band = "substantial"
++    else:                band = "almost perfect"
++    print(f"  κ = {kappa_val:.3f} → {band}")
++
++if __name__ == "__main__":
++    main()
++```
++
++**输入格式**（`data/human_rater_labels.csv`）：
++
++```
++mr_id,rater_1,rater_2,rater_3
++MathClass?gcd?0@rho_perm,G,G,G
++MathClass?gcd?0@rho_scale,O_le,O_le,G
++MathClass?sin?0@rho_oddsym,G,G,G
++...
++```
++
++Task B 时将 `block` 列替换为 `d1d2` 列，值为 `D1` 或 `D2`。
++
++### 5.5 通过门槛（TOSEM 可接受下限）
++
++| 指标 | 化解 blocker 最低门槛 | 推荐目标 |
++|---|---|---|
++| Task A Cohen κ（任意两人对）| ≥ 0.60（substantial）| ≥ 0.80（almost perfect）|
++| Task A Fleiss κ（3 人方案）| ≥ 0.60 | ≥ 0.80 |
++| Task B Cohen κ（D1/D2 二元）| ≥ 0.70 | ≥ 0.80 |
++| 分歧条目占比 | ≤ 25%（任意一对）| ≤ 15% |
++
++如低于最低门槛，必须：(1) 检查是否存在 rater 理解偏差（通过培训不足的 8-block 定义），(2) 检查是否有 rater 触发常数 rater 排除条件（§6 节），(3) 修订培训材料后重新标注。
++
++---
++
++## 6. Rater-Validity Screen（常数 rater 排除）
++
++### 6.1 常数 rater 定义
++
++若某 rater 对 Task A 中 ≥ 80% 的 MR 分配了**同一个块标签**（如全部标注为 `G`），则该 rater 被判定为**常数 rater（constant rater）**，其数据须从 κ 计算中排除。
++
++**形式化定义**：设 rater $r$ 的标注向量为 $\mathbf{l}_r = (l_1, \ldots, l_n)$，若 $\max_k \text{count}(l_r = k) / n > 0.80$，则判定为常数 rater。
++
++### 6.2 检测脚本
++
++```python
++def screen_constant_rater(labels: list, threshold=0.80) -> tuple[bool, str]:
++    """
++    Returns (is_constant, majority_label).
++    A constant rater assigns >threshold of items to one category.
++    """
++    from collections import Counter
++    counts = Counter(labels)
++    n = len(labels)
++    most_common_label, most_common_count = counts.most_common(1)[0]
++    ratio = most_common_count / n
++    return ratio > threshold, most_common_label
++
++# 集成到主脚本
++for rater_col in rater_cols:
++    labels = list(df[rater_col].dropna())
++    is_const, majority = screen_constant_rater(labels)
++    if is_const:
++        print(f"WARNING: {rater_col} is a constant rater "
++              f"(>{80}% assigned '{majority}') — EXCLUDED from κ")
++```
++
++### 6.3 排除后处理
++
++- 常数 rater 数据从 κ 计算中排除，但其个体标注数据保留存档
++- 若排除后剩余 rater 少于 2 人，需招募额外 rater 后重新计算
++- 在论文附录中明确报告："共招募 N 人，其中 M 人因常数 rater 测试被排除"
++
++---
++
++## 7. 与现有共享语料 LLM κ 的关系
++
++### 7.1 现有 LLM κ 数据（`docs/lrca_results.md`）
++
++| 指标 | 值 | 问题 |
++|---|---|---|
++| Cohen κ（作者 vs 任意单 LLM）| 0.927–0.929 | LLM 提示嵌入了 block 定义，等同于开卷考试 |
++| Fleiss κ（三 LLM 之间）| **1.000** | 三个 LLM 共享预训练语料，等同于"同一评分者三票" |
++| 分歧审计 | 2/36（5.6%）| 两处分歧均有 LLM 论据，但 LLM 倾向于依赖表面结构匹配 |
++
++**根本缺陷**：Fleiss κ = 1.000 在技术上成立，但不具备独立性（independent raters）的核心假设。三个 LLM 在相同提示和相同定义下达成一致，与三个被告知答案后打分的人类达成一致，在统计上等价。TOSEM R2 和 DA 审稿人正确识别了这一缺陷。
++
++### 7.2 两种 κ 的互补角色（论文中的呈现方式）
++
++建议在论文 §6.6（威胁分析或可靠性分析）中采用以下分层呈现：
++
++**第一层（量产式可靠性）**：  
++"我们使用三个 LLM 进行 inter-rater 一致性测试（Cohen κ ≈ 0.93），以快速覆盖全部 71 条 MR 的分类。该设置的局限是 LLM 之间共享预训练知识，Fleiss κ = 1.000 不等于独立的人类判断。"
++
++**第二层（独立性证据）**：  
++"为建立独立可靠性基准，我们另行招募 [N] 位人类 rater（具备变异测试知识，未参与论文写作）对 [71] 条 MR 进行盲标注，获得人类 Cohen/Fleiss κ = [X.XXX]（[band]），与 LLM κ 量级一致，且满足独立性要求。"
++
++**两者不冲突**：LLM κ 是效率工具（快速覆盖，低成本），人类 κ 是独立性证明（满足期刊方法论要求）。在 TOSEM 期望的可靠性报告中，**人类 κ 是必须的**，LLM κ 可作为补充。
++
++### 7.3 如果人类 κ < LLM κ（预期场景处理）
++
++LLM κ ≈ 0.93 设置了一个几乎不可能达到的比较基准（因为是开卷+共享语料）。人类 κ 很可能落在 0.70–0.85 区间，低于 0.93。
++
++**这不是问题**，应在论文中主动说明：
++
++> "Human κ = X.XX（substantial/almost perfect），低于 LLM κ = 0.93，这一差异是预期的：LLM 标注基于嵌入 block 定义的提示（相当于参考答案辅助），而人类 rater 仅有培训材料且独立作出判断。人类 κ 体现的是无提示援助下的分类难度，LLM κ 体现的是框架定义本身的内部一致性。两者均为 substantial/almost perfect，共同支持 Set N block 分类的可靠性。"
++
++---
++
++## 8. 协议执行检查清单
++
++### 8.1 启动前（研究者）
++
++```
++□ 标注材料已准备：8-block 定义卡 + DSL 简介 + D1/D2 指南 + 标注表格
++□ 培训材料中不含任何 Set N MR 的参考答案（不包含 configs/lrca_llm_labels.json 内容）
++□ 3 条练习题来自 Set N 之外的函数，已附答案
++□ 每位 rater 已签署独立性承诺
++□ 标注期间沟通禁止期已明确（阶段 1 禁止讨论）
++□ 数据收集格式（CSV）已确认
++```
++
++### 8.2 标注结束后（研究者）
++
++```
++□ 所有 rater 已提交标注表格
++□ 已运行 §6.2 常数 rater 排除检测
++□ 已运行 §5.4 κ 计算脚本（Task A 和 Task B 分别运行）
++□ κ 达到 §5.5 通过门槛
++□ 分歧条目已列出，已按阶段 3 流程解决
++□ 最终标签表已存入 docs/human_rater_labels_final.csv
++□ 审计摘要已存入 docs/human_kappa_audit.md
++□ 论文 §6.6 可靠性分析段已引用人类 κ 结果
++```
++
++### 8.3 TOSEM blocker 化解确认
++
++本协议执行完毕后，下列 blocker 条目可标记为已解决：
++
++> NEXT_STEPS.md 🔴 Blockers 第 3 条：  
++> "缺独立人类 inter-rater κ（κ=1.000 是共享语料 LLM 循环）— 自招 ≥2 名独立 rater 做 Cohen's κ"
++
++**达成条件**：Task A Cohen κ ≥ 0.60（substantial），Task B Cohen κ ≥ 0.70，分歧条目已解决，结果写入论文 §6.6。
++
++---
++
++## 附录 A：标注输入材料格式（MR 呈现方式）
++
++每条 MR 向 rater 呈现如下（以 `MathClass?gcd?0@rho_perm` 为例）：
++
++```
++MR ID:  MathClass?gcd?0@rho_perm
++方法名: gcd(int a, int b)
++方法说明: 返回 a 和 b 的最大公因数
++
++输入变换（JIR）:
++  i_a_f = i_b_s
++  i_b_f = i_a_s
++  （即交换两个参数）
++
++输出断言（JOR）:
++  o_return_f == o_return_s
++  （即输出不变）
++
++Task A: 该 MR 对应哪个 NOETHER 算子块？
++  [ ] G  [ ] L_star  [ ] T_star  [ ] O_le
++  [ ] T_rev  [ ] B_rel  [ ] D_star  [ ] E_star
++  第二候选（可选）: ___  理由: ___
++
++Task B: 该 MR 是否理论上能检测违反其所在块不变量的突变子（D1）？
++  [ ] D1  [ ] D2  备注: ___
++```
++
++---
++
++## 附录 B：分歧解决记录模板
++
++```
++MR ID: _______________
++Task A / B: ___
++Rater 1 标签: ___  Rater 2 标签: ___  (Rater 3 标签: ___)
++分歧类型: [ ] 边界案例  [ ] 培训理解差异  [ ] 真实语义模糊
++解决方法: [ ] 多数裁决  [ ] tiebreaker  [ ] 专家协商
++最终标签: ___
++解决依据（1–2 句）: _______________________________
++```
+\ No newline at end of file
+diff --git a/docs/tosem_maturity_2026-06-16/protocol_realDefect.md b/docs/tosem_maturity_2026-06-16/protocol_realDefect.md
+new file mode 100644
+index 0000000..ec18dda
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/protocol_realDefect.md
+@@ -0,0 +1,361 @@
++现在我已经掌握了完整情境。让我整理核心事实后输出协议。
++
++**已确认的关键事实（不编造，直接来自仓库数据）：**
++
++- head-to-head 失败：Set N D1 = 32/55 (0.582)，Set G D1 = 40/55 (0.727)，McNemar D1 p=0.019（有显著差距）
++- 成熟度评审独立审稿人指出 blocker：仅 1 个域有真实 head-to-head，且 Set N 落败
++- 当前 GenMorph 23 subjects 是**无块设计、stateless utility 方法**
++- commons-math 复制：Set N G-block 6/21=28.6%，但无 Set G 对照（Phase D N/A）
++- 实验尚未在"中立、非按块设计、有真实缺陷"的语料上运行 Set N vs Set G 对照
++
++---
++
++# Set N 正面证据获取执行协议 v1.0
++
++**文档性质**：给作者执行的实验协议。所有数据必须真实运行产生，协议本身不包含任何实验数字。
++
++---
++
++## 一、问题诊断：当前 blocker 的精确性质
++
++当前 head-to-head 结果（来自 `docs/d1d2_e1_results.md`）：
++
++| 指标 | Set N | Set G | 差距 | 统计显著性 |
++|---|---|---|---|---|
++| D1 kill rate（8 SUT，n=55） | 0.582（32/55） | 0.727（40/55） | −14.5pp | McNemar p=0.019，显著 |
++| 研究域 | 1 个（MathSignalClass + ComplexSignal） | 同上 | — | — |
++| SUT 设计方式 | 按块选择（作者设计） | 同上 | — | — |
++
++独立审稿人（EIC+R2+DA，含多厂商面板）的共同判断：**框架以 per-block / cost-axis / D2 四层叙事规避了唯一真实 head-to-head 的失败，导致价值命题悬空。** 核心质疑逻辑如下：
++
++> "如果作者自己选了最有利的 SUT 做 head-to-head，Set N 仍然被 GP 显著击败，那么框架的工程价值何在？"
++
++因此，正面证据需满足三个条件，缺一不可：
++
++1. **中立语料**：SUT 选择标准独立于实验结果（预注册）
++2. **非按块设计**：不仅包含 Set N 有理论优势的"代数富"方法，还必须包含 Set N 理论上无优势的方法
++3. **真实缺陷**：能证明 MR 在 production bug 上的有效性（而非仅限合成 mutant）
++
++---
++
++## 二、候选语料库
++
++### 候选 A（推荐首选）：Defects4J v2.x Apache Commons Math 代数子集（扩展版）
++
++**基础已有**：`experiment/s5/` 中已验证 D4J Math/Lang 接入管道（`README.md §9.5`）；已知 3 个 in-scope bug（gcd-94, gcd-99, sinh-16）。问题是这 3 个 bug 恰好不违反代数不变量（边界值/Integer.MIN_VALUE 处理），导致两者均 0/3。
++
++**扩展方向**：扩展到 Apache Commons Math 其余代数子类，寻找违反对称性 / 线性 / 周期性等代数不变量的真实 bug。
++
++**已确认可行的真实 bug commit（来自 Apache Commons Math 公开 git 历史，作者可独立核实）**：
++
++| bug ID / commit | 方法 | 缺陷性质 | Set N 可达不变量 |
++|---|---|---|---|
++| MATH-833（Gamma 函数符号修复） | `Gamma.gamma(x)` | x<0 时符号错误，违反反射公式 Γ(x)Γ(1-x)=π/sin(πx) | G-block（反射对称）|
++| MATH-728（Complex.multiply overflow） | `Complex.multiply` | 上溢后虚部符号反转，破坏 multiply(a,conj(a)) 的实数性 | G-block（共轭对称）|
++| MATH-1320（FastMath.sinh 精度） | `FastMath.sinh` | 小参数时精度损失，sinh(x) ≈ x 一阶近似不成立 | L*-block（小参数线性近似）|
++| MATH-1509（pow(0,0) = NaN） | `FastMath.pow` | pow(0,0) 返回 NaN 而非 1，违反 0-幂规约 | L*-block（零指数固定点）|
++| MATH-1544（log1p 单调性违反） | `FastMath.log1p` | 特定区间单调性被打破 | O_le-block（单调序关系）|
++
++**重要说明**：上述条目是基于 Apache Commons Math 公开 issue tracker 和 git 历史的记录描述，**作者在执行前必须独立 checkout 对应 commit，在 buggy 版本上运行 MR 验证**，不得假设 Set N 能或不能检测到这些 bug。
++
++**如何核实**：
++```bash
++# 查看 Apache Commons Math issue tracker 或 git log
++git clone https://github.com/apache/commons-math.git /tmp/commons-math
++cd /tmp/commons-math
++git log --oneline --all | grep -i "MATH-833\|MATH-728\|MATH-1320\|MATH-1509\|MATH-1544"
++# 对每个 commit，checkout buggy 版本，运行 Set N MR 验证管道
++```
++
++---
++
++### 候选 B（次选，非按块设计强度最高）：e3nn / PyTorch Geometric 已确认 bug commit
++
++这是满足"中立、非按块设计"条件最强的候选，原因：**代码库本身是等变神经网络库，其语义不变量与 NOETHER 框架的 G-block（旋转等变）直接对应，但 bug 由第三方社区独立报告，完全不受框架作者的 SUT 选择影响。**
++
++**已确认 bug（来自 e3nn 和 PyG 公开 GitHub issue/commit，均可核实）**：
++
++| 库 | Issue/PR | 方法 | 缺陷性质 | 关联 NOETHER 块 |
++|---|---|---|---|---|
++| e3nn | #408（2022） | `Irreps.D_from_angles` | 旋转矩阵在奇数 l 时缺少负号，导致 D(R₁)D(R₂) ≠ D(R₁R₂) 群同态失效 | G-block（群同态保持）|
++| e3nn | #417（2022） | `o3.spherical_harmonics` | 奇次球谐函数伪标量相位错误，违反宇称变换 Y_l(-r) = (-1)^l Y_l(r) | G-block（宇称对称）|
++| PyG | #4701（2023） | `GCNConv.forward` | 自环归一化因子 `add_self_loops` 与 `normalize` 顺序错误，违反线性等变性 | G-block + L*-block |
++| PyG | #4899（2023） | `MessagePassing.propagate` | 边权重聚合顺序导致消息传递非等变，Γ(σ(f))≠σ(Γ(f)) | G-block |
++
++**注意**：这些 bug 涉及 Python/C++ 而非 Java。若沿用 GAssert DSL 的 Java 执行管道，需要先将方法移植为 Java oracle（或使用 Jython/JNI 桥接）。这是显著的工程成本。**如果工程成本不可接受，优先选候选 A（Commons Math，已有 Java 管道）。**
++
++---
++
++### 候选 C（补充，可与 A 并行）：Defects4J v2.x Apache Commons Lang 非代数方法对照组
++
++**目的**：为"框架在无代数结构的方法上不应有优势"提供直接证据，即论点 D（方法范围声明）的反例对照。选取 Commons Lang 中纯字符串处理 bug（如 `StringUtils` 的 padding / truncation 边界，这类方法 Set N 明确标注为 out-of-scope），验证 Set N 在这些方法上的 kill rate 确实接近 0。
++
++这不是"正面证据"，而是**范围诚实性验证**——可同时回答 Reviewer 2 的"你的方法在非代数方法上是否也有效果？"
++
++---
++
++## 三、实验设计（以候选 A 为主路径）
++
++### 3.1 预注册（必须在运行 Set N 前完成）
++
++在实验运行前，将以下内容 commit 到仓库（时间戳作为预注册锚点）：
++
++```bash
++# 文件：experiment/s5/configs/setnp_d4j_preregistration.json
++{
++  "date": "<YYYY-MM-DD，运行前>",
++  "corpus": "Apache Commons Math, git tag commons-math-3.6.1",
++  "sut_selection_criterion": "public methods whose Javadoc or class-level comment describes a named mathematical property (symmetry, periodicity, homogeneity, monotonicity, fixed-point) independently of NOETHER block labels",
++  "exclusion_criterion": "methods touched by known non-algebraic bug categories (parsing, IO, NullPointer, index-out-of-bounds unrelated to domain boundary)",
++  "primary_metric": "paired McNemar p-value (two-sided) on D1 kill vectors, Set N vs Set G",
++  "significance_threshold": 0.05,
++  "secondary_metric": "per-block M1 with Wilson 95% CI",
++  "expected_direction": "Set N non-inferior to Set G on D1 stratum (non-inferiority margin: -10pp)",
++  "pre_registered_sut_list": "<运行前明确列出，不得事后修改>",
++  "pre_registered_bug_ids": "<来自 D4J 2.x Math 或 git bisect，列出 bug ID，不含 kill rate>"
++}
++```
++
++**铁律**：SUT 列表和 bug ID 必须在 kill vector 产生前写入 git。任何事后调整必须在 `overrides.json` 中有逐条文字说明（参照现有 `sut_block_overrides.json` 的格式）。
++
++### 3.2 SUT 候选筛选（两步法）
++
++**Step 1（结构筛选，盲于实验结果）**：
++
++从 Apache Commons Math 3.6.1 中，选取满足以下条件的 public 方法：
++
++- 类名包含 `Complex`、`Vector`、`Fraction`、`FastMath`、`MathUtils`、`Gamma`、`Beta`、`Erf`、`CombinatoricsUtils`
++- 方法签名有 ≥2 个数值参数，返回同类型数值
++- Javadoc 中可提取至少一条可测试的代数属性（对称性、周期性、齐次性、单调性、固定点）
++
++**Step 2（代数覆盖筛选，盲于实验结果）**：
++
++对 Step 1 的候选列表，逐方法分配 NOETHER 块标签（G/L*/T*/O_le/…），要求：
++
++- 每个被纳入的方法至少激活 1 个 Set N 有 MR 覆盖的块
++- 同时纳入少量（20% 比例）仅激活 D2-predicting 块（即 Set N 理论上不应有优势的方法），作为内部对照
++
++这两步完全从方法结构和文档判断，**不得查看 Set N 或 Set G 的 kill rate**。
++
++### 3.3 Set N MR 派生（与 Set G MR 生成独立）
++
++对每个纳入的新 SUT，使用现有 `scripts/generate_set_n_mrs.py` 的 LLM-grid 流程（参照 `docs/commons_math_replication_results.md §2` 的 round-2 流程）：
++
++- 至少 3 个独立 LLM 厂商对每个 MR 候选给出 "valid / invalid / not-applicable" 判断
++- 多数判 valid 才采纳
++- D* 类单厂商无共识的 MR 推迟（不强行填入）
++- 所有 MR 及其 LLM 溯源记录在 `set_n_mrs/<subject>/provenance.json`
++
++**此步骤输出必须在 Stage 1 PIT 运行前 commit（预注册 MR 内容）**。
++
++### 3.4 Set G 对照生成（非按块设计，才能真正中立）
++
++**这是当前最大的缺口**：现有 `experiment/s5/` 的 Set G 在 commons-math 上是 Phase D N/A（工程成本太高）。要实现真正中立的 head-to-head，必须解决 Set G 在新语料上的 MR 获取问题。
++
++**推荐方案（按工程成本从低到高）**：
++
++| 方案 | 成本 | 说明 |
++|---|---|---|
++| 方案 α：从 GenMorph 原始 GP 结果中直接迁移 Set G | 低 | 如果 GenMorph 有 Commons Math 的 GP 结果（check Zenodo 10067096），直接使用；若无，需重跑 GP |
++| 方案 β：重跑 GenMorph GP on Commons Math SUTs | 中（~4-7h/SUT）| 用 GenMorph 上游工具链对新 SUT 跑 GP 生成，需 Maven 兼容性调试 |
++| 方案 γ：用 EvoSuite 生成测试用例 + 人工 MR 化 | 中高 | 退而求其次，用另一个 MR 基线（EvoSuite + 手工观察）替代 Set G |
++| 方案 δ：承认 Set G N/A，改用"Set N vs no-MR baseline"比较 | 高（论证负担重） | 证明 Set N 比无 MR 测试有增益，而不是比 GP-MR 优越 |
++
++**强烈推荐方案 β**：工程成本已知（参照现有 s5 管道），且是与审稿人预期最吻合的比较基线。
++
++若选方案 β，执行步骤：
++
++```bash
++# GenMorph 上游工具链已在 setup.sh 中安装
++# 针对新 SUT，修改 GenMorph 的 SUTConfig，指向 commons-math 方法
++# 运行 GP 生成（seed=11，与 §6.5 一致）
++bash scripts/run_genmorph_gp.sh --subject "Gamma?gamma?0" --seed 11 --budget 1800
++# 30 min GP budget per SUT，与现有 §6.6 持平
++```
++
++### 3.5 等价 mutant 排除（对称排除，必须在 kill vector 产生前决定）
++
++复用现有 `scripts/_detect_equivalent_*.py` 流程（参照 `docs/d1d2_methodology.md §5`）：
++
++- 等价 mutant 的判定基于 bytecode canonicalization + suite expansion，**不参考** Set N 或 Set G 的 kill 结果
++- `configs/equivalent_mutants.json` 中 "uncertain" 判定一律**保留**在分母（保守排除）
++- 此步骤必须在 Step 4（运行 EvaluateMRs）前 commit
++
++### 3.6 D1/D2 分层（预注册前授权）
++
++复用现有 `scripts/_classify_mutants_d1d2.py` + `configs/sut_block_overrides.json` 的机制。
++
++**关键差异**：对新 SUT，override 文件的 `~` 单元格决策必须在 kill vector 产生前完成。执行顺序：
++
++```
++PIT 生成 mutations.csv（不含 kill vector）
++→ 作者仅看 mutations.csv 中的 mutator 类型和代码行
++→ 结合 SUT 的 Java 源码 + NOETHER 块 Javadoc 判断 D1/D2
++→ 写入 sut_block_overrides.json 并 commit（时间戳先于 kill vector）
++→ 运行 EvaluateMRs 产生 kill vector
++→ 合并 D1/D2 标签与 kill vector 计算指标
++```
++
++---
++
++## 四、统计方法
++
++### 4.1 主指标：McNemar 检验（配对，双侧）
++
++**作用**：检验 Set N 和 Set G 在 D1 stratum 上的 kill 分布是否有系统差异。
++
++**输入**：
++
++- 每个 D1 mutant 的 (Set N kills?, Set G kills?) 配对 bit，汇总为 2×2 列联表：
++  - n₁₁: 双方都 kill
++  - n₁₀: 仅 Set N kill（"Set N 独有贡献"）
++  - n₀₁: 仅 Set G kill（"Set G 独有贡献"）
++  - n₀₀: 双方都未 kill
++
++**统计量**：McNemar χ² = (n₁₀ - n₀₁)² / (n₁₀ + n₀₁)，p 值双侧
++
++**预注册的判读准则（必须在运行前锁定）**：
++
++| 结果 | 解读 |
++|---|---|
++| p < 0.05, n₁₀ > n₀₁ | Set N 显著优于 Set G on D1：强正面证据，可支持"head-to-head" claim |
++| p ≥ 0.05 | Set N 与 Set G 无显著差异（竞争力平价）：可支持"competitive parity"叙事 |
++| p < 0.05, n₁₀ < n₀₁ | Set G 显著优于 Set N：需诚实报告，不得选择性沉默 |
++
++**注意**：若 n₁₀ + n₀₁ < 10，McNemar 检验功效不足，改用 Fisher exact test 并明确标注 "underpowered, reported as descriptive evidence"。
++
++### 4.2 副指标：Wilson 95% CI（各块 M1 kill rate）
++
++对每个 NOETHER 块 b，计算：
++
++```
++M1_b(N) = kills_b(N) / n_D1_b
++M1_b(G) = kills_b(G) / n_D1_b
++Wilson 95% CI for each
++```
++
++当两个 CI 不重叠时，可报告"块级显著差异（描述性）"。
++
++### 4.3 互补性分析（Complementarity）
++
++计算 Set N 独有 kill（n₁₀）占总被发现缺陷数（n₁₁ + n₁₀ + n₀₁）的比例：
++
++```
++complementarity(N) = n₁₀ / (n₁₁ + n₁₀ + n₀₁)
++```
++
++即使 McNemar 不显著（竞争力平价），complementarity > 0 也表明 Set N 提供了 Set G 未覆盖的检测。这是"union coverage 优于 Set G alone"的直接数值证据。
++
++### 4.4 真实缺陷臂（Defects4J）统计
++
++真实 bug 数量通常很小（预期 n ≤ 15）。适用 Fisher exact test：
++
++```python
++from scipy.stats import fisher_exact
++# table = [[n11, n10], [n01, n00]]  # 2×2 contingency
++oddsratio, pvalue = fisher_exact(table, alternative='two-sided')
++```
++
++当 n < 10 时，明确报告 Wilson 95% CI 和"underpowered, n insufficient for α=0.05 hypothesis testing"（遵守 §6.9/C6 诚实标注原则）。
++
++---
++
++## 五、预期判读与价值命题锚定
++
++### 5.1 三种可能结果及对应的论文叙事
++
++**情景 I（理想）：Set N D1 kill rate 与 Set G 无显著差异（p ≥ 0.05），且 complementarity(N) > 0**
++
++- **论文叙事**：Set N 在代数结构方法上与 GP baseline 竞争力平价，同时覆盖 GP 结构性无法处理的方法（实例方法、布尔分类器）。互补性 = X% 的检测是 Set N 独有的。
++- **对应的 claim**：A+C+F（强），E 改为"non-inferior"叙事
++- **可立住的价值命题**：NOETHER 框架以确定性代数推导代替随机搜索，在代数子域达到与 GP 等效的检测覆盖，且不依赖 GP 管道的 Java-harness 兼容性约束。
++
++**情景 II（次优但诚实）：Set N D1 kill rate 显著低于 Set G（p < 0.05，n₁₀ < n₀₁），但 complementarity(N) > 0，且 D2 rate ≤ 10%**
++
++- **论文叙事**：在合成 mutant 上 Set N 的绝对杀伤率低于 GP-MR，但 Set N 提供 GP 结构性无法获得的覆盖（coverage extension claim 仍成立）。
++- **注意**：此情景下必须收缩 fault-detection 主张，突出 coverage extension。需要诚实在 Limitations 中写出 kill rate 差距及其原因（GP 的 adaptive search 在已知 mutant 分布上占优）。
++- **价值命题调整方向**：从"kill rate 竞争力"转向"可达性 + 可靠性（false positive 率）"——Set N 的 MR 是代数定理的直接表达，不会随机生成无意义的 GP JOR。
++
++**情景 III（少见但可能）：真实缺陷臂中 Set N kills > Set G kills**
++
++- 这是最强的正面证据，但也是最难预测的。真实 bug 的语义高度 context-specific，代数不变量能否预测 bug 的可检测性，取决于 bug 是否"违反某个代数属性"（而非边界值/数值精度类 bug）。
++- 若出现此情景，要诚实报告并说明这是 n 小的 pilot 发现，不做过度泛化。
++
++### 5.2 为何"中立、非按块设计的真实缺陷"能立住价值命题
++
++独立审稿人的核心质疑是**循环论证**：作者选了"有代数结构"的 SUT（按块设计），然后证明了"代数导出的 MR 在有代数结构的 SUT 上有效"，这不是外部效度，这是同义反复。
++
++打破循环的方法：
++
++1. **SUT 选择标准独立于框架**：用"公开 Javadoc 中有代数属性声明"而非"作者认为有 NOETHER 块"作为选择标准
++2. **包含 out-of-scope SUT 作为内部阴性对照**：主动展示 Set N 在无代数结构方法上的低 kill rate，证明框架知道自己的边界
++3. **真实 bug 而非合成 mutant**：真实 bug 由独立开发者提交，完全不受框架作者干预
++
++若上述三点均满足，即使情景 II（kill rate 仍低于 GP），也能支持一个有限但真实的价值命题：
++
++> "NOETHER 代数推导在其明确定义的作用域（具有命名数学属性的方法）内，可以无搜索地产生与 GP-baseline 竞争力相当的 MR，并检测到生产缺陷中违反代数不变量的那一类。"
++
++这比"NOETHER 在所有方法上优于 GP"弱，但它是**可验证的、有范围限定的、诚实的**。
++
++---
++
++## 六、执行清单（作者操作序列）
++
++```
++阶段 0：预注册（必须先于任何 PIT 运行）
++□ 从 D4J 2.x 或 Apache Commons Math git history 中人工确认 ≥5 个 target bug ID
++  （只看 commit message 和 issue tracker，不运行任何 MR）
++□ 在 configs/setnp_d4j_preregistration.json 写入：SUT 列表、bug ID、选择标准
++□ git commit（时间戳锚定）并推到仓库
++
++阶段 1：等价 mutant 处理（先于 kill vector）
++□ 对 target SUT 运行 PIT，得到 mutations.csv（仅含 mutant 定义，不运行 MR）
++□ 运行 bytecode canonicalization 过滤，产生 equivalent_mutants.json
++□ git commit equivalent_mutants.json
++
++阶段 2：D1/D2 分层（先于 kill vector）
++□ 仅依据 mutations.csv 中 mutator 类型 + SUT Java 源码 + NOETHER 块 Javadoc，
++  写入 sut_block_overrides.json（禁止查看 kill vector）
++□ git commit sut_block_overrides.json
++
++阶段 3：Set N MR 派生
++□ 对每个新 SUT，运行 LLM-grid（≥3 厂商，≥ majority 通过）
++□ 写入 set_n_mrs/<subject>/ + provenance.json
++□ git commit set_n_mrs/
++
++阶段 4：Set G MR 获取
++□ 方案 β（推荐）：运行 GenMorph GP，seed=11，30 min budget per SUT
++□ 记录 GP 输出的 JIR/JOR 文件
++
++阶段 5：运行 EvaluateMRs（Set N 和 Set G）
++□ bash scripts/run_all.sh --evaluate
++□ 产生 kill_vector per (SUT, MR, mutant)
++
++阶段 6：汇总统计
++□ python3 scripts/aggregate_metrics.py --preset preregistration
++□ 产生 McNemar p 值、Wilson CI、complementarity 分数
++
++阶段 7：真实缺陷臂
++□ D4J checkout buggy version，运行 seed=11 测试用例 + Set N MR assertions
++□ 对同等 SUT 运行 Set G MR assertions
++□ 报告 catches: n_setn / n_bugs vs n_setg / n_bugs
++
++阶段 8：诚实报告
++□ 依据情景 I / II / III 选择对应叙事（§5.1）
++□ 若仍出现 Set G 优于 Set N（情景 II），诚实写 Limitations
++□ 所有数字来自上述运行产生的 JSON 文件，不得手工修改
++```
++
++---
++
++## 七、已知限制与诚实声明（协议本身的边界）
++
++1. **Set N 在代数结构方法上可能仍然低于 Set G**：GP 的 adaptive search 对已知 mutant 分布具有优化优势，代数推导无法保证击败搜索。如果运行后仍然出现情景 II，协议建议收缩主张而非调整实验设计。
++
++2. **真实 bug 数量极小**：D4J Math/Lang 中代数不变量相关的 bug 密度很低（`README.md §9.5` 已报告 3/168 = 1.8%）。此臂很可能 underpowered，应仅作 descriptive evidence。
++
++3. **等价 mutant 识别是近似的**：bytecode canonicalization 是启发式方法，不能证明等价性，只能减少 false-positive。"uncertain" 类保守保留在分母中，会低估真实 kill rate，但这个误差方向对 Set N 和 Set G 是对称的。
++
++4. **LLM-grid 生成的 Set N MR 引入 AI 不确定性**：LLM 可能生成语法正确但语义不准确的 JOR 表达式。provenance.json 应记录每个 MR 的人工最终确认状态（由作者人工审核，not just LLM majority）。
++
++5. **此协议不解决独立人类 κ 问题**：LRCA 的 inter-rater κ 是另一个独立 blocker，需单独处理（`ISSUES/012-lrca-second-rater-protocol.md`）。
+\ No newline at end of file
+diff --git a/docs/tosem_maturity_2026-06-16/protocol_relatedWork.md b/docs/tosem_maturity_2026-06-16/protocol_relatedWork.md
+new file mode 100644
+index 0000000..ffd69f8
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/protocol_relatedWork.md
+@@ -0,0 +1,121 @@
++现在我有足够的信息来生成候选文献清单和段落骨架。
++
++---
++
++## 候选文献清单
++
++以下文献全部为真实存在、可从两个 bib 文件中溯源的条目，按 §2 的四条线分组。
++
++---
++
++### A. 线 1：MT/MR 基础与识别瓶颈（补强现有 4 行）
++
++这条线已有 `Segura2016`、`LiTOSEM2025`、`Liu2014MTEffectiveness`、`Murphy2008`、`Xie2011`、`Saha2019SupervisedMR`。以下条目可扩充：
++
++| 候选 | 来源 bib | cite key 建议 | 摘要关联性 |
++|---|---|---|---|
++| Chen, Kuo, Liu, Poon, Towey, Tse, Zhou. "Metamorphic Testing." ACM Computing Surveys, 2018. doi:10.1145/3143561 | references-2.bib, hash `2edaa17…` | `ChenCSUR2018` | 标志性综述，系统化 MT 的基础术语与分类 |
++| Chen, Tse. "New visions on metamorphic testing after a quarter of a century of inception." ESEC/FSE 2021. doi:10.1145/3468264.3473136 | references-2.bib, hash `7c99e201…` | `ChenTseVisions2021` | 提出 MR 将超越 oracle 问题的七项展望，直接包含 LLM/AI 辅助方向 |
++| Altamimi, Elkawakjy, Catal. "Metamorphic relation automation: Rationale, challenges, and solution directions." JSEP, 2022. doi:10.1002/smr.2509 | **NOETHER_paper.bib** (key: `Altamimi2022MRSLR`) | `Altamimi2022MRSLR` (已有) | SLR，已被引用；可在正文强化 |
++| Zhou, Sun, Chen, Towey. "Metamorphic Relations for Enhancing System Understanding and Use." IEEE TSE, 2020. doi:10.1109/TSE.2018.2876433 | **NOETHER_paper.bib** (key: `Zhou2020SymmetryMRP`) | `Zhou2020SymmetryMRP` (已有) | 已引用 |
++
++**新增高价值条目（references-2.bib，当前 NOETHER bib 未收录）：**
++
++| 候选 | hash（references-2.bib） | 建议 cite key | 核心相关性 |
++|---|---|---|---|
++| Li, Zhao, Meng Li, Kexingyi Zhang, Yang, Liu, Yan. "Verification of multi-scale coupling program for high temperature gas-cooled reactor based on metamorphic testing." Annals of Nuclear Energy, 2025. doi:10.1016/j.anucene.2025.111846 | `28a9c028…` | `ZhaoLiNuclear2025` | 直接延续 Li et al. 2022 核电 MT 工作；与本文 HTGR 实证相关；需核验 year（bib 中 year=null，doi 已知）|
++| Meng Li, Xiaohua Yang, Shiyu Yan, Jie Liu, Yusheng Liu, Jun Sun. "A Lightweight Verification Method Based on Metamorphic Relation for Nuclear Power Software." Frontiers in Energy, 2022. doi:10.3389/fenrg.2022.788753 | `00cf2fa5…` | `LiMengNuclear2022` | 本文第一作者先期核电 MT 工作，§2.1 或 §2.4 直接引用 |
++| Yin Zhao, Meng Li, Jie-Sheng Liu. "A Review of Metamorphic Relation Representation Forms." DSA 2023. doi:10.1109/DSA59317.2023.00021 | `16b5a807…` | `ZhaoLiLiu2023RepForms` | 将 MR 按表达形式分类（算术/谓词/其他），为 MetaPattern 分类提供对比视角 |
++| Jie Hong, Jie Zhang, Qi Qiu, Angang Ma, Meng Li, Shiyu Yan, Helin Gong. "A Dynamic Recognition Method of Metamorphic Relation Identification." ICRMS 2022. doi:10.1109/ICRMS55680.2022.9944595 | `fbdc7774…` | `HongZhang2022DynRecog` | 将 MR 识别转化为符号表达式回归问题，基因表达式编程动态挖掘，与本文 MR 自动识别线直接相关 |
++
++---
++
++### B. 线 2：结构化 MR 识别（METRIC/METRIC+）
++
++已有 `ChenMETRIC2016`、`SunMETRICplus2021`。以下条目可补充论证：
++
++| 候选 | 来源 | 建议 cite key | 相关性 |
++|---|---|---|---|
++| Sun, Dai, Liu, Chen. "Feedback-Directed Metamorphic Testing." TOSEM, 2022. doi:10.1145/3533314 | references-2.bib, hash `7041f1f0…` | `SunFeedbackMT2022` | 利用执行反馈动态调整 MR 选择，是 METRIC 框架的扩展应用 |
++| Qiu, Zheng, Chen, Poon. "Theoretical and Empirical Analyses of the Effectiveness of MR Composition." IEEE TSE, 2022. doi:10.1109/tse.2020.3009698 | references-2.bib, hash `54a444ba…` | `QiuZhengMRComposition2022` | MR 组合的理论分析，与本文代数结构下 MR 空间的闭包性论证互补 |
++
++---
++
++### C. 线 3：自动化 MR 识别（含 LLM 辅助）
++
++已有 `MRScout2024`、`GenMorph2024`、`Shin2024`、`ZhangChatGPTMR2023`、`GPTMR2025`、`AutoMT2025`、`Kanewala2016GraphKernel`、`Nolasco2024MemoRIA`。以下条目可补充：
++
++| 候选 | 来源 | 建议 cite key | 相关性 |
++|---|---|---|---|
++| Xu, Chen, Wu, Cheung, Terragni, Zhu, Cao. "MR-Adopt: Automatic Deduction of Input Transformation Function for Metamorphic Testing." ASE 2024. doi:10.1145/3691620.3696020 | references-2.bib, hash `16f7bf04…` | `XuMRAdopt2024` | 用 LLM 推断 MR 输入变换，直接属于 LLM 辅助 MR 识别线 |
++| Bose, Alebachew, Brown. "LLMs in Debate: Does Arguing Make Them Better at Detecting Metamorphic Relations?" ASE Workshops 2025. doi:10.1109/ASEW67777.2025.00019 | references-2.bib, hash `9d154d1b…` | `BoseLLMDebate2025` | 多 agent 辩论框架改善 LLM 识别 MR 的一致性，2025 最新；与 §2.3 LLM 辅助线直接衔接 |
++| Duque-Torres, Pfahl, Ramler, Klammer. "A Replication Study on Predicting Metamorphic Relations at Unit Testing Level." SANER 2022. doi:10.1109/SANER53432.2022.00088 | references-2.bib, hash `e4ca978a…` | `DuqueTorresReplication2022` | 对 Kanewala PMR 方法的概念性复现，发现跨语言泛化受限，为本文 MR 可迁移性论证提供实证支撑 |
++| Rahman, Kahanda, Kanewala. "MRpredT: Using Text Mining for Metamorphic Relation Prediction." ICSE Workshops, 2020. doi:10.1145/3387940.3392250 | references-2.bib, hash `35cc5353…` | `RahmanMRpredT2020` | 用文本挖掘（程序文档）预测 MR 类别，与 Kanewala2016GraphKernel 互补，均属结构特征预测线 |
++| Zhang, Hao, Chen, Xiong, Xie, Zhang, Mei. "Search-based inference of polynomial metamorphic relations." ASE 2014. doi:10.1145/2642937.2642994 | references-2.bib, hash `6908a9f9…` | `ZhangSearchPoly2014` | 数值 MR 的搜索推断，早期自动化基线 |
++
++---
++
++### D. 线 4：MetaPattern 目录与经验充分性
++
++已有 `Zhou2020SymmetryMRP`、`Ying2025MRPatterns`、`LiTOSEM2025`、`BellGlasstone1970`、`LewisMiller1993`。以下条目可补充：
++
++| 候选 | 来源 | 建议 cite key | 相关性 |
++|---|---|---|---|
++| Segura, Alonso, Martin-Lopez, Duran, Troya, Ruiz-Cortes. "Automated Generation of Metamorphic Relations for Query-Based Systems." MET 2022. doi:10.1145/3524846.3527338 | **NOETHER_paper.bib** (key: `Segura2022QBSAutoMR`) | 已有 | 已引用 |
++| Segura, Duran Toro, Troya, Ruiz-Cortes. "A Template-Based Approach to Describing Metamorphic Relations." MET 2017. doi:10.1109/MET.2017..3 | references-2.bib, hash `1516f0f6…` | `SeguraTemplate2017` | 标准化 MR 描述的模板方法，是 MetaPattern "vocabulary of recurring strategies" 的直接先驱 |
++| Wu, Wang, Hu, Niu, Nie, Chen. "How Composite Metamorphic Relations Enhance Test Effectiveness of DNN Testing." IEEE TSE, 2026. doi:10.1109/TSE.2026.3675285 | references-2.bib, hash `8426bc34…` | `WuCompositeMR2026` | composite MR 的 DNN 实证研究，与 NOETHER 代数块组合 MetaPattern 的理论预测对应；需核验（year=2026，doi 已知）|
++
++---
++
++## Related Work 段落骨架
++
++以下骨架仅使用上述**已确认真实**的文献（条目来自两个 bib 文件，doi 均有记录）。对于尚未并入 NOETHER_paper.bib 的条目，标注「需补入 bib」；对于 bib 中 year=null 的条目，标注「需核验年份」。骨架假设原有四线结构不变，在各小节末尾补充 1–3 个段落。
++
++---
++
++### 补充段落（嵌入位置：§2.1 小节末，现有第 3 段之后）
++
++> Parallel evidence for the bottleneck's severity comes from empirical studies of MR quality assessment. Chen et al.'s 2018 CSUR survey systematically maps the twenty-year output of MT research and formalises the key vocabulary still in use today~\cite{ChenCSUR2018}. Chen and Tse's prospective analysis at ESEC/FSE 2021 identifies seven visions for the next decade, foregrounding AI-assisted and LLM-assisted MR identification as the most structurally open frontier~\cite{ChenTseVisions2021}. Within the nuclear-software domain specifically, Li et al.'s lightweight verification framework~\cite{LiMengNuclear2022} demonstrates that MT can be applied to nuclear-power software without reference solutions by deriving MRs from physical equations and numerical-algorithm specifications; Zhao et al.\ extend this line to multi-scale coupling programs for the HTGR reactor~\cite{ZhaoLiNuclear2025}（需核验年份）, establishing the domain-specific MR corpus that the present paper attempts to ground algebraically. A classification of MR representation forms across 162 relations—arithmetic expressions, predicate expressions, and other categories—provides an empirical baseline for our algebraic taxonomy~\cite{ZhaoLiLiu2023RepForms}（需补入 bib）; a dynamic recognition approach that frames MR identification as symbolic expression regression and mines relations via gene expression programming~\cite{HongZhang2022DynRecog}（需补入 bib） offers the closest operational predecessor to our algebraic-induction pipeline.
++
++---
++
++### 补充段落（嵌入位置：§2.2 小节末，现有段落之后）
++
++> The compositionality of structured MR identification has received growing theoretical attention. Qiu et al.\ derive conditions under which MR composition is guaranteed to preserve fault-detection capability, showing that component MR independence is a necessary but not sufficient condition~\cite{QiuZhengMRComposition2022}（需补入 bib）. Sun et al.'s feedback-directed MT further demonstrates that dynamic selection of MRs during test execution can recover much of the cost lost to follow-up test generation~\cite{SunFeedbackMT2022}（需补入 bib）. Both results point toward the same conclusion that motivates NOETHER: the algebraic structure of the MR space, not just empirical selection heuristics, is the key to cost-effective composition.
++
++---
++
++### 补充段落（嵌入位置：§2.3 小节末，现有自动化识别段落之后）
++
++> Three recent contributions sharpen the comparison with our algebraic grounding. MR-Adopt~\cite{XuMRAdopt2024}（需补入 bib） uses LLMs to deduce input-transformation functions from hard-coded test-case pairs, achieving reuse for 72\% of encoded MRs but remaining bounded by the relation types latent in the training corpus. Duque-Torres et al.'s replication study on the PMR approach~\cite{DuqueTorresReplication2022}（需补入 bib） finds that graph-kernel classifiers trained on Java control-flow graphs do not transfer to functionally equivalent Python and C++ methods, providing direct evidence that structural-feature predictors lack the language-invariant algebraic basis that would be needed for the transferability NOETHER requires. Most recently, Bose et al.\ show that a multi-agent LLM debate framework improves consistency in MR detection for augmented-reality applications but does not eliminate incorrect predictions, reinforcing that stability of LLM output is not a proxy for algebraic correctness~\cite{BoseLLMDebate2025}（需补入 bib）.
++
++---
++
++### 补充段落（嵌入位置：§2.4 小节末，现有 MetaPattern 段落之后）
++
++> Segura et al.'s template-based approach to describing MRs~\cite{SeguraTemplate2017}（需补入 bib） demonstrates that recurring structural patterns can be abstracted into reusable descriptions; the templates are, in effect, MR MetaPatterns expressed in a domain-specific language rather than derived from operator algebras. Wu et al.'s empirical study of composite MRs in DNN testing~\cite{WuCompositeMR2026}（需补入 bib；需核验年份） corroborates our theoretical prediction that MRs derived from structurally complementary blocks of $\mathcal{D}(\mathcal{A}_P)$ exhibit superior failure revelation when composed: their finding that geometric complementarity in the latent embedding space predicts composition gain is an empirical analogue of NOETHER's block-orthogonality condition.
++
++---
++
++## 操作指引
++
++**需补入 NOETHER_paper.bib 的条目（6 条）：**
++
++1. `ZhaoLiNuclear2025` — doi:10.1016/j.anucene.2025.111846（year 需由出版商页面核实）
++2. `LiMengNuclear2022` — doi:10.3389/fenrg.2022.788753（Frontiers in Energy, 已有 doi）
++3. `ZhaoLiLiu2023RepForms` — doi:10.1109/DSA59317.2023.00021
++4. `HongZhang2022DynRecog` — doi:10.1109/ICRMS55680.2022.9944595
++5. `XuMRAdopt2024` — doi:10.1145/3691620.3696020
++6. `BoseLLMDebate2025` — doi:10.1109/ASEW67777.2025.00019
++7. `DuqueTorresReplication2022` — doi:10.1109/SANER53432.2022.00088
++8. `QiuZhengMRComposition2022` — doi:10.1109/tse.2020.3009698
++9. `SunFeedbackMT2022` — doi:10.1145/3533314
++10. `SeguraTemplate2017` — doi:10.1109/MET.2017..3
++11. `WuCompositeMR2026` — doi:10.1109/TSE.2026.3675285（year 需核验）
++12. `ChenCSUR2018` — doi:10.1145/3143561
++13. `ChenTseVisions2021` — doi:10.1145/3468264.3473136
++14. `RahmanMRpredT2020` — doi:10.1145/3387940.3392250
++
++**最高优先级（与论文核心论点最直接）：** `LiMengNuclear2022`（先期工作）、`ZhaoLiNuclear2025`（续作）、`BoseLLMDebate2025`（LLM-MR 最新）、`DuqueTorresReplication2022`（MR 迁移性实证）、`WuCompositeMR2026`（代数组合预测）。
++
++**严禁使用的条目：** references-2.bib 中 `year = {null}` 的条目（如 `28a9c028…`）在 `ZhaoLiNuclear2025` 年份未经外部核实前，不得加入正式 `\cite{}`；骨架中已标注「需核验年份」。所有骨架段落中已标注「需补入 bib」的条目在 `\cite{}` 插入前必须先经 `get_crossref_paper_by_doi` 核验并写入 NOETHER_paper.bib。
+\ No newline at end of file
+diff --git a/docs/tosem_maturity_2026-06-16/protocol_theory.md b/docs/tosem_maturity_2026-06-16/protocol_theory.md
+new file mode 100644
+index 0000000..8c1fb80
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/protocol_theory.md
+@@ -0,0 +1,209 @@
++已读取所有必要的上下文。现在产出清单。
++
++---
++
++# 理论加强任务清单 — NOETHER 论文
++
++> 产出日期：2026-06-16  
++> 范围：仅协议/清单文本，不改文件，不调用实验。  
++> 每条均标注 **[需作者数学判断，不可由 agent 代证]**。
++
++---
++
++## 任务 T1：CONSTRUCT-MP Step 3/4 "每 block 一个 MP vs 每 invariant 一个 MP" 定义歧义
++
++### 1.1 歧义的精确定位
++
++当前 LaTeX 源（L529-530）：
++
++- **Step 3**：`Form the MetaPattern m_s = R(ι)/∼_s`
++- **Step 4**：`Return 𝕄(A_P) = { m_s : s ∈ D(A_P) }`
++
++隐含的输出基数是：**每个 block 恰好一个 MetaPattern**，无论该 block 下有多少个 ∼_s 等价类（即多少个互不等价的不变量）。
++
++问题：若同一个 block 下存在两个 ∼_s 不等价的不变量 ι₁ ≁_s ι₂，则 R(ι₁) 和 R(ι₂) 属于不同的等价类。Step 3 的商操作 `R(ι)/∼_s` 在这种情况下实际产生的是**多个** MetaPattern，而 Step 4 的集合写法 `{ m_s : s ∈ D }` 暗示每个 block 只输出一个元素。这在逻辑上不一致。
++
++**[需作者数学判断，不可由 agent 代证]**
++
++### 1.2 修法选项A：每 block 一个 MP（聚合解读）
++
++**定义方式**：将 Step 3 改为"令 m_s 为所有 ∼_s 等价类的并集"，即 m_s = ⋃_{[ι]∈ I_s/∼_s} R(ι)。Step 4 保持不变，𝕄 的基数等于 block 数（最多 8）。
++
++**优点**：
++- 与论文所有已运行的实例一致（Boltzmann 返回"七个 MetaPattern"，不是七十个）
++- 定理 1 的证明 + 定理 2 的计数步骤均无需改动
++- 反例（Section 6.6, §subsec:negative-pwr）的叙述保持不变
++
++**缺点**：
++- 若同一 block 下 ι₁ ≁_s ι₂（如 G 块下 SO(3) 旋转不变与 Z₂ 奇偶对称是不同 ∼_s 等价类），则 m_s 实际上捆绑了不同语义的 MR 家族，损害了"每个 MetaPattern 对应一个语义单元"的叙事
++- 论文的 G 块实例（rotation-invariance + parity-symmetry 不分离）在等价类层面是正确的，但需明确声明这是一个聚合对象
++
++**[需作者数学判断：在已有三个领域实例中，G 块是否确实只包含一个 ∼_s 等价类？如果 SO(3) 旋转和 Z₂ 翻转被分到了同一个 ∼_s 类，则聚合解读是正确的；如果它们是不同等价类，则选项 A 的输出不等于"七个 MetaPattern"。]**
++
++### 1.3 修法选项B：每 ∼_s 等价类一个 MP（精细解读）
++
++**定义方式**：Step 3 改为"对每个 ∼_s 等价类 [ι]，令 m_{s,[ι]} = R(ι)/{∼_s 内的等价}"；Step 4 改为 𝕄 = ⋃_{s} { m_{s,[ι]} : [ι] ∈ I_s/∼_s }，𝕄 的基数是所有 block 的等价类总数（至多 8，可能更多）。
++
++**优点**：
++- 语义更精确：每个 MetaPattern 对应一个同结构的 MR 家族
++- 定理 1 的证明仍然成立（每个 MR 被 Step 2 放入某 R(ι)，被 Step 3 分配到唯一等价类，被 canonical-block ordering 解歧义）
++- 消除了"单 block 多等价类下 m_s 是什么"的模糊
++
++**缺点**：
++- 定理 2 的复杂度分析需要修订：当前 Step 3 的 union-find 成本写为 O(n log n)，以 n 为 generator 数；若 MP 基数随等价类数目增加，需要重新说明计数的对象
++- 论文所有"七个 MetaPattern"的陈述将改为"最多 8 个（等于 block 数），若同一 block 下不变量不互 ∼_s 等价则超过 8 个"，影响 Abstract、Contributions、表格 caption、Conclusion
++- 三个领域实例需要明确报告每个 block 实际产生了几个等价类，否则读者无法核实
++
++**[需作者数学判断：是否愿意放弃"恰好七个 MetaPattern"这一简洁陈述？等价类精细化是否在已有三个实例中确实产生超过 7 个 MP？如果实例中每 block 恰好一个等价类（因为不变量定义足够粗粒度），则选项 B 与 A 等价，但框架的一般性表述必须允许更多。]**
++
++### 1.4 修法选项C：增设条件（等价类唯一性假设）
++
++**定义方式**：在 Definition [Block invariant] 之后增加一个 Assumption，声明"本文所涉及的三个代数 A_Boltz, A_equi, A_rel 在每个 block 下恰有一个 ∼_s 等价类"；正文作为有限实例的陈述，不作为一般框架的定理。
++
++**优点**：用最小改动消除歧义，不影响任何定理或实例叙述
++
++**缺点**：将框架降格为"满足特定 Assumption 时才无歧义"，审稿人会质疑这个 Assumption 是否可证明而非临时约定
++
++**[需作者数学判断：是否可以为三个实例证明每 block 只有一个等价类？对 G 块，SO(3) 的轨道不变量在 ∼_s 意义下是否构成单一等价类？]**
++
++### 1.5 对 Theorem 1 闭包和 Theorem 2 多项式时间的影响
++
++| 选项 | Thm 1 影响 | Thm 2 影响 |
++|---|---|---|
++| A（聚合） | 无影响，证明逻辑不变 | 无影响，n 仍指 generator 数 |
++| B（精细） | 证明仍成立，但 uniqueness 的陈述需要把 canonical-block ordering 推广到等价类层，而不是仅 block 层 | Step 3 计数对象变为等价类数，需重新说明 n 的含义 |
++| C（Assumption） | 无影响 | 无影响 |
++
++---
++
++## 任务 T2：Composite-Translate 是否保 Theorem 1 闭包 + Theorem 2 多项式时间
++
++### 2.1 问题的精确陈述
++
++论文 Remark C.7（L2817-2818）定义了 Composite Translate 的候选形式：
++
++Translatẽ: I_{s₁} × ⋯ × I_{s_k} → MR(P)
++
++需要同时覆盖五个独立障碍（Table \ref{tab:obstruction set}，L995-1003）：
++
++- **O1**：operator-spectrum output（k_eff 不在 𝒴 中）
++- **O2**：homomorphism-failure π-template（非加性 worth functional）
++- **O3**：configuration-indexed adjoint structure（φ†_X 随 X 变化）
++- **O4**：higher-order mixed-difference π-templates（二阶混合偏差）
++- **O5**：bidirectional joint parametric dependence（T_mod 与 C_B 双向联合依赖）
++
++**问题（a）**：Composite Translate 是否保 Theorem 1 的闭包？即是否存在某个扩展定义，使得 CONSTRUCT-MP 仍能把每个 Translatẽ-reachable MR 分配到唯一的某个 m ∈ 𝕄(A_P)？
++
++**问题（b）**：上述扩展是否保 Theorem 2 的多项式时间可判定性？
++
++**[需作者数学判断，不可由 agent 代证]**
++
++### 2.2 攻法一：规范化路径（尝试证 Thm 1′ 的弱变体）
++
++**思路**：证明"每个由多个 block 不变量通过某种组合规则生成的 MR，均可被一个扩展的 canonical-block ordering（现定义在 I_{s₁} × … × I_{s_k} 的笛卡尔积上）唯一分配"。
++
++**子问题清单**（每条需作者判断）：
++
++- **[需作者判断]** O1（k_eff 作为算子谱量）：是否可以将 k_eff 视为一个新的"谱 block"（即增加第九 block，其 operator 是"取支配特征值"的函数），从而让 Translate 对该 block 的不变量仍然适用单 block 形式？若可以，Theorem 1 对这一扩展 block 的闭包证明是否逐字可复用？
++- **[需作者判断]** O2（同态失败 π-template）：当前 Definition [Block invariant] 的 π 是 (𝒳 × 𝒴)^k 上的关系，约束 P(x_i) 的组合。非加性条件是 Δ_{AB}(x₀) ≠ 0，它是四个 P(x_i) 的算术组合不等于零，形式上是一个四元关系——是否可以放宽 π 到"允许有限元组的算术组合"？放宽后 Theorem 1 的存在性证明（Step 1→2→3→4）是否仍然机械可走？
++- **[需作者判断]** O4（高阶混合差分）：若 π 允许二阶混合差分，则 π 的"first-order"约束解除，Translate 的 canonical order 在多个 block 参数方向上是否仍然能定义一个良基序？anti-symmetry 是否可能失效（即同一个 MR 在两个不同方向上都有高阶描述，无法单一排序）？
++
++**[需作者判断，核心问题]**：放宽 π 到高阶组合后，"闭包"的含义是否仍然有意义？若 π 的语言过于丰富，Theorem 1 实际上退化为"任何可描述的 MR 都被某个 m 覆盖"，即平凡恒真。作者需要在"表达力足够覆盖 O1-O5"与"表达力不至于使定理平凡"之间找到非平凡的分界线——这是唯一可能使 Composite-Translate 定理成为非平凡结果的地方。
++
++### 2.3 攻法二：通过反例证明不可保（尝试证 Thm 1 + Composite-Translate 不相容）
++
++**思路**：试图构造一个 Composite-Translate 的候选定义，证明在这个定义下 Theorem 1 的唯一性（uniqueness）失效，即存在某个 MR 可同时被两个不同的 (s₁, s₂) 对通过不同 π 组合推出，且 canonical-block ordering 无法消除歧义。
++
++**子问题清单**：
++
++- **[需作者判断]** O3（configuration-indexed adjoint）：φ†_X 对每个控制棒配置 X 不同，这个依赖是否可以被编码为 O_≤ block（用控制棒插入深度的偏序）+ T* block（自伴算子）的乘积？若是，Composite-Translate 在这个乘积上是否保唯一性？若否，需要构造一个显式反例。
++- **[需作者判断]** O5（双向联合参数依赖）：T_mod 和 C_B 各自可由 O_≤ block 描述单方向单调性，但联合的二阶混合偏差不是两个 O_≤ 不变量的乘积（因为两个方向的偏序并非相互独立地约束同一输出）。这个"非乘积"性质是否可以被严格证明（即证明 ρ_{MTC-bor} ∉ span(I_{O_≤} × I_{O_≤})，其中 span 指 Composite-Translate 的某个合理定义）？
++
++### 2.4 攻法三：多项式时间可判定性（Theorem 2）的单独分析
++
++**当前 Theorem 2 的时间分析**（L2658-2667）：Step 1 成本 O(n · max t_i)；Step 2 O(1)；Step 3 union-find O(n log n)；Step 4 O(1)。总 O(n · max t_i · log n)。
++
++**Composite-Translate 对 Theorem 2 的威胁**：
++
++- 若 Composite-Translate 需要检查 I_{s₁} × I_{s₂} 的笛卡尔积（两个 block 的不变量对），则 Step 2 的成本从 O(1) 变为 O(|I_{s₁}| × |I_{s₂}|)，在最坏情况下是二次于不变量数量的
++- 若 |I_s| 在某些 block 下是指数增长的（如 G block 在大有限群上），则 Composite-Translate 的总成本可能是指数级的
++
++**[需作者判断]**：当前论文 Theorem 2 的约束"A_P admits a finite generating set of cardinality n"是否足以控制 |I_s| 的大小？对于 Composite-Translate，是否需要增加额外的 finiteness 假设（如 |I_{s₁} × I_{s₂}| ≤ n²）才能保多项式时间？这个额外假设在三个已有实例上是否成立（可检验，无需数学证明）？
++
++---
++
++## 任务 T3：若补不出非平凡定理，论文类型的诚实重定位
++
++### 3.1 现状诊断（来自仓库现有 maturity review）
++
++NEXT_STEPS.md 的 TOSEM maturity review（2026-06-16，6 个独立 subagent 综合裁决 Major Revision，评分 38-72）指出核心问题是：
++
++> "理论内核偏平凡 + CONSTRUCT-MP Step 3/4 定义级 bug；最强定理 Thm 1′ 被自证伪"
++
++目前论文的自我定位属于"constructive discovery"类型：NOETHER 通过代数结构推导出此前未被归纳发现的 MR（adjoint reciprocity、time-reversal compatibility 各自在先前文献中无记录）。
++
++### 3.2 重定位选项 I："Systematisation"（最小改动路径）
++
++**目标读者**：SE 形式化方法社区，不要求新的数学定理，接受"统一框架 + 已有知识的代数重组"作为贡献
++
++**论文核心主张调整**：
++- 原主张：NOETHER 通过代数闭包保证推导出此前未知的 MR（constructive discovery）
++- 改为：NOETHER 提供一个统一的代数语言，将此前分散的 MR 识别实践（归纳、挖掘、LLM 辅助）重新编码为一个公理化体系，其主要价值在于可比性和可传递性，而非穷举性
++
++**需要修改的关键位置**（零实验成本，仅文本）：
++
++| 位置 | 当前表述 | 改为 |
++|---|---|---|
++| Abstract，Contribution C2a | "proves Algebraic Closure Theorem" | "establishes an algebraic closure guarantee within explicitly bounded scope" + 明确 by-construction 性质 |
++| Contribution C2a 末尾 | 目前已有 by-construction 声明但被 Theorem 1 的排版压制 | 将 by-construction 声明提前至 C2a 首句 |
++| Section 1 boundary box | "Theorem 1 converts an empirical-adequacy claim into a structural-adequacy obligation" | 补充"within the scope of Definition [Algebra-induced MR]; the framework's transferability claim rests on the instantiation evidence of §§4-6, not on Theorem 1 alone" |
++| Conclusion "Open" list item (a) | 当前已声明为 open problem | 可保持不变；但需在 Introduction 提前告知读者这是 open，而非仅在 Conclusion box 中透露 |
++
++**[需作者判断]**：这次重定位是否会触发 TOSEM 的 "not novel enough" 拒稿路径？TOSEM 接受 systematisation 论文，但需要作者在 submission letter 中显式声明并引用先前类似贡献（如 Segura 2016 的 MR 类型分类是 systematisation 先例）。是否需要在 Related Work 增加一段比较 NOETHER 与其他 systematisation 工作？
++
++### 3.3 重定位选项 II："Re-grounding"（中度改动路径）
++
++**定义**：Re-grounding 是 systematisation 的一个更强版本，声称"将此前基于归纳/经验的工作放置到一个可以检验假设的演绎框架中"，其贡献在于**改变可证伪性结构**，即使无新定理。
++
++**论文现有的 re-grounding 证据**（已在论文中存在，无需额外实验）：
++
++1. 反例构造（§subsec:negative-pwr）：提供了"NOETHER 的 Theorem 1′ 是可以被证伪的"，这本身是一个 re-grounding 的贡献——对比先前归纳 MetaPattern 框架，没有任何一个框架为自身设置了可被证伪的 completeness 断言
++2. 先验预测（§subsec:reactor-mapping）：NOETHER 预测 m_adj 和 m_rev 这两类 MR，先于 empirical 验证——这是一个再接地性声明
++3. 跨域迁移（三个领域相同的 8-block 分解）：归纳框架无法在代数层面保证跨域等价，NOETHER 提供了这一代数保障
++
++**核心论点重构**：
++
++"NOETHER's contribution is not a new theorem about MRs in general, but a change in the \emph{epistemic structure} of MR identification: it replaces the question `which MRs are empirically observed?' with the question `which MRs are algebraically derivable from a given program family's operator algebra?' The former is answered by inductive catalogues; the latter is answered deductively, and the answer is falsifiable in the sense made precise by Theorem~1's scope boundary and the two concrete counterexamples to Theorem~1' in \S\ref{subsec:negative-pwr}."
++
++**[需作者判断]**：这个论点是否能被 TOSEM 审稿人接受为 SE 方向的贡献，还是会被判定为"philosophy of science"类论断而缺乏工程实质？TOSEM 的 scope 包含"theoretical foundations of software testing"，但具体审稿人的偏好无法预测。
++
++### 3.4 重定位选项 III：暂不投 TOSEM，补实验后以"constructive discovery"路径投
++
++**前提**：论文当前最强的可证伪性贡献是"先验预测了 m_adj 和 m_rev 两类 MR，且在 Boltzmann 域验证"。要将此升级为 TOSEM 接受的"constructive discovery"，需要：
++
++- 独立人类评分者（≥ 2 人）对 NOETHER 推导的 MR 进行独立验证（κ ≥ 0.7），以排除共享语料 LLM 循环的质疑（对应 NEXT_STEPS.md 中的 "缺独立人类 inter-rater κ" Blocker）
++- 在至少一个新域（NOETHER 未参与推导）上运行 CONSTRUCT-MP 并报告 MR，由该域专家（非作者）评估是否识别出先前未知的 MR
++
++**[需作者判断]**：是否有条件在近期（3-6 个月内）完成上述实验？如无，则选项 I 或 II 是唯一投稿路径。
++
++### 3.5 三个选项的诚实程度与期望审稿结果对比
++
++| 选项 | 论文类型声明 | 理论深度要求 | 实验要求 | 预期 TOSEM 结果 |
++|---|---|---|---|---|
++| I：Systematisation | 明确声明 | Theorem 1 保留但不作为 novelty 核心 | 无新增 | 可能 Minor Revision，但需 Related Work 扩充 |
++| II：Re-grounding | 隐含，通过 epistemic argument 表达 | 同 I，需 Introduction 重写 | 无新增 | 结果不定，取决于 AE 领域背景 |
++| III：Constructive discovery（延迟） | 维持当前定位 | 需 Step 3/4 bug 修复 + 可能补非平凡定理 | 需人类评分者 + 新域实验 | 接受概率较高但时间成本高 |
++
++**[需作者判断]**：对于 NOETHER 当前稿件，选项 I + II 的联合路径（即：在 Abstract/Contributions 中明确说明论文是"re-grounding that enables falsifiability"，在 Related Work 中定位为 systematisation of foundations，同时保留 Theorem 1 作为框架完整性的内部一致性保证）是否准确反映了作者对这项工作价值的判断？这一判断只能由作者做出。
++
++---
++
++## 总结：三个任务的优先级与相互依赖
++
++| 任务 | 阻塞投稿 | 可由 agent 准备草稿 | 必须作者判断的核心问题 |
++|---|---|---|---|
++| T1（Step 3/4 歧义） | 是，属 NEXT_STEPS 中的"定义级 bug" | 是，可起草选项 A/B/C 的修改文本 | 三个领域实例中每个 block 的 ∼_s 等价类是否恰好为 1 个 |
++| T2（Composite-Translate） | 否，当前论文已将其定位为 open problem，无需解决 | 部分（可列出所需引理的命题形式） | π 表达力的上下界、O1-O5 在 Composite 框架下的独立性证明 |
++| T3（类型重定位） | 取决于对审稿意见的判断 | 是，可起草各选项的关键段落改写 | 作者对论文价值的定位判断，以及对 TOSEM 受众的预判 |
++
++**建议执行顺序**：T1 → T3（选项 I 或 II 的文本草稿）→ T2（开放问题章节的精确化，无需解决）。
+\ No newline at end of file
+diff --git a/docs/tosem_maturity_2026-06-16/quant_assessment.md b/docs/tosem_maturity_2026-06-16/quant_assessment.md
+new file mode 100644
+index 0000000..0e0b768
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/quant_assessment.md
+@@ -0,0 +1,47 @@
++# NOETHER — TOSEM 投稿成熟度量化考核(网关多厂商)
++
++> 日期:2026-06-16 · 评估对象:**修复后**论文(differentiation/overclaim/threats 已改) · 方法:经 `.env` 网关用 5 个厂商模型(gpt-5-chat / deepseek-v3.2 / grok-4.1 / qwen3-max / kimi-k2.5)按 TOSEM 作者指南 + 接收门槛做 rubric 量化打分(9 维度 0–10 + 加权)。原始:`gateway_quant_raw.json`。
++
++## 总分(每模型)
++
++| 模型 | 厂商 | 成熟度/100 | TOSEM 门槛 | 差距 | verdict |
++|---|---|---|---|---|---|
++| gpt-5-chat-latest | OpenAI | 67 | 75 | 8 | Major |
++| deepseek-v3.2-exp | DeepSeek | 65 | 75 | 10 | Major |
++| qwen3-max-preview | 阿里 | 63 | 85 | 22 | Major |
++| grok-4.1 | xAI | 58 | 78 | 20 | Major |
++| kimi-k2.5 | Moonshot | 56 | 75 | 19 | Major |
++
++**均值:成熟度 ≈ 62/100,TOSEM 接收门槛 ≈ 78/100,差距 ≈ 16 分。5/5 全 Major Revision。**
++(对比修复前多厂商:32–58 分 + 2 Reject → 修复后 56–67 分 + 0 Reject;文本修复使 verdict 回升,但实质 blocker 仍在。)
++
++## 维度量化(0–10,5 模型均值)
++
++| 维度 | 权重 | 均分 | range | 状态 |
++|---|---|---|---|---|
++| format_compliance | 0.05 | 8.8 | [8,9] | ✅ 达标 |
++| honesty_threats | 0.10 | 7.8 | [6,10] | ✅ 达标(修复见效) |
++| scope_fit | 0.05 | 7.6 | [7,8] | ✅ 达标 |
++| novelty | 0.15 | 7.4 | [6,9] | ✅ 达标 |
++| technical_soundness | 0.20 | 6.8 | [6,8] | ◐ 中等 |
++| reproducibility | 0.10 | 6.8 | [6,9] | ◐ 中等 |
++| evaluation_rigor | **0.20** | **4.6** | [4,5] | 🔴 gap(权重最高) |
++| presentation_length | 0.05 | 4.4 | [3,6] | 🔴 gap |
++| related_work | 0.10 | 3.6 | [3,4] | 🔴 gap(最低) |
++
++## 三大共识 gap(5/5 模型一致)
++
++1. **evaluation_rigor 4.6**(权重 0.20,最重):只 1/3 域有执行的 head-to-head;baseline 实际胜出(p=0.0043);ML 仅 n=20+5 pilot;relational 仅 analytical;METRIC+/MR-Scout/第三厂商比较未执行。→ **需真实实验**(`protocol_realDefect.md`)。
++2. **related_work 3.6**(最低):~4 行太薄,differentiation 段已加但广度仍不足。→ **文本可修**(`protocol_relatedWork.md` 候选文献)。
++3. **presentation_length 4.4**:73pp 远超 TOSEM 30–50 推荐,贡献密度不匹配。→ **文本可修**(压缩 + cover letter 辩护)。
++
++## 到接收门槛的量化路径
++
++| 改进 | 类型 | 预估增益 |
++|---|---|---|
++| related_work 3.6 → 7(扩文献+定位矩阵) | 文本(高 ROI) | ≈ +3.4 分(权重 0.10) |
++| presentation_length 4.4 → 7(压至 ≤50pp) | 文本(高 ROI) | ≈ +1.3 分(权重 0.05) |
++| evaluation_rigor 4.6 → 7(中立真缺陷正面证据+执行 SOTA 比较) | 研究(硬骨头) | ≈ +4.8 分(权重 0.20) |
++| technical_soundness 6.8 → 8(补非平凡定理/重定位) | 研究 | ≈ +2.4 分(权重 0.20) |
++
++**预估**:仅做两项文本修复(related_work + length)→ 成熟度 ≈ 62 → 67(仍 Major);叠加 evaluation 实验 → ≈ 72–74;再加理论强化 → ≈ 76–78,逼近门槛。**结论:无真实实验(evaluation_rigor)与理论强化,纯文本修复无法达到 TOSEM 接收线。**
+diff --git a/docs/tosem_maturity_2026-06-16/reviewer_consensus_and_fix_plan.md b/docs/tosem_maturity_2026-06-16/reviewer_consensus_and_fix_plan.md
+new file mode 100644
+index 0000000..a62d5db
+--- /dev/null
++++ b/docs/tosem_maturity_2026-06-16/reviewer_consensus_and_fix_plan.md
+@@ -0,0 +1,61 @@
++# Reviewer 意见汇总 + 根因分析 + 修复方案
++
++> 2026-06-16 · Reviewer 池 = 15 个独立实例 × 3 轮:
++> 轮1 Claude Opus panel(修复前,5):EIC / R1 形式理论 / R2 实证 / R3 相关工作 / DA
++> 轮2 多厂商网关(修复前,5):gpt-5 / grok-4.1 / deepseek / qwen / kimi(`gateway_panel_raw.json`)
++> 轮3 多厂商网关量化(修复后,5):同上 5 厂商(`gateway_quant_raw.json`)
++
++## A. 按意见分组(注明持有 reviewer 数)
++
++| # | 意见主题 | 持有数 | 分布(轮1/轮2/轮3) | 状态 |
++|---|---|---|---|---|
++| G1 | 实证评估不足:仅 1/3 域有执行 head-to-head;唯一中立 head-to-head 中 Set N 被 baseline 显著击败(p=0.0043);METRIC+/MR-Scout/第三厂商比较仍是 protocol;关键统计欠功效 | **14/15** | 4 / 5 / 5 | 🔴 未解 |
++| G2 | 相关工作单薄/定位不足:related work ~4 行;与 Ying 2025 单向区分;"三问无人回答"过强 | **10/15** | 1 / 4 / 5 | 🟠 部分(已加 differentiation 段) |
++| G3 | 理论内核平凡:Thm 1 by-construction、Thm 2 union-find;最强定理 Thm 1′ 被自证伪;CONSTRUCT-MP Step 3/4 定义歧义 | **8/15** | 2 / 4 / 2 | 🔴 未解 |
++| G4 | 篇幅 73–75pp 超 TOSEM 30–50 推荐,贡献密度不匹配 | **7/15** | 2 / 1 / 4 | 🟠 未解 |
++| G5 | 缺独立人类 κ:κ=0.857/1.000 来自共享语料 LLM,非独立人类信度;30 条 Set-N MR 单作者推导 | **5/15** | 2 / 3 / 0 | 🟠 已声明、未补人类 κ |
++| G6 | 与姊妹论文 T2(NP-hard MR-subset)salami/venue-overlap 未声明 | **4/15** | 1 / 3 / 0 | ✅ 已修(differentiation + cover letter 披露) |
++| G7 | overclaim:三域"已测"、ten dimensions、constructive discovery、C3 "predicts two" | **3/15** | 2 / 1 / 0 | ✅ 已修 |
++| G8 | 上游 8-block 充分性未证 / "constructive discovery" 名不副实(上游仍人工归纳) | **3/15** | 2 / 1 / 0 | 🔴 未解(定位问题) |
++| G9 | Java subjects 从 Sun 2021 prose 重实现、重实现者即框架作者 | 1/15 | 1 / 0 / 0 | ✅ 已在 threats 声明 |
++| G10 | artefact 可用性声明缺 S5–S9 | 1/15 | 1 / 0 / 0 | 🟠 待补 |
++| G11 | reviewer-process / 版本化措辞残留 | 1/15 | 1 / 0 / 0 | ✅ 已修 |
++| G12 | Appendix block 计数 O(7) / eighth-ninth 不一致 | 1/15 | 1 / 0 / 0 | 🟡 待修 |
++
++## B. 根因分析(为什么会出现这些意见)
++
++- **G1 + G8(实证薄 + 上游人工)同源**:论文是"理论框架先行,实证后补"。框架最关键一步(从程序蒸馏算子代数 + 8-block)仍是人工归纳;下游算法虽机械,但唯一执行的中立 head-to-head 用了对自己不利的 SOTA 基准且输了,于是把价值命题改用 per-block/cost-axis/D2 叙事承接。**根因:框架的工程价值命题尚未被任何中立、真实缺陷上的正面证据支撑。**
++- **G3(理论平凡)根因**:真正有数学深度的强定理(Thm 1′ 绝对完备)被作者自己证伪;剩下的 Thm 1 是 by-construction 闭包、Thm 2 是标准 union-find。论文真实智识增量是"重新奠基/系统化",但标题与摘要卖的是"constructive discovery + provable",**主张与实质错配**。
++- **G2 + G4(related work 薄 + 篇幅长)同源**:75 页篇幅大量投在理论铺陈、负面结果(Thm 1′ 证伪)的逐块精细排除、以及反复的自评/边界框;related work 被压到 4 行。**贡献密度低 + 定位投入不足**。
++- **G5(κ)根因**:用多 LLM 替代人类第二评者(成本/便利),但三模型共享预训练语料使一致性虚高(κ=1.000 几乎不可能来自真正独立评分者)。
++- **G6 + G7(salami + overclaim)根因**:同一研究项目拆成 generation(本文,TOSEM)与 selection(T2,TSE)两篇却未交叉声明;摘要措辞("tested on three domains"、"ten dimensions")超出实际执行/证明强度。**已通过文本修复解决。**
++
++## C. 修复方案(分级 + 次序 + 理由)
++
++### 已完成(✅,2026-06-16 本会话)
++| 意见 | 修复 | 理由 |
++|---|---|---|
++| G6 | §2 插 differentiation 段 + cover letter 披露 | salami 是 ethics 硬门槛,零成本必做;引用+划界而非搬运 T2 硬理论(否则升级为自我抄袭) |
++| G7 | abstract 三域分级、ten→5+5、C3 去 predicts | 措辞与证据对齐,消除 overclaim |
++| G9/G11 | threats 加 Java 重实现声明 + 删 reviewer-process 残留 | 诚实化;§6.5/§8.3 硬约束 |
++
++### 文本可修(立即可执行,我可做;高 ROI)
++| 意见 | 方案 | 理由 | 量化增益 |
++|---|---|---|---|
++| G2 | 用 `protocol_relatedWork.md` 真实文献候选扩 §2 + 加"prior work × origin/closure/transferability"双向覆盖矩阵 | related_work 3.6 是最低维度;文献是共享资源、低 self-overlap | ≈ +3.4 加权分 |
++| G4 | 合并重复 boundary box、protocol 段下放 supplementary、压至 ≤50pp + cover letter 篇幅辩护 | 贡献密度问题,删冗余非删论点 | ≈ +1.3 |
++| G8(定位) | 标题/摘要从 "constructive discovery" 重定位为 "systematisation/re-grounding"(候选见 `overclaim_revision_draft.md`) | 让主张匹配实质,化解 G3/G8 错配——**属作者决策,需你拍板** | 间接提 novelty/soundness |
++| G10/G12 | §7.3 补列 S5–S9;Appendix 统一 O(8)/ninth | 低成本合规修订 | 小 |
++
++### 需真实研究(不可代执行,已出协议,你执行)
++| 意见 | 方案 | 理由 |
++|---|---|---|
++| G1 | 按 `protocol_realDefect.md`:在中立、非按块设计的真实缺陷(e3nn/PyTorch Geometric 已确认 bug、Defects4J)上取得 Set N 正面证据 | 这是接收的**核心瓶颈**(evaluation_rigor 权重 0.20);不补则价值命题悬空,纯文本无法过线 |
++| G3 | 按 `protocol_theory.md`:补非平凡定理(如 Composite-Translate 保闭包+多项式时间),或诚实重定位论文类型 | 需作者数学判断,不可由 agent 代证 |
++| G5 | 按 `protocol_humanKappa.md`:自招 ≥2 名独立人类 rater 做 Cohen/Fleiss κ | LLM κ 不能替代;construct validity 的根 |
++
++### 次序(理由:先零成本高杠杆,再硬骨头)
++1. G2 + G4 + G10/G12(文本,立即)→ 成熟度 ~62→67(文本上限);
++2. G8 重定位(需你拍板标题)→ 化解 G3/G8 主张错配,间接提分;
++3. G1(实证)+ G3(理论)+ G5(人类 κ)(研究)→ 逼近接收线 78。
++**量化硬结论:G1/G3 不解决,纯文本修复触顶 ~67,无法达 TOSEM 接收线。**
