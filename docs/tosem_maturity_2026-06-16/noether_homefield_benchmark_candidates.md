@@ -175,4 +175,34 @@ s5-aligned 的金标准设计是:**除 MR 来源外所有混淆变量全部固�
 - 度量(§2)沿用 S5 `efficiency_metrics.py`(M-cost / M-ttf)+ 新增 M-yield / M-block / M-detect(Wilson CI / McNemar)/ M-feasible。
 - **与 s5-aligned 对称**:GenMorph 主场已有 `supplementary/S5_genmorph_pilot/aligned/`(23-subject 单变量 0-confounder;runbook `s5_aligned_cloud_runbook.md`;`results/` 待执行);本主场实验沿用同一 aligned 设计(§2.1),与之构成"对手主场 + 本方主场"的对称证据弧,共同回应 substrate-bias 批评。
 
-> **下一步(未在本任务范围,待拍板)**:把 §6.2 选定子集接上 NOETHER 的 CONSTRUCT-MP 生成桥 + T2 变异 harness,落 `results/`(generation→detection),并对每 SUT 记录 GenMorph 可行性(M-feasible)。本文件只交付**候选清单 + SUT 选择**,不含执行结果。
+---
+
+## 10. 代表性与威胁(threats to validity)
+
+### 10.1 主场清单是"声明在案的主场",非中立集
+
+- 本清单**有意**选 NOETHER 占优场景,**不假装中立**。公正性不来自本清单自身,而来自三重配套:(a) 配对 GenMorph 主场(s5-aligned 的 gcd/sin + 23-subject);(b) 中立第三方基准(s5-aligned 用 GenMorph **自家发表** benchmark);(c) 主张层级——只报 generation/detection + underpowered,不声称 average superiority。
+- **过度主张红线**:GenMorph 在这些 SUT 上 D1–D4 退化甚至**不可行**;若对手进不了场,"NOETHER 赢 kill 比拼"半属同义反复。诚实口径 = **NOETHER 适用域 / 表达空间严格更大(M-feasible)**,而非同场 kill 击败。
+- **缓解 selection bias**:SUT 来自姊妹论文 T2 既有 substrate(为 *selection* 命题而建,与 *generation* 正交),**非为本论文新造** → 被测对象选择权不在本方;代价是同作者群,须 cover letter 披露(§8)。
+- **pre-registration**:§6.2 选定子集与 per-block 假设须在跑 detection **前冻结**,避免 HARKing。
+
+### 10.2 跨实现差分 oracle 的威胁
+
+- **共模故障盲点**:两实现共享同一 bug(同一错边界条件 / 同一底层库)时差分失效 → 故意配**最大算法 gap** 的实现对(MC vs MOC、FV vs 谱、Cantera vs 独立 scipy)压低共享假设;并辅以注入变异补共模。
+- **离散差异 ≠ 缺陷**:正常离散误差不得被误记为检出 → 容差**先验**设定(精确线性性质 1e-9;方法相关性质放宽,见 `pde_xeval/mr_battery.py` 容差 rationale),禁事后拟合。
+- **差分不指明谁对**:只给"不一致"信号;对"MR 能否标记分歧"的 detection 命题已足够,但**不**据此论断"哪个实现正确"。
+- **自洽故障的固有上限**:保持代数性质的全局一致故障(如全局错 α)MT 不可检——如实承认(`pde_xeval/mr_battery.py` 已注),不掩盖。
+
+### 10.3 其余效度
+
+- **外部效度**:物理 SUT 不触及 `\mathcal{B}^{*}_{\mathrm{rel}}`(关系代数块,属查询优化器域);本清单覆盖 `G/O≤/T*/Trev*/L*/D*/E*` 七块,`B_rel*` 由 NOETHER 第三域单独 instantiate,不在本主场。
+- **欠功效**:每 SUT n 小 → Wilson CI + paired McNemar + n<10 标 underpowered(§2.1)。
+
+---
+
+> **执行进展**:§6.2 选定子集的首个可执行切片已落地 `supplementary/S10_noether_homefield/`,产出 generation→detection 实测:
+> - **heat-1d**(自包含,纯 numpy,无 T2 依赖):M-yield 6 / M-block 3(O≤,G,L\*)/ M-detect 5/6=0.833,Wilson CI [0.436,0.970](n=6,underpowered);
+> - **advdiff-2d**(复用 T2 `mcmr.pde_xeval` substrate):M-yield 11 / M-block 4(O≤,G,L\*,守恒)/ M-detect 13/29=0.448,Wilson CI [0.284,0.625];per-block + per-fault-class 分解见 `results/`。
+>
+> 两 SUT alignment gate 均 PASS(baseline_control 全存活);**只报 detection,不报 selection**(k\*/min-cover/collapse);self-consistent 故障(heat coeff×1.1;advdiff diffusion-coeff 0/2、advection-speed 0/3)如实未检出,印证 §10.2。
+> **后续增量**:其余 SUT(radxfer / fefv / detonation / combustion / P2 / P6)+ 跨实现差分 oracle(§10.2 容差校准)+ LLM-MR 对比 arm(paired McNemar)。

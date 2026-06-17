@@ -1,0 +1,4 @@
+# heat-1d slice: numpy only
+# advdiff-2d slice: numpy + scipy + the T2 (Minimum-MR-SubSet) substrate on disk
+numpy>=1.23
+scipy>=1.10

@@ -1,0 +1,198 @@
+{
+  "sut": "advdiff-2d",
+  "equation": "u_t + c.grad(u) = alpha*lap(u) (2-D advection-diffusion, periodic; N=64, alpha=0.01, c=(1.0,0.5), T=0.5)",
+  "impls": [
+    "M-FV",
+    "M-SP"
+  ],
+  "genmorph": {
+    "feasible": false,
+    "reason": "N x N field I/O (D1); each fitness eval is a sparse-LU / spectral PDE solve (D2); scaling/Galilean/Richardson MRs relate multiple structured executions (D3).",
+    "expr_tier": "beyond two-execution (jir,jor) tier (D4)"
+  },
+  "alignment_ok": true,
+  "baseline_killers": [],
+  "M_yield": 11,
+  "M_block": 4,
+  "blocks_covered": [
+    "Conservation",
+    "G",
+    "L*",
+    "O_le"
+  ],
+  "M_detect": {
+    "killed": 13,
+    "n_real_mutants": 29,
+    "rate": 0.4482758620689655,
+    "wilson95": [
+      0.2841,
+      0.6245
+    ],
+    "underpowered": false
+  },
+  "per_block": {
+    "Conservation": {
+      "mrs": [
+        "mass-conservation"
+      ],
+      "detected": 10,
+      "n": 29,
+      "rate": 0.3448275862068966,
+      "wilson95": [
+        0.1994,
+        0.5265
+      ]
+    },
+    "G": {
+      "mrs": [
+        "galilean-inv",
+        "phase-scaling",
+        "reflection-sym",
+        "spectral-decay-scaling",
+        "translation-inv"
+      ],
+      "detected": 11,
+      "n": 29,
+      "rate": 0.3793103448275862,
+      "wilson95": [
+        0.2269,
+        0.56
+      ]
+    },
+    "L*": {
+      "mrs": [
+        "energy-decay",
+        "richardson-self"
+      ],
+      "detected": 10,
+      "n": 29,
+      "rate": 0.3448275862068966,
+      "wilson95": [
+        0.1994,
+        0.5265
+      ]
+    },
+    "O_le": {
+      "mrs": [
+        "linearity-scale",
+        "max-principle",
+        "superposition"
+      ],
+      "detected": 8,
+      "n": 29,
+      "rate": 0.27586206896551724,
+      "wilson95": [
+        0.147,
+        0.4572
+      ]
+    }
+  },
+  "per_fault_class": {
+    "advection_speed_error": {
+      "detected": 0,
+      "n": 3,
+      "rate": 0.0
+    },
+    "advection_stencil_fault": {
+      "detected": 1,
+      "n": 4,
+      "rate": 0.25
+    },
+    "boundary_index_fault": {
+      "detected": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "coefficient_inhomogeneity_fault": {
+      "detected": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "conservation_violation": {
+      "detected": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "diffusion_coefficient_error": {
+      "detected": 0,
+      "n": 2,
+      "rate": 0.0
+    },
+    "laplacian_stencil_fault": {
+      "detected": 1,
+      "n": 4,
+      "rate": 0.25
+    },
+    "sign_error": {
+      "detected": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "spectral_aliasing_fault": {
+      "detected": 0,
+      "n": 1,
+      "rate": 0.0
+    },
+    "spectral_normalization_fault": {
+      "detected": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "spectral_wavenumber_fault": {
+      "detected": 1,
+      "n": 3,
+      "rate": 0.3333333333333333
+    },
+    "time_integration_fault": {
+      "detected": 2,
+      "n": 4,
+      "rate": 0.5
+    }
+  },
+  "per_mr": {
+    "linearity-scale": {
+      "block": "O_le",
+      "kills": 5
+    },
+    "superposition": {
+      "block": "O_le",
+      "kills": 5
+    },
+    "translation-inv": {
+      "block": "G",
+      "kills": 7
+    },
+    "reflection-sym": {
+      "block": "G",
+      "kills": 9
+    },
+    "mass-conservation": {
+      "block": "Conservation",
+      "kills": 10
+    },
+    "energy-decay": {
+      "block": "L*",
+      "kills": 8
+    },
+    "max-principle": {
+      "block": "O_le",
+      "kills": 8
+    },
+    "spectral-decay-scaling": {
+      "block": "G",
+      "kills": 4
+    },
+    "phase-scaling": {
+      "block": "G",
+      "kills": 2
+    },
+    "galilean-inv": {
+      "block": "G",
+      "kills": 9
+    },
+    "richardson-self": {
+      "block": "L*",
+      "kills": 7
+    }
+  }
+}
