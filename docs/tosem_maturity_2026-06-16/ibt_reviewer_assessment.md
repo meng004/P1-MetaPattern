@@ -50,8 +50,10 @@ Theorem 1 的 by-construction 闭包。贡献的**新意在于框架化与有限
     最大 over-claim 风险点。
   - **R2(精确算术,中)**:执行核 $\ker_\tau\supseteq\ker$;低于容差 $\tau$ 的破对称故障假阴。
     须与 §10.2 detectability-floor 交叉引用;定理给的是 $\tau\to0$ 极限核。
-  - **R3(单块,低)**:仅 $G$ 块已证;$O_\le/T^{*}/\mathcal{T}^{*}_{\mathrm{rev}}$ 作 schema、$\mathcal{L}^{*}$
-    因 Richardson 比对 $\theta$ 非线性而不自动满足 $E_s$ 线性。勿宣称八块全证。
+  - **R3(块范围,低;已带证据)**:经 `fa_block_classification.py` 核验——**线性等式型块
+    $\{G,T^{*}\}$ FA-rank 紧**($T^{*}$ 核 dim $=N(N{+}1)/2$ 对称阵);$O_\le$(锥)、
+    $\mathcal{T}^{*}_{\mathrm{rev}}$(矩阵逆,可加性残差 $\sim5.5\!\times\!10^{-2}$)、$\mathcal{L}^{*}$(范数比)
+    非线性等式,落线性机制外,仅充分方向。R3 已由断言升级为带证据结论。勿宣称八块全证。
 - **$\supseteq$ 平凡**:成立但不致命;如实承认为定义级反增可信度(**R4**)。
 
 ---

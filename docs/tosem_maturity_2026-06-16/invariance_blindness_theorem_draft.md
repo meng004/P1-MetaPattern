@@ -26,8 +26,10 @@ MR。它不陈述关于世界的任何事。IBT 是 **limiting characterization*
 - **R2(精确算术 vs 容差)**:Def 检测为精确算术;可执行 MR 用容差 $\tau$,执行核
   $\ker_\tau\supseteq\ker$,低于 $\tau$ 的破对称故障假阴。本定理给的是 $\tau\to0$ 的**极限核**,
   与 §10.2 detectability-floor 交叉引用。
-- **R3(单块)**:仅 **$G$ 块**已证;$O_\le/T^{*}/\mathcal{T}^{*}_{\mathrm{rev}}$ 作 schema(§5),
-  $\mathcal{L}^{*}$ 因 Richardson 比对 $\theta$ 非线性而**不**自动满足 $E_s$ 线性,需限子类或仅留充分方向。
+- **R3(块范围,已带证据)**:**$G$ 与 $T^{*}$ 块 FA-rank 紧,已脚本验证**;
+  $O_\le$(不等式/锥)、$\mathcal{T}^{*}_{\mathrm{rev}}$(含矩阵逆)、$\mathcal{L}^{*}$(范数比)经
+  分类证明(§5,`fa_block_classification.py`)**非线性等式**,落在线性机制外,仅充分方向
+  或受限子类。勿宣称八块全紧。
 - **R-a(可达性 ≠ 已忠实)**:Reachability 引理仅保证"**存在**忠实有限测试",不保证"作者所写
   MR 忠实";后者须 per-instance FA rank 检验(`fa_rank_check.py`)。
 - **R-b**:"$\dim\Theta<\infty$"是前提;无限维算子族下引理失效。
@@ -110,22 +112,25 @@ MR 足以精确刻画盲区**"。FA 本身可检(对见证设计做有限线代 
 
 ---
 
-## 5. 跨块 schema(G 证毕;其余作实例)
+## 5. 跨块适用性(带证据的分类,非断言)
 
-通用模板:块 $s$ + 结构 $T_s$ + 保结构谓词 + 缺陷泛函 $E_s$;**当 $E_s$ 对 $\theta$ 仿射且
-FA 成立,§3 证明逐字复用**,得 $\ker(\rho_{\iota,s})=\{T_s\text{-compatible}\}$。逐块谓词:
+判据:紧刻画($\ker=\{T_s\text{-compatible}\}$)需缺陷 $E_s(L)$ 为**线性等式**——此时核是
+子空间(commutant 型),有限 FA rank 检验即证紧。逐块分类**经脚本核验**
+(`fa_block_classification.py` / `fa_rank_check.py`,输出存 `results/`):
 
-| 块 | $T_s$ 结构 | 保结构谓词(故障在核 $\iff$) | $E_s$ |
-|---|---|---|---|
-| $G$ | 群作用 | $\delta$ 保 equivariance(**已证**) | $P_\theta(gx)-\rho(g)P_\theta(x)$ |
-| $O_\le$ | 偏序 | $\delta$ 保单调/线性 | $P_\theta(\theta_1)\not\le P_\theta(\theta_2)$ 的违反量 |
-| $T^{*}$ | 内积自伴 | $\delta$ 保 $\langle Lx,y\rangle=\langle x,Ly\rangle$ | 内积对称差 |
-| $\mathcal{T}^{*}_{\mathrm{rev}}$ | 时反对合 | $\delta$ 与时反交换 | $P_\theta(\mathcal{T}x)$ vs $\mathcal{T}$-像 |
-| $\mathcal{L}^{*}$ | 极限/收敛阶 | $\delta$ 保收敛阶 | Richardson 比偏离 |
+| 块 | 缺陷 $E_s(L)$ | 线性等式? | FA-rank 适用? | 紧? |
+|---|---|---|---|---|
+| $G$ symmetry | $[L,A]$ | 是 | 是 | **TIGHT(已验证)** |
+| $T^{*}$ self-adjoint | $L-L^{\top}$ | 是 | 是 | **TIGHT(已验证;核 dim $=N(N{+}1)/2$ 对称阵)** |
+| $O_\le$ monotonicity | $\max(0,-L_{ij})$ | 否(锥,$I\in M$ 但 $-I\notin M$) | 否 | 仅充分方向 |
+| $\mathcal{T}^{*}_{\mathrm{rev}}$ time-reversal | $RLR^{-1}-L^{-1}$ | 否(含矩阵逆,可加性残差 $\sim5.5\!\times\!10^{-2}$) | 否 | 仅多执行处理(cf. wave SUT) |
+| $\mathcal{L}^{*}$ limit | Richardson 范数比 | 否(范数比) | 否 | 子类 / 仅充分方向 |
 
-**[需作者]** 逐块确认 $E_s$ 仿射性:$G,O_\le,T^{*},\mathcal{T}^{*}_{\mathrm{rev}}$ 的缺陷在线性
-PDE 下仿射;**$\mathcal{L}^{*}$ 的 Richardson 比对 $\theta$ 非线性**,需单独论证或限子类
-(否则 $\mathcal{L}^{*}$ 块只保留充分方向,不立紧性)。
+**结论(R3 升级)**:**线性等式型块 $\{G,T^{*}\}$ FA-rank 紧,已脚本验证**;
+$\{O_\le,\mathcal{T}^{*}_{\mathrm{rev}},\mathcal{L}^{*}\}$ 因不等式 / 矩阵逆 / 范数比**非线性**,
+**经分类证明落在线性机制之外**,只保留充分方向(IBT-1 弱版)或受限子类。这把原"余块
+schema"由断言升级为带证据的结论。$O_\le/\mathcal{L}^{*}$ 是否经固定/线化子类恢复紧性,
+留作可选 future work,不阻塞 $\{G,T^{*}\}$ 的紧定理。
 
 ---
 
