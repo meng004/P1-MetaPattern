@@ -4,6 +4,12 @@
 > 目标贡献:把 C4(transferability)从"只在我们设计的域上成立"(circular)升级为
 > "在框架未参与构建的新域上,冻结的 8-block 仍能迁移并推导出专家确认的有效 MR"。
 
+> **执行状态(2026-06-17)**:**工业代码 leg 已执行**(`N5_industrial_results.md` /
+> `supplementary/S11_n5_industrial/`):110 条专家认可 MR(BAMBOO-C SPARK/LOCUST + SACOS)
+> 由冻结 O≤ 块 100% 覆盖、0 orphan、18 条超集发现。**诚实限定:单块(O≤)+ 同核领域代码级
+> held-out**,非"非物理多块跨域"。**待补 leg 2(数值线代/DSP/几何)**以激发 G/T\*/L\*/E\* +
+> IBT 紧块,合成完整 C4。
+
 ---
 
 ## 0. 为什么需要 N5(说明理由)

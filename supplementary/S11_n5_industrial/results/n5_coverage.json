@@ -1,0 +1,915 @@
+{
+  "total": 110,
+  "covered": 110,
+  "coverage_rate": 1.0,
+  "coverage_wilson95": [
+    0.9662560647018357,
+    1.0
+  ],
+  "block_occupancy": {
+    "O<=": 110
+  },
+  "subtypes": {
+    "plain": 104,
+    "conditional": 4,
+    "increment": 2
+  },
+  "orphans": 0,
+  "newly_discovered": 18,
+  "per_code": {
+    "SPARK": {
+      "n": 36,
+      "new": 6
+    },
+    "LOCUST": {
+      "n": 28,
+      "new": 6
+    },
+    "SACOS": {
+      "n": 46,
+      "new": 6
+    }
+  },
+  "rows": [
+    {
+      "code": "SPARK",
+      "mr": 1,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:R01<R02, R:CBC1<CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 2,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:R01>R02, R:CBC1>CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 3,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:R01<R02, R:EIGEN1<EIGEN2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 4,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:R01>R02, R:EIGEN1>EIGEN2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 5,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Bu1<Bu2, R:CBC1>CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 6,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Bu1>Bu2, R:CBC1<CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 7,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:TCin1<TCin2, R:TCout1<TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 8,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:TCin1>TCin2, R:TCout1>TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 9,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:TCin1<TCin2, R:CBC1>CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 10,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:TCin1>TCin2, R:CBC1<CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 11,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:TCin1<TCin2, R:EIGEN1>EIGEN2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 12,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:TCin1>TCin2, R:EIGEN1<EIGEN2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 13,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:nor_Power1<nor_Power2, R:CBC1>CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 14,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:nor_Power1>nor_Power2, R:CBC1<CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 15,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Pr1<Pr2, R:CBC1>CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 16,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Pr1>Pr2, R:CBC1<CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 17,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Pr1<Pr2, R:TCout1<TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 18,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Pr1>Pr2, R:TCout1>TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 19,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1<Fuel_heat2, R:CBC1>CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 20,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1>Fuel_heat2, R:CBC1<CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 21,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1<Fuel_heat2, R:TCout1<TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 22,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1>Fuel_heat2, R:TCout1>TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 23,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1<Fuel_heat2, R:CBC1<CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 24,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1>Fuel_heat2, R:CBC1>CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 25,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1<Fuel_heat2, R:TCout1>TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 26,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1>Fuel_heat2, R:TCout1<TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 27,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1<Fuel_heat2, R:CBC1>CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 28,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1>Fuel_heat2, R:CBC1<CBC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 29,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1<Fuel_heat2, R:TCout1<TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 30,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fuel_heat1>Fuel_heat2, R:TCout1>TCout2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 31,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:S1<S2, R:D1<D2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 32,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:S1>S2, R:D1>D2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 33,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Tfuel1<Tfuel2, R:DTC1>DTC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 34,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Tfuel1>Tfuel2, R:DTC1<DTC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 35,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:ρ1<ρ2, R:MTC1>MTC2"
+    },
+    {
+      "code": "SPARK",
+      "mr": 36,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:ρ1>ρ2, R:MTC1<MTC2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 1,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Tfuel1<Tfuel2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 2,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Tfuel1>Tfuel2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 3,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Burn1<Burn2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 4,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Burn1>Burn2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 5,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Enrich1<Enrich2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 6,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Enrich1>Enrich2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 7,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Boron1<Boron2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 8,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Boron1>Boron2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 9,
+      "block": "O<=",
+      "subtype": "conditional",
+      "new": false,
+      "text": "r:Boron1<threshold AND TBoron1<TBoron2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 10,
+      "block": "O<=",
+      "subtype": "conditional",
+      "new": false,
+      "text": "r:Boron1<threshold AND TBoron1>TBoron2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 11,
+      "block": "O<=",
+      "subtype": "conditional",
+      "new": false,
+      "text": "r:Boron1>threshold AND TBoron1<TBoron2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 12,
+      "block": "O<=",
+      "subtype": "conditional",
+      "new": false,
+      "text": "r:Boron1>threshold AND TBoron1>TBoron2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 13,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Poison1<Poison2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 14,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Poison1>Poison2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 15,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Control1<Control2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 16,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Control1>Control2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 17,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Control1<Control2, R:Power1>Power2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 18,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Control1>Control2, R:Power1<Power2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 19,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Npoison1<Npoison2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 20,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Npoison1>Npoison2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 21,
+      "block": "O<=",
+      "subtype": "increment",
+      "new": false,
+      "text": "r:Burn1<Burn2 AND dT_same, R:dKeff2>dKeff1"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 22,
+      "block": "O<=",
+      "subtype": "increment",
+      "new": false,
+      "text": "r:Burn1>Burn2 AND dT_same, R:dKeff2<dKeff1"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 23,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:L1<L2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 24,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:L1>L2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 25,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:t1<t2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 26,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:t1>t2, R:Keff1<Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 27,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Npoison1<Npoison2, R:Keff1>Keff2"
+    },
+    {
+      "code": "LOCUST",
+      "mr": 28,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Npoison1>Npoison2, R:Keff1<Keff2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 1,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fps1>Fps2, R:To1<To2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 2,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fps1<Fps2, R:To1>To2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 3,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fps1>Fps2, R:Rb1<Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 4,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fps1<Fps2, R:Rb1>Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 5,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fps1>Fps2, R:Rv1<Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 6,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Fps1<Fps2, R:Rv1>Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 7,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Tin1>Tin2, R:To1>To2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 8,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Tin1<Tin2, R:To1<To2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 9,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Tin1>Tin2, R:Rb1>Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 10,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Tin1<Tin2, R:Rb1<Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 11,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Tin1>Tin2, R:Rv1>Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 12,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Tin1<Tin2, R:Rv1<Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 13,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Po1>Po2, R:Pa1>Pa2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 14,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Po1<Po2, R:Pa1<Pa2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 15,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Po1>Po2, R:Rb1<Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 16,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Po1<Po2, R:Rb1>Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 17,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Po1>Po2, R:Rv1<Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 18,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Po1<Po2, R:Rv1>Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 19,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:P1>P2, R:To1>To2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 20,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:P1<P2, R:To1<To2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 21,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:P1>P2, R:Rb1>Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 22,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:P1<P2, R:Rb1<Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 23,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:P1>P2, R:Rv1>Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 24,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:P1<P2, R:Rv1<Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 25,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1>Lf2, R:Vf1<Vf2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 26,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1<Lf2, R:Vf1>Vf2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 27,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1>Lf2, R:Fps1<Fps2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 28,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1<Lf2, R:Fps1>Fps2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 29,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1>Lf2, R:To1>To2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 30,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1<Lf2, R:To1<To2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 31,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1>Lf2, R:Rb1>Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 32,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1<Lf2, R:Rb1<Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 33,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1>Lf2, R:Rv1>Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 34,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "r:Lf1<Lf2, R:Rv1<Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 35,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "if Tm1<Tm2 then Vf1<Vf2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 36,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "if Tm1<Tm2 then T1<T2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 37,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "if Tm1<Tm2 then Rf1<Rf2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 38,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "if Tm1<Tm2 then Vf1>Vf2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 39,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "if Tm1<Tm2 then T1>T2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 40,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": false,
+      "text": "if Tm1<Tm2 then Rf1>Rf2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 41,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Kfrom1<Kfrom2, R:Rv1<Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 42,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Kfrom1>Kfrom2, R:Rv1>Rv2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 43,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Kfrom1<Kfrom2, R:Rb1<Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 44,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Kfrom1>Kfrom2, R:Rb1>Rb2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 45,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Fps1<Fps2, R:Re1<Re2"
+    },
+    {
+      "code": "SACOS",
+      "mr": 46,
+      "block": "O<=",
+      "subtype": "plain",
+      "new": true,
+      "text": "r:Fps1>Fps2, R:Re1>Re2"
+    }
+  ]
+}
