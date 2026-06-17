@@ -541,9 +541,14 @@ We present the deductive procedure CONSTRUCT-MP that maps an algebra-decompositi
 \begin{description}
   \item[Step 1 --- Invariant extraction.] For each block $s$ in $\mathcal{D}(\mathcal{A}_P)$, compute the set of invariants $\mathcal{I}_s$ of $\mathcal{A}_P$ under $s$.
   \item[Step 2 --- MR derivation.] For each invariant $\iota \in \mathcal{I}_s$, derive the MR family $\mathcal{R}(\iota) = \{\,\rho \in \mathrm{MR}(\mathcal{A}_P) \mid \rho = \mathrm{Translate}(\iota', s),\; \iota' \sim_s \iota\,\}$.
-  \item[Step 3 --- Quotient.] Form the MetaPattern $m_s = \mathcal{R}(\iota)/\!\sim_s$.
-  \item[Step 4 --- Aggregation.] Return $\mathbb{M}(\mathcal{A}_P) = \{\, m_s : s \in \mathcal{D}(\mathcal{A}_P)\,\}$.
+  \item[Step 3 --- Quotient and per-block aggregation.] Form the MetaPattern of block $s$ as the union over its $\sim_s$-equivalence classes, $m_s = \bigcup_{[\iota] \in \mathcal{I}_s/\sim_s} \mathcal{R}(\iota)$; thus $m_s$ aggregates all algebra-induced MR families in block $s$.
+  \item[Step 4 --- Aggregation.] Return $\mathbb{M}(\mathcal{A}_P) = \{\, m_s : s \in \mathcal{D}(\mathcal{A}_P)\,\}$, so $|\mathbb{M}(\mathcal{A}_P)|$ equals the number of non-empty blocks.
 \end{description}
+
+\begin{remark}[$m_s$ is a per-block aggregate]
+\label{rem:mp-aggregate}
+A block may carry several $\sim_s$-inequivalent invariant families (for instance geometric and energy-group symmetry within $G$, \S\ref{sec:reactor}); $m_s$ aggregates them, which fixes the cardinality of $\mathbb{M}(\mathcal{A}_P)$ as one MetaPattern per non-empty block. The Invariance-Blindness analysis (\S\ref{subsec:ibt}) operates at the finer per-invariant level, and a block's detection kernel is the intersection of its constituents' kernels (Remark~\ref{rem:ibt-mp}).
+\end{remark}
 
 \subsubsection{Algebraic closure under Translate, the canonical-block ordering, and out-of-scope MRs}
 \label{subsec:completeness}
@@ -631,6 +636,9 @@ NOETHER replaces inductive grounding with algebraic grounding \emph{downstream o
 \begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Boundary of contribution (Section~\ref{sec:framework} restatement),fonttitle=\small\bfseries]
 The downstream layer is mechanical: Theorem~\ref{thm:closure} (algebraic closure under \texttt{Translate}) and Theorem~\ref{thm:decidable} (polynomial-time decidability) operate on a given block decomposition. The upstream layer remains empirical: the structural decomposition is Hypothesis~\ref{hyp:seven-blocks}, an open empirical hypothesis with six documented out-of-scope program-family classes (Remark~\ref{rem:counterex}). Theorem~1$'$ (absolute completeness) is open. Sections~\ref{sec:reactor}, \ref{sec:cross-domain}, and \ref{subsec:third-domain} instantiate NOETHER on three structurally distinct program families.
 \end{tcolorbox}
+
+%% =========================================================
+\input{theory/ibt_section_3_4}
 
 %% =========================================================
 \subsection{Boltzmann instantiation: from transport to diffusion to burnup}

@@ -4,11 +4,25 @@
 > 仅给出可直接替换的修订文本 + 影响分析,供作者在 A/B/C 中选定。
 > 决定性事实须作者判断,标 **[需作者数学判断]**。
 
-> **决策记录(2026-06-17,/goal 自主推进)**:**采纳 Option B**(每等价类一 MP)。
-> 理由:(i) IBT 在 per-invariant 粒度陈述,B 与之自洽(§3);(ii) G 块在 equivariant ML
-> (SO(3) 旋转)与 Boltzmann(几何旋转 + 能群置换)合理含 $\ge 2$ 个 $\sim_s$ 不等价类,
-> 使 C 单类假设在一般情形为假、A 捆绑异质语义。B 为唯一诚实且自洽选择。
-> 该 $\ge 2$ 类断言由实验协议 **N1**(逐域 $\sim_s$ 类数枚举)出证据,见 `experiment_design_protocol.md`。
+> **决策记录(2026-06-17,/goal 自主推进)**
+>
+> ~~初判:采纳 Option B~~ → **更正:采纳 Option A + 两级粒度声明**。
+>
+> **更正缘由(读 `.tex` 后的新证据)**:论文的 "seven MetaPatterns" 实为 **Option A 语义**
+> —— `NOETHER_paper_arxiv.tex` L654/L690/L739 把**每个非空块计一个 MP**(G 块将"几何 +
+> 能群"对称聚合进 $m_{\mathrm{inv}}$),且 L692 的 Fleiss $\kappa=0.857$ 审计、element-wise 表
+> 均建在"7 个 canonical MetaPattern"上。**采纳 B(每类一 MP)会把 7→8+,炸毁这条已验证
+> 的实证主线(需重做 18-MR 审计、abstract/contrib/表 caption)**,blast radius 不成比例且
+> 引入新不一致风险。
+>
+> **A 的 IBT 粒度顾虑已被化解**:MP 取块聚合,$m_s=\bigcup_{[\iota]}\mathcal{R}(\iota)$;IBT 在构成
+> MR $\rho_{\iota,s}$ 级陈述,**块核 $\ker(m_s)=\bigcap_{\iota}\ker(\rho_{\iota,s})$**。由 IBT-G,
+> $\ker(m_s)=\{$保块 $s$ 全结构 $T_s$ 的故障$\}$ —— 两级一致,无矛盾。先前 B0 §3 "A 粒度
+> 不匹配"的反对**据此撤回**。
+>
+> **N1 的证据仍有效但改用途**:O≤(monotone+linear)、G(几何+能群)确含 $\ge 2$ 个 $\sim_s$
+> 类 —— 这正说明 $m_s$ 是**真聚合体**(支持 A 的 aggregate Remark),而 IBT 在更细的构成级
+> 运作;**计数仍每块一 MP(=7),C 单类假设虽在构成级为假,但 A 不依赖该假设**。
 
 ---
 
