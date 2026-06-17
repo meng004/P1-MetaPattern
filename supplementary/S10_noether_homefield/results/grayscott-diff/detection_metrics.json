@@ -1,0 +1,157 @@
+{
+  "sut": "grayscott-diff",
+  "equation": "2-D Gray-Scott reaction-diffusion (U,V), periodic",
+  "impls": [
+    "M-FD-IMEX",
+    "M-SP-IMEX"
+  ],
+  "domain": "fluid",
+  "execution_mode": "executed-here",
+  "provenance": "substrate: Minimum-MR-SubSet mcmr.grayscott; differential oracle executed here; target_impl='both' faults patch shared operators (common-mode, in the oracle kernel).",
+  "cross_impl": {
+    "impls": [
+      "M-FD-IMEX",
+      "M-SP-IMEX"
+    ],
+    "enabled": true,
+    "oracle": "neutral per-field differential (no ground truth); common-mode faults are in the oracle's kernel (IBT-3)"
+  },
+  "calibration": {
+    "method": "tau = SAFETY * max-probe pristine cross-impl reldiff (\u00a710.2); both impls run UNDER the mutation (common-mode-aware)",
+    "safety_factor": 5.0,
+    "n_probes": null,
+    "pristine_gap_delta": 1.1e-05,
+    "tau": 5.4e-05,
+    "sensitivity_posthoc": [
+      {
+        "safety": 1.5,
+        "tau": 1.6e-05,
+        "detected": 29,
+        "n_real": 44,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 2.0,
+        "tau": 2.2e-05,
+        "detected": 29,
+        "n_real": 44,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 3.0,
+        "tau": 3.2e-05,
+        "detected": 29,
+        "n_real": 44,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 5.0,
+        "tau": 5.4e-05,
+        "detected": 28,
+        "n_real": 44,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 10.0,
+        "tau": 0.000108,
+        "detected": 27,
+        "n_real": 44,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      }
+    ]
+  },
+  "genmorph": {
+    "feasible": false,
+    "reason": "G\u00d7N\u00d7N (radxfer) / N\u00d7N field comparison across two full PDE solves per case; neutral cross-impl oracle.",
+    "expr_tier": "method-comparison oracle (E*), beyond (jir,jor) (D4)"
+  },
+  "alignment_ok": true,
+  "baseline_killers": [],
+  "M_yield": 1,
+  "M_block": 1,
+  "blocks_covered": [
+    "E*"
+  ],
+  "M_detect": {
+    "killed": 28,
+    "n_real_mutants": 44,
+    "rate": 0.6363636363636364,
+    "wilson95": [
+      0.4887,
+      0.7622
+    ],
+    "underpowered": false
+  },
+  "per_block": {
+    "E*": {
+      "mrs": [
+        "xeval-differential"
+      ],
+      "detected": 28,
+      "n": 44,
+      "rate": 0.6363636363636364,
+      "wilson95": [
+        0.4887,
+        0.7622
+      ]
+    }
+  },
+  "per_fault_class": {
+    "boundary_fault": {
+      "detected": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "coupling_fault": {
+      "detected": 2,
+      "n": 4,
+      "rate": 0.5
+    },
+    "feed_fault": {
+      "detected": 0,
+      "n": 6,
+      "rate": 0.0
+    },
+    "kill_fault": {
+      "detected": 6,
+      "n": 6,
+      "rate": 1.0
+    },
+    "positivity_fault": {
+      "detected": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "reaction_rate_fault": {
+      "detected": 0,
+      "n": 6,
+      "rate": 0.0
+    },
+    "time_integration_fault": {
+      "detected": 1,
+      "n": 3,
+      "rate": 0.3333333333333333
+    },
+    "u_diffusion_fault": {
+      "detected": 8,
+      "n": 8,
+      "rate": 1.0
+    },
+    "v_diffusion_fault": {
+      "detected": 7,
+      "n": 7,
+      "rate": 1.0
+    }
+  },
+  "per_mr": {
+    "xeval-differential": {
+      "block": "E*",
+      "kills": 28
+    }
+  }
+}

@@ -114,6 +114,48 @@
     "alignment_ok": true,
     "genmorph_feasible": false
   },
+  "radxfer-G2-diff": {
+    "domain": "thermal",
+    "execution_mode": "executed-here",
+    "M_yield": 1,
+    "M_block": 1,
+    "blocks": [
+      "E*"
+    ],
+    "M_detect": {
+      "killed": 10,
+      "n_real_mutants": 31,
+      "rate": 0.3225806451612903,
+      "wilson95": [
+        0.1857,
+        0.4986
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
+  "grayscott-diff": {
+    "domain": "fluid",
+    "execution_mode": "executed-here",
+    "M_yield": 1,
+    "M_block": 1,
+    "blocks": [
+      "E*"
+    ],
+    "M_detect": {
+      "killed": 28,
+      "n_real_mutants": 44,
+      "rate": 0.6363636363636364,
+      "wilson95": [
+        0.4887,
+        0.7622
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
   "radxfer-G2": {
     "domain": "thermal",
     "execution_mode": "reused-committed-matrix",
@@ -229,13 +271,40 @@
     "alignment_ok": false,
     "genmorph_feasible": false
   },
-  "_paired_advdiff_MR_vs_differential": {
-    "comparison": "advdiff: algebra-MR battery (A) vs neutral cross-impl differential oracle (B), same real mutants",
-    "n_real_mutants": 29,
+  "_paired_advdiff-xeval-diff": {
+    "comparison": "advdiff-2d: algebra-MR battery (A) vs neutral cross-impl differential oracle (B), matched real mutants",
+    "mr_side": "executed-here",
+    "n_matched_mutants": 29,
     "A_MR_battery_killed": 13,
     "B_differential_killed": 12,
     "b_only_MR": 6,
     "c_only_differential": 5,
+    "both": 7,
+    "neither": 11,
     "mcnemar_exact_p": 1.0
+  },
+  "_paired_radxfer-G2-diff": {
+    "comparison": "radxfer-G2: algebra-MR battery (A) vs neutral cross-impl differential oracle (B), matched real mutants",
+    "mr_side": "reused-committed-matrix",
+    "n_matched_mutants": 31,
+    "A_MR_battery_killed": 25,
+    "B_differential_killed": 10,
+    "b_only_MR": 17,
+    "c_only_differential": 2,
+    "both": 8,
+    "neither": 4,
+    "mcnemar_exact_p": 0.000728607177734375
+  },
+  "_paired_grayscott-diff": {
+    "comparison": "grayscott: algebra-MR battery (A) vs neutral cross-impl differential oracle (B), matched real mutants",
+    "mr_side": "reused-committed-matrix",
+    "n_matched_mutants": 44,
+    "A_MR_battery_killed": 41,
+    "B_differential_killed": 28,
+    "b_only_MR": 16,
+    "c_only_differential": 3,
+    "both": 25,
+    "neither": 0,
+    "mcnemar_exact_p": 0.004425048828125
   }
 }

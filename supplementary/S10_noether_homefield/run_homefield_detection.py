@@ -22,7 +22,7 @@ if str(_HERE) not in sys.path:
 
 import noether_metrics as nm
 from suts import (heat_sut, wave_sut, poisson_sut, advdiff_sut,
-                  advdiff_xeval_diff, killmatrix_sut)
+                  advdiff_xeval_diff, xeval_diff_live, killmatrix_sut)
 
 RESULTS = _HERE / "results"
 
@@ -110,7 +110,9 @@ def main(argv=None):
 
     registry = {"heat": heat_sut.evaluate, "wave": wave_sut.evaluate,
                 "poisson": poisson_sut.evaluate, "advdiff": advdiff_sut.evaluate,
-                "advdiff-diff": advdiff_xeval_diff.evaluate}
+                "advdiff-diff": advdiff_xeval_diff.evaluate,
+                "radxfer-diff": lambda: xeval_diff_live.evaluate_radxfer(2),
+                "grayscott-diff": xeval_diff_live.evaluate_grayscott}
     # committed-matrix SUTs (reused detection data; runtime-free)
     for _km in killmatrix_sut.SPECS:
         registry[_km] = killmatrix_sut.make_evaluate(_km)
@@ -134,29 +136,48 @@ def main(argv=None):
                 "genmorph_feasible": s["genmorph"].get("feasible"),
             }
 
-    # Paired comparison: algebra-MR battery vs neutral differential oracle
-    # over the SAME advdiff mutants (real faults only). Exercises §10.2 + McNemar.
-    if "advdiff-2d" in raw and "advdiff-xeval-diff" in raw:
-        real = lambda recs: [r for r in recs if not r.get("baseline")]
-        a = real(raw["advdiff-2d"]["records"])           # MR battery
-        b = real(raw["advdiff-xeval-diff"]["records"])    # differential oracle
+    # Paired comparison: algebra-MR battery vs neutral differential oracle over
+    # the SAME real mutants (matched by mutant_id). Exercises §10.2 + McNemar +
+    # IBT-3 (the two oracles' kernels are different). MR side is live for advdiff,
+    # reused-committed for radxfer/grayscott; differential side is always live.
+    pairs = [("advdiff-2d", "advdiff-xeval-diff"),
+             ("radxfer-G2", "radxfer-G2-diff"),
+             ("grayscott", "grayscott-diff")]
+    for mr_sut, diff_sut in pairs:
+        if mr_sut not in raw or diff_sut not in raw:
+            continue
+        mr = {r["mutant_id"]: r for r in raw[mr_sut]["records"] if not r.get("baseline")}
+        df = {r["mutant_id"]: r for r in raw[diff_sut]["records"] if not r.get("baseline")}
+        common = sorted(set(mr) & set(df))
+        if not common:
+            print(f"[paired] {mr_sut} vs {diff_sut}: no shared mutant_ids, skipped",
+                  file=sys.stderr)
+            continue
+        a = [mr[m] for m in common]
+        b = [df[m] for m in common]
         pm = nm.paired_mcnemar(a, b)
-        ka = sum(any(r["kills"].values()) for r in a)
-        kb = sum(any(r["kills"].values()) for r in b)
+        ka = sum(any(mr[m]["kills"].values()) for m in common)
+        kb = sum(any(df[m]["kills"].values()) for m in common)
         paired = {
-            "comparison": "advdiff: algebra-MR battery (A) vs neutral cross-impl "
-                          "differential oracle (B), same real mutants",
-            "n_real_mutants": len(a),
+            "comparison": f"{mr_sut}: algebra-MR battery (A) vs neutral cross-impl "
+                          f"differential oracle (B), matched real mutants",
+            "mr_side": raw[mr_sut].get("execution_mode", "executed-here"),
+            "n_matched_mutants": len(common),
             "A_MR_battery_killed": ka, "B_differential_killed": kb,
             "b_only_MR": pm["b_only_A"], "c_only_differential": pm["c_only_B"],
+            "both": sum(any(mr[m]["kills"].values()) and any(df[m]["kills"].values())
+                        for m in common),
+            "neither": sum(not any(mr[m]["kills"].values())
+                           and not any(df[m]["kills"].values()) for m in common),
             "mcnemar_exact_p": pm["mcnemar_p"],
         }
-        (RESULTS / "advdiff-xeval-diff" / "paired_vs_mr.json").write_text(
+        (RESULTS / diff_sut / "paired_vs_mr.json").write_text(
             json.dumps(paired, indent=2), encoding="utf-8")
-        summaries["_paired_advdiff_MR_vs_differential"] = paired
-        print(f"[paired] advdiff MR={ka}/{len(a)} vs differential={kb}/{len(b)} "
-              f"| MR-only={pm['b_only_A']} diff-only={pm['c_only_B']} "
-              f"| McNemar exact p={pm['mcnemar_p']:.4g}")
+        summaries[f"_paired_{diff_sut}"] = paired
+        print(f"[paired] {mr_sut} MR={ka}/{len(common)} vs differential={kb}/{len(common)}"
+              f" | MR-only={pm['b_only_A']} diff-only={pm['c_only_B']}"
+              f" both={paired['both']} neither={paired['neither']}"
+              f" | McNemar p={pm['mcnemar_p']:.4g}")
 
     RESULTS.mkdir(parents=True, exist_ok=True)
     (RESULTS / "summary.json").write_text(json.dumps(summaries, indent=2),

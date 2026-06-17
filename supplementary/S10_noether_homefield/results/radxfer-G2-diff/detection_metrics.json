@@ -1,0 +1,142 @@
+{
+  "sut": "radxfer-G2-diff",
+  "equation": "multigroup radiation diffusion (1/c)dE_g/dt=div(D_g grad E_g)-sigma_a,g E_g+scatter (2-D periodic, G=2)",
+  "impls": [
+    "M-FD-theta",
+    "M-SP-IMEX"
+  ],
+  "domain": "thermal",
+  "execution_mode": "executed-here",
+  "provenance": "substrate: Minimum-MR-SubSet mcmr.radxfer; differential oracle executed here; absorption/scatter/source faults are common-mode (shared operators), diffusion/stencil/theta/etd are impl-specific.",
+  "cross_impl": {
+    "impls": [
+      "M-FD-theta",
+      "M-SP-IMEX"
+    ],
+    "enabled": true,
+    "oracle": "neutral per-field differential (no ground truth); common-mode faults are in the oracle's kernel (IBT-3)"
+  },
+  "calibration": {
+    "method": "tau = SAFETY * max-probe pristine cross-impl reldiff (\u00a710.2); both impls run UNDER the mutation (common-mode-aware)",
+    "safety_factor": 5.0,
+    "n_probes": null,
+    "pristine_gap_delta": 0.001691,
+    "tau": 0.008457,
+    "sensitivity_posthoc": [
+      {
+        "safety": 1.5,
+        "tau": 0.002537,
+        "detected": 14,
+        "n_real": 31,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 2.0,
+        "tau": 0.003383,
+        "detected": 12,
+        "n_real": 31,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 3.0,
+        "tau": 0.005074,
+        "detected": 10,
+        "n_real": 31,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 5.0,
+        "tau": 0.008457,
+        "detected": 10,
+        "n_real": 31,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 10.0,
+        "tau": 0.016915,
+        "detected": 10,
+        "n_real": 31,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      }
+    ]
+  },
+  "genmorph": {
+    "feasible": false,
+    "reason": "G\u00d7N\u00d7N (radxfer) / N\u00d7N field comparison across two full PDE solves per case; neutral cross-impl oracle.",
+    "expr_tier": "method-comparison oracle (E*), beyond (jir,jor) (D4)"
+  },
+  "alignment_ok": true,
+  "baseline_killers": [],
+  "M_yield": 1,
+  "M_block": 1,
+  "blocks_covered": [
+    "E*"
+  ],
+  "M_detect": {
+    "killed": 10,
+    "n_real_mutants": 31,
+    "rate": 0.3225806451612903,
+    "wilson95": [
+      0.1857,
+      0.4986
+    ],
+    "underpowered": false
+  },
+  "per_block": {
+    "E*": {
+      "mrs": [
+        "xeval-differential"
+      ],
+      "detected": 10,
+      "n": 31,
+      "rate": 0.3225806451612903,
+      "wilson95": [
+        0.1857,
+        0.4986
+      ]
+    }
+  },
+  "per_fault_class": {
+    "absorption_opacity_fault": {
+      "detected": 0,
+      "n": 8,
+      "rate": 0.0
+    },
+    "diffusion_coefficient_fault": {
+      "detected": 8,
+      "n": 8,
+      "rate": 1.0
+    },
+    "scatter_entry_fault": {
+      "detected": 0,
+      "n": 6,
+      "rate": 0.0
+    },
+    "source_fault": {
+      "detected": 0,
+      "n": 4,
+      "rate": 0.0
+    },
+    "stencil_fault": {
+      "detected": 1,
+      "n": 2,
+      "rate": 0.5
+    },
+    "time_weight_fault": {
+      "detected": 1,
+      "n": 3,
+      "rate": 0.3333333333333333
+    }
+  },
+  "per_mr": {
+    "xeval-differential": {
+      "block": "E*",
+      "kills": 10
+    }
+  }
+}

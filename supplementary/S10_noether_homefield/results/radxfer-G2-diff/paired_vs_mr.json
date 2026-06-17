@@ -1,0 +1,12 @@
+{
+  "comparison": "radxfer-G2: algebra-MR battery (A) vs neutral cross-impl differential oracle (B), matched real mutants",
+  "mr_side": "reused-committed-matrix",
+  "n_matched_mutants": 31,
+  "A_MR_battery_killed": 25,
+  "B_differential_killed": 10,
+  "b_only_MR": 17,
+  "c_only_differential": 2,
+  "both": 8,
+  "neither": 4,
+  "mcnemar_exact_p": 0.000728607177734375
+}
