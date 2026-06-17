@@ -1,0 +1,31 @@
+Per-block FA-rank applicability (evidence for reviewer R3).
+
+=== G symmetry — LINEAR EQUALITY (verified separately) ===
+  G symmetry: E=[L,A] linear-equality -> FA-rank TIGHT (see fa_rank_check.py)
+
+=== T* self-adjoint (N=6) — LINEAR EQUALITY ===
+  test witnesses (i<j): 15   dense (all i,j): 36
+  rank(test)=15  rank(dense)=15  -> FA holds: True
+  compatible (kernel) dim = 21  == symmetric-matrix dim 21: True
+
+=== O<= monotonicity (N=6) — INEQUALITY (cone) ===
+  L=I in M (monotone): True;  (-1)*L in M: False -> not closed under negative scaling -> NOT a subspace
+  defect = sum of max(0, -L_{ij}) is piecewise/nonlinear in L -> FA-rank N/A; only the sufficient direction survives.
+
+=== T*_rev time-reversal (N=6) — NONLINEAR (matrix inverse) ===
+  defect f(L)=R L R - L^{-1}; additivity residual ~ 5.535e-02 (>> 0) -> nonlinear -> FA-rank N/A.
+  tight handling needs the multi-execution treatment (cf. wave SUT T_rev*).
+
+=== L* limit / Richardson (—) — NONLINEAR (norm ratio) ===
+  defect = || u_h - u_{h/2} || / || u_{h/2} - u_{h/4} || - 4 : ratio of theta-dependent norms -> nonlinear in theta -> FA-rank N/A;
+  only a fixed-grid linearized subclass or the sufficient direction is in scope.
+
+--- classification table ---
+  block             defect E_s(L)     linear-eq?    tight?
+  G  symmetry       [L,A]             yes           TIGHT (verified)
+  T* self-adjoint   L - L^T           yes           TIGHT (verified here)
+  O<= monotonicity  max(0,-L_ij)      no (cone)     sufficient-only
+  T*_rev time-rev   R L R - L^{-1}    no (inverse)  multi-exec only
+  L* limit          norm ratio        no (ratio)    subclass/suff-only
+
+Evidence consistent (T* tight; O<=/T_rev/L* outside linear machinery): True
