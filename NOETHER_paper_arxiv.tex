@@ -2556,6 +2556,37 @@ for an MR set $\mathcal{R}$. This is the algebraically grounded analogue of PMCM
 \paragraph{Implication for empirical-adequacy practice.}
 Reports of high pattern-grid coverage in published MR-evaluation studies should, where possible, be cross-checked against the algebraic decomposition of the program family under test. A report of ``coverage $= c$'' should be qualified with which row decomposition $c$ is computed against; reports of $c$ over inductive catalogues without such qualification are not directly comparable across papers.
 
+%% =========================================================
+\subsection{Empirical evidence for the Invariance-Blindness Theorem}
+\label{subsec:ibt-empirical}
+
+This subsection reports the empirical evidence supporting Theorem~\ref{thm:ibt} and its corollaries. Three threads are tested on independent material: (E1) the linear-algebraic Faithfulness condition (Definition~\ref{def:faithful}) at finite test budget; (E2) detection complementarity with a neutral cross-implementation differential oracle (the differential-oracle corollary of \S\ref{subsec:ibt}); (E3) the discretisation-floor regime in which the differential oracle has zero recall under a false-positive budget. The full harness, mutation catalogues, paired analyses, and raw outputs are available in supplementary material~S10 (\texttt{supplementary/S10\_noether\_homefield/}) and are not re-derived here.
+
+\paragraph{E1 --- Faithfulness rank check (\texttt{fa\_rank\_check.py}, \texttt{fa\_block\_classification.py}).}
+For the fault class $\Theta = \mathbb{R}^{N \times N}$ ($N = 8$), the defect $E_s(L)$ is linear in $L$ and Faithfulness reduces to $\operatorname{rank}(J_{\mathrm{test}}) = \operatorname{rank}(J_{\mathrm{full}})$. The check is performed on three symmetry instances and on the self-adjoint block, with analytic kernel dimensions for cross-validation:
+\begin{itemize}[leftmargin=*,nosep]
+  \item Translation $\mathbb{Z}_N$: $1$ generator pins the commutant of all $7$ group elements (rank $56=56$); kernel dimension $8 = N$ (circulant subspace).
+  \item Reflection $\mathbb{Z}_2$: $1$ generator (rank $32 = 32$); kernel dimension $32 = 2(N/2)^{2}$.
+  \item Dihedral $D_N$: $2$ generators pin the commutant of all $16$ group elements (rank $59 = 59$).
+  \item Self-adjoint $T^{*}$ ($E(L) = L - L^{\top}$): the upper-triangle witness set ($15$ rows) pins the dense witness set ($36$ rows) at rank $15 = 15$; kernel dimension $21 = N(N+1)/2$ (symmetric matrices).
+\end{itemize}
+Faithfulness holds in every case at the analytic kernel dimension, confirming the Reachability Lemma (Lemma~\ref{lem:reachability}) numerically for $\{G, T^{*}\}$. The per-block classification confirms that the remaining blocks ($O_{\le}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{L}^{*}$) fall outside the linear-equality regime of Theorem~\ref{thm:ibt} (cone, matrix-inverse, and norm-ratio nonlinearity respectively); only the sufficient direction applies to those blocks.
+
+\paragraph{E2 --- Detection complementarity (paired McNemar over three SUTs).}
+A pooled paired analysis of the algebra-MR battery against a neutral cross-implementation differential oracle is run on three multi-implementation SUTs covering thermal and fluid PDE families (2-D advection--diffusion, multigroup radiation diffusion at $G = 2$, and 2-D Gray--Scott reaction--diffusion; \texttt{paired\_pooled\_analysis.py}). Per-SUT McNemar exact tests are reported in supplement~S10; the pooled discordants ($b$ = MR-only, $c$ = differential-only) and the stratified Cochran--Mantel--Haenszel test are:
+\begin{itemize}[leftmargin=*,nosep]
+  \item Total real mutants $N = 104$ across three strata; pooled MR-killed $79$, differential-killed $50$, union $89$ ($85.6\%$), neither $15$;
+  \item Pooled $b = 39$ (MR-only) and $c = 10$ (differential-only); pooled McNemar exact $p = 3.85 \times 10^{-5}$, stratified CMH $\chi^{2}(1) = 17.16$ ($p = 3.43 \times 10^{-5}$);
+  \item $b > 0$ \emph{and} $c > 0$ in every stratum (kernels cross, not nest): the two oracles are complementary in the sense of the differential-oracle corollary of \S\ref{subsec:ibt}.
+\end{itemize}
+The pooled asymmetry $b \gg c$ records that the MR battery has higher raw recall than the differential oracle on the tested mutation catalogue; the substantive claim under the joint-kernel corollary of \S\ref{subsec:ibt} is the strict union improvement (union $= 89 > 79 = $ best single oracle), which records the predicted joint-kernel reduction. Honest qualification: high MR recall is a feature of this mutation catalogue, not of the framework in general; we do not read the asymmetry as differential-oracle inferiority.
+
+\paragraph{E3 --- Discretisation floor and false-positive regime.}
+On the 2-D advection--diffusion SUT the differential oracle is run under a tolerance $\tau = \mathrm{SAFETY} \cdot \delta$, where $\delta$ is the legitimate cross-implementation discretisation gap (calibrated on the pristine pair). The per-fault $\mathrm{SAFETY}$ sweep $\{1.5, 2.0, 3.0, 5.0, 10.0\}$ records detected/$n_{\mathrm{real}}$ counts of $\{16,15,13,12,7\}/29$ with zero baseline false positives at every level (\texttt{advdiff-xeval-diff/detection\_metrics.json}). The monotone fall-off as $\mathrm{SAFETY} \uparrow$ records the floor: faults whose field signature lies below $\delta$ are by construction not separable from legitimate discretisation difference, irrespective of tolerance choice, consistent with the $\tau \to 0$ exact-arithmetic regime to which Theorem~\ref{thm:ibt} refers (Remark~\ref{rem:ibt-scope}, R2).
+
+\paragraph{Scope of this empirical evidence.}
+E1 is a deterministic linear-algebra check on the fault class $\Theta = \mathbb{R}^{N \times N}$, not a statistical test; it certifies that the per-generator witness sets used in our MR designs are unisolvent for the symmetry and self-adjoint blocks at $N = 8$. E2 is paired and pre-registered across the three SUTs in supplementary~S10. E3 is a sensitivity sweep rather than a hypothesis test. The framework's structural claim is the kernel characterization of Theorem~\ref{thm:ibt} (\S\ref{subsec:ibt}); E1--E3 are consistent with the theorem and with its three corollaries (\S\ref{subsec:ibt}), within the linear operator-implementation fault class (Remark~\ref{rem:ibt-scope}, R1).
+
 
 %% ================================================================
 %% NEW CHAPTER S5: Threats to validity and limitations
