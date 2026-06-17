@@ -1,0 +1,22 @@
+N5 industrial coverage (frozen NOETHER 8-block) — 110 expert MRs
+
+  SPARK  :  36 MRs | covered 36/36 | blocks=['O<='] | new=6
+  LOCUST :  28 MRs | covered 28/28 | blocks=['O<='] | new=6
+  SACOS  :  46 MRs | covered 46/46 | blocks=['O<='] | new=6
+
+  TOTAL coverage: 110/110 = 1.000 Wilson95 [0.966,1.000]
+  block occupancy: {'O<=': 110}
+  sub-types (within O<=): {'plain': 104, 'conditional': 4, 'increment': 2}
+  orphans (candidate ninth block): 0
+  newly-discovered/implicit (valid beyond initial expert set): 18
+
+  HONEST READ:
+   - Coverage of the frozen blocks is essentially complete, BUT the corpus
+     is single-block (O<=): it confirms the order/monotone block transfers
+     to unseen industrial reactor codes; it does NOT exercise G/T*/L*/E*/
+     Conservation/T_rev*, nor the FA-rank-tight IBT blocks (G, T*).
+   - O<= is the inequality/cone block (fa_block_classification.py): these
+     MRs confirm COVERAGE (C4), not the IBT tight characterization.
+   - Same broad field (nuclear reactor codes): held-out at the CODE level
+     (framework not fit to these codes' MRs), not a non-physics cross-domain
+     test. Occupancy read is post-hoc (descriptive, not pre-registered).
