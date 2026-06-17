@@ -1,0 +1,28 @@
+Real advection-diffusion operator, n=6 (N=36); fault basis K=6 (S10 families).
+
+=== G (translation), defect [L,A], witnesses {Sx,Sy} ===
+  rank=2  kernel(theta) dim=4
+    d_diff   (uniform diffusion)     in-kernel(undetected): True
+    d_advx   (advection speed x)     in-kernel(undetected): True
+    d_advy   (advection speed y)     in-kernel(undetected): True
+    d_stencil(fwd-central, const)    in-kernel(undetected): True
+    d_inhom_diff (varying coeff)     in-kernel(undetected): False
+    d_inhom_adv  (varying coeff)     in-kernel(undetected): False
+  FA: rank(test {Sx,Sy})=2 == rank(dense, 35 shifts)=2: True  (finite generators pin the full translation kernel)
+
+=== T* (self-adjoint), defect L - L^T ===
+  rank=4  kernel(theta) dim=2
+    d_diff   (uniform diffusion)     in-kernel(undetected): True
+    d_advx   (advection speed x)     in-kernel(undetected): False
+    d_advy   (advection speed y)     in-kernel(undetected): False
+    d_stencil(fwd-central, const)    in-kernel(undetected): True
+    d_inhom_diff (varying coeff)     in-kernel(undetected): False
+    d_inhom_adv  (varying coeff)     in-kernel(undetected): False
+
+--- cross-block (IBT-2) on the real operator ---
+  advection-speed fault: in G-kernel=True (translation MR misses it), in T*-kernel=False (self-adjoint MR catches it)
+  => the two blocks' kernels differ; union detects strictly more.
+  bridge: G-kernel = constant-coefficient faults (uniform diffusion / advection-speed / const stencil) -> matches S10 advection-speed 0/n;
+          inhomogeneous faults leave both kernels -> detected.
+
+N4 evidence consistent (FA on real operator; G/T* kernels as predicted): True

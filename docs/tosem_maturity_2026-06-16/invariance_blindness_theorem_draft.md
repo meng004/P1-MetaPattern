@@ -109,6 +109,11 @@ MR 足以精确刻画盲区**"。FA 本身可检(对见证设计做有限线代 
   advection-speed `0/n`、wavenumber-sign 漏检**完全一致**。反之空间非齐次系数 $c(x)$
   破坏平移 equivariance $\Rightarrow E_G\ne 0\Rightarrow$ 被检(与 inhomogeneous 故障被检一致)。
   FA 在此可验:平移生成元 + 一个 generic $x_0$ 已 unisolvent,足以区分常系数 vs 非齐次。
+- **N4 真 solver 确证**(`fa_realsolver_check.py`):在显式重建的 2-D 平流-扩散算子上,
+  G 核 = 4 个常系数故障(diff / advx / advy / const-stencil,**含 advection-speed**),2 个
+  非齐次故障被检;FA 由 $\{S_x,S_y\}$ 生成元锚定全核(rank 2 = 全 35 shift)。同时
+  advection-speed $\in$ G 核(平移 MR 漏)但 $\notin T^{*}$ 核(自伴 MR 抓)—— IBT-2 在真
+  算子上的实算确证。把抽象 $\mathbb{R}^{N\times N}$ 的 FA 结果绑定到真实算子与 S10 故障族。
 
 ---
 
