@@ -5,6 +5,30 @@ commit. Each item is independent and can be done in any order.
 
 ---
 
+## ⭐⭐ TOSEM 投稿成熟度 — 多 LLM 网关评审裁决 (2026-06-17)
+
+> 5 跨厂商 LLM（gpt-5 / claude-opus-4-6 / deepseek-r1 / glm-5.2 / kimi-k2-instruct）网关评审 + 30-agent 对抗验证 Workflow（triage → 逐议题对照原文验证 → §10 ARS 五维 → EIC 裁决）。
+> 裁决：**Major revision before submission**；**0 存活 publication blocker**（23 归并议题中 17 误读/夸大 · 4 major · 2 minor）。
+> 详见 `docs/review_2026-06-17/submission_maturity_assessment_2026-06-17.md`。
+
+### 🟡 In Progress
+- [ ] **ISS-7 记号冲突修复（最高优先，relabel-only，本会话执行中）** — 实证章节把 `\mathcal{T}^{*}`/裸 `T^{*}` 用于 translation/period，并引入未定义的 `\mathcal{I}^{*}`（idempotence）块，与 L454 规范分类（`T^{*}`=self-adjoint、`\mathcal{T}^{*}`=time-reversal、`\mathcal{B}^{*}_{\mathrm{rel}}`=relational）冲突，使头条 per-block "Set N edge" 比较不可解读。映射：translation→`G` 子情形；time-reversal 全程统一 `\mathcal{T}^{*}_{\mathrm{rev}}`；未定义 `\mathcal{I}^{*}`→`\mathcal{B}^{*}_{\mathrm{rel}}`。**不动任何数值、不动 "MetaPattern" 用法。** ⚠️ 含一个待作者判断点：headline n=17 行测的是 translation-under-G 还是 time-reversal。
+
+### 🔴 Must-fix before submission（其余 8 项，按 EIC 优先级）
+- [ ] 2. **ISS-8 篇幅压缩**（82pp/~45.6k 词 → TOSEM 规范）：Boundary box 4→1（保 L259，其余转 cross-ref）；头条统计量（McNemar p=0.0043、D2 6.9%）各报一次；删 `theory/ibt_section_3_4.tex` L2-4 过期注释 + 3 处 `% TODO-ref`；重跑 xelatex
+- [ ] 3. **ISS-2 实证定位**：实证章节起始（~L1057）加一句明确定位为 instantiation/falsifiability 探针（非 powered utility benchmark）；GenMorph 压制 + 底物异构上浮为单一具名 limitation 到 Threats/Boundary box
+- [ ] 4. **ARS 方法论 A+B**：LLM 判等投票加小规模人类金标验证（混淆矩阵/FP/FN/κ）+ 延伸共享训练数据 caveat；预注册/论证 D1→D2 "(e.1) v2 override" 规则 + 报告无 override 敏感性分析（最强 Reviewer-2 杠杆）
+- [ ] 5. **ARS 统计**：3 块 per-block 族显式陈述多重性 + T* edge 保持 directional-only；case-study N-vs-B/N-vs-L 应用 Bonferroni 或说明；L*-blindness outlier-rescue 事后性整合进 Threats
+- [ ] 6. **ISS-11 METRIC+**：软化 "unambiguously strengthens"（L2499）+ 调和 L2236（称未跑）与 L2449+（称已跑）矛盾
+- [ ] 7. **benchmark 公正性**：加一段组合公正性段落（home-field 底物 + 单 GP seed=11 + NOETHER 定义指标一起对待）+ 至少跑 multi-seed GP
+- [ ] 8. **ARS 外部效度**：收紧 Abstract/C4，使 home-field 多块增益（29/47）不被读作单块工业证据（110 SPARK/LOCUST/SACOS MR 全为 order/O_le）佐证
+- [ ] 9. **ISS-20 + ISS-23（minor，低成本）**：加量化摊销 break-even（共享 A_P 的 SUT 数）+ 调和 10h 两种读法；Def 5（L521）补 "relabelling"=坐标-索引置换的一句话定义
+
+### 🟢 不要返工 — 对抗验证驳回的误读（保护作者）
+- [ ] （参考，勿动）ISS-1/3/5/6/9/10/12/13/14/15/16/17/18/19/21/22 经对照原文核验为误读/夸大——论文当前文本已自述这些边界（含 5 模型共识的 "Theorem 1 同义反复" 与 gpt-5 Reject 所依据的 "Theorem 2 vacuous"）。逐条理由见报告 §5。
+
+---
+
 ## ⭐ TOSEM submission readiness — independent maturity review (2026-06-16)
 
 > 6 个互相隔离的 Opus subagent 独立重审,综合裁决 **Major Revision**(评分 38–72),显著低于仓库 Round-4 自评(Accept / 65–75%)。
