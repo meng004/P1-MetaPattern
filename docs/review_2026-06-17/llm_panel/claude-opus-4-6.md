@@ -1,0 +1,126 @@
+```json
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 3,
+    "novelty": 3,
+    "significance": 3,
+    "presentation": 2,
+    "reproducibility": 3
+  },
+  "summary": "The paper introduces NOETHER, a two-layer framework that derives metamorphic relation patterns (MetaPatterns) from program-induced operator algebras. The upstream layer curates an eight-block structural decomposition of a program family's operator algebra (an empirical hypothesis), while the downstream layer mechanically constructs MetaPatterns with proven algebraic closure under a Translate operator. The framework is instantiated on Boltzmann reactor physics, equivariant ML, and relational query optimisers, with a negative result falsifying absolute completeness on the PWR core algebra, and empirical evaluation including a $\\mathcal{L}^*$-blindness prediction test and head-to-head comparison against GenMorph.",
+  "strengths": [
+    "The intellectual programme of grounding MetaPattern discovery in operator-algebraic structure rather than inductive enumeration is genuinely novel and well-motivated; the origin-closure-transferability framing is crisp.",
+    "The negative result (falsification of Theorem 1' on A_PWR via two independent counterexamples with five pairwise-independent obstructions) is the paper's strongest theoretical contribution, showing honest self-limitation rarely seen in framework papers.",
+    "The Invariance-Blindness Theorem (Theorem 3) provides a non-trivial, falsifiable characterization of what algebra-derived MRs cannot detect, converting the closure guarantee into a detection-theoretic statement with concrete corollaries.",
+    "The $\\mathcal{L}^*$-blindness prediction is a genuine ex-ante falsifiable prediction confirmed empirically (2/44 pooled kill rate on 5/6 SUTs), demonstrating the framework's operative mechanism beyond definitional bookkeeping.",
+    "The paper is unusually transparent about what it does not establish: the boundary-of-contribution boxes, scope remarks, and explicit acknowledgment of circularity in the reactor-physics prediction are commendable.",
+    "Three structurally distinct instantiations (Boltzmann, equivariant ML, relational query optimisers) exercise different subsets of the eight blocks, providing non-trivial transferability evidence at the algebra-skeleton level."
+  ],
+  "publication_blockers": [
+    {
+      "section": "Section 3.2 (Theorem 1)",
+      "issue": "Theorem 1 (Algebraic Closure) is near-tautological given Definition 3 (algebra-induced MR). The theorem states that every MR in MR(A_P)—defined as the Translate-image of block invariants—is assigned to a MetaPattern in M(A_P)—defined as the quotient of those same Translate-images. This is true by construction of CONSTRUCT-MP's Steps 1-4. The paper acknowledges this ('a sceptical reading might object') but does not adequately resolve it: the claimed 'obligation' that CONSTRUCT-MP imposes is simply that its own four steps are correctly implemented, not a substantive mathematical constraint.",
+      "why_fatal": "A central theorem that is definitionally true does not meet TOSEM's bar for technical contribution. The paper needs either (a) to reframe Theorem 1 honestly as a well-formedness/design property rather than a 'theorem' carrying independent mathematical content, demoting it from 'contribution C2a', or (b) to prove closure over a strictly larger MR space than MR(A_P) as currently defined. Without this, the paper's theoretical core rests on a single non-trivial result (Theorem 3/IBT) and the negative result (Theorem 1' falsification)."
+    },
+    {
+      "section": "Section 4.1 (Case Study) and Section 4.3 (Head-to-head)",
+      "issue": "The empirical evaluation is fragmented across multiple underpowered substrates with incompatible designs, making it impossible to draw a coherent conclusion about the framework's practical utility. The case study uses 20 hand-constructed mutations on 1 model with construct-validity-controlled categories. The head-to-head uses 62 PIT mutants on 10 SUTs where Set N is dominated (McNemar p=0.0043). The DeepCrime pilot has n=5. The Commons-Math pilot has n=77 with 13% detection. None of these individually or collectively establishes that the framework produces MRs that are practically useful for testing.",
+      "why_fatal": "For a paper making claims about software testing methodology, the absence of a coherent, adequately powered empirical demonstration that the derived MRs find real faults better than (or comparably to) existing methods is a publication blocker at TOSEM. The head-to-head shows Set G dominating Set N, and the paper's response is to re-read the comparison per-block and on cost axes—legitimate but insufficient to establish significance as a testing contribution. The 'pre-registered protocol' for proper evaluation is described but not executed."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Throughout (length and presentation)",
+      "issue": "The manuscript is approximately 35,000+ words of LaTeX source, far exceeding TOSEM's typical 12,000-15,000 word limit for regular papers. The text is extraordinarily repetitive: the 'Boundary of contribution' box appears 4 times with near-identical content; scope caveats are restated in nearly every subsection; the same statistical results are reported in multiple locations with slightly different framing.",
+      "suggested_fix": "Cut to 15,000 words maximum. Consolidate all scope/boundary statements into one location. Report each statistical result once. Move the relational-query-optimiser instantiation and the METRIC+ comparison to supplementary material."
+    },
+    {
+      "section": "Section 3.1 (Hypothesis 1, eight blocks)",
+      "issue": "The eight-block decomposition is presented as an 'empirical hypothesis' but its provenance is unclear. It appears to be reverse-engineered from the three domains the authors already intended to instantiate. The paper lists six candidate ninth blocks but provides no systematic methodology for when the eight blocks are sufficient versus when they are not, beyond 'inspect the program family.'",
+      "suggested_fix": "Provide an explicit decision procedure or diagnostic for determining whether a given program family's operators are fully covered by the eight blocks. Report a blinded experiment where an independent analyst applies the blocks to a held-out program family without guidance from the framework designers."
+    },
+    {
+      "section": "Section 3.3 (Boltzmann instantiation, Table 2)",
+      "issue": "The 'prediction' of m_adj and m_rev as new MetaPatterns is circular: the T* and T*_rev blocks were curated from reactor physics in the first place. The paper acknowledges this circularity but still lists it as contribution C3. The table showing 'reproduced/refined/predicted' conflates framework validation with framework construction.",
+      "suggested_fix": "Remove the 'predicted' framing entirely. Present the reactor-physics instantiation as a validation of internal consistency rather than as evidence of predictive power. Reserve predictive-power claims for the equivariant-ML domain where the blocks were not derived from that domain's literature."
+    },
+    {
+      "section": "Section 4.3 (Head-to-head, Table 8)",
+      "issue": "The head-to-head against GenMorph shows Set N dominated on every aggregate metric (pooled, D1-stratified, per-SUT majority). The paper's response—reading per-block, emphasizing cost-axis, and noting two SUTs where Set G is N/A—is legitimate framing but does not change the headline result. A framework paper whose central empirical comparison shows it loses to an existing tool needs to either (a) demonstrate clear superiority on a well-defined stratum or (b) reframe as purely theoretical.",
+      "suggested_fix": "Either (a) execute the comparative protocol on a larger substrate where the framework's structural-coverage advantage is decisive (e.g., programs with strong self-adjoint or time-reversal structure that GenMorph cannot exploit), or (b) explicitly reframe the paper as a theoretical contribution with illustrative (not evaluative) empirical material, dropping claims about practical testing utility."
+    },
+    {
+      "section": "Section 4.1 (Set L description)",
+      "issue": "Set L (LLM baseline) in the case study is a single GPT-4 sample at temperature 0. This is not a representative LLM baseline. The later Set L ensemble (2 vendors × 5 temperatures) is better but is reported only for the Java substrate and shows that the LLM ensemble reproduces Set N's kill rate on the matchable subset. This undermines NOETHER's practical value proposition: if an LLM can reproduce the framework's output without algebraic machinery, the engineering payoff is unclear.",
+      "suggested_fix": "Acknowledge explicitly that LLM-prompted generation can reproduce a substantial fraction of algebra-derived MRs for well-known invariances (rotation, permutation), and sharpen the value proposition to the MRs that LLMs systematically miss (the T* and T*_rev blocks, where the case study's unique-detection claim rests)."
+    },
+    {
+      "section": "Section 3.2 (Theorem 2, Decidability)",
+      "issue": "Theorem 2's complexity bound O(n · max_i t_i · log n) is vacuous without bounding t_i. For the symmetry block with a finite group, t_i = O(|G|^2); for a Lie group, t_i = O(d_G^2). But the theorem's practical content depends entirely on whether the invariant-extraction step (computing I_s) is tractable, which is domain-specific and not bounded by the theorem itself.",
+      "suggested_fix": "Either bound t_i for the three instantiated algebras and show the theorem gives meaningful wall-clock predictions, or downgrade from 'theorem' to 'complexity remark' acknowledging that the bound is meaningful only given externally-established invariant-extraction costs."
+    }
+  ],
+  "minor_issues": [
+    "The paper uses 'MetaPattern' inconsistently: sometimes as an equivalence class of MRs (Definition in CONSTRUCT-MP Step 3), sometimes as a 'recurrent structural strategy' (prose in Section 1). The formal and informal usages should be reconciled.",
+    "Table 5 (PIT mutator × block compatibility) uses symbols (○, ×, ~) without a formal derivation of each cell. The paper should either prove each cell entry or acknowledge the table as expert judgment.",
+    "The Noether analogy is overworked. The paper repeatedly clarifies that it does not invoke Noether's theorem as a theorem about programs, yet the naming and §3.3.3's 'Noether-style derivation' heavily imply a deeper connection than exists. Consider renaming the framework or reducing the analogy.",
+    "Remark 4 (six candidate ninth blocks) lists topological invariants, symplectic systems, etc. but provides no evidence these are the only gaps. The list appears ad hoc.",
+    "The inter-rater agreement (Fleiss κ = 0.857) for the supplementary-MR audit uses three LLMs as 'raters,' which the paper correctly flags as sharing training data. This should not be called 'inter-rater agreement' without heavy qualification; κ among LLMs does not have the same interpretation as κ among independent human experts.",
+    "Section 4.5 (METRIC+ relationship) reports Path A Java/PIT results showing 92.6% both-kill rate between Set N and Set MP. This is evidence of equivalence, not of NOETHER's added value over METRIC+.",
+    "The 'pre-registered' predictions (H1, H2, H3a, H3b, H3c, H4) are described as committed to git, but the paper is not published with a DOI-timestamped pre-registration (e.g., OSF). Git commits can be rebased.",
+    "Definition 6 (Translate) specifies a 'canonical order specified by s' for input-tuple generation but this canonical order is only informally described per block in Table 12 (Appendix). The definition is incomplete without it.",
+    "The Wilson 95% CIs throughout are appropriate but the paper sometimes draws conclusions ('consistent with prediction') from point estimates within wide intervals (e.g., 0/5 with CI [0.000, 0.434]). This should be flagged as inconclusive rather than supportive."
+  ],
+  "questions_to_authors": [
+    "If Theorem 1 is acknowledged as by-construction within Definition 3's scope, what is the independent mathematical content that elevates it beyond a design property of CONSTRUCT-MP? Can you state precisely what would falsify Theorem 1 that is not simply a bug in your algorithm's implementation?",
+    "Given that GenMorph dominates Set N on the head-to-head substrate (McNemar p=0.0043), and the LLM ensemble reproduces Set N's kill rate on the matchable subset, what is the concrete practical scenario in which a testing engineer should use NOETHER rather than GenMorph + LLM-prompted MRs?",
+    "The Invariance-Blindness Theorem is restricted to the linear operator-implementation fault class and to blocks G and T*. What fraction of real-world bugs in the program families you target (reactor physics, equivariant ML) fall within this fault class? Without this estimate, the theorem's practical detection-theoretic content is unclear.",
+    "The eight-block decomposition was curated from reactor physics, equivariant ML, and relational algebra. Have you attempted to apply it to a genuinely held-out domain (one not consulted during block curation) with an independent analyst? If so, what was the result?",
+    "The paper commits to 16 future-work items and multiple 'pre-registered protocols.' How many of these have been executed as of submission, and what is the timeline for the remainder? A paper that commits most of its evaluative content to future work raises concerns about premature submission.",
+    "For the equivariant-ML case study, you use a 5,189-parameter EGNN as a 'minimal stand-in' for SE(3)-Transformers. Given that EGNN lacks the attention structure that ρ_adj targets (you explicitly add a probe), how confident are you that the case study's results transfer to production-scale equivariant architectures?"
+  ]
+}
+```
+
+## Detailed Reviewer Report
+
+### Summary Assessment
+
+This paper tackles a genuine and important problem: the ad-hoc nature of metamorphic relation identification. The intellectual programme—deriving MR patterns from operator-algebraic structure rather than empirical enumeration—is novel and potentially significant. However, the paper suffers from two interrelated problems that currently block publication: a central theorem whose mathematical content is definitionally guaranteed rather than independently proven, and an empirical evaluation that is fragmented, underpowered, and shows the framework losing to an existing baseline on the only adequately-powered comparison.
+
+### Strengths (Elaborated)
+
+The paper's strongest contribution is the Invariance-Blindness Theorem (§3.4), which converts the definitional closure guarantee into a falsifiable, detection-theoretic statement. The kernel characterization—that algebra-derived MRs miss exactly the structure-preserving faults—is non-trivial, has concrete corollaries (single-block incompleteness, differential-oracle complementarity), and is empirically supported by the E1-E3 evidence in §4.7. This is genuine theoretical content.
+
+The negative result on A_PWR (§3.6) is equally strong. Falsifying one's own conjecture (Theorem 1') with concrete counterexamples from a safety-critical domain, identifying five independent structural obstructions, and publishing this alongside the positive theory demonstrates intellectual honesty that strengthens rather than weakens the paper.
+
+The L*-blindness prediction (§4.2) is the paper's best empirical moment: a quantitative, ex-ante falsifiable prediction derived from the framework's structure and confirmed on 5/6 SUTs. This is exactly what a structural framework should produce—not just MRs, but predictions about what MRs cannot do.
+
+### Weaknesses (Elaborated)
+
+**On Theorem 1's tautological character.** The paper defines MR(A_P) as the Translate-image of block invariants (Definition 3), defines M(A_P) as the quotient of those same images (CONSTRUCT-MP Steps 1-4), then "proves" that every element of the former is in the latter. This is the statement that a surjection is surjective. The paper's defence—that the theorem "converts an empirical-adequacy claim into a structural-adequacy obligation"—is a framing contribution, not a mathematical one. A genuine closure theorem would prove closure over a space defined independently of the construction procedure.
+
+**On the empirical evaluation's incoherence.** The paper reports:
+- Case study (§4.1): Set N 7/20, Set L 2/20, Set B 0/20 on hand-constructed mutations → construct-validity-controlled
+- Head-to-head (§4.3): Set N 26/62, Set G 40/62, McNemar p=0.0043 → Set G dominates
+- DeepCrime pilot (§4.1.1): Set N 2/5, McNemar p=0.500 → underpowered
+- L*-blindness (§4.2.4): 2/44 → confirmed prediction (but a prediction about what Set N *cannot* do)
+- METRIC+ (§4.5): 92.6% both-kill → parity
+
+No single substrate shows NOETHER producing practically superior testing outcomes. The paper's reading strategy—decomposing the aggregate into per-block readings, cost axes, and structural-coverage diagnostics—is legitimate but amounts to saying "the framework is not better at finding bugs but it has a nicer algebraic structure." For a testing methodology paper at TOSEM, this is insufficient.
+
+**On presentation.** The manuscript is 3-4× TOSEM length. The repetition is extreme: the boundary-of-contribution box appears four times, each scope caveat is restated in every subsection that touches it, and statistical results are reported in multiple locations with slightly different denominators (n=62 vs n=57 vs n=52). A reader cannot determine the paper's actual empirical claims without tracking which denominator, which stratum, and which exclusion criterion applies where.
+
+### What a Revision Must Do
+
+1. **Reframe Theorem 1** as a well-formedness property of the construction (not a contribution-level theorem), or prove closure over a space defined independently of CONSTRUCT-MP. The paper's genuine theoretical contributions are Theorems 2, 3 (IBT), and the Theorem 1' falsification.
+
+2. **Execute one coherent, adequately-powered empirical evaluation** that demonstrates practical utility. Options: (a) the full comparative protocol against DeepCrime real-fault operators on ≥3 architectures; (b) the 38-D4J extension at sufficient n to detect a meaningful effect size; (c) an industrial case study on a production codebase where NOETHER-derived MRs find bugs that existing methods miss. The current patchwork of n=5, n=20, n=62 substrates with incompatible designs is not publishable as empirical evidence.
+
+3. **Cut to TOSEM length** (≤15,000 words). The current length is not justified by content; it is caused by repetition and over-qualification.
+
+4. **Resolve the value-proposition tension** exposed by the LLM-ensemble result (§4.3): if LLMs reproduce 43.5% of Set N's catalogue without algebraic machinery, the paper must articulate clearly what the algebraic machinery buys that justifies the 10h human-effort cost of A_P distillation. The T*/T*_rev blocks are the answer, but the empirical evidence for their practical value rests entirely on the construct-validity-controlled case study.
+
+5. **Separate the theoretical and empirical contributions** more cleanly. The IBT, the negative result, and the L*-blindness prediction are strong enough to carry a theoretical paper. The empirical evaluation as currently reported weakens rather than strengthens the paper's overall impression.

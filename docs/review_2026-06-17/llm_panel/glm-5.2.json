@@ -1,0 +1,74 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 3,
+    "novelty": 4,
+    "significance": 3,
+    "presentation": 2,
+    "reproducibility": 3
+  },
+  "summary": "The paper proposes NOETHER, a framework that derives MetaPatterns (equivalence classes of metamorphic relations) from the operator-algebraic structure of program families. It proves an algebraic closure theorem (Theorem 1, by-construction over the Translate-reachable MR space), a polynomial-time decidability result (Theorem 2), and an Invariance-Blindness Theorem characterizing the detection kernel of symmetry/self-adjoint MRs as exactly the structure-preserving faults within the linear fault class. It falsifies a stronger absolute-completeness conjecture on the PWR core diffusion algebra via two counterexamples, and reports empirical evidence including a small-scale case study on equivariant ML, a pre-registered L*-blindness prediction on PIT mutants, and head-to-head comparisons with GenMorph and METRIC+.",
+  "strengths": [
+    "The Invariance-Blindness Theorem (Theorem 3) is a genuine, non-trivial limiting result: it characterizes the exact blind set of symmetry and self-adjoint MRs under a linear fault model, with faithfulness attained by a finite test (Lemma 1). The corollaries on single-block incompleteness and differential-oracle complementarity are well-motivated and useful.",
+    "The falsification of Theorem 1' on A_PWR via two regulatory-essential PWR MRs (rod-bank non-additivity, MTC-vs-boron mixed derivative) is a carefully argued negative result. The five identified Translate-extension obstructions are concrete and well-localized.",
+    "The L*-blindness prediction (Section 5.2) is a clean, pre-registered, ex-ante falsifiable prediction derived from public information (framework structure + PIT mutator semantics) and confirmed on 5/6 SUTs. This is the strongest empirical result in the paper.",
+    "The cross-domain instantiation on three structurally distinct algebras (Boltzmann transport, equivariant ML, relational query optimisers) demonstrates the framework's skeleton-level transferability, and the relational-equivalence block extends beyond the Lie-group/self-adjoint/time-reversal core.",
+    "The deflationary direction (Section 5.4) — showing that inductive catalogues may over-count patterns — is a non-circular contribution that does not depend on the potentially circular prediction of T*/T* blocks."
+  ],
+  "publication_blockers": [
+    {
+      "section": "Theorem 1 (§3.2, Definition 7)",
+      "issue": "Theorem 1 (Algebraic Closure) is near-tautological. MR(A_P) is defined (Definition 7) as exactly the set of MRs reachable through Translate from a single block invariant. CONSTRUCT-MP (Steps 1-4) explicitly enumerates all blocks, extracts all invariants, applies Translate, and forms equivalence classes. Theorem 1 then asserts that every MR in this set is assigned to some MetaPattern produced by this enumeration. The authors acknowledge this ('a sceptical reading might object that the by-construction status makes it near-tautological'), but the theorem is presented as a primary contribution (C2a) and the paper's 'structural-adequacy obligation' framing does not resolve the circularity: the scope of MR(A_P) is defined to be exactly what the construction produces.",
+      "why_fatal": "The paper's headline theoretical contribution is a well-formedness statement about the construction's own output space, not a guarantee about the relationship between algebra-derived MRs and the MRs practitioners need. Until Theorem 1 is either replaced by a non-circular completeness result or explicitly demoted from a primary contribution to a structural-adequacy lemma, the paper's theoretical claims are overstated relative to what is proven."
+    },
+    {
+      "section": "§5.1 (Case Study) and §5.2 (Head-to-head)",
+      "issue": "The empirical evaluation does not demonstrate that NOETHER-derived MRs provide practical advantages over existing approaches. The case study (n=20 mutations, 1 model) has its mutation set explicitly constructed to cover one defect category per non-empty block, making the 5/5 cat-(iv) unique-detection result a construct-validity exhibit rather than evidence of superiority. The head-to-head against GenMorph shows Set N is dominated by Set G on the D1 stratum (McNemar p=0.019). The DeepCrime pilot (n=5) is underpowered (McNemar p=0.500). The L*-blindness prediction, while clean, confirms a mathematical fact about homogeneity preservation rather than demonstrating testing effectiveness.",
+      "why_fatal": "For a TOSEM paper claiming a framework-level contribution, the empirical evidence must show that the framework produces MRs that are useful for testing in a way that existing approaches cannot achieve. The current evaluation, while honestly reported, does not meet this bar: the strongest result (L*-blindness) is essentially a mathematical identity confirmed empirically, and the head-to-head shows the framework's MRs are dominated by a GP baseline on the algebra-disrupting stratum."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "§3.1 (Hypothesis 1) and §3.2",
+      "issue": "The eight-block decomposition is an empirical curation ('by-inspection enumeration'), not derived from algebraic axioms. The authors acknowledge this, but it means the framework's upstream layer — the critical step where domain expertise enters — is essentially the same inductive process the paper claims to improve upon. Moving induction from 'what MetaPatterns recur?' to 'what algebraic structures recur?' does not obviously reduce the inductive burden; it may increase it by requiring operator-algebraic literacy in addition to domain knowledge.",
+      "suggested_fix": "Provide concrete evidence that distilling A_P from a program family is systematically easier or more reliable than identifying MRs directly. This could be a controlled user study, or at minimum a detailed worked example showing the step-by-step extraction of A_P for a non-trivial program family, with comparison to the effort of identifying MRs without the framework."
+    },
+    {
+      "section": "§3.3 (Invariance-Blindness Theorem)",
+      "issue": "The IBT is limited to the G and T* blocks under a linear fault class. The linear operator-implementation fault model (Definition 8) is very specific: L = L* + Δ with Δ ∈ R^{N×N}. Real faults in scientific computing, ML, and database systems are rarely linear perturbations of an operator matrix. The authors note that linearity fails for O_≤, T*_rev, and L*, but the practical implications of this limitation are not adequately discussed.",
+      "suggested_fix": "Either (a) extend the IBT to at least one additional block (e.g., via linearization for O_≤), or (b) provide concrete examples showing what the linear fault model covers and what it misses in practice, with quantitative estimates of coverage on a real mutation catalogue."
+    },
+    {
+      "section": "§5.1 (Construct Validity)",
+      "issue": "The METRIC+ Path A head-to-head (§5.3) uses Java re-implementations of Sun et al.'s four subjects written by the same author who designed NOETHER, creating a construct-validity confound. The LLM inter-rater agreement figures (κ=0.857, κ=1.000) are from LLM panels with shared training data, not independent human experts. These two issues together mean the paper's breadth claims rest on potentially biased evaluation.",
+      "suggested_fix": "For the METRIC+ comparison, obtain independent re-implementations or use the original authors' code. For the inter-rater agreement, conduct at least a small human expert study (n≥2 independent raters) to validate the LLM-panel labels."
+    },
+    {
+      "section": "Paper length and structure",
+      "issue": "The manuscript is excessively long (estimated 60+ pages compiled) with multiple boundary-of-contribution boxes, extensive pre-emptive caveats, and forward/backward references that make it very difficult to follow. The comment in the LaTeX source ('NOT wired into NOETHER_paper_arxiv.tex yet') for the IBT section suggests incomplete preparation. The paper attempts to be both a theoretical paper (with proofs) and an empirical paper (with experiments), but does neither satisfactorily within the space.",
+      "suggested_fix": "Cut the paper to roughly half its current length. Remove redundant boundary-of-contribution restatements (there are at least four). Consolidate the empirical evaluation into a focused narrative around the L*-blindness prediction and one head-to-head comparison. Move detailed proofs and supplementary material to an appendix, keeping only the IBT proof and the PWR falsification proof in the main text."
+    },
+    {
+      "section": "§3.4 and §5.5 (Circularity of 'prediction')",
+      "issue": "The authors acknowledge that the T* and T* blocks were curated from reactor-physics structures, making the 'prediction' of m_adj and m_rev on reactor physics circular. The deflationary direction is claimed to be non-circular, but it is demonstrated on only three cases (sorting, Murphy et al.'s ML categories, reactor catalogue itself). The claim that NOETHER 'predicts' MetaPatterns is therefore overstated.",
+      "suggested_fix": "Drop the 'prediction' framing entirely for T* and T* blocks. Reserve the prediction language for genuinely held-out cases (the deflationary direction, and the L*-blindness prediction). Clearly label the reactor-physics re-classification as 'systematisation under a uniform algebraic structure' rather than 'prediction'."
+    }
+  ],
+  "minor_issues": [
+    "The comment '%% NOT wired into NOETHER_paper_arxiv.tex yet (no LaTeX toolchain in container; B2 integration + compile audit per CLAUDE.md §8 to be done in a LaTeX env).' in the IBT section source suggests the paper may not have been properly compiled before submission. This should be verified.",
+    "Table 5 (tab:pit-block) uses '∼' for case-dependent cells without explaining how the case is resolved at deployment time. A brief note pointing to the SUT-specific overrides would help.",
+    "The equivalence-relation claim for ~_s (Definition 5) is asserted by construction but the 'same constraint up to relabelling' is not formally defined. A brief formalisation would strengthen the quotient step.",
+    "The Set L baseline in the case study uses a single GPT-4 sample at temperature 0, which is a weak LLM baseline. The later 2-vendor × 5-temperature ensemble (§5.2) is stronger but is not used in the case study comparison.",
+    "Several references to supplementary materials (S1-S12) are not independently verifiable at review time. The SHA-256 hash is 'to be added in the camera-ready version.'",
+    "The cost comparison in Table 8 (tab:gen-cost) reports '≈10h A_P distillation' for NOETHER vs 'none after harness setup' for GenMorph, but the 10h figure is for a single program family and the amortisation argument across same-algebra SUTs is not quantified.",
+    "The paper cites 'four further pattern-catalogue or MR-grammar candidates raised in peer review (Hu et al. 2019; Mariani 2018; Liu et al. 2020; Lin 2020) [that] could not be located' — this is unusual in a submission and suggests incomplete literature search."
+  ],
+  "questions_to_authors": [
+    "Can you provide a single concrete example where the algebra-induced MR space MR(A_P) includes an MR that a practitioner would not have identified without the framework, and that MR detects a real fault? The current evaluation does not clearly demonstrate this.",
+    "Theorem 1 quantifies over MR(A_P) as defined by Definition 7, which is exactly the Translate-image of A_P. How is this theorem different from the statement 'CONSTRUCT-MP's output covers CONSTRUCT-MP's input space'? What would a counterexample to Theorem 1 look like?",
+    "The IBT's linear fault model (Definition 8) covers L = L* + Δ. What fraction of real faults in scientific computing, ML, or database systems are accurately modelled as linear operator perturbations? Can you provide any quantitative estimate?",
+    "For the L*-blindness prediction: the prediction is that homogeneity-preserving mutators are invisible to homogeneity-testing MRs. This is essentially a mathematical identity. What is the scientific value of empirically confirming it, beyond verifying that the implementation is correct?",
+    "The paper claims 'structural transferability at the algebra-skeleton level.' What concrete evidence would falsify this claim? If the framework can always add a 'ninth block' for recalcitrant cases, is the claim falsifiable at all?"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "overall_recommendation": "Reject",
+  "reviewer_confidence_1to5": 5,
+  "scores_1to5": {
+    "soundness": 2,
+    "novelty": 3,
+    "significance": 2,
+    "presentation": 2,
+    "reproducibility": 2
+  },
+  "summary": "The manuscript proposes NOETHER, a two-layer framework to derive metamorphic MetaPatterns from a program family’s operator algebra, with a by-construction closure theorem under a Translate operator and an Invariance-Blindness theorem characterizing blind spots for symmetry and self-adjoint patterns. It instantiates the idea in three domains (reactor physics, equivariant ML, relational optimizers), and presents a negative result that a stronger completeness conjecture fails on a PWR diffusion algebra. Empirical sections include a small ML case study, a 5-mutation DeepCrime-style pilot, and a PIT-based head-to-head versus GenMorph with a claimed L*-blindness prediction.",
+  "strengths": [
+    "Interesting high-level idea to ground metamorphic relations in operator-algebraic invariants and to reason about pattern origin and transferability.",
+    "The Invariance-Blindness theorem provides a crisp (if limited-scope) linear-algebraic characterization of detection blind spots and suggests complementarity with differential oracles.",
+    "The negative result (falsification of absolute completeness on a practical PWR algebra) is valuable and thoughtfully framed with concrete obstructions.",
+    "Ambitious attempt to connect multiple domains (reactor physics, equivariant ML, relational algebra) under a common structural lens."
+  ],
+  "publication_blockers": [
+    {
+      "section": "§4.6 Other per-block patterns; §4.7 Per-block head-to-head (Tables and prose)",
+      "issue": "Fundamental notation/construct confusion: T* is defined as the self-adjoint block earlier (Def. in §3.1), yet empirical sections repeatedly use “T*” to denote translation/period invariance; an undefined I* (idempotence) block appears as well.",
+      "why_fatal": "This inconsistency undermines the mapping between theory and experiments. It is impossible to verify which block is being measured; results attributed to T* (self-adjoint) actually discuss translation, contradicting the formal definitions. Conclusions drawn from the per-block analysis and the L*-blindness test become uninterpretable."
+    },
+    {
+      "section": "§3.2 Construction of MetaPattern set; Theorem 2 (§3.2.4)",
+      "issue": "CONSTRUCT-MP is underspecified and Theorem 2 (decidability) is vacuous: Step 1 (“compute the set of invariants I_s”) is not algorithmically defined and the complexity bound reduces to O(n·max_i t_i) where t_i is the (unspecified) cost of computing per-generator invariants.",
+      "why_fatal": "Without a concrete and general method to compute invariants from a program’s algebra, neither an implementable algorithm nor a meaningful complexity result is provided. The asserted polynomial-time decidability rests on an assumption that hides all hard work in an undefined t_i; this does not support the claimed constructive framework."
+    },
+    {
+      "section": "§4 Empirical evaluation (entire section)",
+      "issue": "Evaluation is underpowered, internally inconsistent with the theory-to-block mapping, and selection-biased; the main head-to-head shows Set N dominated by GenMorph in aggregate with ad hoc post-hoc per-block narratives; essential details rely on extensive supplemental artifacts not available in the paper.",
+      "why_fatal": "For TOSEM, empirical evidence must be trustworthy and sufficiently powered. Given the block-label confusion, small and hand-constructed mutation sets, and reliance on supplements to understand basic procedures, the evaluation does not substantiate the paper’s empirical claims and risks selection bias."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "§3.1–§3.2 (framework core)",
+      "issue": "Closure theorem is tautological by construction (authors acknowledge), leaving the main theoretical novelty thin; the by-construction closure does not bound the practically relevant MR space.",
+      "suggested_fix": "Reframe the contribution more modestly; either prove non-trivial closure properties under a more general Translate or show that Translate captures a provably large/interesting MR class beyond single-block invariants."
+    },
+    {
+      "section": "§3.1 Hypothesis 1; Defs. of blocks and Translate",
+      "issue": "Upstream ‘block decomposition’ remains ad hoc and empirically curated; Translate templates are insufficiently formalized per block (many crucial instantiations deferred to appendices/supplements).",
+      "suggested_fix": "Provide precise, self-contained per-block Translate schemata in the paper (not only in supplemental), with concrete algorithms for invariant extraction under realistic program abstractions, and a validation protocol for Hypothesis 1 on held-out domains."
+    },
+    {
+      "section": "§4.1–§4.3 (ML case study and DeepCrime pilot)",
+      "issue": "Case study and pilot are very small and have construct validity issues (mutations selected to match blocks); results do not demonstrate practical superiority, only isolated effects. The L*-blindness ‘prediction’ borders on a priori triviality for scale-homogeneous functions with PIT’s mutators.",
+      "suggested_fix": "Replace with larger, preregistered, held-out evaluations on real defects across multiple models/systems, and include stronger baselines (multi-seed GP, LLM ensembles, MR-Scout re-execution) with uniform budgets and open artifacts."
+    },
+    {
+      "section": "§2 Related work; §3.3 IBT",
+      "issue": "Invariance-Blindness theorem is technically straightforward (linear constraints + faithfulness rank), and its relevance is limited to linearized operator faults; connections to prior oracle theory and metamorphic testing theory are not fully explored.",
+      "suggested_fix": "Position IBT relative to differential testing, metamorphic oracles, and fault models; extend or empirically validate beyond linear/finite-dimensional approximations or make the limitation central to claims."
+    },
+    {
+      "section": "Throughout",
+      "issue": "Heavy dependence on supplementary material for core definitions, per-block Translate, data, and code; many references (S1–S12) are critical to assess claims but not accessible in the paper.",
+      "suggested_fix": "Move essential definitions, pseudo-code, and minimal datasets/plots into the main paper; ensure all artifacts are anonymized and available at review time with stable identifiers."
+    }
+  ],
+  "minor_issues": [
+    "Overly rhetorical framing and length obscure core technical content; streamline and reduce footnotes for clarity.",
+    "Ambiguity in notation across sections (e.g., T* used for different concepts; introduction of I* without prior definition; mixing G and T* responsibilities for translation).",
+    "The complexity table (§3.2) conflates finite vs Lie groups without clear proof obligations; justify truncation impacts and closure implications more rigorously.",
+    "Relational domain instantiation is analytical only; no empirical corroboration for MR effectiveness.",
+    "Several claims of inter-rater kappa rely on LLM raters sharing training data; this should be presented more cautiously and not as evidence of correctness."
+  ],
+  "questions_to_authors": [
+    "Clarify the block nomenclature: is T* self-adjoint only (as defined in §3.1), or also ‘translation/period’ in §4? Where does the I* (idempotence) block come from? Please reconcile all block labels across theory and experiments.",
+    "Provide a concrete, algorithmic procedure for Step 1 (computing invariants I_s) for at least two blocks on a real program abstraction, and update Theorem 2 accordingly with genuine bounds independent of an opaque t_i.",
+    "Can you release (for review) the exact supplemental artifacts (S1–S12) and code to reproduce the PIT, ML, and relational results, including seeds and configurations?",
+    "How would Translate handle typical MR classes in ML (data augmentation invariances, label-consistency) and scientific computing (conservation laws) without hand-curated invariants? Can these be automatically inferred from code/IRs?",
+    "Given that the aggregate head-to-head shows Set N is dominated by GenMorph on the D1 stratum, what is the practical testing advantage you expect (beyond cost-axis arguments) and how will you demonstrate it on held-out real faults?"
+  ]
+}
