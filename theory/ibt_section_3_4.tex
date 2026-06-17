@@ -103,6 +103,17 @@ W^{\mathrm{test}}_s$, so $\rho_{\iota,s}$ passes and $L\in\ker$.
 $L\in\mathcal{C}(T_s)$.
 \end{proof}
 
+\begin{remark}[From per-invariant MRs to block MetaPatterns]
+\label{rem:ibt-mp}
+\texttt{CONSTRUCT-MP} aggregates per block: a MetaPattern $m_s$ is the union of the
+MR families of all invariants in block $s$ (Step~3). Its kernel is the intersection
+$\ker(m_s)=\bigcap_{\iota}\ker(\rho_{\iota,s})$ (the aggregate detects a fault iff some
+constituent MR does). By Theorem~\ref{thm:ibt},
+$\ker(m_s)=\{L : P_L \text{ preserves the full structure } T_s\}$. The theorem thus
+operates at the per-invariant level while remaining consistent with the coarser
+block-level MetaPattern granularity, so no re-counting of MetaPatterns is required.
+\end{remark}
+
 \begin{remark}[Worked instance: advection--diffusion, translation block]
 \label{rem:ibt-advdiff}
 On a periodic grid the constant-coefficient operator $c\cdot\nabla+\alpha\nabla^2$
@@ -120,8 +131,9 @@ input basis is unisolvent) is reported in the supplement.% TODO-ref supplement S
 %% numbered, \ref-able corollaries, add \newtheorem{corollary}{Corollary} to the
 %% preamble at integration and drop the stars.
 \begin{corollary*}[Single-block incompleteness]
-For any block $s$ with $\mathcal{C}(T_s)\supsetneq\{L^{*}\}$ (a nontrivial structure-
-preserving fault exists), the single-block battery $\{\rho_{\iota,s}\}_\iota$ is
+For any block $s$ with $\mathcal{C}(T_s)\neq\{L^{*}\}$ (a nontrivial structure-
+preserving fault exists, noting $\mathcal{C}(T_s)\supseteq\{L^{*}\}$ always), the
+single-block battery $\{\rho_{\iota,s}\}_\iota$ is
 incomplete: its kernel contains that fault.
 \end{corollary*}
 

@@ -1,5 +1,12 @@
 # B1 — 再定心草案(Abstract / Scope / Contributions / Boundary-box 替换文本)
 
+> **状态更新(2026-06-17)**:本草案的 Scope 段、Contributions(C2c)、Boundary-box 已
+> **按 Option A 落入 `NOETHER_paper_arxiv.tex`**(commit decb014 + 本轮),编译 §8 审计全 0。
+> 与初稿差异:采 **Option A** 故 **保留 "7 MetaPatterns"**(非 "K≥7");Theorem 1/2 **不降级
+> 重编号**(避免连锁),仅在叙事上由 C2c(IBT)承担非平凡性、C2a 自陈 by-construction。
+> **新 Abstract 全文替换尚未落**(下方文本待 B2-Abstract 步骤;当前 Abstract 无自相矛盾,
+> 非阻塞)。下方"K≥7""降 lemma"等表述以本更新为准。
+
 > 用途:把论文重心从"by-construction 闭包 + systematisation"移到"算子代数 → MR 推导
 > (核心)+ Invariance-Blindness 限定定理(非平凡)",并落实 Option B。**本文为 docs 草案
 > 文本,供评审;B2 再一次性落 `NOETHER_paper_arxiv.tex`。** 每段标注对应 `.tex` 锚点。

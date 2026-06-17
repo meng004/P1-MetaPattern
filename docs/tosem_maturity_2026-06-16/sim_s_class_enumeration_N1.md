@@ -1,4 +1,10 @@
-# N1 — 逐域 ∼_s 等价类枚举(锚定 Option B,证伪 Option C)
+# N1 — 逐域 ∼_s 等价类枚举(证伪 Option C;现支持 Option A 的聚合读法)
+
+> **更新(2026-06-17)**:最终采纳 **Option A**(非 B),见 `constructmp_step34_revision_B0.md`
+> 决策记录:论文 "7 MetaPatterns" 为 A 语义,采 B 会炸毁实证主线。N1 的"某块 ≥2 个
+> $\sim_s$ 类"证据**仍有效但改用途**——它证明 $m_s$ 是**真聚合体**(支持 A 的 per-block
+> aggregate Remark),计数仍每非空块一 MP(=7);C 单类假设在构成级为假,A 不依赖它。
+> 下文"采纳 B"结论以本更新为准替换为"采纳 A"。
 
 > 用途:为 B0 决策(采纳 Option B)出证据 —— 证明三域中**某些块含 ≥2 个 $\sim_s$
 > 不等价类**,使 Option C 的"每块单类"假设为假。判据来自论文自身的块定义。
