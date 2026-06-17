@@ -15,6 +15,7 @@
     ],
     "enabled": true
   },
+  "calibration": null,
   "genmorph": {
     "feasible": false,
     "reason": "field / trajectory / eigenvalue I/O; per-eval is a full PDE / kinetics / transport solve; structural MRs relate multiple executions (D1\u2013D3).",

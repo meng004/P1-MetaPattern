@@ -1,0 +1,179 @@
+{
+  "sut": "advdiff-xeval-diff",
+  "equation": "u_t + c.grad(u) = alpha*lap(u) (2-D advection-diffusion, periodic; N=64, alpha=0.01, c=(1.0,0.5), T=0.5)",
+  "impls": [
+    "M-FV",
+    "M-SP"
+  ],
+  "domain": "thermal\u00d7fluid",
+  "execution_mode": "executed-here",
+  "provenance": "substrate: Minimum-MR-SubSet mcmr.pde_xeval (solvers, mutations); differential oracle executed here; no selection.",
+  "cross_impl": {
+    "impls": [
+      "M-FV",
+      "M-SP"
+    ],
+    "enabled": true,
+    "oracle": "neutral per-field differential (no ground truth)"
+  },
+  "calibration": {
+    "method": "tau = SAFETY * max-probe pristine cross-impl reldiff (doc \u00a710.2)",
+    "safety_factor": 5.0,
+    "n_probes": 5,
+    "pristine_gap_per_probe": [
+      0.09692,
+      0.097474,
+      0.117043,
+      0.138555,
+      0.184969
+    ],
+    "pristine_gap_delta": 0.184969,
+    "tau": 0.924844,
+    "sensitivity_posthoc": [
+      {
+        "safety": 1.5,
+        "tau": 0.277453,
+        "detected": 16,
+        "n_real": 29,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 2.0,
+        "tau": 0.369938,
+        "detected": 15,
+        "n_real": 29,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 3.0,
+        "tau": 0.554906,
+        "detected": 13,
+        "n_real": 29,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 5.0,
+        "tau": 0.924844,
+        "detected": 12,
+        "n_real": 29,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      },
+      {
+        "safety": 10.0,
+        "tau": 1.849688,
+        "detected": 7,
+        "n_real": 29,
+        "baseline_false_positives": 0,
+        "n_baseline": 2
+      }
+    ]
+  },
+  "genmorph": {
+    "feasible": false,
+    "reason": "N x N field comparison across two PDE solves per case (D1-D2); neutral cross-impl oracle, not a single-program GP target.",
+    "expr_tier": "method-comparison oracle (E*), beyond (jir,jor) tier (D4)"
+  },
+  "alignment_ok": true,
+  "baseline_killers": [],
+  "M_yield": 1,
+  "M_block": 1,
+  "blocks_covered": [
+    "E*"
+  ],
+  "M_detect": {
+    "killed": 12,
+    "n_real_mutants": 29,
+    "rate": 0.41379310344827586,
+    "wilson95": [
+      0.2551,
+      0.5926
+    ],
+    "underpowered": false
+  },
+  "per_block": {
+    "E*": {
+      "mrs": [
+        "xeval-differential"
+      ],
+      "detected": 12,
+      "n": 29,
+      "rate": 0.41379310344827586,
+      "wilson95": [
+        0.2551,
+        0.5926
+      ]
+    }
+  },
+  "per_fault_class": {
+    "advection_speed_error": {
+      "detected": 2,
+      "n": 3,
+      "rate": 0.6666666666666666
+    },
+    "advection_stencil_fault": {
+      "detected": 2,
+      "n": 4,
+      "rate": 0.5
+    },
+    "boundary_index_fault": {
+      "detected": 0,
+      "n": 2,
+      "rate": 0.0
+    },
+    "coefficient_inhomogeneity_fault": {
+      "detected": 0,
+      "n": 2,
+      "rate": 0.0
+    },
+    "conservation_violation": {
+      "detected": 1,
+      "n": 2,
+      "rate": 0.5
+    },
+    "diffusion_coefficient_error": {
+      "detected": 0,
+      "n": 2,
+      "rate": 0.0
+    },
+    "laplacian_stencil_fault": {
+      "detected": 1,
+      "n": 4,
+      "rate": 0.25
+    },
+    "sign_error": {
+      "detected": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "spectral_aliasing_fault": {
+      "detected": 0,
+      "n": 1,
+      "rate": 0.0
+    },
+    "spectral_normalization_fault": {
+      "detected": 0,
+      "n": 1,
+      "rate": 0.0
+    },
+    "spectral_wavenumber_fault": {
+      "detected": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "time_integration_fault": {
+      "detected": 2,
+      "n": 4,
+      "rate": 0.5
+    }
+  },
+  "per_mr": {
+    "xeval-differential": {
+      "block": "E*",
+      "kills": 12
+    }
+  }
+}

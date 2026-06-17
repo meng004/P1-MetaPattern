@@ -93,6 +93,27 @@
     "alignment_ok": true,
     "genmorph_feasible": false
   },
+  "advdiff-xeval-diff": {
+    "domain": "thermal\u00d7fluid",
+    "execution_mode": "executed-here",
+    "M_yield": 1,
+    "M_block": 1,
+    "blocks": [
+      "E*"
+    ],
+    "M_detect": {
+      "killed": 12,
+      "n_real_mutants": 29,
+      "rate": 0.41379310344827586,
+      "wilson95": [
+        0.2551,
+        0.5926
+      ],
+      "underpowered": false
+    },
+    "alignment_ok": true,
+    "genmorph_feasible": false
+  },
   "radxfer-G2": {
     "domain": "thermal",
     "execution_mode": "reused-committed-matrix",
@@ -207,5 +228,14 @@
     },
     "alignment_ok": false,
     "genmorph_feasible": false
+  },
+  "_paired_advdiff_MR_vs_differential": {
+    "comparison": "advdiff: algebra-MR battery (A) vs neutral cross-impl differential oracle (B), same real mutants",
+    "n_real_mutants": 29,
+    "A_MR_battery_killed": 13,
+    "B_differential_killed": 12,
+    "b_only_MR": 6,
+    "c_only_differential": 5,
+    "mcnemar_exact_p": 1.0
   }
 }

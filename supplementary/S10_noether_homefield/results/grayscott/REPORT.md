@@ -5,6 +5,7 @@
 **Implementations**: M-FD-IMEX, M-SP-IMEX
 **Execution mode**: reused-committed-matrix
 **Provenance**: T2 committed detection matrix: runs/abd-witness-grayscott-xeval-2d-B-20260615T023057Z/kill_matrix.csv (detection-only reuse; selection artefacts not read).
+
 **Alignment gate (baseline_control all survive)**: PASS
 
 ## Generation / detection (no selection / k* reported)

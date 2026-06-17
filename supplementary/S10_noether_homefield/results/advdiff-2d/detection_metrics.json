@@ -15,6 +15,7 @@
     ],
     "note": "E* method-comparison block exercised by two independent implementations (Phase B). A per-field differential oracle needs discretisation-aware tolerance (doc \u00a710.2) and is left to the calibrated harness; not fabricated here."
   },
+  "calibration": null,
   "genmorph": {
     "feasible": false,
     "reason": "N x N field I/O (D1); each fitness eval is a sparse-LU / spectral PDE solve (D2); scaling/Galilean/Richardson MRs relate multiple structured executions (D3).",

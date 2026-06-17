@@ -126,6 +126,7 @@ def summarize(result: dict[str, Any]) -> dict[str, Any]:
         "execution_mode": result.get("execution_mode", "executed-here"),
         "provenance": result.get("provenance"),
         "cross_impl": result.get("cross_impl"),
+        "calibration": result.get("calibration"),
         "genmorph": result.get("genmorph", {}),
         "alignment_ok": alignment_ok,
         "baseline_killers": baseline_killers,

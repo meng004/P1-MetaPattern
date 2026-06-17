@@ -21,7 +21,8 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
 import noether_metrics as nm
-from suts import heat_sut, wave_sut, poisson_sut, advdiff_sut, killmatrix_sut
+from suts import (heat_sut, wave_sut, poisson_sut, advdiff_sut,
+                  advdiff_xeval_diff, killmatrix_sut)
 
 RESULTS = _HERE / "results"
 
@@ -36,6 +37,11 @@ def _report_md(s: dict) -> str:
         f"**Implementations**: {', '.join(s['impls'])}",
         f"**Execution mode**: {s.get('execution_mode')}",
         (f"**Provenance**: {s.get('provenance')}" if s.get('provenance') else ""),
+        (f"**Tolerance calibration (§10.2)**: tau={s['calibration']['tau']} = "
+         f"{s['calibration']['safety_factor']}x pristine gap "
+         f"delta={s['calibration']['pristine_gap_delta']} "
+         f"(n_probes={s['calibration']['n_probes']})"
+         if s.get('calibration') else ""),
         f"**Alignment gate (baseline_control all survive)**: "
         f"{'PASS' if s['alignment_ok'] else 'FAIL'}",
         "",
@@ -74,12 +80,12 @@ def _report_md(s: dict) -> str:
     return "\n".join(lines)
 
 
-def run_one(name: str, evaluate) -> dict | None:
+def run_one(name: str, evaluate):
     try:
         result = evaluate()
     except ImportError as e:
         print(f"[skip] {name}: {e}", file=sys.stderr)
-        return None
+        return None, None
     s = nm.summarize(result)
     out = RESULTS / s["sut"]
     out.mkdir(parents=True, exist_ok=True)
@@ -93,7 +99,7 @@ def run_one(name: str, evaluate) -> dict | None:
           f"M-yield={s['M_yield']:2} M-block={s['M_block']} "
           f"M-detect={md['killed']:2}/{md['n_real_mutants']:2}={md['rate']:.3f} "
           f"CI[{md['wilson95'][0]:.3f},{md['wilson95'][1]:.3f}]")
-    return s
+    return s, result
 
 
 def main(argv=None):
@@ -103,19 +109,22 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     registry = {"heat": heat_sut.evaluate, "wave": wave_sut.evaluate,
-                "poisson": poisson_sut.evaluate, "advdiff": advdiff_sut.evaluate}
+                "poisson": poisson_sut.evaluate, "advdiff": advdiff_sut.evaluate,
+                "advdiff-diff": advdiff_xeval_diff.evaluate}
     # committed-matrix SUTs (reused detection data; runtime-free)
     for _km in killmatrix_sut.SPECS:
         registry[_km] = killmatrix_sut.make_evaluate(_km)
     want = list(registry) if args.sut == "all" else [s.strip() for s in args.sut.split(",")]
 
     summaries = {}
+    raw = {}
     for name in want:
         if name not in registry:
             print(f"[skip] unknown SUT {name!r}", file=sys.stderr)
             continue
-        s = run_one(name, registry[name])
+        s, result = run_one(name, registry[name])
         if s is not None:
+            raw[s["sut"]] = result
             summaries[s["sut"]] = {
                 "domain": s.get("domain"),
                 "execution_mode": s.get("execution_mode"),
@@ -124,6 +133,30 @@ def main(argv=None):
                 "M_detect": s["M_detect"], "alignment_ok": s["alignment_ok"],
                 "genmorph_feasible": s["genmorph"].get("feasible"),
             }
+
+    # Paired comparison: algebra-MR battery vs neutral differential oracle
+    # over the SAME advdiff mutants (real faults only). Exercises §10.2 + McNemar.
+    if "advdiff-2d" in raw and "advdiff-xeval-diff" in raw:
+        real = lambda recs: [r for r in recs if not r.get("baseline")]
+        a = real(raw["advdiff-2d"]["records"])           # MR battery
+        b = real(raw["advdiff-xeval-diff"]["records"])    # differential oracle
+        pm = nm.paired_mcnemar(a, b)
+        ka = sum(any(r["kills"].values()) for r in a)
+        kb = sum(any(r["kills"].values()) for r in b)
+        paired = {
+            "comparison": "advdiff: algebra-MR battery (A) vs neutral cross-impl "
+                          "differential oracle (B), same real mutants",
+            "n_real_mutants": len(a),
+            "A_MR_battery_killed": ka, "B_differential_killed": kb,
+            "b_only_MR": pm["b_only_A"], "c_only_differential": pm["c_only_B"],
+            "mcnemar_exact_p": pm["mcnemar_p"],
+        }
+        (RESULTS / "advdiff-xeval-diff" / "paired_vs_mr.json").write_text(
+            json.dumps(paired, indent=2), encoding="utf-8")
+        summaries["_paired_advdiff_MR_vs_differential"] = paired
+        print(f"[paired] advdiff MR={ka}/{len(a)} vs differential={kb}/{len(b)} "
+              f"| MR-only={pm['b_only_A']} diff-only={pm['c_only_B']} "
+              f"| McNemar exact p={pm['mcnemar_p']:.4g}")
 
     RESULTS.mkdir(parents=True, exist_ok=True)
     (RESULTS / "summary.json").write_text(json.dumps(summaries, indent=2),

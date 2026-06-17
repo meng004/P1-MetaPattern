@@ -8,6 +8,7 @@
   "execution_mode": "executed-here",
   "provenance": null,
   "cross_impl": null,
+  "calibration": null,
   "genmorph": {
     "feasible": false,
     "reason": "array-valued field I/O u(x); GP assertion grammar targets scalar/tuple I/O (D1). Conservation/scaling/reflection MRs relate multiple structured executions (D3).",

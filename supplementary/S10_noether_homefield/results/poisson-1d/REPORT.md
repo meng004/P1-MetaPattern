@@ -5,6 +5,7 @@
 **Implementations**: FDM
 **Execution mode**: executed-here
 
+
 **Alignment gate (baseline_control all survive)**: PASS
 
 ## Generation / detection (no selection / k* reported)
