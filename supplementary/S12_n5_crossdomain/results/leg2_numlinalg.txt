@@ -1,0 +1,18 @@
+N5 leg-2a: numerical linear algebra (SUT = numpy.linalg, independent).
+
+  [G           ] permutation-equivariance                   executable-hold: True
+  [G           ] orthogonal-spectral-invariance             executable-hold: True
+  [T*          ] self-adjoint reciprocity + real spectrum   executable-hold: True
+  [O<=         ] eigenvalue monotonicity (Weyl)             executable-hold: True
+  [L*          ] Neumann-series / iterative limit           executable-hold: True
+  [E*          ] LU vs QR method comparison                 executable-hold: True
+  [Conservation] similarity-invariant trace                 executable-hold: True
+
+  blocks populated (algebra-derived MR holds on numpy): ['G', 'T*', 'O<=', 'L*', 'E*', 'Conservation']
+  block count: 6 (vs industrial corpus = 1 [O<=])
+
+  FA-rank (tight IBT blocks in this domain):
+    G (S_4 perm): rank(2 generators)=14 == rank(all 24 perms)=14: True; kernel dim=2 (commutant span)
+    T* (n=6): kernel dim=21 == symmetric n(n+1)/2=21: True
+
+  leg-2a consistent (multi-block + FA tight on G,T*): True
