@@ -208,6 +208,7 @@ s5-aligned 的金标准设计是:**除 MR 来源外所有混淆变量全部固�
 > | wave-1d | 流体 | exec | 5 | 4(含 Trev\*) | 6/6 | [.610,1.000] | PASS |
 > | poisson-1d | 热工 | exec | 5 | 3 | 5/6 | [.436,.970] | PASS |
 > | advdiff-2d | 热工×流体 | exec | 11 | 4 | 13/29 | [.284,.625] | PASS |
+> | advdiff-xeval-diff | 热工×流体 | exec | 1 | 1(E\*) | 12/29 | [.255,.593] | PASS |
 > | radxfer-G2 | 热工 | reused | 16 | 4 | 25/31 | [.637,.908] | PASS |
 > | grayscott | 流体 | reused | 20 | 4 | 41/44 | [.818,.977] | PASS |
 > | detonation-znd | 流体 | reused | 18 | 2 | 12/36 | [.202,.497] | PASS |
@@ -217,4 +218,6 @@ s5-aligned 的金标准设计是:**除 MR 来源外所有混淆变量全部固�
 > - **exec** = 本 harness 执行(heat/wave/poisson 自包含纯 numpy;advdiff 经 T2 substrate);**reused** = 复用 T2 已提交 `kill_matrix.csv` 重算 generation 指标(未重跑;provenance 记录来源;不读其 selection 产物)。
 > - **alignment gate 有牙**:pincell-xeval FAIL —— T2 committed 矩阵 3 个 `…-identity` baseline 被判杀(resid 1.0>tol 0.5),其检出率不作可信结论,保留并标注。
 > - self-consistent 故障如实未检出(heat/poisson coeff×1.1;advdiff diffusion 0/2、speed 0/3)→ §10.2;**wave 独占 Conservation+Trev\***(耗散 SUT 的 Trev\* 为空)→ 块随物理。
-> **后续增量**:跨实现差分逐场 oracle(§10.2 容差校准)、LLM-MR 对比 arm(paired McNemar)、fefv(需补变异池)。
+>
+> **§10.2 跨实现微分 oracle(已真跑,`advdiff-xeval-diff`)**:M-FV vs M-SP 逐场中立 oracle(无 ground truth),容差按初始振幅归一、δ_pristine=0.185、τ=5·δ=0.925(a-priori)。与代数 MR battery 在同 29 个真故障上配对:MR 13/29、微分 12/29,**MR-only=6、微分-only=5**(McNemar exact p=1.0)→ **二者互补**:微分独抓 advection-speed / wavenumber-sign 故障(MR 因平移/Galilean 不变性结构性致盲),MR 独抓 conservation / boundary / inhomogeneity(场扰动 <τ 但破坏不变量);二者皆漏 self-consistent 系数误差(`fv_lap_coeff_x2` 场变 0.31,介于 δ=0.185 与 τ=0.925 之间 → 离散差掩盖缺陷,§10.2 量化佐证)。容差敏感度(safety 1.5→10:检出 16→7,baseline 假阳 0/2 恒为 0)见 `results/advdiff-xeval-diff/`。
+> **后续增量**:LLM-MR 对比 arm(paired McNemar 机制已就绪、缺 LLM 产出对照 MR)、fefv(需补变异池)、跨实现微分 oracle 推广到 radxfer/grayscott 双实现 SUT。

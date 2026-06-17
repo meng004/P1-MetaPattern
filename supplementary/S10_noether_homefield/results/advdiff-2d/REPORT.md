@@ -5,6 +5,7 @@
 **Implementations**: M-FV, M-SP
 **Execution mode**: executed-here
 **Provenance**: substrate: Minimum-MR-SubSet mcmr.pde_xeval (solvers, mr_battery, mutations); detection-only, no selection.
+
 **Alignment gate (baseline_control all survive)**: PASS
 
 ## Generation / detection (no selection / k* reported)

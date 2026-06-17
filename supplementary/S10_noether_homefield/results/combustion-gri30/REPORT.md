@@ -5,6 +5,7 @@
 **Implementations**: M-CANTERA, M-PYODE
 **Execution mode**: reused-committed-matrix
 **Provenance**: T2 committed detection matrix: runs/abd-witness-combustion-gri30-B-20260616T075927Z/kill_matrix.csv (detection-only reuse; selection artefacts not read).
+
 **Alignment gate (baseline_control all survive)**: PASS
 
 ## Generation / detection (no selection / k* reported)

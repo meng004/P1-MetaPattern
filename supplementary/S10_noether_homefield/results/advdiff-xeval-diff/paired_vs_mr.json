@@ -1,0 +1,9 @@
+{
+  "comparison": "advdiff: algebra-MR battery (A) vs neutral cross-impl differential oracle (B), same real mutants",
+  "n_real_mutants": 29,
+  "A_MR_battery_killed": 13,
+  "B_differential_killed": 12,
+  "b_only_MR": 6,
+  "c_only_differential": 5,
+  "mcnemar_exact_p": 1.0
+}

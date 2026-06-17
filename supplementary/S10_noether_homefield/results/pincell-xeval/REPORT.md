@@ -5,6 +5,7 @@
 **Implementations**: openmc, openmoc
 **Execution mode**: reused-committed-matrix
 **Provenance**: T2 committed detection matrix: runs/abd-witness-metbench-pincell-xeval-2g_uo2_offcentre-20260613T154614Z/kill_matrix.csv (detection-only reuse; selection artefacts not read).
+
 **Alignment gate (baseline_control all survive)**: FAIL
 
 ## Generation / detection (no selection / k* reported)

@@ -8,6 +8,7 @@
   "execution_mode": "executed-here",
   "provenance": null,
   "cross_impl": null,
+  "calibration": null,
   "genmorph": {
     "feasible": false,
     "reason": "field-valued u(x) I/O (D1); grid-convergence MR relates multiple structured executions across grids (D3).",
