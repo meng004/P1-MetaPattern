@@ -1399,7 +1399,7 @@ $\langle$RETURN\_VALS, $\mathcal{L}^{*}\rangle$ cells of
 Table~\ref{tab:pit-block} are both ``$\circ$''.
 
 \paragraph{Per-mutant D1 / D2 classification with SUT-specific overrides.}
-Per-mutant classification applies Table~\ref{tab:pit-block} with SUT-specific overrides (in \texttt{configs/sut\_block\_decomposition.json} + \texttt{configs/sut\_block\_overrides.json}) resolving the ``$\sim$'' cells. After the multi-LLM equivalent-mutant exclusion of \S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote}), the $n = 62$ head-to-head pool drops to $n = 57$ ($52$ D1 + $5$ D2; all $5$ excluded mutants were originally in the $10$-mutant D2 stratum, so the D1 stratum is unchanged). Stratified kill rates: Set~N D1 $26/52 = 0.500$ Wilson 95\% $[0.369, 0.631]$; Set~G D1 $37/52 = 0.712$ $[0.577, 0.817]$; Set~N D2 $0/5 = 0.000$ $[0.000, 0.434]$; Set~G D2 $3/5 = 0.600$ $[0.231, 0.882]$. The D2 point estimate ($0.000$) is consistent with the prediction $\le 10\%$, but the Wilson upper bound does not exclude the $10\%$ ceiling at $\alpha = 0.05$; the cross-codebase commons-math pilot (\S\ref{subsec:empirical-threats}~(b.cm)) corroborates the direction at $2/29 = 6.9\%$. Set~G's $0.600$ on D2 confirms that D2 is a Set~N-specific scope boundary, not a substrate-wide ceiling --- a GP-evolved generic baseline is unconstrained by the algebra. On D1, the cross-block aggregate gap (McNemar exact two-sided $p = 0.019$) decomposes per-block in \S\ref{subsec:pooled-headtohead} (gap concentrated on $G$ and $\mathcal{L}^{*}$; partially offset by Set~N's $\mathcal{T}^{*}$ edge $10/17$ vs $8/17$); the per-block decomposition is the appropriate substrate-level reading.
+Per-mutant classification applies Table~\ref{tab:pit-block} with SUT-specific overrides (in \texttt{configs/sut\_block\_decomposition.json} + \texttt{configs/sut\_block\_overrides.json}) resolving the ``$\sim$'' cells. After the multi-LLM equivalent-mutant exclusion of \S\ref{subsec:pooled-headtohead}~(p.~\pageref{para:eq-mutant-footnote}), the $n = 62$ head-to-head pool drops to $n = 57$ ($52$ D1 + $5$ D2; all $5$ excluded mutants were originally in the $10$-mutant D2 stratum, so the D1 stratum is unchanged). Stratified kill rates: Set~N D1 $26/52 = 0.500$ Wilson 95\% $[0.369, 0.631]$; Set~G D1 $37/52 = 0.712$ $[0.577, 0.817]$; Set~N D2 $0/5 = 0.000$ $[0.000, 0.434]$; Set~G D2 $3/5 = 0.600$ $[0.231, 0.882]$. The D2 point estimate ($0.000$) is consistent with the prediction $\le 10\%$, but the Wilson upper bound does not exclude the $10\%$ ceiling at $\alpha = 0.05$; the cross-codebase commons-math pilot (\S\ref{subsec:empirical-threats}~(b.cm)) corroborates the direction at $2/29 = 6.9\%$. Set~G's $0.600$ on D2 confirms that D2 is a Set~N-specific scope boundary, not a substrate-wide ceiling --- a GP-evolved generic baseline is unconstrained by the algebra. On D1, the cross-block aggregate gap (McNemar exact two-sided $p = 0.019$) decomposes per-block in \S\ref{subsec:pooled-headtohead} (gap concentrated on $G$ and $\mathcal{L}^{*}$; partially offset by Set~N's edge on the translation sub-class $G_{\mathrm{tr}}$ of the symmetry block $G$ ($10/17$ vs $8/17$); the per-block decomposition is the appropriate substrate-level reading.
 
 \subsubsection{Test design}
 \label{subsec:test-design}
@@ -1548,18 +1548,22 @@ the data.
 The prediction-test of
 \S\ref{subsec:l-blindness-confirmed} establishes the
 $\mathcal{L}^{*}$-block result as the section's central claim. The
-remaining three populated NOETHER blocks ($T^{*}$, $G$,
-$\mathcal{I}^{*}$) carry weaker, qualitative predictions that the
-data also confirms; they corroborate the operative-mechanism reading
-without providing a falsifiable quantitative test.
+remaining populated sub-blocks --- the finite-group symmetry $G$ and
+its translation sub-class $G_{\mathrm{tr}}$, together with an
+out-of-frame idempotence probe ($\mathcal{I}^{*}$, not among the eight
+blocks of Definition~\ref{def:alg-induced}; a candidate ninth block
+per Remark~\ref{rem:counterex}) --- carry weaker, qualitative
+predictions that the data also confirms; they corroborate the
+operative-mechanism reading without providing a falsifiable
+quantitative test.
 
-\paragraph{$T^{*}$ block (translation, period).}
+\paragraph{$G_{\mathrm{tr}}$ translation sub-class (grid shift, period).}
 Translation MRs carry the highest single-MR kill rates on the numeric
 SUTs: \texttt{midpoint} \texttt{T\_shift} 3/3, \texttt{powerSig}
 \texttt{T\_exp\_step} 8/12, \texttt{exactLog2} \texttt{T\_double}
 4/10, \texttt{clamp} \texttt{T\_shift} 3/7. Translation invariance is
 the property most directly perturbed by PIT's arithmetic-operator
-swaps; $T^{*}$-derived MRs detect this perturbation reliably. The
+swaps; $G_{\mathrm{tr}}$-derived MRs detect this perturbation reliably. The
 qualitative prediction (high single-MR rate on numeric SUTs) holds.
 
 \paragraph{$G$ block (group, symmetry).}
@@ -1595,12 +1599,13 @@ to a pre-normalisation symmetry $G$). The $0/7$ Set~N kill rate is the
 correct $G$-block reading on these SUTs under the framework's
 scope precondition, not a missed opportunity for MR refinement.
 
-\paragraph{$\mathcal{I}^{*}$ block (idempotence, identity).}
+\paragraph{$\mathcal{I}^{*}$ idempotence probe (out-of-frame; candidate ninth block).}
 Idempotence MRs kill few mutants under the paired-MR DSL:
 \texttt{I\_idem} $\approx 0$ across most SUTs; \texttt{powerSig}
 \texttt{I\_zero\_exp} 2/12 is a degenerate single-input case. This
 reflects an expressivity limit of the JIR/JOR shape, not an absence
-of $\mathcal{I}^{*}$ structure in the SUTs. The qualitative
+of idempotence structure in the SUTs (this probe lies outside the
+eight-block frame; see Remark~\ref{rem:counterex}). The qualitative
 prediction (low kill rate under paired-MR DSL) holds.
 
 The four block predictions taken together, including the central
@@ -1636,7 +1641,7 @@ MRs (Set~G) and their algebra-derived counterparts (Set~N).}
 GP-evolved MR (Set G) & Set N counterpart & Block \\
 \midrule
 \texttt{SwitchParams??1@2}                & \texttt{G\_swap} (commutativity)         & $G$ \\
-\texttt{NumericAddition?1.000000?1}       & \texttt{T\_shift} (translation by $1$)   & $T^{*}$ \\
+\texttt{NumericAddition?1.000000?1}       & \texttt{T\_shift} (translation by $1$)   & $G_{\mathrm{tr}}$ \\
 \texttt{NumericMultiplication?0.500000?2} & \texttt{L\_scale} (scaling, approx.)     & $\mathcal{L}^{*}$ \\
 \bottomrule
 \end{tabular}
@@ -1651,7 +1656,7 @@ GenMorph's GP pipeline fails on two of the ten SUTs for plumbing reasons: \textt
 This subsection decomposes an aggregate Set~G dominance per algebraic block, with cost-axis and D2-stratum framework prediction layered alongside.
 
 \begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Boundary of contribution (head-to-head restatement),fonttitle=\small\bfseries]
-\textit{What this subsection claims, and what it does not.} (1)~\textbf{Aggregate verdict}: Set~N is dominated by Set~G on the D1 stratum (McNemar $p = 0.0043$ pooled, $p = 0.019$ on D1 only). (2)~\textbf{Per-block reading}: the gap concentrates on the $G$ block (Set~G $7/7$ vs Set~N $0/7$ on commutativity-targeting mutants); on the $\mathcal{T}^{*}$ block Set~N dominates ($10/17$ vs Set~G's $\mathcal{T}^{*}$ kills). (3)~\textbf{Cost-axis}: independently of detection-rate, Set~N is derivable in polynomial time from $\mathcal{A}_P$ (Theorem~\ref{thm:decidable}) while Set~G requires a $\approx 30$-min stochastic GP search per SUT. (4)~\textbf{D2-stratum framework prediction}: Set~N's $\le 10\%$ D2 kill-rate prediction (operative invariant preserved under structurally-non-disrupting mutants) is an ex-ante framework signal that no inductive baseline can derive; pre-registered cap holds at $2/29 = 6.9\%$ on the cross-codebase Commons-Math substrate. The head-to-head is not the framework's load-bearing claim --- per-block algebraic derivability, structural coverage extension (two SUTs only Set~N reaches), and the D2 prediction are.
+\textit{What this subsection claims, and what it does not.} (1)~\textbf{Aggregate verdict}: Set~N is dominated by Set~G on the D1 stratum (McNemar $p = 0.0043$ pooled, $p = 0.019$ on D1 only). (2)~\textbf{Per-block reading}: the gap concentrates on the $G$ block (Set~G $7/7$ vs Set~N $0/7$ on commutativity-targeting mutants); on the $G_{\mathrm{tr}}$ translation sub-class Set~N dominates ($10/17$ vs Set~G's $G_{\mathrm{tr}}$ kills). (3)~\textbf{Cost-axis}: independently of detection-rate, Set~N is derivable in polynomial time from $\mathcal{A}_P$ (Theorem~\ref{thm:decidable}) while Set~G requires a $\approx 30$-min stochastic GP search per SUT. (4)~\textbf{D2-stratum framework prediction}: Set~N's $\le 10\%$ D2 kill-rate prediction (operative invariant preserved under structurally-non-disrupting mutants) is an ex-ante framework signal that no inductive baseline can derive; pre-registered cap holds at $2/29 = 6.9\%$ on the cross-codebase Commons-Math substrate. The head-to-head is not the framework's load-bearing claim --- per-block algebraic derivability, structural coverage extension (two SUTs only Set~N reaches), and the D2 prediction are.
 \end{tcolorbox}
 
 \textbf{On the algebra-disrupting D1 stratum at GenMorph's published
@@ -1722,7 +1727,7 @@ SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & not
 \end{table}
 
 \paragraph{Per-block head-to-head and complementarity (Primary, PIT arm).}
-Each Set~N MR derives from exactly one NOETHER block, so the natural head-to-head denominator is per-block rather than the operative-block union. Across the eight head-to-head SUTs, PIT's stock mutator catalogue exercises three operative blocks: $G$ (group / swap / negate), $\mathcal{L}^{*}$ (scale / homogeneity), and $\mathcal{T}^{*}$ (translation / self-adjoint). For each block~$b$, $n_{b}$ counts mutants whose (SUT, mutator) entry in \texttt{configs/sut\_block\_overrides.json} marks block~$b$ as broken (``$\times$''). Per-block kill counts and the complementarity partition (both / $N$-only / $G$-only / neither) appear in Table~\ref{tab:per-block-headtohead}.
+Each Set~N MR derives from exactly one NOETHER block, so the natural head-to-head denominator is per-block rather than the operative-block union. Across the eight head-to-head SUTs, PIT's stock mutator catalogue exercises three operative (sub-)blocks: $G$ (finite-group symmetry: swap / negate), $\mathcal{L}^{*}$ (scale / homogeneity), and $G_{\mathrm{tr}}$, the translation sub-class of the symmetry block $G$ (grid shift / period). For each block~$b$, $n_{b}$ counts mutants whose (SUT, mutator) entry in \texttt{configs/sut\_block\_overrides.json} marks block~$b$ as broken (``$\times$''). Per-block kill counts and the complementarity partition (both / $N$-only / $G$-only / neither) appear in Table~\ref{tab:per-block-headtohead}.
 
 \begin{table}[h]
 \centering
@@ -1751,9 +1756,9 @@ broken blocks; lower-bound caveat, not a participating row).}
 \toprule
 Block & $n_{b}$ & Set~N kills & rate (95\% CI) & Set~G kills & rate (95\% CI) & both & $N$-only & $G$-only & neither \\
 \midrule
-$G$              & 11 &  2 & $0.182$ $[0.051,\,0.477]$ &  9 & $0.818$ $[0.523,\,0.949]$ & 2 & 0 & 7 & 2 \\
+$G$ (sym.)       & 11 &  2 & $0.182$ $[0.051,\,0.477]$ &  9 & $0.818$ $[0.523,\,0.949]$ & 2 & 0 & 7 & 2 \\
 $\mathcal{L}^{*}$ & 24 & 10 & $0.417$ $[0.245,\,0.612]$ & 16 & $0.667$ $[0.467,\,0.820]$ & 8 & 2 & 8 & 6 \\
-$\mathcal{T}^{*}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\,0.690]$ & 7 & 3 & 1 & 6 \\
+$G_{\mathrm{tr}}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\,0.690]$ & 7 & 3 & 1 & 6 \\
 \midrule
 \textit{D1 aggregate, PIT-covered blocks (secondary)}            & 52 & 26 & $0.500$ $[0.369,\,0.631]$ & 37 & $0.712$ $[0.577,\,0.817]$ & 22 & 4 & 15 & 11 \\
 \textit{unmapped (lower-bound caveat)}                           & 25 & --- & --- & --- & --- & --- & --- & --- & --- \\
@@ -1762,7 +1767,7 @@ $\mathcal{T}^{*}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\
 }
 \end{table}
 
-The unmapped auxiliary row counts $25$ PIT mutants from cells whose D1/D2 override table does not specify broken blocks; it is a lower-bound caveat on per-block denominators (each unmapped mutant is D1-classified but its block membership is unknown), not an additional denominator added to the $G + \mathcal{L}^{*} + \mathcal{T}^{*}$ union. The D1 pool is $n = 52$ pre and post equivalent-mutant exclusion (Table~\ref{tab:two-stratum} row~1).
+The unmapped auxiliary row counts $25$ PIT mutants from cells whose D1/D2 override table does not specify broken blocks; it is a lower-bound caveat on per-block denominators (each unmapped mutant is D1-classified but its block membership is unknown), not an additional denominator added to the $G + \mathcal{L}^{*} + G_{\mathrm{tr}}$ union. The D1 pool is $n = 52$ pre and post equivalent-mutant exclusion (Table~\ref{tab:two-stratum} row~1).
 
 The per-block reading distinguishes three regimes:
 
@@ -1771,7 +1776,7 @@ The per-block reading distinguishes three regimes:
 
 \item \textbf{$\mathcal{L}^{*}$ block: complementary coverage.} Both Sets kill 8 mutants in common, 2 are $N$-only (\texttt{exactLog2}), 8 are $G$-only, 6 are jointly missed; the union covers $18/24 = 75\%$, above either Set's individual rate. Set~N's exclusive reach on \texttt{exactLog2} quantifies the coverage-extension witness of \S\ref{subsec:convergent-witnesses} per-block; Set~G's exclusive reach on \texttt{gcdSig}+\texttt{lcmSig} compensates for the $G$-block gap.
 
-\item \textbf{$\mathcal{T}^{*}$ block: Set~N edge (underpowered).} Of $17$ $\mathcal{T}^{*}$-violating mutants, Set~N kills $10$ and Set~G kills $8$ ($N$-only $3$, $G$-only $1$, both $7$, neither $6$); union $11/17 = 64.7\%$. Set~N is $+11.7$~pp in rate and $+2$ in exclusive count on its own block, but the Wilson intervals $[0.360,\,0.784]$ and $[0.262,\,0.690]$ overlap substantially. We report the per-block edge as directional, consistent with the $\mathcal{T}^{*}$ design prediction rather than inferential at $\alpha = 0.05$.
+\item \textbf{$G_{\mathrm{tr}}$ translation sub-class: Set~N edge (underpowered).} Of $17$ translation-violating mutants, Set~N kills $10$ and Set~G kills $8$ ($N$-only $3$, $G$-only $1$, both $7$, neither $6$); union $11/17 = 64.7\%$. Set~N is $+11.7$~pp in rate and $+2$ in exclusive count on its own sub-block, but the Wilson intervals $[0.360,\,0.784]$ and $[0.262,\,0.690]$ overlap substantially. We report the per-block edge as directional, consistent with the $G_{\mathrm{tr}}$ design prediction rather than inferential at $\alpha = 0.05$.
 \end{itemize}
 
 \paragraph{Coverage of the remaining five operative blocks.}
@@ -1795,7 +1800,7 @@ fault-detection measurements.
 \paragraph{What the per-block reading supports, and what it does not.}
 The framework's empirical contribution on the present substrate is
 \emph{block-dependent}. On the three PIT-covered operative blocks
-the reading is targeted per-block: $\mathcal{T}^{*}$ shows the
+the reading is targeted per-block: $G_{\mathrm{tr}}$ shows the
 design's directional advantage and complementarity; $\mathcal{L}^{*}$
 shows complementarity in both directions (Set~N reaches what Set~G
 misses on \texttt{exactLog2}; Set~G reaches what Set~N misses on
@@ -1824,7 +1829,7 @@ aggregate gap (which favours Set~G) collapses into the per-block
 profile above: it is driven primarily by Set~G's near-complete
 reach on $G$ (\texttt{gcdSig} + \texttt{lcmSig}) and by its denser
 $\mathcal{L}^{*}$ coverage; it is partially offset by Set~N's
-$\mathcal{T}^{*}$ edge but not enough to close the cross-block
+$G_{\mathrm{tr}}$ edge but not enough to close the cross-block
 aggregate. The aggregate is presented as secondary because it
 averages over per-block strengths and weaknesses that the
 per-block table makes visible.
@@ -1960,7 +1965,7 @@ pooled & 57 & 5 & 26 / 31 & $0.456$ \scriptsize{$[0.334, 0.584]$} & 40 / 17 & $0
 \textbf{H3a.1 (Detection on D1, per-block).} Per
 Table~\ref{tab:per-block-headtohead} on the pre-registered
 PIT-covered three-block substrate: \emph{mixed}. On the
-$\mathcal{T}^{*}$ block Set~N achieves $10/17 = 0.588$ versus
+$G_{\mathrm{tr}}$ translation sub-class Set~N achieves $10/17 = 0.588$ versus
 Set~G $8/17 = 0.471$, with three $N$-only exclusive kills, a
 directional edge consistent with the algebra-induced prediction;
 the $n = 17$ block-level sample is underpowered for an inferential
@@ -1982,7 +1987,7 @@ PIT-covered stratum is dominated by Set~G ($26/52 = 0.500$ vs
 $37/52 = 0.712$, McNemar $p = 0.019$,
 Table~\ref{tab:two-stratum}); the per-block decomposition makes
 visible that the gap is concentrated on the $G$ block plus
-$\mathcal{L}^{*}$, partially offset by Set~N's $\mathcal{T}^{*}$
+$\mathcal{L}^{*}$, partially offset by Set~N's $G_{\mathrm{tr}}$
 edge. Coverage of the remaining five operative blocks ($O_{\le}$,
 $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{D}^{*}$,
 $\mathcal{E}^{*}$, $\mathcal{B}^{*}_{\mathrm{rel}}$) via
@@ -1996,7 +2001,7 @@ for H3a.1 in this paragraph.
 substrate}. The complementarity partition on the $52$-mutant
 PIT-covered D1 stratum (Table~\ref{tab:two-stratum}, row~1) reports
 $4$ $N$-only kills, $15$ $G$-only kills, $22$ both-killed and $11$
-neither, distributed across the $\mathcal{T}^{*}$ and
+neither, distributed across the $G_{\mathrm{tr}}$ and
 $\mathcal{L}^{*}$ blocks (per
 Table~\ref{tab:per-block-headtohead}). Union coverage on the
 PIT-covered substrate is $22 + 4 + 15 = 41 / 52 = 78.8\%$
@@ -2124,7 +2129,7 @@ The table operationalises three structural advantages of NOETHER as distinct cos
 
 \paragraph{Approximate-parity-at-lower-cost reading (H3a.3 verdict).}
 \label{para:cost-axis-h3a}
-H3a.3's cost-axis claim holds when detection is read on the per-block primary (Table~\ref{tab:per-block-headtohead}). On $\mathcal{T}^{*}$, Set~N edges Set~G with three $N$-only kills at zero per-SUT generation cost beyond the one-time CONSTRUCT-MP derivation ($\approx 1$\,h human, amortising across SUTs sharing $\mathcal{A}_P$); Set~G's matching count costs a 30-min GAssert GP-search per SUT ($\approx 4$\,h wall for the eight SUTs in parallel-4) plus the Major + JaCoCo + Randoop pipeline assembly. On $\mathcal{L}^{*}$, the sets are complementary ($N$-only $2$, $G$-only $8$ on $24$); Set~N's reach is reproducible without re-running GP, whereas Set~G requires re-tuning budget and seed when the SUT changes. \emph{Quantitative reading}: a directional $\mathcal{T}^{*}$ edge ($10/17$ vs $8/17$, $n=17$ underpowered) plus $\mathcal{L}^{*}$ complementarity, at $\approx 1$\,h amortised human cost versus $\approx 30$ minutes per-SUT GP search; NOETHER's cost amortises across new SUTs in the same algebra family while Set~G's restarts from scratch. The per-block edge does not overturn Set~G's D1 aggregate dominance (acknowledged at the head of \S\ref{subsec:pooled-headtohead}); the $G$-block gap on the Euclidean SUTs (\nameref{para:g-block-euclidean-boundary}) is a framework boundary, not a cost-axis trade-off. H3a.3 is therefore \emph{supported}: comparable within-scope per-block detection at lower amortised generation cost.
+H3a.3's cost-axis claim holds when detection is read on the per-block primary (Table~\ref{tab:per-block-headtohead}). On $G_{\mathrm{tr}}$, Set~N edges Set~G with three $N$-only kills at zero per-SUT generation cost beyond the one-time CONSTRUCT-MP derivation ($\approx 1$\,h human, amortising across SUTs sharing $\mathcal{A}_P$); Set~G's matching count costs a 30-min GAssert GP-search per SUT ($\approx 4$\,h wall for the eight SUTs in parallel-4) plus the Major + JaCoCo + Randoop pipeline assembly. On $\mathcal{L}^{*}$, the sets are complementary ($N$-only $2$, $G$-only $8$ on $24$); Set~N's reach is reproducible without re-running GP, whereas Set~G requires re-tuning budget and seed when the SUT changes. \emph{Quantitative reading}: a directional $G_{\mathrm{tr}}$ edge ($10/17$ vs $8/17$, $n=17$ underpowered) plus $\mathcal{L}^{*}$ complementarity, at $\approx 1$\,h amortised human cost versus $\approx 30$ minutes per-SUT GP search; NOETHER's cost amortises across new SUTs in the same algebra family while Set~G's restarts from scratch. The per-block edge does not overturn Set~G's D1 aggregate dominance (acknowledged at the head of \S\ref{subsec:pooled-headtohead}); the $G$-block gap on the Euclidean SUTs (\nameref{para:g-block-euclidean-boundary}) is a framework boundary, not a cost-axis trade-off. H3a.3 is therefore \emph{supported}: comparable within-scope per-block detection at lower amortised generation cost.
 
 \paragraph{Committed future work (16 items).}
 \label{para:future-work}
@@ -2146,7 +2151,7 @@ this empirical sense, supported.
 
 The corroborating evidence is fourfold:
 \begin{itemize}[nosep,leftmargin=*]
-  \item Other per-block patterns ($T^{*}$, $G$, $\mathcal{I}^{*}$;
+  \item Other per-block patterns (the $G$ symmetry and $G_{\mathrm{tr}}$ translation sub-classes, plus the out-of-frame $\mathcal{I}^{*}$ probe;
         \S\ref{subsec:other-blocks}) are qualitatively consistent
         with the algebraic predictions.
   \item Cross-pipeline MR rediscovery on \texttt{midpoint}
@@ -2160,7 +2165,7 @@ The corroborating evidence is fourfold:
         incidentally reveals.
   \item Head-to-head against GenMorph
         (\S\ref{subsec:pooled-headtohead}) reads per-block, not as a
-        single winner. On $\mathcal{T}^{*}$ Set~N shows a directional
+        single winner. On $G_{\mathrm{tr}}$ Set~N shows a directional
         edge ($10/17$ vs $8/17$, three exclusive kills) consistent with
         its design prediction; on $\mathcal{L}^{*}$ Set~N and Set~G
         are complementary (union $18/24$; Set~N exclusively reaches
@@ -2310,7 +2315,7 @@ or $\mathcal{T}^{*}_{\mathrm{rev}}$-violating mutants is zero by
 construction, whereas Set-N's $\rho_{\mathrm{adj}}$ and
 $\rho_{\mathrm{train\text{-}rev}}$ MRs are by-construction sensitive
 to such mutants (cf.\ \S\ref{subsec:pooled-headtohead}'s
-$\mathcal{T}^{*}$ block where Set-N kills $10/17$). The full PIT-based
+$G_{\mathrm{tr}}$ translation sub-class where Set-N kills $10/17$). The full PIT-based
 head-to-head against Set-MP (supplementary~S4 item~(i))
 would convert this structural prediction into a measured kill-rate
 contrast; the present small-scale manual analysis establishes the
