@@ -17,6 +17,25 @@ MR。它不陈述关于世界的任何事。IBT 是 **limiting characterization*
 
 ---
 
+## 0.5 Scope 与假设(审稿 R1–R4,投稿前硬性;`ibt_reviewer_assessment.md`)
+
+本定理在以下显式假设内成立,**正文不得外推**:
+
+- **R1(故障类线性)**:定理针对**线性 operator-implementation 故障类** $\Theta=\mathbb{R}^{N\times N}$
+  (或非线性 solver 的一阶线化子类);**不外推到任意非线性故障**。
+- **R2(精确算术 vs 容差)**:Def 检测为精确算术;可执行 MR 用容差 $\tau$,执行核
+  $\ker_\tau\supseteq\ker$,低于 $\tau$ 的破对称故障假阴。本定理给的是 $\tau\to0$ 的**极限核**,
+  与 §10.2 detectability-floor 交叉引用。
+- **R3(单块)**:仅 **$G$ 块**已证;$O_\le/T^{*}/\mathcal{T}^{*}_{\mathrm{rev}}$ 作 schema(§5),
+  $\mathcal{L}^{*}$ 因 Richardson 比对 $\theta$ 非线性而**不**自动满足 $E_s$ 线性,需限子类或仅留充分方向。
+- **R-a(可达性 ≠ 已忠实)**:Reachability 引理仅保证"**存在**忠实有限测试",不保证"作者所写
+  MR 忠实";后者须 per-instance FA rank 检验(`fa_rank_check.py`)。
+- **R-b**:"$\dim\Theta<\infty$"是前提;无限维算子族下引理失效。
+- **R4($\supseteq$ 平凡)**:充分方向($T_s$-相容 ⟹ 漏检)是定义级;贡献归于 $\subseteq$ 方向 +
+  Reachability + 紧刻画,**如实陈述**。
+
+---
+
 ## 1. 故障参数空间与缺陷泛函(reusing paper §3.1)
 
 - 程序 $P:\mathcal{X}\to\mathcal{Y}$,族 $\mathcal{F}$,算子代数 $\mathcal{A}_P$。
