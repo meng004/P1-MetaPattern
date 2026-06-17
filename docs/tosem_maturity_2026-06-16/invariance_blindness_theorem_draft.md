@@ -1,104 +1,127 @@
-# DRAFT for author judgment — Invariance-Blindness Theorem (招1)
+# Invariance-Blindness Theorem — tight G-block proof + cross-block schema (招1)
 
-> Status: **DRAFT proposition + proof sketch + refutation conditions.** Not yet a
-> committed theorem; not in paper body. Per author instruction "先起草命题再定".
-> Marked **[需作者数学判断]** where the agent must not self-certify.
-> Empirical backing already in hand: `supplementary/S10_noether_homefield/`
-> (paired McNemar advdiff MR-battery vs neutral differential oracle).
-
----
-
-## 0. Why this is the non-trivial theory core (vs Theorem 1)
-
-Theorem 1 (closure under `Translate`) is **by-construction** — it states that the
-construction does not drop what the construction can reach. It says nothing about
-the world. The Invariance-Blindness Theorem (IBT) is a **limiting** result: it
-characterizes, from the framework's own definitions, the faults an algebra-induced
-MR **cannot** detect. It is non-tautological, falsifiable, and (per S10) confirmed.
-It is the answer to "your theory is trivial."
+> Status: **立为定理**(作者已定方向:G 块做紧证明,跨块作 schema)。本文给出
+> faithfulness 假设 + G 块双向紧证明 + advdiff worked check + 跨块模板。
+> 仍为 `docs/` 草稿,**未进正文**(正文待 P0 的 CONSTRUCT-MP Step3/4 抉择后再写)。
+> `[需作者数学判断]` 标注尚需作者核验之处。实证支撑:`supplementary/S10_noether_homefield/`。
 
 ---
 
-## 1. Setup and notation (reusing paper §3.1)
+## 0. 与 Theorem 1 的区别(为何非平凡)
 
-- Program $P:\mathcal{X}\to\mathcal{Y}$ in family $\mathcal{F}$; algebra $\mathcal{A}_P$.
-- Block $s\in\mathcal{D}(\mathcal{A}_P)$ carries a structure $T_s$:
-  - $s=G$: a group action $g\cdot(-)$ on $\mathcal{X}$ with representation $\rho$ on $\mathcal{Y}$;
-  - $s=O_\le$: a partial order $\le$ on inputs/outputs;
-  - $s=T^*$: an inner-product duality $\langle L\,\cdot,\cdot\rangle=\langle\cdot,L\,\cdot\rangle$;
-  - $s=\mathcal{T}^*_{\mathrm{rev}}$: a time-reversal involution;
-  - $s=\mathcal{L}^*,\mathcal{D}^*,\mathcal{E}^*,\mathcal{B}^*_{\mathrm{rel}}$: limit / qualitative / method-comparison / rewrite structures.
-- Algebra-induced MR $\rho_{\iota,s}=\texttt{Translate}(\iota,s)$ (paper Def. Translate)
-  is a predicate $\Pi_s[P]$ asserting that $P$ **respects** $T_s$. E.g. for $s=G$:
-  $$\Pi_G[P]\ :\quad P(g\cdot x)=\rho(g)\cdot P(x)\qquad\forall g\in T_s,\ \forall x.$$
-
-**Fault model.** A fault is a perturbed program $\tilde P$ (a mutant). Write the
-deviation $\delta=\tilde P\ominus P$ in the algebra (additive $\tilde P=P+\delta$,
-or operator $\tilde P=D\circ P$ — the two are interchangeable for the statement).
-
-**"Fault lives in the symmetry direction of $T_s$".** Define: $\tilde P$ is
-**$T_s$-compatible** iff it satisfies the *same* structural identity that validates
-$\rho_{\iota,s}$, i.e. $\Pi_s[\tilde P]$ holds. For $s=G$ this means $\delta$ is
-itself $G$-equivariant: $\delta(g\cdot x)=\rho(g)\cdot\delta(x)$.
+Theorem 1(closure under `Translate`)是 **by-construction**:构造不漏构造能达到的
+MR。它不陈述关于世界的任何事。IBT 是 **limiting characterization**:在算子可表达
+故障类内,equivariance MR 的检测核 = *恰好* 那些保持对称的故障;**且有限可执行 MR
+即可达到这一紧刻画**(因故障参数空间有限维,§2 可达性引理)。后半句是真正的内容——
+非平凡、可证伪、已实证——它正面回答"你的理论平凡吗":Thm 1 是恒真,IBT 不是。
 
 ---
 
-## 2. Proposition (Invariance-Blindness)
+## 1. 故障参数空间与缺陷泛函(reusing paper §3.1)
 
-> **Proposition IBT (sufficient direction — provable now).**
-> Let $\rho_{\iota,s}=\texttt{Translate}(\iota,s)$. If a fault $\tilde P$ is
-> $T_s$-compatible (i.e. $\Pi_s[\tilde P]$ holds), then $\rho_{\iota,s}$ does **not**
-> detect $\tilde P$: the MR passes on the mutant. Equivalently, the detection
-> kernel
-> $$\ker(\rho_{\iota,s})\ :=\ \{\,\tilde P:\ \rho_{\iota,s}(\tilde P)\ \text{holds}\,\}\ \supseteq\ \{\,\tilde P:\ \Pi_s[\tilde P]\,\}.$$
-
-**Proof (sufficient direction).** $\rho_{\iota,s}(\tilde P)$ is, by Def. Translate,
-exactly the assertion $\Pi_s[\tilde P]$. By hypothesis $\Pi_s[\tilde P]$ holds.
-Hence $\rho_{\iota,s}(\tilde P)$ holds; the mutant survives. $\square$
-
-> **Corollary IBT-1 (single-block incompleteness).** For any block $s$, the family
-> $\{\rho_{\iota,s}\}_{\iota\in\mathcal{I}_s}$ cannot detect any fault that preserves
-> $T_s$. A symmetry-based battery is therefore incomplete: its kernel contains the
-> nontrivial set of $T_s$-compatible faults.
-
-> **Corollary IBT-2 (joint-kernel completeness condition).** A family of oracles
-> $\{O_j\}$ detects every nontrivial fault only if $\bigcap_j\ker(O_j)=\{P\}$
-> (only the no-op survives all). Completeness thus requires oracles whose
-> structural kernels jointly intersect trivially — *not* more MRs of the same
-> symmetry class.
-
-> **Corollary IBT-3 (differential oracle is the algebraic complement).** The
-> neutral cross-implementation differential oracle $O_{\mathrm{diff}}$ has kernel
-> $\ker(O_{\mathrm{diff}})=\{$faults that are **common-mode** across the two
-> implementations (identical effect on both)$\}$. Since common-mode $\ne$
-> $T_s$-compatible in general, $\ker(\rho_{\iota,s})\cap\ker(O_{\mathrm{diff}})$ is
-> strictly smaller than either — the two oracles are complementary, and a fault
-> escapes both only if it is *simultaneously* structure-preserving and common-mode.
+- 程序 $P:\mathcal{X}\to\mathcal{Y}$,族 $\mathcal{F}$,算子代数 $\mathcal{A}_P$。
+- **故障模型(算子可表达)**:真程序 $P=P_{\theta^*}$,参数 $\theta^*\in\Theta$,其中
+  $\Theta$ 是**有限维**参数空间(算子系数 / 谱 symbol / stencil 项)。变异体 $P_\theta$,
+  $\theta\ne\theta^*$。这正是论文与 S10 实验采用的 operator-implementation 故障,**不是**
+  任意函数扰动——这一限制是 IBT 紧性成立的关键,且与实验一致。
+- 块 $s$ 的结构 $T_s$ 配 equivariance MR $\rho_{\iota,s}=\texttt{Translate}(\iota,s)$,
+  对应**缺陷泛函** $E_s(\theta;w)$,见证 $w$ 取遍见证集。对 $s=G$:
+  $$E_G(\theta;g,x)\ =\ P_\theta(g\cdot x)-\rho(g)\,P_\theta(x),\qquad w=(g,x).$$
+- $P_\theta$ 尊重 $T_s$(**$T_s$-compatible**)$\iff E_s(\theta;w)=0\ \forall w\in W_s^{\mathrm{full}}$
+  (全体见证;对 $G$ 即 $\forall g\in G_\iota,\forall x$)。
+- 可执行 MR 只测**有限**见证 $W_s^{\mathrm{test}}\subseteq W_s^{\mathrm{full}}$;
+  $\rho_{\iota,s}$ 在 $P_\theta$ 上 **pass** $\iff E_s(\theta;w)=0\ \forall w\in W_s^{\mathrm{test}}$。
+- **检测核** $\ker(\rho_{\iota,s}):=\{\theta:\rho\ \text{pass}\}=\{\theta:E_s(\theta;\cdot)=0\ \text{on}\ W_s^{\mathrm{test}}\}$。
 
 ---
 
-## 3. Empirical confirmation already in hand (S10)
+## 2. Faithfulness 假设(可检验)+ 可达性引理
 
-- **IBT / IBT-1 (symmetry block, advection).** The MR battery missed **every**
-  advection-speed fault (`fv_adv_speed_x2`, `sp_adv_speed_x2`) and wavenumber-sign
-  faults. These are exactly faults that preserve translation/Galilean equivariance
-  (a uniform speed change keeps $P(g\cdot x)=\rho(g)P(x)$ form) — predicted blind,
-  observed blind.
-- **IBT-3 (complementarity).** Paired McNemar over the same 29 real mutants:
-  MR-only $=6$, differential-only $=5$; differential-only is dominated by the
-  speed / symbol-sign faults IBT predicts the MR battery misses, while MR-only is
-  dominated by conservation/boundary faults that are common-mode (both impls fault
-  identically) and so lie in $\ker(O_{\mathrm{diff}})$.
-- **Joint kernel (IBT-2).** Self-consistent coefficient faults (`fv_lap_coeff_x2`,
-  `*_coeff_half`) survive *both* oracles — they are both structure-preserving and
-  (for a one-sided mutation, below the discretisation floor) effectively common-mode
-  in signature. Predicted by IBT-2's "escapes both" set; observed.
+设 $E_s(\theta;w)$ 对 $\theta$ **仿射**(affine);记 $a_w:=\partial_\theta E_s(\cdot;w)\in\Theta^{*}$。
+- 全条件解集 $K^{\mathrm{full}}=\{\theta:E_s(\theta;w)=0\ \forall w\in W_s^{\mathrm{full}}\}$($=T_s$-compatible 集),
+- 测试条件解集 $K^{\mathrm{test}}=\{\theta:E_s(\theta;w)=0\ \forall w\in W_s^{\mathrm{test}}\}$($=\ker$)。
 
-### 3.1 Live multi-SUT confirmation (radxfer, grayscott executed here)
+> **(FA) Faithfulness.** 测试见证 $W_s^{\mathrm{test}}$ 对故障类 $\Theta$ **unisolvent**:
+> $K^{\mathrm{test}}=K^{\mathrm{full}}$,等价地
+> $\mathrm{span}\{a_w:w\in W_s^{\mathrm{test}}\}=\mathrm{span}\{a_w:w\in W_s^{\mathrm{full}}\}\subseteq\Theta^{*}$。
 
-Differential oracles run **live** on three multi-implementation SUTs, paired against
-the algebra-MR battery on the same real mutants (MR side: advdiff executed here;
-radxfer/grayscott reused-committed; differential side always live):
+> **可达性引理(Reachability).** 若 $\Theta$ 有限维且 $E_s$ 对 $\theta$ 仿射,则**存在
+> 有限** $W_s^{\mathrm{test}}$ 使 FA 成立。
+>
+> *证.* $V_{\mathrm{full}}:=\mathrm{span}\{a_w:w\in W^{\mathrm{full}}\}\subseteq\Theta^{*}$ 是有限维
+> 对偶空间的子空间,故有限维;取其一组基对应的有限见证 $W^{\mathrm{test}}$,则
+> $\mathrm{span}\{a_w:w\in W^{\mathrm{test}}\}=V_{\mathrm{full}}$;又 $W^{\mathrm{test}}\subseteq W^{\mathrm{full}}$ 保证
+> 截距 $b_w$ 一致,故 $K^{\mathrm{test}}=K^{\mathrm{full}}$。$\square$
+
+**这条引理是 IBT 的真正非平凡核**:紧性不是恒真,而是"**有限故障维 ⇒ 有限可执行
+MR 足以精确刻画盲区**"。FA 本身可检(对见证设计做有限线代 rank 检验)。
+
+---
+
+## 3. 定理(G 块,紧)
+
+> **Theorem IBT-G (Invariance-Blindness, symmetry block, tight).**
+> 故障类为算子可表达 $\theta\in\Theta$(有限维);equivariance 缺陷 $E_G$ 对 $\theta$
+> 仿射;测试 $W_G^{\mathrm{test}}$ 满足 FA。则
+> $$\ker(\rho_{\iota,G})\ =\ K^{\mathrm{full}}\ =\ \{\theta:\ P_\theta\ \text{是}\ G_\iota\text{-equivariant}\}.$$
+> 即:算子可表达故障通过 equivariance MR **当且仅当**它保持对称 $G_\iota$。
+
+**证明.**
+- ($\supseteq$,充分)$\theta\in K^{\mathrm{full}}\Rightarrow E_G(\theta;\cdot)=0$ on $W^{\mathrm{full}}\supseteq W^{\mathrm{test}}\Rightarrow\theta\in\ker$。
+- ($\subseteq$,必要)$\theta\in\ker\Rightarrow E_G(\theta;\cdot)=0$ on $W^{\mathrm{test}}$;由 FA $K^{\mathrm{test}}=K^{\mathrm{full}}$,故 $\theta\in K^{\mathrm{full}}$。$\square$
+
+> **推论 IBT-1(单块不完备).** $\ker(\rho_{\iota,G})\supsetneq\{\theta^{*}\}$ 当且仅当存在
+> 非平凡保对称故障;此时单块 equivariance battery 必漏该故障,结构性不完备。
+
+---
+
+## 4. $E_G$ 仿射的条件 + advdiff worked check
+
+- **仿射条件**:当群作用 $g\cdot(-)$ 与表示 $\rho(g)$ 线性,且 $P_\theta$ 对 $\theta$ 仿射
+  (线性 PDE:参数进入线性算子,$P_\theta=A(\theta)^{-1}f$ 在参数一阶展开;或参数本身仿射
+  进入解),则 $E_G(\theta;g,x)=P_\theta(g\cdot x)-\rho(g)P_\theta(x)$ 对 $\theta$ 仿射。
+  **[需作者]** 非线性 solver 取一阶线化,或限制到参数仿射子类(范围声明)。
+- **advdiff(平移 / Galilean $G$)worked check**:常系数 advection $c\cdot\nabla$ + diffusion
+  $\alpha\nabla^2$ 对平移 equivariant,$\forall$ 常数 $(c,\alpha)$。故 $E_G(\theta;\text{shift})\equiv 0$
+  在**整个常系数族**上 $\Rightarrow\ker\supseteq$ 常系数族 $\supseteq$ 速度故障 $c\to c'$。
+  即 **advection-speed 故障在核中,equivariance MR 不可检** —— 与 S10 实测
+  advection-speed `0/n`、wavenumber-sign 漏检**完全一致**。反之空间非齐次系数 $c(x)$
+  破坏平移 equivariance $\Rightarrow E_G\ne 0\Rightarrow$ 被检(与 inhomogeneous 故障被检一致)。
+  FA 在此可验:平移生成元 + 一个 generic $x_0$ 已 unisolvent,足以区分常系数 vs 非齐次。
+
+---
+
+## 5. 跨块 schema(G 证毕;其余作实例)
+
+通用模板:块 $s$ + 结构 $T_s$ + 保结构谓词 + 缺陷泛函 $E_s$;**当 $E_s$ 对 $\theta$ 仿射且
+FA 成立,§3 证明逐字复用**,得 $\ker(\rho_{\iota,s})=\{T_s\text{-compatible}\}$。逐块谓词:
+
+| 块 | $T_s$ 结构 | 保结构谓词(故障在核 $\iff$) | $E_s$ |
+|---|---|---|---|
+| $G$ | 群作用 | $\delta$ 保 equivariance(**已证**) | $P_\theta(gx)-\rho(g)P_\theta(x)$ |
+| $O_\le$ | 偏序 | $\delta$ 保单调/线性 | $P_\theta(\theta_1)\not\le P_\theta(\theta_2)$ 的违反量 |
+| $T^{*}$ | 内积自伴 | $\delta$ 保 $\langle Lx,y\rangle=\langle x,Ly\rangle$ | 内积对称差 |
+| $\mathcal{T}^{*}_{\mathrm{rev}}$ | 时反对合 | $\delta$ 与时反交换 | $P_\theta(\mathcal{T}x)$ vs $\mathcal{T}$-像 |
+| $\mathcal{L}^{*}$ | 极限/收敛阶 | $\delta$ 保收敛阶 | Richardson 比偏离 |
+
+**[需作者]** 逐块确认 $E_s$ 仿射性:$G,O_\le,T^{*},\mathcal{T}^{*}_{\mathrm{rev}}$ 的缺陷在线性
+PDE 下仿射;**$\mathcal{L}^{*}$ 的 Richardson 比对 $\theta$ 非线性**,需单独论证或限子类
+(否则 $\mathcal{L}^{*}$ 块只保留充分方向,不立紧性)。
+
+---
+
+## 6. 推论 IBT-2 / IBT-3(参数空间语言)
+
+- 每个 oracle $O_j$ 有核 $K_j\subseteq\Theta$。**IBT-2(联合核完备条件)**:$\{O_j\}$ 检出
+  一切非平凡故障 $\iff\bigcap_j K_j=\{\theta^{*}\}$。完备性要求核**平凡相交**的 oracle 族,
+  而非同对称类的更多 MR。
+- **IBT-3(微分 oracle 为代数补)**:微分 oracle 核 $K_{\mathrm{diff}}=\{\theta:$ 两实现被
+  **同样**扰动$\}$(共模)。$K_{\mathrm{MR}}$(保对称)$\cap\,K_{\mathrm{diff}}$(共模)= 同时
+  保对称且共模的故障。故障逃逸二者 $\iff$ 同时保结构且共模。
+
+---
+
+## 7. 实证(S10,3 SUT,live)
 
 | SUT | MR | diff | MR-only | diff-only | both | neither | union | McNemar $p$ |
 |---|---|---|---|---|---|---|---|---|
@@ -106,68 +129,43 @@ radxfer/grayscott reused-committed; differential side always live):
 | radxfer-G2 | 25/31 | 10/31 | 17 | 2 | 8 | 4 | 27/31 | 7.3e-4 |
 | grayscott | 41/44 | 28/44 | 16 | 3 | 25 | **0** | **44/44** | 4.4e-3 |
 
-- **IBT-3 (kernel $=$ common-mode), confirmed live on 3 SUTs.** The differential
-  oracle misses exactly the faults patching operators SHARED by both
-  implementations: radxfer absorption/scatter/source $0/18$; grayscott
-  feed/reaction-rate $0/12$. Implementation-specific faults are detected: radxfer
-  diffusion $8/8$, grayscott diffusion $15/15$ ($\delta_{\mathrm{radxfer}}=0.0017$,
-  $\delta_{\mathrm{grayscott}}=1.1\!\times\!10^{-5}$; baselines survive both).
-- **IBT-1 / diff-only $>0$ everywhere ($5/2/3$).** The neutral oracle catches faults
-  the algebra-MR battery misses even where the battery has higher recall.
-- **IBT-2 (union completeness), live.** On grayscott the two kernels intersect
-  trivially: neither $=0$, union $=44/44$. The MR battery alone reaches $41/44$;
-  the complementary-symmetry oracle closes the gap — the strongest available
-  confirmation that completeness needs oracles with trivial joint kernel.
-- Honest direction note: on radxfer/grayscott the MR battery has significantly
-  higher raw recall ($p<0.01$); the claim is complementarity (different kernels,
-  union approaches completeness), not differential superiority.
+- **IBT-G / IBT-1**:advection-speed / wavenumber-sign 保平移对称 → 在核 → MR 漏检
+  (实测确认);非齐次/边界故障破坏结构 → 被检。
+- **IBT-3(核=共模),3 SUT live**:radxfer abs/scatter/source `0/18`、grayscott
+  feed/reaction `0/12`(改共享算子 → 共模);impl-specific 扩散 radxfer `8/8`、
+  grayscott `15/15`。
+- **IBT-2(联合核平凡)**:grayscott neither$=0$、union$=44/44$ —— $K_{\mathrm{MR}}\cap K_{\mathrm{diff}}=\{\theta^{*}\}$ 在测试故障集上的直接实证。
+- 诚实方向:radxfer/grayscott 的 MR raw recall 显著更高($p<0.01$);主张为**互补**
+  (核不同、并集趋完备),非微分更优。
 
 ---
 
-## 4. What is NOT yet proved — [需作者数学判断]
+## 8. 剩余 [需作者数学判断]
 
-1. **Tightness (the "only if").** Proposition IBT gives $\ker\supseteq\{T_s\text{-compatible}\}$.
-   Is it equality? A fault could survive $\rho_{\iota,s}$ for reasons other than
-   $T_s$-compatibility (e.g. the executable test probes only finitely many $g$, or
-   the deviation is non-equivariant but vanishes on the probed orbit). A tight
-   characterization likely needs a **faithfulness/probing-completeness** hypothesis
-   on the executable MR (the test exercises a generating set of $T_s$). **[需作者]**
-   decide whether to (a) state only the sufficient direction (clean, weaker), or
-   (b) add a faithfulness assumption and claim equality.
-2. **Cross-block generalization.** §2 is cleanest for $s=G$. For $O_\le$ (order),
-   $T^*$ (self-adjoint), $\mathcal{T}^*_{\mathrm{rev}}$ (time-reversal), the analogue
-   "fault preserving the order / duality / reversal is invisible" must be stated
-   per block and the deviation model ($\delta$ preserves $\le$? preserves
-   $\langle\cdot,\cdot\rangle$-symmetry?) made precise. **[需作者]** confirm the
-   structure-preservation predicate for each non-$G$ block.
-3. **Kernel non-emptiness in general.** IBT-1's force depends on $\{T_s\text{-compatible
-   faults}\}\ne\{P\}$ for the SUTs of interest. Provable per instance (exhibit one
-   nontrivial compatible fault, e.g. equivariant coefficient rescale), but a
-   *general* guarantee needs an argument that every nontrivial $T_s$ admits a
-   nontrivial compatible deviation. **[需作者]**
-4. **Relation to Composite-`Translate` (protocol_theory T2).** IBT-2 says
-   completeness needs trivial joint kernel; Composite-`Translate` is one mechanism
-   to enlarge reach. Whether IBT-2's completeness condition is *achievable* within
-   a poly-time-decidable extension is the same open problem as T2. **[需作者]**
+1. **非 G 块 $E_s$ 仿射性**:$O_\le/T^{*}/\mathcal{T}^{*}_{\mathrm{rev}}$ 在线性 PDE 下确认仿射;
+   $\mathcal{L}^{*}$ Richardson 比非线性,需子类或仅留充分方向。
+2. **FA 的 per-instance rank 检验**:有限线代,可脚本化(advdiff 已论证 unisolvent);
+   建议对每个立紧性的块/SUT 跑一次 rank 检验并记档。
+3. **核非空一般性**:每个非平凡 $T_s$ 是否必有非平凡 compatible 故障(per-instance 易,
+   一般性需证)。
+4. **与 Composite-`Translate`(protocol_theory T2)**:IBT-2 的完备性是否在多项式可
+   判定的扩展内可达——与 T2 同一开放问题。
 
 ---
 
-## 5. Refutation conditions (courage to be questioned)
+## 9. 反驳条件(courage to be questioned)
 
-- **Refute IBT:** exhibit an algebra-induced MR $\rho_{\iota,s}$ and a $T_s$-compatible
-  fault $\tilde P$ that the MR *detects*. (Would break Def. Translate's semantics.)
-- **Refute IBT-1:** exhibit a single-block battery that detects a structure-preserving
-  fault — e.g. a Galilean-invariant MR flagging an advection-speed error.
-- **Refute IBT-3:** show MR and differential detected-sets are nested (one $\subseteq$
-  other) rather than crossing, on a SUT with one-sided mutations.
+- **反驳 IBT-G(紧)**:给出算子可表达、保 $G_\iota$ 对称、却被 equivariance MR 检出的
+  故障(在 FA 下违反紧性)。
+- **反驳可达性引理**:证明某有限维故障类无任何有限 unisolvent 测试。
+- **反驳 IBT-3**:在 one-sided mutation 的 SUT 上 $K_{\mathrm{MR}}$ 与 $K_{\mathrm{diff}}$ 嵌套
+  (一方 $\subseteq$ 另一方)而非交叉。
 
 ---
 
-## 6. Drafting note for paper placement (pending招1 decision + P0)
+## 10. 正文落位(待 P0 Step3/4 抉择后)
 
-If accepted: new subsection after CONSTRUCT-MP (proposed §3.4 in
-`argument_architecture_plan.md`), stating Proposition IBT + Corollaries, with the
-sufficient-direction proof in-text and the tightness/cross-block items either
-(a) deferred to "open" or (b) proved by the author. Empirical confirmation goes to
-§5.2 (L2). Do **not** write paper-body text until招1 is decided and the P0 math
-judgments (tightness, per-block predicate) are returned.
+立为 **§3.4**(CONSTRUCT-MP 之后):Definition(故障参数空间 + 缺陷泛函)+ Definition
+(Faithfulness)+ Reachability Lemma + **Theorem IBT-G** + 证明 + advdiff worked check;
+跨块 schema 一段(G 证毕,其余 Remark 实例);IBT-1/2/3 推论;实证下放 §5.2(L2)。
+$\mathcal{L}^{*}$ 块按 §8.1 结论决定立紧性或仅充分方向。**仍待 Step3/4 抉择后再动正文。**
