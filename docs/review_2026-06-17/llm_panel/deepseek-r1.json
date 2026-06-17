@@ -1,0 +1,51 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 2,
+    "novelty": 3,
+    "significance": 3,
+    "presentation": 4,
+    "reproducibility": 3
+  },
+  "summary": "The paper introduces NOETHER, a framework for deriving metamorphic patterns (MetaPatterns) from operator algebras to address origin, closure, and transferability problems in metamorphic testing. It combines an upstream empirical layer (curating operator algebras) with a downstream deductive layer (mechanically deriving MetaPatterns), demonstrated on reactor physics, equivariant ML, and relational query optimizers. Theoretical results include algebraic closure and an Invariance-Blindness Theorem, with empirical validation through case studies.",
+  "strengths": [
+    "Theoretical groundwork connecting operator algebras to metamorphic testing provides a structured approach to MetaPattern derivation.",
+    "Explicit separation of empirical (upstream) and mechanical (downstream) layers clarifies framework responsibilities.",
+    "Comprehensive demonstration across three distinct domains shows potential for cross-domain application."
+  ],
+  "publication_blockers": [
+    {
+      "section": "Abstract, Section 4.2 (Empirical validation)",
+      "issue": "Unsubstantiated claim of empirical support for the Invariance-Blindness Theorem",
+      "why_fatal": "The empirical validation in §4.2 uses PIT mutation operators that may not align with the linear operator-implementation fault class assumed by Theorem 3. The evidence does not demonstrate faithfulness tightness at finite tolerance τ, failing to validate the theorem's core claim."
+    },
+    {
+      "section": "Sections 3.1-3.3 (Instantiations)",
+      "issue": "Circularity in predictive claims",
+      "why_fatal": "MetaPattern 'predictions' for reactor physics (§3.2) are circular: blocks T* and T* were partly induced from this domain. Cross-domain validations (e.g., SE(3)-ML §4.1) show framework-boundary defects rather than generality, invalidating origin-transfer claims."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Upstream decomposition (Hypothesis 4.1)",
+      "issue": "Operator block decomposition remains empirical with no derivation path",
+      "suggested_fix": "Provide algebraic justification for the 8-block structure OR reframe as a domain-specific feature (with clear extension protocol) rather than general framework."
+    },
+    {
+      "section": "Section 4 (Evaluation)",
+      "issue": "Insufficient empirical robustness",
+      "suggested_fix": "Add: (1) DeepCrime real-fault evaluation beyond n=5 mutants; (2) Comparative METRIC+ results per §5.2 protocol; (3) D1 stratum analysis for head-to-head with GenMorph (§4.2.4)."
+    }
+  ],
+  "minor_issues": [
+    "Theorem 1's closure (±10 lines after Def 8) is tautological by construction; reposition as a well-formedness guarantee rather than empirical claim.",
+    "In Fig 1: 'Relational-equivalence block' should show direct instantiation arrows from T* to avoid visual isolation of B_rel*."
+  ],
+  "questions_to_authors": [
+    "How does NOETHER extend beyond the curated 8 blocks? Provide domain-specific block-addition workflow, especially for Remark 4.2's 6 classes (e.g., probabilistic ML).",
+    "Why is Set-N's inferior D1 performance against Set-G (§4.2.4) acceptable under the framework's objectives? Provide comparative cost-benefit analysis per Table 10.",
+    "What guarantees does canonical-block ordering (Def 8) provide for multi-block MRs? Show concrete failure mode when violating ordering priority G > O_le > ...",
+    "Justify Lemma 5 computational bounds for Lie groups (d_G^2 vs |G|^2) in Table 1 - does this hold for degenerate representations occurring in ML layers?"
+  ]
+}
