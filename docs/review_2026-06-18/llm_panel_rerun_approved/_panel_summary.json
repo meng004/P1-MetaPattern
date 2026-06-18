@@ -1,0 +1,43 @@
+{
+  "Kimi-K2-Instruct": {
+    "model": "Kimi-K2-Instruct",
+    "status": "error",
+    "error": "RateLimitError: Error code: 429 - {'error': {'message': '当前分组上游负载已饱和，请稍后再试 (request id: 2026061814124171734140iEuW0ovs)', 'type': 'new_api_error', 'param': '', 'code': 'model_not_found'}}"
+  },
+  "deepseek-r1": {
+    "model": "deepseek-r1",
+    "status": "ok",
+    "elapsed_s": 89.0,
+    "usage": {
+      "prompt": 91782,
+      "completion": 3262
+    }
+  },
+  "gpt-5": {
+    "model": "gpt-5",
+    "status": "ok",
+    "elapsed_s": 115.9,
+    "usage": {
+      "prompt": 97953,
+      "completion": 5772
+    }
+  },
+  "claude-opus-4-6": {
+    "model": "claude-opus-4-6",
+    "status": "ok",
+    "elapsed_s": 119.9,
+    "usage": {
+      "prompt": 115437,
+      "completion": 4358
+    }
+  },
+  "glm-5.2": {
+    "model": "glm-5.2",
+    "status": "ok",
+    "elapsed_s": 160.3,
+    "usage": {
+      "prompt": 98717,
+      "completion": 8470
+    }
+  }
+}

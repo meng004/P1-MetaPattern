@@ -1,0 +1,73 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 3,
+    "novelty": 4,
+    "significance": 3,
+    "presentation": 3,
+    "reproducibility": 2
+  },
+  "summary": "The paper proposes NOETHER, a layered framework that derives metamorphic-test MetaPatterns from a program family’s operator algebra. Upstream, experts curate an algebra and an eight-block structural decomposition; downstream, an algorithm (CONSTRUCT-MP) generates MetaPatterns and a space of algebra-induced MRs, with a closure theorem (by-construction) and a decidability bound, and a new Invariance-Blindness Theorem characterizing blind spots for symmetry and self-adjoint blocks. The framework is instantiated on reactor physics, equivariant ML, and relational optimizers; a stronger completeness conjecture is explicitly falsified on PWR diffusion with two domain MR counterexamples.",
+  "strengths": [
+    "Clear, ambitious attempt to ground MR/MetaPattern discovery in operator-algebraic structure, with a coherent layered architecture (Fig. 1).",
+    "Explicit scope delineation and honest treatment of limitations, including a negative result (Theorem 1' falsification on PWR) and explicit out-of-scope classes.",
+    "Invariance-Blindness Theorem provides a non-tautological characterization of blind spots for symmetry/self-adjoint-based MRs under a linear-fault model.",
+    "Multiple domain instantiations (reactor physics, equivariant ML, relational optimizers) that illustrate transfer at the algebra-skeleton level."
+  ],
+  "publication_blockers": [],
+  "major_weaknesses": [
+    {
+      "section": "§3.2–§3.3 (Definitions 3–5, Theorem 1, Remark 3)",
+      "issue": "The Algebraic Closure Theorem is essentially tautological because MR(𝒜_P) is defined as the image of Translate from a single block; closure then follows by definition rather than substantive proof.",
+      "suggested_fix": "Reframe the theorem to emphasize what is nontrivial (e.g., uniqueness under canonical-block ordering) and move the core value to the Invariance-Blindness result. Alternatively, strengthen the result by proving closure for a richer class of derivations (e.g., a compositional or higher-order Translate) beyond the single-block, first-order templates."
+    },
+    {
+      "section": "§3.2 (Definitions 3–5), Appendix A/Table of Translate templates",
+      "issue": "Translate and per-block invariant extraction are under-specified at an algorithmic level (especially for infinite/Lie groups and qualitative-dynamics). Complexity claims in Table 1 rely on informal regime-dependent bounds (e.g., O(|G|^2), O(d_G^2)) without precise algorithms or termination criteria.",
+      "suggested_fix": "Provide concrete, implementable procedures for each block (including tuple-generation, canonical orders, and equivalence checks), with proofs of correctness and explicit complexity analyses. For Lie groups, give a constructive basis and demonstrate how finite witness sets are constructed without sacrificing correctness."
+    },
+    {
+      "section": "§3.4 (Invariance-Blindness Theorem) and §5.5 (E1–E3)",
+      "issue": "IBT hinges on a ‘faithfulness’ condition but does not provide a constructive method to compute faithful finite witness sets in practice, nor bounds on their size beyond linear-algebra existence.",
+      "suggested_fix": "Provide an explicit algorithm with complexity bounds to construct faithful witness sets for G and T* in realistic settings, and report empirical success rates and sizes across representative SUTs. Clarify robustness under floating-point tolerances."
+    },
+    {
+      "section": "§4 and §5 (Instantiations and Empirical Evaluation)",
+      "issue": "Empirical support is fragmented and underpowered: the equivariant-ML case study uses 20 hand-constructed mutations with acknowledged construct-validity bias; the DeepCrime pilot is n=5; PIT experiments mix head-to-head with multiple caveats, and deferred comparisons (MR-Scout, broader METRIC+) are not completed.",
+      "suggested_fix": "Consolidate a larger, unbiased evaluation: (i) execute the pre-registered MR-Scout and METRIC+ comparisons; (ii) extend DeepCrime real-faults beyond n=5 across multiple architectures; (iii) complete a head-to-head on a broader Java benchmark with stratified D1/D2 analysis; and (iv) report effect sizes and CIs with corrected multiple testing."
+    },
+    {
+      "section": "§4.3 (Relational optimizers)",
+      "issue": "The relational instantiation is largely analytical; no executable MR derivation and evaluation is shown for an actual optimizer (e.g., Calcite) within this paper.",
+      "suggested_fix": "Integrate at least one executable MR evaluation tied to a query optimizer (e.g., run your B*_rel translations with QED/SPES over a subset of TPC-H queries), and report quantitative outcomes to demonstrate practicality and transfer beyond physics/ML."
+    },
+    {
+      "section": "§3.5 and §4.5 (Negative instantiation and obstructions)",
+      "issue": "While the PWR counterexamples are compelling, the claim that no single-block Translate can derive them depends on per-block exhaustion delegated to the appendix. Readers cannot fully assess correctness without more accessible proofs.",
+      "suggested_fix": "Lift the essential parts of the per-block exclusion proofs for the two PWR MRs into the main text (with clear formal assumptions) and provide a concise but rigorous justification for each obstruction O1–O5. Consider adding a minimal counterexample demo script."
+    },
+    {
+      "section": "Global: Upstream distillation (§1 Scope, §3.1 Remarks, §6.3)",
+      "issue": "The framework critically depends on humans to curate 𝒜_P and its block decomposition; guidance on how to do this reproducibly is thin. This threatens external validity and reproducibility.",
+      "suggested_fix": "Provide a concrete, repeatable protocol for algebra distillation on at least one domain (e.g., a worked end-to-end extraction from an open-source SUT), and quantify inter-rater agreement (humans, not only LLMs)."
+    }
+  ],
+  "minor_issues": [
+    "Over-reliance on supplementary material (S1–S12) for core arguments, tables, and proofs; bring key proofs/definitions into the main text.",
+    "Excessive length and density; repeated caveats and nested tcolorboxes impede readability. Consider streamlining and moving secondary narratives to appendices.",
+    "Notation inconsistencies (e.g., switching between T* and self-adjointness, sometimes conflating operators vs. programs); ensure consistent symbols and domains.",
+    "Some complexity bounds (Table 1) are heuristic; clarify assumptions and formally define parameters (e.g., K truncation, d_G).",
+    "The self-adjoint attention MR (§4.2.2) seems architecture-specific and may not be generally available; clarify required hooks and whether it applies beyond specific transformers.",
+    "Clarify how canonical-block ordering deals with multi-block MRs without losing essential content (Remark 3.5 vs. compositional MRs in Appendix C.5.3).",
+    "Citations to several works are broad; ensure all referenced datasets, tools, and scripts are publicly accessible upon submission or clearly marked as future work."
+  ],
+  "questions_to_authors": [
+    "Translate and invariant extraction: Can you provide precise, implementable algorithms for each block (including Lie-group cases) and an example of a full Translate pipeline for one Java SUT and one ML SUT?",
+    "Faithfulness construction: How should practitioners construct faithful witness sets for G and T* in practice? What witness set sizes do you observe across domains, and how sensitive are results to floating-point tolerances?",
+    "Algebra distillation: What concrete procedure should a team follow to curate 𝒜_P from a codebase? Can you report human inter-rater agreement (not just LLM panels) on a held-out system?",
+    "Relational instantiation: Can you execute B*_rel-derived MRs against a real optimizer (Calcite/QED/SPES) in this paper and report detection/false-positive rates, not only analytical mappings?",
+    "Compositional MRs: Do you have a concrete design for a compositional Translate that could cover your PWR counterexamples while preserving decidability? If not, what minimal extensions would you prioritize?",
+    "Evaluation completeness: When will the MR-Scout and broader METRIC+ comparisons be available, and can you include at least a partial run in the current paper to strengthen the empirical case?"
+  ]
+}

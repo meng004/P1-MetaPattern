@@ -1,0 +1,11 @@
+{
+  "kimi-k2-instruct": {
+    "model": "kimi-k2-instruct",
+    "status": "ok",
+    "elapsed_s": 10.4,
+    "usage": {
+      "prompt": 96439,
+      "completion": 1439
+    }
+  }
+}
