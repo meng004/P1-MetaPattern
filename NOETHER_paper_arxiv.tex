@@ -15,8 +15,9 @@
 \acmNumber{0}
 \acmArticle{0}
 \acmMonth{0}
+\acmDOI{10.48550/arXiv.2605.17390}
 \setcopyright{none}    %% Anonymised for review
-\settopmatter{printacmref=false, printccs=true, printfolios=true}
+\settopmatter{printacmref=true, printccs=true, printfolios=true}
 
 %% Numeric citations in order of appearance (overrides acmart default author-year)
 \setcitestyle{numbers,sort&compress,square}
@@ -103,17 +104,19 @@
 \email{mlemon@usc.edu.cn}
 \threeaffil
 
-\author{Xiaohua Yang}
-\email{xiaohua1963@foxmail.com}
-\threeaffil
-
 \author{Jie Liu}
+\orcid{0009-0008-1970-8347}
 \email{jieliu@usc.edu.cn}
 \threeaffil
 
 \author{Shiyu Yan}
 \orcid{0000-0001-7626-5185}
 \email{yanshiyu@usc.edu.cn}
+\threeaffil
+
+\author{Xiaohua Yang}
+\orcid{0000-0002-2977-1787}
+\email{xiaohua1963@foxmail.com}
 \threeaffil
 
 %% ---- Abstract ----
@@ -240,6 +243,10 @@ finite generating set (Theorem~\ref{thm:decidable}). The framework
 is instantiated on three structurally distinct domains
 (\S\ref{sec:reactor}, \S\ref{sec:cross-domain}, \S\ref{subsec:third-domain})
 to test transferability at the algebra-skeleton level.}
+\Description{A two-layer workflow diagram. The upstream layer maps a program
+family to an operator algebra and a block decomposition. The downstream layer
+constructs MetaPatterns, translates them to an algebra-induced MR space, and
+links the result to three domain instantiations.}
 \label{fig:noether-arch}
 \end{figure}
 
@@ -247,7 +254,7 @@ We make five MR-identification contributions.
 
 \begin{itemize}
   \item \textbf{C1.} We introduce NOETHER, a \emph{layered} framework for MR-class / MetaPattern identification that combines an empirically curated structural decomposition (Hypothesis~\ref{hyp:seven-blocks}; upstream layer, itself partly distilled from the present authors' prior PWR MR catalogue, see \S\ref{subsec:reactor-mapping} for provenance) with a constructive algorithm for deriving MetaPatterns from a program-induced operator algebra (downstream layer).
-  \item \textbf{C2a (positive theory).} Given the structural decomposition, we prove an Algebraic Closure Theorem (Theorem~1): the constructed MetaPattern set is closed under the framework's \texttt{Translate} operator over the algebra-induced MR space $\mathrm{MR}(\mathcal{A}_{P})$. Theorem~1 converts an empirical-adequacy claim (``our pattern grid covers $X\%$ of observed MRs'') into a structural-adequacy obligation (``every $\mathrm{Translate}$-reachable MR is assigned to a unique block under the canonical-block ordering of Definition~\ref{def:canonical-order}''); we acknowledge in Section~\ref{subsec:completeness} that the closure is by-construction within the explicit scope of Definition~\ref{def:alg-induced}, and document the three classes of MRs outside that scope (Remark~\ref{rem:scope}). Polynomial-time decidability of CONSTRUCT-MP holds when the algebra admits a finite generating set (Theorem~2).
+  \item \textbf{C2a (positive theory).} Given the structural decomposition, Theorem~1 proves a \emph{no-drop closure invariant}: every MR that is reachable by the framework's \texttt{Translate} operator over the algebra-induced MR space $\mathrm{MR}(\mathcal{A}_{P})$ is assigned to a canonical operator block and MetaPattern class. This result is intentionally modest. It is a well-formedness guarantee for the downstream construction, not evidence that the upstream block list is complete and not evidence of fault-detection superiority. Section~\ref{subsec:completeness} states the explicit scope of Definition~\ref{def:alg-induced}, and Remark~\ref{rem:scope} documents the MR classes outside that scope. Polynomial-time decidability of CONSTRUCT-MP holds when the algebra admits a finite generating set (Theorem~2).
   \item \textbf{C2b (negative theory).} The strictly stronger absolute-completeness conjecture (Theorem~$1'$ / Conjecture~\ref{conj:absolute}), over arbitrary properties expressible in $\mathcal{A}_P$, is \emph{false} on $\mathcal{A}_{\mathrm{PWR}}$: two MRs from the standard PWR safety-analysis literature (non-additivity of rod-bank reactivity worth; second-order mixed dependence of $k_{\mathrm{eff}}$ on moderator temperature and boron concentration) are formulable over $\mathcal{A}_{\mathrm{PWR}}$ but not in $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$ (\S\ref{subsec:negative-pwr}, Appendix~\ref{app:negative-proofs}). The two MRs identify five structural obstructions in \texttt{Translate}'s signature, with pairwise independence established by per-block exhaustion. Companion surveys on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}) identify five further candidate dimensions (two on $\mathcal{A}_{\mathrm{equi}}$ specialising PWR-side dimensions; three net on $\mathcal{A}_{\mathrm{rel}}$), yielding five \texttt{Translate}-extension dimensions proved pairwise-independent on $\mathcal{A}_{\mathrm{PWR}}$ plus five candidate dimensions on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ whose pairwise independence is asserted by inspection; formal per-dimension exhaustion on those algebras is committed as follow-up. Scope statements are in Section~\ref{subsec:completeness}.
   \item \textbf{C2c (limiting theory).} We prove the \emph{Invariance-Blindness Theorem} (\S\ref{subsec:ibt}): for the symmetry ($G$) and self-adjoint ($T^{*}$) blocks, an algebra-derived MR's detection kernel equals \emph{exactly} the structure-preserving faults, within the linear operator-implementation fault class and under a faithfulness condition that a finite test attains. Corollaries: a single-block battery is structurally incomplete; completeness requires oracle families with trivial joint kernel; a neutral cross-implementation differential oracle is the complementary (common-mode) oracle. This converts the by-construction closure of C2a into a falsifiable, non-tautological characterization of the derivation's blind spots; tightness beyond $\{G, T^{*}\}$ and beyond the linear fault class is delimited in \S\ref{subsec:ibt}.
   \item \textbf{C3.} We instantiate NOETHER on a real-world program family and show how it \emph{systematises and re-classifies} previously catalogued patterns. The framework re-classifies the prior inductive catalogue under a uniform algebraic structure: it reproduces three prior MetaPatterns, refines two on a sounder algebraic basis, and de-duplicates two equivalence classes ($m_{\mathrm{adj}}$, $m_{\mathrm{rev}}$) that the inductive catalogue had not isolated as structurally distinct. These are not de novo discoveries; NOETHER's contribution is the algebraic warrant for treating them as separate MetaPattern slots within a canonical block ordering, and the deflationary direction (revealing over-counting on some sub-families) constitutes a further non-circular form of re-classification. The deflationary direction is non-circular relative to the prediction caveat of \S\ref{subsec:reactor-mapping}: \S\ref{subsec:pmcm-worked} demonstrates it on three independent test cases (a sorting library; Murphy et al.\ 2008's categorisation of MRs for ML into six classes~\cite{Murphy2008} re-decoded against a feedforward classifier algebra; the prior reactor-physics catalogue itself), without invoking $T^{*}$ or $\mathcal{T}^{*}$ structure that was curated from reactor physics.
@@ -260,7 +267,7 @@ We make five MR-identification contributions.
 \begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Boundary of contribution,fonttitle=\small\bfseries]
 This paper establishes:
 \begin{enumerate}[leftmargin=*,nosep]
-  \item Algebraic closure of $\mathbb{M}(\mathcal{A}_P)$ under \texttt{Translate} over the algebra-induced MR space $\mathrm{MR}(\mathcal{A}_P)$ for the operator algebras stated, given a block decomposition (Theorem~\ref{thm:closure}; closure is by-construction within the explicit scope of Definition~\ref{def:alg-induced}, see Remark~\ref{rem:scope}). Closure over the strictly larger space of arbitrary properties expressible in $\mathcal{A}_P$ is Theorem~$1'$, falsified on $\mathcal{A}_{\mathrm{PWR}}$ (see item (a) below);
+  \item A no-drop closure invariant for the downstream construction: given a block decomposition, $\mathbb{M}(\mathcal{A}_P)$ is closed under \texttt{Translate} over the algebra-induced MR space $\mathrm{MR}(\mathcal{A}_P)$ for the stated operator algebras (Theorem~\ref{thm:closure}; by-construction within the explicit scope of Definition~\ref{def:alg-induced}, see Remark~\ref{rem:scope}). Closure over the strictly larger space of arbitrary properties expressible in $\mathcal{A}_P$ is Theorem~$1'$, falsified on $\mathcal{A}_{\mathrm{PWR}}$ (see item (a) below);
   \item Polynomial-time decidability of CONSTRUCT-MP under explicit complexity assumptions (Theorem~\ref{thm:decidable});
   \item Three non-vacuous instantiations: Boltzmann reactor physics (\S\ref{sec:reactor}), equivariant ML (\S\ref{sec:cross-domain}), and relational query optimisers (\S\ref{subsec:third-domain}); the relational-equivalence block $\mathcal{B}^{*}_{\mathrm{rel}}$ extends the framework beyond the Lie-group / self-adjoint / time-reversal mathematical core;
   \item The Invariance-Blindness Theorem for the $G$ and $T^{*}$ blocks (Theorem~\ref{thm:ibt}): the symmetry / self-adjoint MR detection kernel equals the structure-preserving faults (faithfulness-tight), within the linear operator-implementation fault class.
@@ -281,37 +288,37 @@ The remainder of the paper follows a TOSEM-style method-paper structure. Section
 \section{Related Work}
 \label{sec:related}
 
-We organise prior work along four lines: MT/MR fundamentals and the long-standing identification bottleneck; structured MR identification through METRIC and METRIC+; automated MR identification, including MR-Scout, GenMorph, and LLM-assisted approaches; and MetaPattern catalogues, including our prior reactor-physics taxonomy. These lines differ in mechanism, but they share one limitation: their pattern structures are induced from observed MRs rather than derived from the mathematical structure that makes those MRs hold.
+We organise prior work along four lines: MT/MR fundamentals and the long-standing identification bottleneck; structured MR identification through category, specification, and model scaffolds; automated MR identification through mining, search, learning, and LLM assistance; and MetaPattern catalogues, including our prior reactor-physics taxonomy. These lines differ in mechanism, but they share one limitation: their pattern structures are induced from observed MRs, mined artefacts, or manually supplied models rather than derived from the mathematical structure that makes those MRs hold.
 
 \subsection{Metamorphic testing and the MR identification bottleneck}
 
-Metamorphic Testing was introduced by Chen, Cheung, and Yiu in 1998 to address the test-oracle problem~\cite{Chen1998}. An MR is a logical implication of the form $R_i(x_1,\dots,x_n) \Rightarrow R_o(P(x_1),\dots,P(x_n))$, where $P$ is the program under test, $R_i$ is an input relation, and $R_o$ is an output relation. When $R_i$ holds but $R_o$ fails on actual executions, a fault is reported, without any need to know the absolute correct output of any single execution. Over two decades MT has become standard equipment for testing systems whose oracles are otherwise inaccessible: scientific computing, machine learning classifiers, autonomous vehicles, search engines, compilers, and large language models~\cite{Segura2016, LiTOSEM2025}.
+Metamorphic Testing was introduced by Chen, Cheung, and Yiu in 1998 to address the test-oracle problem~\cite{Chen1998}, a general obstacle in software testing when expected outputs cannot be automatically determined~\cite{Barr2015OracleProblem}. An MR is a logical implication of the form $R_i(x_1,\dots,x_n) \Rightarrow R_o(P(x_1),\dots,P(x_n))$, where $P$ is the program under test, $R_i$ is an input relation, and $R_o$ is an output relation. When $R_i$ holds but $R_o$ fails on actual executions, a fault is reported, without any need to know the absolute correct output of any single execution. Over two decades MT has become standard equipment for testing systems whose oracles are otherwise inaccessible: scientific computing, machine learning classifiers, autonomous vehicles, search engines, compilers, and large language models~\cite{Segura2016, LiTOSEM2025}.
 
 The community has long acknowledged a single binding constraint on MT's effectiveness: MR identification. Surveys spanning twenty years agree that identifying high-quality MRs requires (i) deep familiarity with the program's functional semantics, (ii) substantive domain background (physical, mathematical, or linguistic, depending on the system), and (iii) the ability to convert that background into executable property assertions~\cite{Segura2016, LiTOSEM2025}. Liu et al.~\cite{Liu2014MTEffectiveness} provide the canonical empirical evidence that even ad-hoc MRs detect a substantial fraction of mutants given modest tester training, while Murphy et al.~\cite{Murphy2008} catalogued the structural properties of ML applications relevant to MR design and Xie et al.~\cite{Xie2011} demonstrated that MT scales effectively to supervised classifiers. Testers without sufficient domain background tend to identify only ``trivial MRs''. A 2024 survey explicitly identifies AI assistance, especially via large language models, as the most promising open avenue for closing the identification gap~\cite{LiTOSEM2025}; Saha and Kanewala~\cite{Saha2019SupervisedMR} report that, on a benchmark of 709 mutants for supervised classifiers, current MR sets detect only 14.8\%, which exposes the gap.
 
 Beyond difficulty, the MR identification bottleneck has a more troubling structural feature: even when MRs are identified, the field has accumulated little consensus on \emph{how} they are identified. Different authors confront the same program and produce dissimilar MR sets. Once written, an MR rarely migrates: a relation drafted for one ML classifier seldom transports to another, and a relation drafted for one numerical solver seldom transports across solver families.
 
-\subsection{Structured MR identification: METRIC and METRIC+}
+\subsection{Structured MR identification}
 
-Structured MR identification has already moved the field away from ad hoc relation design. METRIC organises MR construction around an ``input/output category'' framework: the tester first identifies relevant categories of input transformations and output relations, then composes MRs from category pairs~\cite{ChenMETRIC2016}. METRIC+ extends this scheme by enriching the category catalogue and providing systematic combination rules that reduce the human burden in category enumeration~\cite{SunMETRICplus2021}. Both approaches are widely cited and remain the strongest existing attempt to give MR identification an explicit scaffold.
+Structured MR identification has already moved the field away from ad hoc relation design. METRIC organises MR construction around an ``input/output category'' framework: the tester first identifies relevant categories of input transformations and output relations, then composes MRs from category pairs~\cite{ChenMETRIC2016}. METRIC+ extends this scheme by enriching the category catalogue and providing systematic combination rules that reduce the human burden in category enumeration~\cite{SunMETRICplus2021}. Other structured lines instantiate the scaffold through domain or artefact models: Segura et al.\ define MR patterns for query-based systems from recurrent query features and explicitly use relational algebra as the vocabulary for those patterns~\cite{Segura2019QBSMRPatterns}; Li et al.\ construct MRs from tabular-expression specifications~\cite{Li2020TabularMR}; Yan et al.\ decompose the input side of scientific-computing MRs into basic input-pattern structures~\cite{Yan2022InputPattern}; and Lin et al.\ organise scientific-software MRs hierarchically~\cite{Lin2018HierarchicalMR}. Together, these approaches remain the strongest existing attempt to give MR identification an explicit scaffold.
 
-Our disagreement is not with this direction but with its grounding. The categories are introduced through expert curation and validated by empirical coverage on benchmark programs. This leaves two of our three foundational questions unanswered. \emph{Origin}: METRIC and METRIC+ do not derive their categories from program-level mathematical structure. \emph{Closure}: neither framework provides a mathematical condition under which the category set is guaranteed to be complete; coverage is reported but not proved. The third question, \emph{transferability}, is only partially addressed. The same category templates can be invoked across domains, but because the categories are not algebraically bound to specific program structures, transfer rests on an assumption of universality that remains open.
+Our disagreement is not with this direction but with its grounding. The categories, patterns, tables, and input decompositions are introduced through expert curation, artefact-specific structure, or observed reuse, and are validated by empirical coverage on benchmark programs. This leaves two of our three foundational questions unanswered. \emph{Origin}: existing structured methods do not derive their categories from program-level operator algebra. Even query-based MR patterns use relational algebra as an organising vocabulary, not as a closed derivation system whose primitive operator blocks define an MR design space. \emph{Closure}: these frameworks do not provide a mathematical condition under which the category set is complete; coverage is reported but not proved. The third question, \emph{transferability}, is only partially addressed. The same category templates can be invoked across domains, but because the categories are not algebraically bound to specific program structures, transfer rests on an assumption of universality that remains open.
 
 \subsection{Automated MR identification}
 
-Automated MR identification attacks the bottleneck by searching for executable relations more directly. MR-Scout mines MRs from existing test suites by extracting input-transformation and output-assertion patterns from test-case pairs and abstracting them into reusable relations~\cite{MRScout2024}. GenMorph evolves MR candidates through genetic programming, co-evolving input transformations with output assertions and using mutation-killing as the fitness signal~\cite{GenMorph2024}. Shin et~al.\ derive executable MRs from natural-language requirements through few-shot prompting of a large language model, with validation through an industrial questionnaire study with Siemens~\cite{Shin2024}; further LLM-assisted variants, including ChatGPT-driven MR generation~\cite{ZhangChatGPTMR2023}, domain-customised GPTs for autonomous-driving simulators~\cite{GPTMR2025}, and multi-agent retrieval-augmented pipelines for traffic-rule MRs~\cite{AutoMT2025}, extend this template into safety-critical or rule-rich domains. Within ML-system testing, differential-testing approaches such as DeepXplore~\cite{DeepXplore2017} use input-transformation invariance as a proxy oracle, complementary to the explicit MR formulation we adopt here.
+Automated MR identification attacks the bottleneck by searching for executable relations more directly. Early search and dynamic-inference work includes likely metamorphic-property inference from executions~\cite{Su2015LikelyMR}, search-based inference of polynomial MRs~\cite{Zhang2014PolynomialMR}, and AutoMR's discovery and cleansing of numerical MRs through search plus redundancy reduction~\cite{Zhang2019AutoMR}. MR-Scout mines MRs from existing test suites by extracting input-transformation and output-assertion patterns from test-case pairs and abstracting them into reusable relations~\cite{MRScout2024}. GenMorph evolves MR candidates through genetic programming, co-evolving input transformations with output assertions and using mutation-killing as the fitness signal~\cite{GenMorph2024}. Shin et~al.\ derive executable MRs from natural-language requirements through few-shot prompting of a large language model, with validation through an industrial questionnaire study with Siemens~\cite{Shin2024}; further LLM-assisted variants, including ChatGPT-driven MR generation~\cite{ZhangChatGPTMR2023}, domain-customised GPTs for autonomous-driving simulators~\cite{GPTMR2025}, and multi-agent retrieval-augmented pipelines for traffic-rule MRs~\cite{AutoMT2025}, extend this template into safety-critical or rule-rich domains. Within ML-system testing, differential-testing approaches such as DeepXplore~\cite{DeepXplore2017} use input-transformation invariance as a proxy oracle, complementary to the explicit MR formulation we adopt here.
 
-A second strand uses program-structure features rather than test-case mining. Kanewala et al.~\cite{Kanewala2016GraphKernel} predict MRs of scientific software via graph-kernel learning over control-flow and data-dependency graphs, an early demonstration that program structure carries enough signal for automated MR discovery. Nolasco et al.'s MemoRIA~\cite{Nolasco2024MemoRIA} infers MRs by deriving an object-protocol abstraction and validating candidates through fuzzing plus SAT-based reduction, then evaluates on 22 Java subjects. Tao et al.'s Mettoc~\cite{Tao2010Mettoc} applied MT to compiler testing using equivalence-preservation as the canonical relation. Ying et al.~\cite{Ying2025MRPatterns} formalise relationships between metamorphic-relation patterns into family trees, and Altamimi et al.~\cite{Altamimi2022MRSLR} provide a recent systematic literature review of MR-automation work that catalogues the structural-vs-empirical-search divide our framework targets. Earlier LLM-assisted attempts include Zhang et al.~\cite{ZhangChatGPTMR2023} on ChatGPT-driven MR generation.
+A second strand uses program-structure, specification, documentation, or model features rather than test-case mining. Kanewala et al.~\cite{Kanewala2016GraphKernel} predict MRs of scientific software via graph-kernel learning over control-flow and data-dependency graphs, an early demonstration that program structure carries enough signal for automated MR discovery. MeMo extracts equivalence MRs from Javadoc comments~\cite{Blasi2021MeMo}. Nolasco et al.'s MemoRIA~\cite{Nolasco2024MemoRIA} infers MRs by deriving an object-protocol abstraction and validating candidates through fuzzing plus SAT-based reduction, then evaluates on 22 Java subjects. Clark et al.\ generate MRs from causal graphs, making model misspecification an explicit boundary of the method~\cite{Clark2023CausalMT}. Tao et al.'s Mettoc~\cite{Tao2010Mettoc} applied MT to compiler testing using equivalence-preservation as the canonical relation. Ying et al.~\cite{Ying2025MRPatterns} formalise relationships between metamorphic-relation patterns into family trees, and Altamimi et al.~\cite{Altamimi2022MRSLR} provide a recent systematic literature review of MR-automation work that catalogues the structural-vs-empirical-search divide our framework targets. Earlier LLM-assisted attempts include Zhang et al.~\cite{ZhangChatGPTMR2023} on ChatGPT-driven MR generation.
 
-Each of these methods advances automation on a different axis, but all treat the MR space as an empirical search space. MR-Scout's recall is bounded by the relations already latent in existing tests. GenMorph's evolutionary search is shaped by the fitness landscape induced by mutation killing. LLM-prompted approaches are sensitive to prompt phrasing when no structural prior constrains the generation. None of these methods can state, before search begins, which MR types lie outside its reach, because none has an algebraic account of the space being searched.
+Each of these methods advances automation on a different axis, but all treat the MR space as an empirical, artefact-derived, or model-supplied search space. MR-Scout's recall is bounded by the relations already latent in existing tests. Search-based and evolutionary methods can discover useful numerical or executable MRs, but the reported cleansing and redundancy-reduction steps are consequences of the search representation rather than explanations of the mathematical origin of the surviving relations. GenMorph's evolutionary search is shaped by the fitness landscape induced by mutation killing. LLM-prompted approaches are sensitive to prompt phrasing when no structural prior constrains the generation. Documentation-, protocol-, and causal-model-based methods are more interpretable, but their boundary is the supplied artefact or model rather than a program-family operator algebra. None of these methods can state, before search begins, which MR types lie outside its reach, because none has an algebraic account of the space being searched.
 
 \subsection{MetaPattern catalogues and empirical adequacy}
 
-MetaPattern catalogues organise the post-hoc inventory of identified MRs into a smaller vocabulary of recurring strategies. Such catalogues typically result from clustering observed MRs, codifying expert intuitions about ``kinds of properties testers reason about'', and validating the catalogue's coverage on a benchmark MR corpus. Reactor-physics test suites have produced taxonomies of conservation, monotonicity, convergence, trajectory, and partial-order patterns~\cite{BellGlasstone1970, LewisMiller1993}; Zhou et al.~\cite{Zhou2020SymmetryMRP} introduced an explicit \emph{symmetry metamorphic relation pattern} as a reusable abstraction for deriving concrete MRs across applications; Ying et al.~\cite{Ying2025MRPatterns} formalises the relationships between MR patterns into \emph{family trees} with explicit refinement and specialisation edges, and reports a SOTA pattern hierarchy that organises previously proposed patterns into a single classification structure. The most recent state-of-the-art survey of MR generation~\cite{LiTOSEM2025} maps the field's twenty-year output across pattern catalogues, mining, evolutionary search, and LLM-prompted methods. Adequacy frameworks such as the Pattern--Matrix Coverage Metric assess how thoroughly a given MR set occupies the pattern space.
+MetaPattern catalogues organise the post-hoc inventory of identified MRs into a smaller vocabulary of recurring strategies. Such catalogues typically result from clustering observed MRs, codifying expert intuitions about ``kinds of properties testers reason about'', and validating the catalogue's coverage on a benchmark MR corpus. Reactor-physics test suites have produced taxonomies of conservation, monotonicity, convergence, trajectory, and partial-order patterns~\cite{BellGlasstone1970, LewisMiller1993}; Zhou et al.~\cite{Zhou2020SymmetryMRP} introduced an explicit \emph{symmetry metamorphic relation pattern} as a reusable abstraction for deriving concrete MRs across applications; Lin et al.~\cite{Lin2018HierarchicalMR} proposed hierarchical MRs for scientific software; Ying et al.~\cite{Ying2025MRPatterns} formalises the relationships between MR patterns into \emph{family trees} with explicit refinement and specialisation edges, and reports a SOTA pattern hierarchy that organises previously proposed patterns into a single classification structure. The most recent state-of-the-art survey of MR generation~\cite{LiTOSEM2025} maps the field's twenty-year output across pattern catalogues, mining, evolutionary search, and LLM-prompted methods. Adequacy frameworks such as the Pattern--Matrix Coverage Metric, and recent MT adequacy work based on MRs and source inputs~\cite{Fu2024MTAdequacy}, assess how thoroughly a given test suite or MR set occupies an already-defined testing space. They do not define coverage over the operator blocks that give rise to MR classes.
 
 Ying et al.'s family-tree formalism~\cite{Ying2025MRPatterns} is the closest published cousin to NOETHER's MetaPattern equivalence-class structure: both organise MR patterns into a hierarchy with explicit relationships between patterns. The two formalisms differ in the relationship type. Ying et al.'s family tree is a \emph{refinement/specialisation tree} rooted in informally-named pattern categories (symmetry, additive, multiplicative, etc.); NOETHER's MetaPattern equivalence classes are \emph{quotients of the algebra-induced MR space} $\mathrm{MR}(\mathcal{A}_P)$ under structural equivalence (Definition~\ref{def:alg-induced}), with each class derived from a specific block of $\mathcal{D}(\mathcal{A}_P)$. A family-tree node in Ying et al.\ typically corresponds to one or more NOETHER MetaPatterns when the node admits an operator-algebraic specification (e.g.\ Ying et al.'s ``symmetry'' parent node decomposes into the $G$-block MetaPattern $m_{\mathrm{inv}}$ for finite-group symmetries plus the $T^{*}$-block MetaPattern $m_{\mathrm{adj}}$ for self-adjoint dualities under NOETHER's structural decomposition); conversely, NOETHER's $\mathcal{B}^{*}_{\mathrm{rel}}$ MetaPattern has no direct counterpart in the family-tree formalism because relational-algebra equivalences were not in Ying et al.'s benchmark set. The two formalisms are complementary: Ying et al.\ catalogues patterns inductively at the MR-instance level; NOETHER provides an algebraic warrant for the existence of each pattern, given the operator algebra. A unified family-tree-plus-algebra-block reading of the literature would map each family-tree node to (at most) one NOETHER block when the node has an algebraic source, and would flag family-tree nodes without algebraic source as candidates for the ninth-block list of Remark~\ref{rem:counterex}.
 
-Four further pattern-catalogue or MR-grammar candidates raised in peer review (Hu et~al.\ 2019; Mariani 2018; Liu et~al.\ 2020; Lin 2020) could not be located through the standard fallback chain (CrossRef, OpenAlex, DBLP, Semantic Scholar, Google Scholar) under the citation profiles provided, and are therefore not cited; the closest verifiable cousins in this space are Zhou et al.~\cite{Zhou2020SymmetryMRP} and Ying et al.~\cite{Ying2025MRPatterns}.
+Three further pattern-catalogue or MR-grammar candidates raised in peer review (Hu et~al.\ 2019; Mariani 2018; Liu et~al.\ 2020) could not be located through the standard fallback chain (CrossRef, OpenAlex, DBLP, Semantic Scholar, Google Scholar) under the citation profiles provided, and are therefore not cited; the closest verifiable cousins in this space are Zhou et al.~\cite{Zhou2020SymmetryMRP}, Lin et al.~\cite{Lin2018HierarchicalMR}, and Ying et al.~\cite{Ying2025MRPatterns}.
 
 Such catalogues are useful, but each is, by construction, an empirical artefact. None of the existing catalogues, including the present authors' own, can answer the three foundational questions of Section~\ref{sec:intro}.
 
@@ -1082,10 +1089,134 @@ This section reports the evidence for EQ1--EQ3 and then discusses the implicatio
 \paragraph{Reading guide for the results.}
 EQ1 is carried by the operator-block coverage material: expert MR sets are compared with NOETHER by binary coverage, not by the number of MRs or the number of faults exposed. EQ2 is carried by the GenMorph/METRIC+/LLM material as a complementarity analysis: search and category-enumeration methods can produce useful candidates, while NOETHER supplies algebraic origin and boundary. EQ3 is carried by the cross-domain derivation traces: the same operator blocks recur across Boltzmann/reactor physics, equivariant ML, relational optimizers, and held-out numerical or industrial program families. The mutation and head-to-head tables that follow are therefore secondary: they document executability, category-specific sanity checks, or complementarity, and must not be read as the main evidence for the paper's contribution.
 
-\subsection{A small-scale comparative case study}
+\subsection{Primary MR-identification evidence}
+\label{subsec:primary-identification-evidence}
+
+Tables~\ref{tab:expert-noether-binary-coverage}--\ref{tab:cross-domain-trace}
+are the load-bearing evidence for EQ1--EQ3. They use the binary counting rule
+defined in Section~\ref{sec:experiments}: a block is covered only when the source
+contains at least one explicit, applicable MR class from that block. A
+mathematical structure that exists in a governing equation but cannot yet be
+made executable through the program interface is recorded as a limitation, not
+as coverage.
+
+\begin{table}[h]
+\centering
+\caption{EQ1 binary operator-block coverage. Expert coverage means that the
+expert MR corpus contains at least one MR in the block. NOETHER coverage means
+that the paper derives at least one explicit MR class in the block. The
+industrial expert sets are the SACOS/SPARK/LOCUST corpora in supplementary S11;
+the cross-domain executable checks are the held-out \texttt{numpy.linalg} and
+\texttt{numpy.fft} subjects in supplementary S12.}
+\label{tab:expert-noether-binary-coverage}
+\small
+\begin{tabular}{lccc}
+\toprule
+Operator block & Expert industrial & NOETHER industrial & NOETHER cross-domain \\
+\midrule
+$O_{\le}$ & 1 & 1 & 1 \\
+$G$ & 0 & 0 & 1 \\
+$T^{*}$ & 0 & 0 & 1 \\
+$\mathcal{L}^{*}$ & 0 & 0 & 1 \\
+$\mathcal{E}^{*}$ & 0 & 0 & 1 \\
+Conservation & 0 & 0 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:expert-noether-binary-coverage} should be read conservatively.
+The S11 industrial corpora support one conclusion: the expert-approved
+SACOS/SPARK/LOCUST relations are explicit monotone/order relations, whereas
+NOETHER can re-state that block from the governing-equation algebra and can
+identify additional monotone/order MR classes in the same production-code
+families. The table does \emph{not} count latent structures for which no
+executable interface is available. S12 supplies the complementary evidence:
+when the program interface exposes the relevant operations, the same derivation
+protocol covers six operator blocks on held-out numerical libraries.
+
+\begin{table}[h]
+\centering
+\caption{EQ2 origin and boundary comparison against search-based MR generation.
+The search-based column summarises what can be concluded from the method class
+used by MR-Scout, GenMorph, and LLM-prompted MR generation; it is not a claim
+that those systems cannot return useful MRs.}
+\label{tab:search-origin-boundary}
+\small
+\begin{tabular}{p{0.22\linewidth}p{0.34\linewidth}p{0.34\linewidth}}
+\toprule
+Criterion & Search/category enumeration & NOETHER \\
+\midrule
+MR origin & Candidate relations are induced from tests, prompts, corpora, or
+fitness-guided search. The returned MR need not expose the mathematical
+invariant that makes it valid. & Each MR class is tied to an operator block and
+to a source identity or inequality in $\mathcal{A}_P$. \\
+Boundary & Failure modes are usually empirical: no candidate found, no mutation
+killed, or no prompt output accepted. & Boundary is stated structurally:
+out-of-scope MRs are those outside \texttt{Translate}'s signature or outside the
+current block taxonomy. \\
+Redundancy and readability & Generated candidates can be redundant or hard to
+maintain; this paper treats that as a literature-backed motivation and future
+empirical study, not as a measured result here. & Equivalent relations are
+collapsed by block/class membership, so maintainers can inspect the algebraic
+reason for keeping one class rather than many variants. \\
+Role in this paper & Complementary source of executable candidates and sanity
+checks. & Primary account of MR identification space, origin, and boundary. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{EQ3 compact cross-domain traces. The point of the table is not that
+the same MR text is copied across domains; it is that the same operator block
+explains why structurally similar MR classes arise in different program
+families.}
+\label{tab:cross-domain-trace}
+\small
+\begin{tabular}{p{0.18\linewidth}p{0.34\linewidth}p{0.38\linewidth}}
+\toprule
+Operator block & Program families & Corresponding MR class / derivation source \\
+\midrule
+$G$ & Equivariant ML; FFT-based signal processing; linear algebra routines &
+Group-action invariance/equivariance: rotation equivariance, shift equivariance,
+and basis-change invariance. \\
+$T^{*}$ & Reactor diffusion operators; matrix decompositions; equivariant
+attention probes & Adjoint/self-duality relations derived from symmetry of the
+operator or bilinear form. \\
+$O_{\le}$ & SACOS/SPARK/LOCUST reactor-family analyses; matrix/spectral
+monotonicity checks & Monotone covariance under order-preserving perturbations
+of inputs, coefficients, or tolerances. \\
+$\mathcal{L}^{*}$ & Iterative numerical solvers; FFT/truncation pipelines;
+equivariant-ML resolution checks & Limit/refinement relations under grid,
+sample, or truncation refinement. \\
+$\mathcal{E}^{*}$ & Linear algebra algorithms; alternative numerical solvers;
+query optimizers & Equivalence under algorithmic reformulation or algebraic
+rewriting. \\
+Conservation & Reactor balance equations; FFT/Parseval checks; linear algebra
+trace/norm invariants & Conservation of mass, energy, norm, trace, or equivalent
+global quantity under a structure-preserving transformation. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Together, the three tables support the paper's central claim at the intended
+level: NOETHER identifies MR classes by making the algebraic origin and boundary
+explicit, and it covers a broader operator-block design space than the expert
+industrial corpora available to us. They do not establish higher mutation score,
+average fault-detection superiority, or lower maintenance cost in practice.
+
+\subsection{Secondary executability check: equivariant-ML case study}
 \label{subsec:case-study}
 
-The derivations in Sections~\ref{subsec:end-to-end}--\ref{subsec:rho-rev} establish that NOETHER produces concrete, executable MRs in the equivariant-ML setting. They do not yet show that the MRs produced are \emph{useful for testing} relative to MRs a tester could obtain by other means. This subsection reports a small-scale comparative case study designed to address that question while remaining within the conceptual-transfer scope declared in Section~\ref{sec:cross-domain}. The study is a case study in the strict sense: a single model, a small mutation set, and three MR sets. We do not generalise from it to claims about average-case fault detection across equivariant ML.
+The derivations in Sections~\ref{subsec:end-to-end}--\ref{subsec:rho-rev}
+establish that NOETHER produces concrete, executable MRs in the equivariant-ML
+setting. This subsection is retained only as a secondary executability and
+sanity-check study. It shows that selected derived MR classes can be run against
+a real model and can expose the defect category they were constructed to probe;
+it is not evidence for the paper's main MR-identification claim and it is not
+used to claim average-case fault-detection superiority. The study is a case
+study in the strict sense: a single model, a small mutation set, and three MR
+sets.
 
 \paragraph{Subject under test.}
 We use an E(3)-equivariant graph neural network~\cite{Satorras2021EGNN} (EGNN) as a deliberately compact \emph{minimal stand-in} for a full SE(3)-Transformer~\cite{FuchsTransformer2020} or a Vector-Neuron-based SO(3)-equivariant architecture~\cite{Deng2021VectorNeurons}: two EGNN layers, hidden dimension 16, 5{,}189 parameters, trained on a procedural 5-class point-cloud dataset (sphere, cube surface, torus, cone, helix; 64 points per cloud; 400 training / 100 validation; rotation augmentation) for 25 epochs on Apple M1 Pro / MPS. Validation accuracy after training: 0.93. EGNN carries only invariant scalar and equivariant 3-vector features (type-0 $\oplus$ type-1 in the irrep classification), not the full type-$\ell$ steerable representation of an SE(3)-Transformer; the $T^*$ block instantiation in this case study is therefore an \emph{explicitly added} symmetrised QK probe (\texttt{equivariant\_classifier.py:qk = nn.Parameter(torch.eye(d))} with the symmetrising operation at use-time), not a property of the EGNN architecture itself. The manuscript's transfer claim is at the operator-algebra level (Section~\ref{sec:cross-domain}) and is independent of which equivariant architecture instantiates $\mathcal{A}_{\mathrm{equi}}$; it is the algebraic skeleton that transfers, not architecture-specific empirical numbers. Architecture, training script, dataset generator, frozen checkpoint, and the SHA-256 of the supplementary archive are recorded under S3.
@@ -2670,18 +2801,61 @@ This subsection collects practical recommendations for engineers applying NOETHE
 
 NOETHER mechanises the construction downstream of $\mathcal{A}_P$ but assumes that $\mathcal{A}_P$ has been distilled by a human. Three directions may partially automate that upstream step: LLM-assisted operator extraction, static-analysis-based extraction, and empirical-symmetry detection. None of them eliminates the human role for arbitrary programs.
 
+\paragraph{Auditable algebra-distillation protocol.}
+The next version of the workflow should make the upstream step reproducible
+rather than merely expert-curated. We propose a six-step protocol: (1) collect
+the governing equations, interface contract, and implementation documentation;
+(2) list candidate operators, domains, codomains, controllable inputs, and
+observable outputs; (3) map each operator to zero or more current blocks using
+the definitions in Section~\ref{sec:noether-framework}; (4) record a source
+identity or inequality for every block assignment; (5) require two independent
+reviewers to label each assignment as explicit, latent-but-not-executable, or
+out-of-scope; and (6) publish the resulting block-coverage matrix with the
+unresolved operators. This protocol would directly address the main upstream
+threat in the present paper: a block assignment can be audited even when the
+derived MR class cannot yet be executed because the production program does not
+expose the required interface.
+
 %% =========================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
-The three foundational questions raised in Section~\ref{sec:intro}, origin, closure, and transferability of MetaPattern sets, lacked a structural answer. NOETHER provides one within an explicit algebraic scope. \emph{Origin}: MetaPatterns are equivalence classes of MRs derived from invariants of an operator algebra $\mathcal{A}_P$. \emph{Closure}: Theorem~\ref{thm:closure} guarantees that the constructed MetaPattern set is closed over the algebra-induced MR space (Definition~\ref{def:alg-induced}) under the framework's \texttt{Translate} operator, with three concrete classes of out-of-scope MRs documented in Appendix~\ref{app:out-of-scope}; absolute completeness over arbitrary properties remains open (Theorem~1$'$). Theorem~2 ensures the construction is computable. \emph{Transferability}: the framework's mechanism applies unchanged once a new program family's algebra has been specified, tested within the framework's scope precondition on three structurally distinct operator-algebraic skeletons (Boltzmann reactor physics, equivariant ML, relational query optimisers). Cross-domain empirical superiority and team adoption by PWR-simulator V\&V groups, equivariant-ML testing teams, or database-optimiser test groups are open follow-up questions; the present paper establishes the structural transferability of the construction mechanism, not adoption outcomes on each domain.
+The three foundational questions raised in Section~\ref{sec:intro}, origin,
+boundary, and transferability of MetaPattern sets, lacked a structural answer.
+NOETHER provides one within an explicit algebraic scope. \emph{Origin}:
+MetaPatterns are equivalence classes of MRs derived from invariants of an
+operator algebra $\mathcal{A}_P$. \emph{Boundary}: Theorem~\ref{thm:closure}
+gives a no-drop closure invariant for the \texttt{Translate}-reachable,
+algebra-induced MR space (Definition~\ref{def:alg-induced}), while the negative
+PWR result and the Invariance-Blindness Theorem identify where that space ends
+and what its derived MRs cannot see. \emph{Transferability}: the framework's
+mechanism applies unchanged once a new program family's algebra has been
+specified, tested within the framework's scope precondition on three
+structurally distinct operator-algebraic skeletons (Boltzmann reactor physics,
+equivariant ML, relational query optimisers). Cross-domain empirical superiority
+and team adoption by PWR-simulator V\&V groups, equivariant-ML testing teams, or
+database-optimiser test groups are open follow-up questions; the present paper
+establishes the structural transferability of the construction mechanism, not
+adoption outcomes on each domain.
 
 This grounding reframes several long-standing questions. Empirical adequacy frameworks gain an algebraic warrant for their pattern grid. Structured identification approaches gain an answer to why a given category set is closed under the chosen algebra. Automated pipelines can be constrained or initialised by the constructed MetaPattern set. LLM-prompted MR generation can be recast as algebra-conditioned generation rather than open-ended prompting.
 
 We have not solved the upstream problem of distilling $\mathcal{A}_P$ from program semantics, nor have we eliminated induction from MetaPattern discovery. The structural decomposition that drives the construction is itself an empirical curation of mathematical structures recurrent across program families, stated as Hypothesis~\ref{hyp:seven-blocks}. The most important follow-up work is therefore upstream: combining LLM-assisted symbolic extraction, formal-methods-based static analysis, and empirical-symmetry detection into a partially automated $\mathcal{A}_P$-distillation pipeline, and testing the structural decomposition on algebras outside its present image (Remark~\ref{rem:counterex} catalogues six program-family classes likely to require additional blocks). For the downstream layer, from $\mathcal{A}_P$ to $\mathbb{M}(\mathcal{A}_P)$, the contribution is narrower and firmer: the construction is mechanical, algebraic closure under \texttt{Translate} is provable within the algebra-induced MR space (Theorem~\ref{thm:closure}), and the construction transfers across domains once the algebra has been specified.
 
 \begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Boundary of contribution (Conclusion restatement),fonttitle=\small\bfseries]
-\textbf{Established.} (i)~Algebraic closure under \texttt{Translate} given a block decomposition (Theorem~\ref{thm:closure}); (ii)~polynomial-time decidability under finite generating-set assumption (Theorem~\ref{thm:decidable}); (iii)~three non-vacuous instantiations across structurally distinct algebraic skeletons; (iv)~a negative instantiation on the PWR core diffusion algebra $\mathcal{A}_{\mathrm{PWR}}$ (\S\ref{subsec:negative-pwr}, Appendix~\ref{app:negative-proofs}), in which two MRs from the standard PWR safety-analysis literature (non-additivity of rod-bank reactivity worth, second-order mixed $T_{\mathrm{mod}}$-vs-$C_B$ dependence of $k_{\mathrm{eff}}$) are proved not in $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$, falsifying Theorem~1$'$ (Conjecture~\ref{conj:absolute}) on a structurally significant operator algebra and identifying five pairwise-independent extensions of \texttt{Translate}'s signature as the locus of repair.
+\textbf{Established.} (i)~A no-drop closure invariant under \texttt{Translate}
+given a block decomposition (Theorem~\ref{thm:closure}); (ii)~polynomial-time
+decidability under finite generating-set assumption (Theorem~\ref{thm:decidable});
+(iii)~three non-vacuous instantiations across structurally distinct algebraic
+skeletons; (iv)~a negative instantiation on the PWR core diffusion algebra
+$\mathcal{A}_{\mathrm{PWR}}$ (\S\ref{subsec:negative-pwr},
+Appendix~\ref{app:negative-proofs}), in which two MRs from the standard PWR
+safety-analysis literature (non-additivity of rod-bank reactivity worth,
+second-order mixed $T_{\mathrm{mod}}$-vs-$C_B$ dependence of $k_{\mathrm{eff}}$)
+are proved not in $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$, falsifying
+Theorem~1$'$ (Conjecture~\ref{conj:absolute}) on a structurally significant
+operator algebra and identifying five pairwise-independent extensions of
+\texttt{Translate}'s signature as the locus of repair.
 
 \textbf{Open.} (a)~Whether a Composite-\texttt{Translate} extension covering the five obstructions of \S\ref{subsec:negative-pwr} and Appendix~\ref{app:negative-proofs} preserves Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time decidability; (b)~sufficiency of Hypothesis~\ref{hyp:seven-blocks}'s structural list (Remark~\ref{rem:counterex}'s six out-of-scope classes are candidate ninth blocks); (c)~superiority over existing automated MR-identification pipelines on average defect distributions (the comparative-evaluation protocol in \S\ref{subsec:case-study} establishes effects, not averages); (d)~elimination of induction (relocated, not eliminated); (e)~automation of upstream $\mathcal{A}_P$ distillation (the framework treats $\mathcal{A}_P$ as a given input from a domain expert; mechanising the extraction of operator algebras from program semantics remains an upstream task that NOETHER does not address; \S\ref{subsec:remaining-human-role} sketches three partial-automation directions but commits to none). Both Hypothesis~\ref{hyp:seven-blocks} (block sufficiency) and \texttt{Translate}'s signature (\texttt{Translate} sufficiency) are the loci where future induction-eliminating and completeness-establishing work should target.
 \end{tcolorbox}
@@ -2689,7 +2863,11 @@ We have not solved the upstream problem of distilling $\mathcal{A}_P$ from progr
 \section{Data and Artifact Availability}
 \label{subsec:artefact}
 
-To support reviewer verification while preserving double-blind anonymity, we release a two-stage artefact: a review-stage anonymised supplementary archive available at submission, and an acceptance-stage public release with permanent identifiers.
+To support reviewer verification, the supplementary code and data are archived
+on Zenodo under DOI \href{https://doi.org/10.5281/zenodo.20250634}{10.5281/zenodo.20250634}.
+For double-blind review, the same materials can be supplied through the
+submission system as an anonymised archive with the same file manifest and
+content hash.
 
 \paragraph{Review-stage anonymised archive.} The following supplementary materials are submitted alongside the manuscript and are available to reviewers through the conference submission system (or, equivalently, an anonymised OpenReview / Zenodo deposit) under SHA-256 content hash. The hash is computed over the concatenated tar-archive of the listed items and reported in the final manuscript at acceptance.
 \begin{itemize}
@@ -2699,7 +2877,12 @@ To support reviewer verification while preserving double-blind anonymity, we rel
     \item \textbf{S4} A reproducibility manifest documenting the random seeds, model checkpoints, and dataset versions referenced in the case study.
 \end{itemize}
 
-\paragraph{Acceptance-stage public release.} At acceptance the same archive will be deposited on Zenodo under a permanent DOI, and the SHA-256 hash anchored in the camera-ready version. We aim for the \emph{Available} and \emph{Functional} artefact-evaluation badges.
+\paragraph{Public archival release.} The public archival package is deposited
+on Zenodo under DOI
+\href{https://doi.org/10.5281/zenodo.20250634}{10.5281/zenodo.20250634}. The
+camera-ready version will additionally record the final SHA-256 hash of the
+submission archive. We aim for the \emph{Available} and \emph{Functional}
+artefact-evaluation badges.
 
 %% =========================================================
 \clearpage
@@ -2942,11 +3125,12 @@ the three case-study algebras, the Set~N MR catalogue
 ISSUE-009: $5$ MRs on Apache Commons Math), the Set~G GenMorph rerun
 output, the LLM-ensemble Set~L harvest with token-cost logs, the
 PIT $1.7.4$ mutation traces, and the per-block + D1/D2 aggregation
-pipeline, will be released as open-source upon acceptance of the
-paper. Reproduction scripts (\texttt{setup.sh}, \texttt{run\_all.sh},
+pipeline, is archived on Zenodo under DOI
+\href{https://doi.org/10.5281/zenodo.20250634}{10.5281/zenodo.20250634}.
+Reproduction scripts (\texttt{setup.sh}, \texttt{run\_all.sh},
 \texttt{tests/run.sh}) and the experiment-side \texttt{CLAUDE.md}
-collaboration record are bundled. Authoring repository and Zenodo
-DOI to be added in the camera-ready version.
+collaboration record are bundled. The camera-ready version will record any
+newer Zenodo version DOI if the replication package is updated during review.
 
 %% =========================================================
 %% References
@@ -2957,16 +3141,16 @@ This work was supported by the National Natural Science Foundation of China (NSF
 \smallskip
 \noindent\textbf{Author contributions (CRediT).}
 \textbf{Meng Li}: Conceptualization, Methodology, Software, Writing: original draft.
-\textbf{Xiaohua Yang}: Supervision, Formal analysis, Writing: review \& editing.
 \textbf{Jie Liu}: Investigation, Validation.
 \textbf{Shiyu Yan}: Data curation, Visualization.
+\textbf{Xiaohua Yang}: Supervision, Formal analysis, Writing: review \& editing.
 
 \smallskip
 \noindent\textbf{Declaration of competing interest.}
 The authors declare no conflict of interest.
 \end{acks}
 
-\bibliographystyle{unsrtnat}    % numeric in citation order (arXiv variant)
+\bibliographystyle{ACM-Reference-Format}
 \bibliography{NOETHER_paper}
 
 \end{document}
