@@ -79,7 +79,7 @@ For full transparency, a separate manuscript by some of the present authors addr
 
 Sincerely,
 
-**Meng Li** (corresponding author), Xiaohua Yang, Jie Liu, Shiyu Yan
+**Meng Li** (corresponding author), Jie Liu, Shiyu Yan, Xiaohua Yang
 School of Computing, University of South China; Hunan Engineering Research Center of Software Evaluation and Testing for Intellectual Equipment; CNNC Key Laboratory on High Trusted Computing, Hengyang 421001, China
 Corresponding email: mlemon@usc.edu.cn (ORCID: 0000-0002-1074-1502)
 
