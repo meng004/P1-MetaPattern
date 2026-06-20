@@ -4,6 +4,8 @@
 > **本实验是纯 Java + PIT 变异检测,不调用任何 LLM / API key**;`.env` 只含文件系统路径,由 `setup.sh` 自动生成。
 > **命题边界(self-overlap 红线)**:本实验只回答 **generation / detection sufficiency**(Set N 的变异检出充分性)。**严禁**报告 k\*(最小 MR 子集)、selection、domination —— 那是姊妹论文 T2(TSE)的命题。引用 GenMorph 上游(Ayerdi et al. 2024)+ Zenodo 10067096。
 
+> **【已执行状态 2026-06-20,合并自 cloud A16 routeB】** 本文件保留完整 a-priori 计划(3-seed Set N 稳健性 + §5 H1-H4 预注册 + Set G single/12-seed 两端),仍为**前向计划**。**已执行子集**是 cloud A16 Route B 配对多种子(gcd+sin × 12 发表种子,真实 GenMorph PIT),结论见 `supplementary/S5_genmorph_pilot/multiseed/routeB/README.md` 与 `s5_aligned_seed11_assessment.md §7`,已 landed 入论文 Threats §baseline-strength (f)(i)。⚠ **§5 的 H1-H4 预注册仍未在跑前 commit、seed12/13 仍未跑**——故下文计划继续有效。
+
 ---
 
 ## 1. 目标与产出
