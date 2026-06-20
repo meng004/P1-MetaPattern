@@ -1,6 +1,6 @@
 # 预注册：S5-aligned 多-seed confirmatory 实验（NOETHER）
 
-> **承诺：本文件须在 seed12 / seed13 的 s5_aligned 执行之前 `git commit`；提交后将本行替换为实际 commit hash，作为不可否认的 pre-run 时间戳证据。**
+> **承诺（已提交）：本文件于 commit `f2a5980` 提交，作为不可否认的 pre-run 时间戳证据——s5_aligned seed12/13 在该 commit 之前尚未执行。§3 假设冻结基线 = `f2a5980`；seed12/13 跑后须 `git diff f2a5980 -- 本文件` 对 §3 区段为空，否则该 confirmatory 检验作废。**
 > 起草日期：2026-06-20。提交对象：`docs/review_2026-06-20/prereg_s5_multiseed.md`（本文件）。
 > 关联 harness：`experiment/s5_aligned`（`run_all.sh` 已验证可跑，通过 `SEED` 环境变量控制种子，断点可续）。
 > 关联探索性评估：`docs/review_2026-06-20/s5_aligned_seed11_assessment.md`（seed11，**探索性**）。
