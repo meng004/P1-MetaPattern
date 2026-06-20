@@ -20,6 +20,12 @@ commit. Each item is independent and can be done in any order.
 - [ ] **B4 复核（需作者）**：本次移除原 Fleiss=1.000 perfect-agreement 表述；若另有真实 Fleiss 计算请确认是否回填。
 - [ ] **submission/ 重生（需作者）**：submission/ 为 gitignore 派生快照；relabel/six-blocks/B4 未进快照，投稿前从修正后 arxiv 整体重生。
 
+### 🔴 本方案补充（对抗验证 + 人工核验新增，`docs/review_2026-06-20/fix_plan_2026-06-20.md`）
+- [x] **A0-sec §5 敏感信息（已执行 2026-06-20）**：shipping 数据文件（`supplementary/S3_case_study/lrca_kappa.json`/`lrca_llm_labels.json`）与 `docs/review_round_polish/round2/rereview_report.md` 的代理商厂商标识已 scrub 为中性名（厂商=Anthropic Opus）；§5.B.2 复扫 tracked 树 0 命中（除 RELEASE_CHECKLIST 扫描器正则）。⚠️ 该标识曾随 ca3f333 进公开 repo 历史，因属代理商**名称**非凭据，未做历史改写——如需彻底清除可 force-push（破坏性，属作者决策）。
+- [ ] **A5 理论 headline 重定位（B1–B7 遗漏，三轮收敛核心）**：Theorem 1/2 降格为 closure lemma / 复杂度附属，IBT + Theorem 1′ 证伪提为 headline（残留 over-headline 仅 L207-212 图 / L270-271 box / L391 roadmap；Abstract 已对齐）。零新证明（IBT/Thm1′ 证明已在 `theory/` + Appendix C.6）。红线：禁在 response letter 计为 significance 实质回应
+- [ ] **B2 压缩护栏**（执行 B2 时强制）：GenMorph 败局 McNemar p=0.0043 + "dominated by Set G" 须留主文（L1855 box 不可降 cross-ref，它唯一承载该定量披露）；欠功效 underpowered 标注 + L\*-blindness "derivable without data" 限定移 supplement 后须保留——否则即 §6.4/§10.7 visibility-laundering
+- [ ] **A15 补建脚本**：`scripts/bib_all_cited_check.py` 实际不存在（CLAUDE.md §3 引用它），须新建
+
 ### 🟡 P1（2-3 周，最大天花板）
 - [ ] **B2 篇幅压缩**：80 页→≤45；L\*/IBT 电池、DeepCrime pilot、METRIC+ 对决、LLM-ensemble 各降为 1 表（全表入 S9），EQ1-EQ3 提为独立主证据节；并清过程叙事残留（pre-register/committed-as-follow-up/活文档措辞 L1357）
 - [ ] **B6 最近邻文献**：补并尖锐对照 Khritankov-Iakusheva 2024、Gotlieb Symmetric Testing 2003/2006、Patel-Hierons 2018、Gruver 2023、Kaba-Ravanbakhsh 2023、Saha-Kanewala 2019、MemoRIA 2024、MUT 2024；delta 定位为"construction+proof over the layer"

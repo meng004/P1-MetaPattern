@@ -2,7 +2,7 @@
   "schema_version": 1,
   "n_items": 36,
   "vendors": [
-    "bltcy_opus",
+    "anthropic_opus",
     "chatgpt",
     "deepseek"
   ],
@@ -18,7 +18,7 @@
     "orphan"
   ],
   "cohens_kappa_per_llm": {
-    "bltcy_opus": {
+    "anthropic_opus": {
       "kappa": 0.9272727272727272,
       "p_o": 0.9411764705882353,
       "p_e": 0.1911764705882353,
@@ -135,7 +135,7 @@
           "reasoning": "The JIR doubles the input (i_n_f = 2*i_n_s) and the JOR adds 1 to the output (o_return_f = o_return_s + 1), which matches the translation pattern for logarithms where multiplicative input change corre"
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "label": "T_star",
           "reasoning": "The JIR doubles the input (i_n_f == 2 * i_n_s), which in log-space corresponds to an additive shift of +1, and the JOR confirms o_return_f == o_return_s + 1, matching the translation canonical form f("
         },
@@ -153,7 +153,7 @@
       "majority_label": "T_rev",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "label": "T_rev",
           "reasoning": "The JIR reverses the input triple (a,b,c) to (c,b,a) and the JOR asserts that the original and reversed inputs cannot both satisfy the boolean predicate, matching the forward-backward exclusion canoni"
         },

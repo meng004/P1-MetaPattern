@@ -5,7 +5,7 @@
     "vendors": [
       "deepseek",
       "chatgpt",
-      "bltcy_opus"
+      "anthropic_opus"
     ],
     "dry_run": false,
     "spec": "configs/sut_grid_spec.json"
@@ -30,7 +30,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "G",
           "reasoning": "The JIR swaps the two operands (this\u2194other) between the first and second invocations, and the JOR asserts the outputs are equal, encoding the commutativity symmetry f(a,b)=f(b,a) which is a group/symmetry relation with sigma=swap and tau=identity.",
@@ -61,7 +61,7 @@
       "jor": "((Math.abs(((double) o_return_real_f) - (2.0 * ((double) o_return_real_s))) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - (2.0 * ((double) o_return_imag_s))) < 1.0E-4))",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "L_star",
           "reasoning": "The JIR constrains all inputs of the follow-up to be exactly 2\u00d7 the corresponding inputs of the source (k=2 scaling), and the JOR asserts the output components are also 2\u00d7 the source outputs, matching f(k*x) = k*f(x) (homogeneity of degree 1), which is the L_star canonical form.",
@@ -114,7 +114,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_star",
           "reasoning": "The JIR shifts the real part of 'this' by +1 while keeping all other inputs identical, and the JOR expects the output real part to shift by +1 with the imaginary part unchanged, matching the canonical translation form f(x + c) = f(x) + c.",
@@ -145,7 +145,7 @@
       "jor": "Math.abs(((double) o_return_f) - (-((double) o_return_s))) < 1.0E-4",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "G",
           "reasoning": "The JIR negates all three inputs (lo_f = -hi_s, hi_f = -lo_s, x_f = -x_s) and the JOR asserts the output negates (o_return_f = -o_return_s), which is a sign-flip involution sigma with tau also being negation, matching f(sigma(x)) = tau(f(x)).",
@@ -199,7 +199,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "error": "InternalServerError: Error code: 503 - {'error': {'message': 'system cpu overloaded (current: 93.1%, threshold: 90%)', 'type': 'new_api_error', 'param': '', 'code': 'system_cpu_overloaded'}}",
           "label": null,
@@ -242,7 +242,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "O_le",
           "reasoning": "The JIR holds lo and hi fixed while imposing x_s <= x_f, and the JOR asserts clamp(lo,hi,x_s) <= clamp(lo,hi,x_f), which is a monotonicity property of the SUT in the x argument.",
@@ -284,7 +284,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_star",
           "reasoning": "The JIR shifts all three inputs (lo, hi, x) by a constant c=1.0 and the JOR asserts the output shifts by the same constant 1.0, matching the canonical translation form f(x+c)=f(x)+c.",
@@ -326,7 +326,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_star",
           "reasoning": "The JIR doubles the input (i_n_f == 2 * i_n_s), which in log-space corresponds to an additive shift of +1, and the JOR confirms o_return_f == o_return_s + 1, matching the translation canonical form f(x + c) = f(x) + phi(c) where the additive shift on the exponent (input domain of log2) produces an additive shift on the output.",
@@ -368,7 +368,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "O_le",
           "reasoning": "The JIR constrains two valid inputs such that i_n_s <= i_n_f (an order relation on inputs), and the JOR asserts o_return_s <= o_return_f (the corresponding order on outputs), which is exactly the monotonicity pattern x1 <= x2 -> f(x1) <= f(x2).",
@@ -410,7 +410,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_star",
           "reasoning": "The JIR doubles the input (i_n_f = 2 * i_n_s), which for log2 is equivalent to adding 1 to the exponent, and the JOR confirms the output shifts by +1 (o_return_f = o_return_s + 1), matching the translation canonical form f(x + c) = f(x) + phi(c) when recast in the logarithmic domain.",
@@ -452,7 +452,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "G",
           "reasoning": "The JIR swaps the two arguments (a_f becomes b_s and vice versa), which is a permutation (involution) on inputs, and the JOR asserts the output is unchanged, matching the canonical G-block form f(sigma(x)) = tau(f(x)) with tau = identity.",
@@ -483,7 +483,7 @@
       "jor": "((long) o_return_f) == 2L * ((long) o_return_s)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "L_star",
           "reasoning": "The JIR scales both inputs by a constant factor k=2 (i_a_f = 2*i_a_s, i_b_f = 2*i_b_s) and the JOR asserts the output scales by the same factor (o_return_f = 2*o_return_s), matching the homogeneity property f(k*x) = k*f(x) with degree 1, which is the canonical L* (linear/scale) structure.",
@@ -525,7 +525,7 @@
       "jor": "(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "G",
           "reasoning": "The JIR swaps the two inputs (i_a_f \u2248 i_b_s and i_b_f \u2248 i_a_s), which is an argument permutation (sigma = swap), and the JOR asserts the outputs are equal (tau = identity), matching the group/symmetry canonical form f(sigma(x)) = tau(f(x)).",
@@ -567,7 +567,7 @@
       "jor": "(Math.abs(((double) o_return_f) - (2.0 * ((double) o_return_s))) < 1.0E-4)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "L_star",
           "reasoning": "The JIR scales both inputs by a factor of 2 (i_a_f = 2*i_a_s, i_b_f = 2*i_b_s) and the JOR asserts the output scales by the same factor 2 (o_return_f = 2*o_return_s), matching the canonical form f(k*x) = phi(k)*f(x) with k=2 and phi(k)=k (degree-1 homogeneity of the Euclidean norm).",
@@ -620,7 +620,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "O_le",
           "reasoning": "The JIR establishes an order relation on inputs (|a_s| <= |a_f| with b held approximately constant) and the JOR asserts the corresponding monotone output inequality (o_return_s <= o_return_f), which is the canonical form of the O_le monotonicity block.",
@@ -651,7 +651,7 @@
       "jor": "!(o_return_s && o_return_f)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_rev",
           "reasoning": "The JIR reverses the input triple (a,b,c) to (c,b,a) and the JOR asserts that the original and reversed inputs cannot both satisfy the boolean predicate, matching the forward-backward exclusion canonical form f(rev(x)) \u2192 !(f(x) && f(rev(x))) for boolean SUTs.",
@@ -693,7 +693,7 @@
       "jor": "(o_return_f == o_return_s)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "G",
           "reasoning": "The JIR applies a composed transformation \u03c3 = negate\u2218reverse to the input triple (a,b,c)\u2192(\u2212c,\u2212b,\u2212a), combining sign-flip and argument reversal (both involutions), and the JOR asserts the output is invariant (f(\u03c3(x))=f(x)), which is the canonical G-block symmetry form f(\u03c3(x))=\u03c4(f(x)) with \u03c4=identity.",
@@ -746,7 +746,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "L_star",
           "reasoning": "The JIR scales all three inputs by a positive factor k=2 (i_a_f \u2248 2*i_a_s, i_b_f \u2248 2*i_b_s, i_c_f \u2248 2*i_c_s) and the JOR asserts the boolean output is unchanged (o_return_f == o_return_s), which matches the 0-degree homogeneity sub-case f(k*x)=f(x) for k>0 in the L_star block.",
@@ -788,7 +788,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "O_le",
           "reasoning": "The JIR decreases a and increases b and c (moving inputs along monotone axes), and the JOR states that if the source returned true then the follow-up must also return true, encoding a monotonicity/order-preservation property of the boolean predicate with respect to the input ordering.",
@@ -830,7 +830,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_rev",
           "reasoning": "The JIR reverses the input triple (a,b,c) to (c,b,a) and the JOR asserts that the boolean SUT cannot return true for both the original and reversed inputs, matching the T_rev forward-backward exclusion canonical form !(f(x) && f(rev(x))).",
@@ -872,7 +872,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_star",
           "reasoning": "The JIR requires that all three inputs (a, b, c) are shifted by approximately the same constant offset (i_a_f - i_a_s \u2248 i_b_f - i_b_s \u2248 i_c_f - i_c_s), and the JOR asserts the boolean output is preserved, which is the canonical translation property f(x+c) = f(x) for an order-based predicate invariant under uniform translation.",
@@ -903,7 +903,7 @@
       "jor": "(o_return_f == o_return_s)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "G",
           "reasoning": "The JIR swaps the two arguments (a_f becomes b_s and b_f becomes a_s) and the JOR asserts the output is unchanged, which is the classic argument-swap symmetry f(a,b)=f(b,a) fitting the G (group/symmetry) block with sigma=swap and tau=identity.",
@@ -945,7 +945,7 @@
       "jor": "(o_return_f == 2 * o_return_s)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "L_star",
           "reasoning": "The JIR scales both inputs by a constant factor k=2 and the JOR asserts the output scales by the same factor 2, matching the homogeneity relation f(k*x) = phi(k)*f(x) with phi(2)=2, which is the canonical L_star (linear/scale) block.",
@@ -987,7 +987,7 @@
       "jor": "(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "error": "InternalServerError: Error code: 503 - {'error': {'message': 'system cpu overloaded (current: 92.3%, threshold: 90%)', 'type': 'new_api_error', 'param': '', 'code': 'system_cpu_overloaded'}}",
           "label": null,
@@ -1031,7 +1031,7 @@
       "jor": "(Math.abs(((double) o_return_f) - (2.0 * ((double) o_return_s))) < 1.0E-4)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "L_star",
           "reasoning": "The JIR relates follow-up inputs as scaled versions of source inputs (i_a_f \u2248 2*i_a_s, i_b_f \u2248 2*i_b_s) and the JOR asserts the output scales by the same factor (o_return_f \u2248 2*o_return_s), matching the canonical form f(k*x) = k*f(x) with k=2, i.e., degree-1 homogeneity.",
@@ -1084,7 +1084,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "O_le",
           "reasoning": "The JIR establishes an ordering on input a (i_a_s <= i_a_f) while holding b approximately constant, and the JOR asserts the corresponding monotone ordering on outputs (o_return_s <= o_return_f), which is the canonical form of order/monotonicity.",
@@ -1126,7 +1126,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_star",
           "reasoning": "The JIR shifts both inputs a and b by +1.0 (i_a_f \u2248 i_a_s + 1, i_b_f \u2248 i_b_s + 1) and the JOR verifies the output shifts by +1.0 (o_return_f \u2248 o_return_s + 1), matching the translation canonical form f(x + c) = f(x) + phi(c) with c = 1 and phi(c) = 1.",
@@ -1157,7 +1157,7 @@
       "jor": "Math.abs(o_return_f - (1.0 / o_return_s)) < 1.0E-4",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "D_star",
           "reasoning": "The JIR negates the exponent (i_n_f == -i_n_s) and the JOR asserts the output is the multiplicative inverse (1.0/o_return_s), which matches the D* block's canonical form f(b, -n) = 1/f(b, n) relating exponent inversion to multiplicative inversion of the output.",
@@ -1199,7 +1199,7 @@
       "jor": "Math.abs(o_return_f - powerSig(i_base_s, i_n_s * i_n_f)) < 1.0E-4",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "E_star",
           "reasoning": "The JIR constrains the follow-up base to equal the source output (i.e., base_f \u2248 powerSig(base_s, n_s)), and the JOR asserts the follow-up output equals powerSig(base_s, n_s * n_f), which is the power-of-power identity f(f(b,m),n)=f(b,m*n), the canonical form of the E* block.",
@@ -1241,7 +1241,7 @@
       "jor": "((((int) i_n_s) % 2 == 0) && (Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)) || ((((int) i_n_s) % 2 != 0) && (Math.abs(((double) o_return_f) - (-((double) o_return_s))) < 1.0E-4))",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "G",
           "reasoning": "The JIR negates the base input (base_f = -base_s) while keeping n the same, and the JOR checks that outputs are equal when n is even or negated when n is odd, which is the classic sign-flip symmetry f(\u03c3(x)) = \u03c4(f(x)) with \u03c3 being negation and \u03c4 depending on parity\u2014a group/symmetry relation.",
@@ -1283,7 +1283,7 @@
       "jor": "(Math.abs(((double) o_return_f) - (powerSig(3.0, i_n_s) * ((double) o_return_s))) < 1.0E-4)",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "L_star",
           "reasoning": "The JIR scales the base by a factor of 3 (i_base_f = 3 * i_base_s) with the same exponent, and the JOR asserts the output scales by 3^n (powerSig(3.0, i_n_s) * o_return_s), which matches the homogeneity relation f(k*x, n) = k^n * f(x, n), the canonical L* scaling form.",
@@ -1336,7 +1336,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "T_star",
           "reasoning": "The JIR shifts the exponent input by +1 (n_f = n_s + 1) while keeping base the same, and the JOR asserts the output scales by the base (o_f \u2248 o_s * base), which matches the translation canonical form f(b, n+1) = f(b, n) * b, an additive shift in the exponent producing a multiplicative shift in the output.",
@@ -1367,7 +1367,7 @@
       "jor": "o_return_f == o_return_s",
       "votes": [
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "D_star",
           "reasoning": "The JIR sets the follow-up input to the reciprocal of the source input (1/x), and the JOR asserts that signum(1/x) == signum(x), which is the canonical D* form f(1/x) = psi(f(x)) with psi being identity.",
@@ -1420,7 +1420,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "G",
           "reasoning": "The JIR encodes input negation (x_f \u2248 -x_s) and the JOR asserts the output negates correspondingly (o_return_f == -o_return_s), which is the classic odd-function symmetry f(-x) = -f(x) with sigma = tau = sign-flip, fitting the G (group/symmetry) block.",
@@ -1462,7 +1462,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "L_star",
           "reasoning": "The JIR relates a follow-up input x_f to a scaled source input (x_f \u2248 3*x_s, i.e., multiplication by positive constant k=3), and the JOR asserts signum(3*x) == signum(x), which is the 0-degree homogeneity property f(k*x) = f(x) for k > 0, the canonical L* form.",
@@ -1504,7 +1504,7 @@
           }
         },
         {
-          "vendor": "bltcy_opus",
+          "vendor": "anthropic_opus",
           "model": "claude-opus-4-6",
           "label": "O_le",
           "reasoning": "The JIR states i_x_s <= i_x_f and the JOR states o_return_s <= o_return_f, which directly encodes monotonicity: if x1 <= x2 then signum(x1) <= signum(x2).",
