@@ -1321,33 +1321,6 @@ B (Lit.)    & 0/5                                           & $[0.00, 0.43]$ \\
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
-\centering
-\caption{Paired contingency for Set~N vs Set~L on the $n=5$ DeepCrime
-pilot. The Set~N vs Set~B contingency is identical because Set~B also
-detected $0/5$. The appropriate paired-binary test is McNemar's exact
-test on the $(b, c) = (2, 0)$ discordant counts: two-sided exact
-$p = 0.500$ (binomial $X = 0$ in $n = 2$ trials with $p_0 = 0.5$ under
-$H_0$ of equal Set N / Set L performance); equivalently, an unpaired
-Fisher exact $2\times 2$ on rows = Sets, columns = (detected, missed)
-yields two-sided $p = 0.444$. Both numbers fail to reject $H_0$ at
-$\alpha = 0.05$ because $n = 5$ is below the threshold at which a
-$2 / 5$ vs $0 / 5$ contrast is inferentially decisive; per-pair
-statistics in supplementary~S3 \texttt{deepcrime\_pilot\_stats.json}.}
-\label{tab:deepcrime-contingency}
-\small
-\begin{tabular}{l c c c}
-\toprule
-                  & Set~L detected & Set~L missed & Total \\
-\midrule
-Set~N detected    & 0              & 2            & 2 \\
-Set~N missed      & 0              & 3            & 3 \\
-\midrule
-Total             & 0              & 5            & 5 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 \paragraph{Reading the pilot (inferential verdict).}
 At $n=5$ the appropriate paired-binary test is McNemar's exact on the discordant counts $(b, c) = (2, 0)$ for both Set N vs Set L and Set N vs Set B: two-sided exact $p = 0.500$ (and the unpaired-Fisher analogue yields two-sided $p = 0.444$ on the same contingency); the pilot is therefore underpowered for an inferential conclusion at $\alpha = 0.05$. The 2/5 vs 0/5 vs 0/5 detection contrast is reported as descriptive evidence consistent with the direction of the framework's $\mathcal{L}^{*}$-block prediction, not as a hypothesis confirmation. The pilot's load-bearing claim is that the comparative-evaluation infrastructure runs end-to-end against real-fault-style mutations on the trained checkpoint; non-vacuousness of the $\mathcal{L}^{*}$-block prediction and the parameter-distribution candidate-ninth-block reading are candidate evidence requiring a larger $n$.
 
@@ -2402,36 +2375,8 @@ METRIC and METRIC+ pioneered the categorical scaffolding that any structural the
 
 \paragraph{Worked example: METRIC$+$ categories for a sorting library, mapped onto NOETHER blocks.}
 \label{para:metricplus-sorting}
-For a numerical comparison-sort library, METRIC$+$'s eleven input-domain $\times$ output-relation category pairs (the $9$-category METRIC base extended by $2$ output-domain pairs in METRIC$+$, per~\cite{SunMETRICplus2021} Table~II) collapse onto two NOETHER blocks: $G$ (comparator-permutation symmetry $\mathfrak{S}_n$) and $O_{\le}$ (partial order). Table~\ref{tab:metricplus-sorting} records the mapping cell by cell: $9$ of $11$ category pairs map to $G$ or $O_{\le}$; the remaining $2$ ($D_5$ additive shifts, $R_4$ multiplicative scaling) are out-of-scope by construction for a comparison sort whose semantics ignore order-preserving univariate input transformations. The $11 \to 2$-block compression operationalises NOETHER's deflationary direction: a NOETHER-aware METRIC$+$ user can prune the $9$ category-pair enumerations to two algebraically distinct MetaPatterns ($m_{\mathrm{inv}}$ via $G$, $m_{\mathrm{mono}}$ via $O_{\le}$) without loss of MR coverage. This is a qualitative-plus-quantitative coverage contrast, not a head-to-head fault-detection comparison: METRIC$+$ is a category-enumeration scaffold without an automated identification pipeline, so kill-rate head-to-head requires re-implementing METRIC$+$ from prose (committed as follow-up~(i) of supplementary~S4).
+For a numerical comparison-sort library, METRIC$+$'s eleven input-domain $\times$ output-relation category pairs (the $9$-category METRIC base extended by $2$ output-domain pairs in METRIC$+$, per~\cite{SunMETRICplus2021} Table~II) collapse onto two NOETHER blocks: $G$ (comparator-permutation symmetry $\mathfrak{S}_n$) and $O_{\le}$ (partial order). the cell-by-cell mapping (supplementary~S8) records $9$ of $11$ category pairs mapping to $G$ or $O_{\le}$; the remaining $2$ ($D_5$ additive shifts, $R_4$ multiplicative scaling) are out-of-scope by construction for a comparison sort whose semantics ignore order-preserving univariate input transformations. The $11 \to 2$-block compression operationalises NOETHER's deflationary direction: a NOETHER-aware METRIC$+$ user can prune the $9$ category-pair enumerations to two algebraically distinct MetaPatterns ($m_{\mathrm{inv}}$ via $G$, $m_{\mathrm{mono}}$ via $O_{\le}$) without loss of MR coverage. This is a qualitative-plus-quantitative coverage contrast, not a head-to-head fault-detection comparison: METRIC$+$ is a category-enumeration scaffold without an automated identification pipeline, so kill-rate head-to-head requires re-implementing METRIC$+$ from prose (committed as follow-up~(i) of supplementary~S4).
 
-\begin{table}[h]
-\centering
-\caption{Mapping of $11$ input-domain ($D$) $\times$ output-relation ($R$) METRIC$+$ category pairs~\cite{ChenMETRIC2016, SunMETRICplus2021} onto NOETHER blocks for a deterministic comparison-sort library under $\mathcal{A}_{\mathrm{sort}}$. The sort-specific specialisation is operationalised here; $9$ pairs collapse onto two non-empty blocks ($G$, $O_{\le}$); $2$ pairs ($D_5$, $R_4$) are out-of-scope.}
-\label{tab:metricplus-sorting}
-\small
-\adjustbox{max width=\textwidth}{%
-\small
-\begin{tabular}{lll}
-\toprule
-METRIC$+$ category pair & NOETHER block & Comment \\
-\midrule
-$D_1$ (permutation of input list) & $G$ ($\mathfrak{S}_n$) & $m_{\mathrm{inv}}$: sort output invariant \\
-$D_2$ (append element to input) & $O_{\le}$ & $m_{\mathrm{mono}}$: sort respects added element \\
-$D_3$ (remove element from input) & $O_{\le}$ & $m_{\mathrm{mono}}$: inverse of $D_2$ \\
-$D_4$ (replace element with permuted copy) & $G$ ($\mathfrak{S}_n$) & $m_{\mathrm{inv}}$: variant of $D_1$ \\
-$D_5$ (add constant to all inputs) & out-of-scope & no MR (sort semantics ignore additive shifts) \\
-$D_6$ (concatenate two sorted lists) & $G$ ($\mathfrak{S}_n$) & $m_{\mathrm{inv}}$: merge property \\
-$R_1$ (output element-wise equality) & $G$ & identity oracle (degenerate MR) \\
-$R_2$ (output permutation equality) & $G$ ($\mathfrak{S}_n$) & $m_{\mathrm{inv}}$ \\
-$R_3$ (output prefix equality) & $O_{\le}$ & $m_{\mathrm{mono}}$ on prefixes \\
-$R_4$ (multiplicative scaling of input) & out-of-scope & no MR (sort semantics ignore multiplicative scaling) \\
-$R_5$ (subset relation on output) & $O_{\le}$ & $m_{\mathrm{mono}}$ on subsets \\
-\midrule
-\textit{Coverage summary} & $9 \to G \cup O_{\le}$, $2$ out-of-scope & NOETHER block compression: $11 \to 2$ non-empty MetaPatterns \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
 
 \paragraph{Small-scale manual METRIC$+$ derivation on three \S\ref{subsec:test-design} SUTs.}
 \label{para:metricplus-headtohead-small}
@@ -2444,66 +2389,14 @@ and \texttt{powerSig} (bivariate non-linear, multiplicative). For each
 SUT we enumerate which METRIC$+$ category pairs yield a non-vacuous
 Set-MP MR; classify the algebra-block of each non-vacuous Set-MP MR
 under $\mathcal{D}(\mathcal{A}_P)$; and identify which Set-N MR (if any)
-covers the same algebraic content. Table~\ref{tab:metricplus-headtohead-small}
-records the analysis. The full PIT-based head-to-head kill-rate
+covers the same algebraic content. The per-cell analysis (supplementary~S8) records, across the three SUTs, $6$, $5$, and $3$ non-vacuous Set-MP MRs respectively, each mapping to a NOETHER block also covered by Set-N's $5$ algebra-derived MRs, while three Set-N MRs ($m_{\mathrm{adj}}$, $m_{\mathrm{train\text{-}rev}}$, $m_{\mathrm{conv}}$) have no METRIC$+$ D$\times$R counterpart. The full PIT-based head-to-head kill-rate
 comparison is committed as supplementary~S4 item~(i); the
 present manual analysis is the algebra-block mapping component of
 that follow-up and is reported here to make the framework-vs-METRIC$+$
 coverage relationship concrete on the head-to-head substrate.
 
-\begin{table}[h]
-\centering
-\caption{Manual METRIC$+$ D$\times$R framework applied to three SUTs of
-the \S\ref{subsec:test-design} substrate (bivariate input arity). For
-each (SUT, METRIC$+$ pair) cell: ``--'' if vacuous on that SUT's
-algebra; ``$\to$ block'' identifies the NOETHER block of the
-non-vacuous Set-MP MR; the second column lists the Set-N MR (if any)
-covering the same algebraic content. \textbf{Across the three SUTs,
-METRIC$+$ yields $6$, $5$, and $3$ non-vacuous Set-MP MRs respectively
-(the remaining $5$, $6$, and $8$ D$\times$R pairs are vacuous because
-the SUT's arity is fixed, the output is scalar, or the
-input-transformation is structurally out-of-scope for the SUT's
-algebra); each non-vacuous Set-MP MR maps to a NOETHER block also
-covered by Set-N's $5$ algebra-derived MRs. Conversely, three Set-N
-MRs ($m_{\mathrm{adj}}$, $m_{\mathrm{train\text{-}rev}}$,
-$m_{\mathrm{conv}}$) have no METRIC$+$ D$\times$R counterpart.} The structural reading: NOETHER's $G$/$O_{\le}$
-block coverage subsumes METRIC$+$'s $D_1$--$D_6$/$R_1$--$R_5$
-output on bivariate-input SUTs in this substrate, while NOETHER's
-$T^{*}$/$\mathcal{T}^{*}_{\mathrm{rev}}$/$\mathcal{L}^{*}$ blocks add MR templates
-the D$\times$R framework does not enumerate. The kill-rate
-projection in the rightmost column anticipates that on these three
-SUTs Set-MP's reach would be bounded above by Set-N's $G$/$O_{\le}$
-contribution; a full PIT execution to confirm this is committed as
-follow-up~(i).}
-\label{tab:metricplus-headtohead-small}
-\footnotesize
-\adjustbox{max width=\textwidth}{%
-\begin{tabular}{l l l l}
-\toprule
-METRIC$+$ pair & \texttt{midpoint} & \texttt{hypotSig} & \texttt{powerSig} \\
-\midrule
-$D_1$ (input swap)            & $\to G$ ($\rho_{\mathrm{swap}}$ via $m_{\mathrm{inv}}$) & $\to G$ ($\rho_{\mathrm{swap}}$) & -- (non-symmetric) \\
-$D_2$ (append element)        & -- (fixed arity) & -- (fixed arity) & -- (fixed arity) \\
-$D_3$ (remove element)        & -- (fixed arity) & -- (fixed arity) & -- (fixed arity) \\
-$D_4$ (replace with permuted) & $\to G$ (variant of $D_1$) & $\to G$ & -- \\
-$D_5$ (add constant to inputs)& $\to O_{\le}$ ($\rho_{\mathrm{trans}}$ via $m_{\mathrm{mono}}$) & out-of-scope (non-linear) & out-of-scope \\
-$D_6$ (scale inputs)          & $\to O_{\le}$ ($\rho_{\mathrm{scale}}$ via $m_{\mathrm{mono}}$) & $\to \mathcal{L}^{*}$ ($\rho_{\mathrm{scale}}$ via $m_{\mathrm{conv}}$/$L_{\mathrm{scale}}$) & $\to \mathcal{L}^{*}$ \\
-$R_1$ (output element equality)& $\to G$ (identity oracle) & $\to G$ & $\to G$ \\
-$R_2$ (output permutation eq.) & -- (scalar output) & -- (scalar) & -- (scalar) \\
-$R_3$ (output prefix equality) & -- (scalar) & -- (scalar) & -- (scalar) \\
-$R_4$ (output multiplicative)  & $\to O_{\le}$ & $\to \mathcal{L}^{*}$ & $\to \mathcal{L}^{*}$ \\
-$R_5$ (output subset)          & -- (scalar) & -- (scalar) & -- (scalar) \\
-\midrule
-\textit{Set-MP non-vacuous} & 6 / 11 & 5 / 11 & 3 / 11 \\
-\textit{Set-MP $\to$ blocks} & $\{G, O_{\le}\}$ & $\{G, \mathcal{L}^{*}\}$ & $\{G, \mathcal{L}^{*}\}$ \\
-\textit{Set-N coverage of those blocks} & yes ($m_{\mathrm{inv}}$, $m_{\mathrm{mono}}$) & yes ($m_{\mathrm{inv}}$, $L_{\mathrm{scale}}$) & yes ($m_{\mathrm{inv}}$, $L_{\mathrm{scale}}$) \\
-\textit{Set-N MRs without Set-MP counterpart} & $m_{\mathrm{adj}}$, $m_{\mathrm{train\text{-}rev}}$, $m_{\mathrm{conv}}$ (at limits) & same three blocks & same three blocks \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
 
-The structural finding from Table~\ref{tab:metricplus-headtohead-small} is
+The structural finding is
 that METRIC$+$'s D$\times$R framework, \emph{within Sun et~al.\ 2021's
 published input--output category catalogue of 11 pairs~\cite{SunMETRICplus2021}
 as instantiated on these three SUTs}, produces a strict subset of NOETHER's
@@ -2535,46 +2428,8 @@ meal-ordering service, 150 LOC). All four are business-rule billing
 programs whose semantics are categorical+numeric rather than
 mathematical/physical. Applying NOETHER's structural test to each
 subject's category-choice specifications yields the per-block
-non-emptiness verdicts in Table~\ref{tab:metricplus-sun2021-scope}.
+non-emptiness verdicts summarised in supplementary~S8: all four subjects are in scope via a non-empty order ($O_{\le}$) block (with partial $G$/$\mathcal{L}^{*}$ regimes), at NOETHER MetaPattern cardinality $2$--$3$ per subject against METRIC$+$ instance-MR cardinality $142$--$3152$ (Sun et~al.\ 2021 Table~17), a $2$--$3$ orders-of-magnitude compression that the analysis below reads as complementary rather than competitive.
 
-\begin{table}[h]
-\centering
-\caption{NOETHER structural scope analysis on Sun et al.~2021 METRIC$+$
-benchmark subjects~\cite{SunMETRICplus2021}. Per-block entries: \textbf{Y}
-non-empty (\cmark), \textbf{P} partial (\tildemark, block applies on a
-restricted regime such as linear-pricing tier or within-class
-permutation), \xmark{} empty. Source-code-level instance MR cardinality
-(last column) is
-reported by Sun et~al.\ 2021 Table~17; NOETHER's MetaPattern cardinality
-(second-to-last column) is the equivalence-class summary at the
-algebra-block level. The two cardinalities differ by 2--3 orders of
-magnitude because METRIC$+$'s output scales combinatorially with
-category-choice products while NOETHER's output is an equivalence-class
-summary; the analysis below interprets this contrast as
-\emph{complementary} rather than \emph{competitive}.}
-\label{tab:metricplus-sun2021-scope}
-\footnotesize
-\begin{tabular}{l c c c c c c c c c c}
-\toprule
-Subject & $G$ & $O_{\le}$ & $T^{*}$ & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $\mathcal{L}^{*}$ & $\mathcal{D}^{*}$ & $\mathcal{E}^{*}$ & $\mathcal{B}^{*}_{\mathrm{rel}}$ & NOETHER MPs & METRIC$+$ MRs \\
-\midrule
-\texttt{SPHONE}    & \xmark   & \cmark   & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 2 & 142 \\
-\texttt{SBAGGAGE}  & \tildemark & \cmark & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 3 & 735 \\
-\texttt{SEXPENSE}  & \xmark   & \cmark   & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 2 & 1130 \\
-\texttt{SMEAL}     & \tildemark & \cmark & \xmark & \xmark & \cmark   & \xmark & \xmark & \xmark & 3 & 3152 \\
-\bottomrule
-\end{tabular}
-
-\smallskip
-\footnotesize
-\textit{Legend:} \textbf{Y} = non-empty block; \textbf{P} = partial
-(restricted regime); \xmark{} = empty. ``NOETHER MPs'' = Set N
-MetaPattern cardinality; ``METRIC$+$ MRs'' = instance-level MR
-cardinality reported by Sun et~al.~2021 (Table~17), comparable
-only after either expanding NOETHER MetaPatterns to instance MRs
-(via the category-choice enumeration) or contracting METRIC$+$ MRs
-to algebra-block equivalence classes.
-\end{table}
 
 The analysis establishes three findings. First, NOETHER is
 \emph{in-scope} on all four METRIC$+$ subjects, contradicting the
