@@ -58,3 +58,32 @@
 ## 6. 对绑定约束的净效果
 
 中立腿**已建立**（破自指），但**当前形态是双刃**：移除了"无外部证据"批评，却引入"你唯一的中立检验显示 aggregate 被压制、且未预注册/单 seed"风险。**只有**按 §5 补全（prereg→seed12/13→修 G1→clustered 统计→互补框架）后，才能把它从"双刃"变成稳的 minor-revision 杠杆。否则它把一个 major 理由换成另一个。
+
+---
+
+## 7. 更正：用户所指"云端任务"=A16 Route B 多种子（已 landed 入 Threats）
+
+> 2026-06-20 fetch 后定位：云端产出在分支 `origin/claude/pensive-turing-0x5kyw`（commits 5fabbe2→0417284→3669215→51c7565→1cd40b7），**与本工作分支 codex-tosem-... 分叉**，且 §1-6 评的 experiment/s5_aligned seed11 是**另一个**产物。本节评 cloud 任务本身。
+
+### 它做了什么（与 §1-6 的 23-subject 单种子不同）
+配对多种子：gcd + sin × GenMorph **全部 12 发表种子**，同 PIT mutant 集、同评测机制、Set G 用 GenMorph **发表** `mutants_killed.csv`（不重跑），逐 mutant 2×2 + 精确 McNemar（逐种子 + pooled）。直接回答威胁 **A7（原 head-to-head 仅 seed11）**，并纠正旧 pilot 的 Python 重写偏差（用真实 GenMorph 工具链）。已 landed 入论文 Threats §baseline-strength-asymmetry + 重生 PDF。
+
+### 数据（已逐字核对与 landed 文字一致）
+| subj | 种子 | SetN≥SetG | pooled N_only/G_only | pooled McNemar p |
+|---|---|---|---|---|
+| gcd | 12 | **4/12** | 6 / 56 | **2.97e-11** |
+| sin | 11(seed31 失败) | **2/11** | 12 / 29 | **0.012** |
+seed11 gcd: N=13/G=11 = Set N 最高、Set G 最低之一 → seed11 对 Set N 最有利。
+
+### 达到预期效果？**方法论上是（优秀且诚实）；结果是对 Set N 的"负向确认"。**
+- ✅✅ **严谨诚实**：真实工具链（无重写）、中立 substrate（GenMorph 发表 Set G）、12 种子配对 McNemar、直接关掉 A7 单种子威胁。
+- ✅ **数字诚实**：landed 入 Threats 的所有数字逐字核对与 `multiseed_pair_summary.json` 一致。
+- ✅ **反漂移合规**：landed 入 **Threats**（非上位成 superiority）；GenMorph 优势不仅没藏，反而强化披露（D1/D4 ✓）。
+- ⚠ **结果负向**：中立 substrate 上 Set G 在 Math（gcd+sin）**seed-robust 压制** Set N；seed11 是对 Set N 最有利的种子→单种子若有偏是偏向 Set N，**不高估** Set G。
+- ⚠ **覆盖局限**：仅 2 个 Math subject；连 gcd（exact-integer 强域）多种子下仍被压制；**未** multiseed 验证 Guava 胜（§2 唯一正向仍单种子）。
+- ⚠ **分支分叉**：cloud work 已改 Threats + 重生 PDF，在 `claude/pensive-turing-0x5kyw`，与本分支都改 paper（Threats/comparison 区）→ **需合并协调**。
+- ⚠ **小瑕疵**：Threats 文字"all 12 seeds"，sin 实为 11；Set N followup 用 clone-source-XML workaround（README 诚实标注 native followup 报错）。
+- ◻ **另一条腿（独立人类 κ）cloud 未触及，仍 open。**
+
+### 净判断
+高质量、诚实、**增信**的工作，正确关掉了 A7 单种子批评；代价是白纸黑字确认 Set N 在 Math 上被 seed-robust 压制——与论文 **identification（非 effectiveness）** 定位自洽，放 Threats 是对的。它**不**提供故障检测胜点，也不应被当作。对绑定约束：关掉 A7 + 展示 exemplary honesty，但无 fault-detection 正向；Guava 正向仍单种子、独立人类 κ 仍缺。
