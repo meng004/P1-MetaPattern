@@ -11,10 +11,14 @@ commit. Each item is independent and can be done in any order.
 > 对抗验证：17 项 blocker/major 仅 **8 项证实为真**（9 项误读/已自界定）。完整报告：`docs/review_2026-06-20/submission_maturity_assessment_2026-06-20.md`。
 > 关键洞察：冷读网关比有验证的 Claude 更狠——真实审稿人不买"self-disclosure 即免责"，提接收率须**重构叙事**而非仅修硬伤。
 
-### 🔴 P0（半天可清，解除近 desk-reject）
-- [ ] **B1 数据完整性**：Set L 结构覆盖 `0.40`→`0.20`（arxiv L1266/1277/2325 + 投稿 tex `manuscript_singleblind` L1073/2127、`manuscript_anonymized` L1051/2144），删假"L\* reached"声明（Set L 实际只达 G），重跑 `analysis.py` 确认 Table 4 重生（SSOT `table4.json`=0.2 已核验）
-- [ ] **B3 缺失 artifact**：补/改 `S3 (lrca_audit.md)`、`S2 (18mr_audit/)` 至真实路径（数据在 `experiment/s5/`），全仓库跑 supplementary 指针存在性检查；κ=0.857 原始标注若未存须重导
-- [ ] **B4 κ 误报**：正文补 majority-vs-author Cohen's κ=0.931（`lrca_kappa.json`）+ 2 处分歧，调和 n=33/36，以人评 κ 领头（勿只报 LLM-LLM Fleiss=1.000）
+### 🔴 P0（2026-06-20 已执行，commit ca3f333；构建 80pp/0 undef/0 missing）
+- [x] **B1 数据完整性**：Set L 覆盖 `0.40`→`0.20`（arxiv 3 处 + 改假"G and L\*"为只达 G）；analysis.py 重算确认 0.20、H1 仍 HOLDS。submission/(gitignore 派生快照)本地同改，待整体重生。
+- [x] **B4 κ 误报**：移除 SSOT 不支持的 Fleiss=1.000/n=33，改报 majority-vs-author Cohen's κ=0.931（n=36,34/36）+ per-rater 0.927/0.927/0.929 + 命名 2 分歧（L_idem_at_one、B_rel_xor_reverse）。
+- [x] **B3(i) lrca_audit.md**：创建 `supplementary/S3_case_study/lrca_audit.md` + 复制原始 `lrca_kappa.json`/`lrca_llm_labels.json`，引用可解析。
+- [ ] **B3(ii) 18mr_audit κ=0.857（🔴 BLOCKED，需作者）**：raw labels 全仓库不存在，无法 honestly 创建/repoint。选项 (a) 定位/重导原始标注存入 S2；(b) 软化引用（"available on request"/删"released in 18mr_audit/"）。未擅自伪造或弱化。
+- [x] **action2**：跨域 "six blocks"→"five blocks"（conservation 是 G 的 MR-class，非第九块）。
+- [ ] **B4 复核（需作者）**：本次移除原 Fleiss=1.000 perfect-agreement 表述；若另有真实 Fleiss 计算请确认是否回填。
+- [ ] **submission/ 重生（需作者）**：submission/ 为 gitignore 派生快照；relabel/six-blocks/B4 未进快照，投稿前从修正后 arxiv 整体重生。
 
 ### 🟡 P1（2-3 周，最大天花板）
 - [ ] **B2 篇幅压缩**：80 页→≤45；L\*/IBT 电池、DeepCrime pilot、METRIC+ 对决、LLM-ensemble 各降为 1 表（全表入 S9），EQ1-EQ3 提为独立主证据节；并清过程叙事残留（pre-register/committed-as-follow-up/活文档措辞 L1357）
