@@ -7,7 +7,7 @@ Scope: `NOETHER_paper.bib`, with special attention to references selected from t
 Evidence sources:
 
 - Local bibliography: `NOETHER_paper.bib`.
-- Undermind bibliography: `/Users/limeng/Downloads/Undermind - Scholarly metamorphic testing methods characterizing MR identification modes and operatoralgebraic MR class derivation.bib`.
+- Undermind bibliography: `<DOWNLOADS>/Undermind - Scholarly metamorphic testing methods characterizing MR identification modes and operatoralgebraic MR class derivation.bib`.
 - Paper-search MCP:
   - CrossRef DOI lookup for publisher metadata.
   - CrossRef title search where DOI was missing.

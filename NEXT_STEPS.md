@@ -11,6 +11,10 @@ commit. Each item is independent and can be done in any order.
 > 对抗验证：17 项 blocker/major 仅 **8 项证实为真**（9 项误读/已自界定）。完整报告：`docs/review_2026-06-20/submission_maturity_assessment_2026-06-20.md`。
 > 关键洞察：冷读网关比有验证的 Claude 更狠——真实审稿人不买"self-disclosure 即免责"，提接收率须**重构叙事**而非仅修硬伤。
 
+> **【第1轮闭环审稿 2026-06-20】** 5 隔离独立 reviewer（EIC+3peer+DA，`wf_7e1d144f-32b`）全部 **major revision**，4 个非 DA 无一达 minor（目标判据未达）。综合：`docs/review_2026-06-20/round1_review_synthesis.md`。
+> **硬墙判定（决定性）**：R2/R3/EIC 达 minor 需 **experiment**（独立人类 inter-rater κ + 一条外部/独立验证腿），我做不到、需作者执行——R2 原话"cannot exceed major regardless of writing quality"。R1（形式方法）则**仅靠 writing 即可达 minor**。
+> **写作上限路径**：A9 压缩~40-45页 + 理论 headline 重定位（Theorem 1 降 lemma，IBT/1′证伪 carry）+ Theorem 2 改名（complexity 非 decidability）+ EQ1 reframe 为 definitional + 平衡 contributions（非循环结果 carry）+ title discovery→systematisation + "10 dims"去headline + Zhou cite 核查。做完可让 R1 minor + 清全员 writing blocking，但 R2/R3/EIC 仍卡 experiment。
+
 ### 🔴 P0（2026-06-20 已执行，commit ca3f333；构建 80pp/0 undef/0 missing）
 - [x] **B1 数据完整性**：Set L 覆盖 `0.40`→`0.20`（arxiv 3 处 + 改假"G and L\*"为只达 G）；analysis.py 重算确认 0.20、H1 仍 HOLDS。submission/(gitignore 派生快照)本地同改，待整体重生。
 - [x] **B4 κ 误报**：移除 SSOT 不支持的 Fleiss=1.000/n=33，改报 majority-vs-author Cohen's κ=0.931（n=36,34/36）+ per-rater 0.927/0.927/0.929 + 命名 2 分歧（L_idem_at_one、B_rel_xor_reverse）。
@@ -20,19 +24,35 @@ commit. Each item is independent and can be done in any order.
 - [ ] **B4 复核（需作者）**：本次移除原 Fleiss=1.000 perfect-agreement 表述；若另有真实 Fleiss 计算请确认是否回填。
 - [ ] **submission/ 重生（需作者）**：submission/ 为 gitignore 派生快照；relabel/six-blocks/B4 未进快照，投稿前从修正后 arxiv 整体重生。
 
-### 🔴 本方案补充（对抗验证 + 人工核验新增，`docs/review_2026-06-20/fix_plan_2026-06-20.md`）
+### 🟢 MVP 扩张方案 + 执行物（2026-06-20，路径：补实验重投 TOSEM 1区，兜底 IST）
+> 完整方案 `docs/review_2026-06-20/mvp_expansion_plan.md`；缺口诊断 `sacos_gap_diagnosis.md`。诚实概率：完整 MVP 后 TOSEM 达 4-minor ≈ 15-30%；更可能第二轮 major+再 R&R；IST 兜底净收益正。
+- [x] **MVP 两份执行物已就绪（已逐字核对真实性）**：
+  - `docs/review_2026-06-20/mvp_s5_aligned_multiseed_runbook.md`（s5_aligned 多-seed 云执行包，CPU-only，含预注册分层假设防 HARKing + 对齐验证 + 回报模板）
+  - `docs/review_2026-06-20/mvp_kappa_codebook.md`（独立人类 κ 盲标 codebook：8-block 判据卡 + 41 条待标 MR[逐字来自 lrca_llm_labels.json 36 条 + SACOS 5 锚] + κ 计算 + 诚信约束）
+- [ ] **B 阶段 — 需用户提供**（最小可信组合）：(1) Ubuntu 云主机 ≥30GB+egress 放行 zenodo/apt/maven（无需 GPU）；(2) push `experiment/s5_aligned` 到私有 repo（remote 已配 meng004/S5_aligned_experiment）；(3) 2 名独立 rater（非作者）。
+- [ ] **A 阶段（后做）— writing 修复**：A9 压缩≤45页 / 理论 headline 重定位 / EQ1 reframe / 平衡 contributions / abstract SCP→TOSEM framing（用户已选先 B 后 A）。已完成：title discovery→identification、Theorem 2 改名（complexity）、A6 文献、A14 GenAI 披露。
+
+### 🟢 A 阶段工业资料整合（2026-06-20 已执行；评估 `docs/review_2026-06-20/industrial_assets_assessment.md`）
+> 编译验证：exit 0 / 0 undef refs（6 处 undefined 全为字体回退 cosmetic）/ 0 missing-char / 0 overfull>50pt / bibtex 0 didn't-find / 75 cited=75 defined / 82pp。
+- [x] **P0 破"全 order 单块"**：§Out-of-construction(i) + Expert-monotonicity 段加 LOCUST 非-order 例外（guard-conditioned MTC-vs-boron 接 \S negative-pwr 作 ρ_MTC-bor 工业 witness + burnup-sensitivity）；"all 110"→"large majority"；"subsumed without exception"→"with few exceptions"（消解与 Wilson[0.966,1.000]/LOCUST 例外的内部矛盾）。诚实定位：LOCUST 非-order 是 Translate-unreachable **障碍**（支撑 C2b 边界），非 block-diversity 覆盖。
+- [x] **P2 破"作者自实现 substrate"**：§Construct-validity 追加开发/测试分离独立性段——SACOS/SPARK/LOCUST 由作者外的反应堆物理工程团队开发、作者为独立第三方 V&V 方，工业 subject 侧 implementation-fidelity 与 framework-design 解耦；诚实残留：MR 识别+block 标注仍作者方（独立人类 κ 控制 labelling）、域集中（cross-domain 另述）。**不宣称"MR 独立"**。
+- [ ] **P1 华能三程序（HTGR）扩张 — 开放决策（需用户拍板）**：耦合/热工/事故（NUSOL，44 MR，HTGR 氦冷，2025 v1.x 新软件）未注入正文/未入 S11 SSOT。注入前需 (a) MR 逐字提取入 supplementary S11；(b) HTGR↔PWR 跨堆型可比性用 governing-eq（能量守恒）论证；(c) DO NOT：SPARK+LOCUST 不算两独立点、non-order/breadth 不进 Abstract、引用非导入防 salami。**当前未注入**——三个核安审码已交付两个最高 ROI 赢点（P0+P2），华能三程序为边际 breadth + 较高 framing 风险，待用户决定是否做。
+
+### 🔴 fix_plan 补充（对抗验证 + 人工核验新增，`docs/review_2026-06-20/fix_plan_2026-06-20.md`）
 - [x] **A0-sec §5 敏感信息（已执行 2026-06-20）**：shipping 数据文件（`supplementary/S3_case_study/lrca_kappa.json`/`lrca_llm_labels.json`）与 `docs/review_round_polish/round2/rereview_report.md` 的代理商厂商标识已 scrub 为中性名（厂商=Anthropic Opus）；§5.B.2 复扫 tracked 树 0 命中（除 RELEASE_CHECKLIST 扫描器正则）。⚠️ 该标识曾随 ca3f333 进公开 repo 历史，因属代理商**名称**非凭据，未做历史改写——如需彻底清除可 force-push（破坏性，属作者决策）。
-- [ ] **A5 理论 headline 重定位（B1–B7 遗漏，三轮收敛核心）**：Theorem 1/2 降格为 closure lemma / 复杂度附属，IBT + Theorem 1′ 证伪提为 headline（残留 over-headline 仅 L207-212 图 / L270-271 box / L391 roadmap；Abstract 已对齐）。零新证明（IBT/Thm1′ 证明已在 `theory/` + Appendix C.6）。红线：禁在 response letter 计为 significance 实质回应
+- [~] **A5 理论 headline 重定位（B1–B7 遗漏，三轮收敛核心）**：Theorem 1/2 降格为 closure lemma / 复杂度附属，IBT + Theorem 1′ 证伪提为 headline（残留 over-headline 仅 L207-212 图 / L270-271 box / L391 roadmap；Abstract 已对齐）。零新证明（IBT/Thm1′ 证明已在 `theory/` + Appendix C.6）。红线：禁在 response letter 计为 significance 实质回应
+  - [x] **Theorem 2 术语一致性（2026-06-20 已执行）**：定理已改名"Complexity"且 L617 statement 自述"complexity bound rather than a decidability result"，但全文 ~14 处仍称"polynomial-time decidability"——内部矛盾，且正中 gpt-5 Reject 理由"Theorem 2 vacuous as decidability"。统一改为 polynomial-time **constructibility**（"holds/preserves/theorem" 语境）/ **complexity**（"bounds the complexity"/proof header/§heading）。保留 L617 disclaimer + L620-622 query-equivalence 的合法 (un)decidable 用法 + 内部 label `thm:decidable`（不可见）。编译 exit0/0undef/0missing/0overfull>50pt/82pp。
+  - [ ] **剩余（author-judgment）**：把 Theorem 1 显式降格为 lemma 属叙事重构（C2a 当前已自述"intentionally modest, well-formedness guarantee"，contributions C2b=Thm1′证伪/C2c=IBT 已 prominent）——是否进一步降格留作者拍板，不擅自重构。
 - [ ] **B2 压缩护栏**（执行 B2 时强制）：GenMorph 败局 McNemar p=0.0043 + "dominated by Set G" 须留主文（L1855 box 不可降 cross-ref，它唯一承载该定量披露）；欠功效 underpowered 标注 + L\*-blindness "derivable without data" 限定移 supplement 后须保留——否则即 §6.4/§10.7 visibility-laundering
 - [ ] **A15 补建脚本**：`scripts/bib_all_cited_check.py` 实际不存在（CLAUDE.md §3 引用它），须新建
 
 ### 🟡 P1（2-3 周，最大天花板）
 - [ ] **B2 篇幅压缩**：80 页→≤45；L\*/IBT 电池、DeepCrime pilot、METRIC+ 对决、LLM-ensemble 各降为 1 表（全表入 S9），EQ1-EQ3 提为独立主证据节；并清过程叙事残留（pre-register/committed-as-follow-up/活文档措辞 L1357）
-- [ ] **B6 最近邻文献**：补并尖锐对照 Khritankov-Iakusheva 2024、Gotlieb Symmetric Testing 2003/2006、Patel-Hierons 2018、Gruver 2023、Kaba-Ravanbakhsh 2023、Saha-Kanewala 2019、MemoRIA 2024、MUT 2024；delta 定位为"construction+proof over the layer"
+- [x] **B6/A6 最近邻文献（已补 2026-06-20，第1轮）**：6 条经 paper-search-mcp 核实的 bibtex（Gotlieb 2003/2006、Patel-Hierons 2018、Khritankov-Iakusheva 2024、Gruver 2023、Kaba 2023）入 `NOETHER_paper.bib`（69→75 条）+ §2.3 末插入 195 词对照段，delta 定位为"construction+proof over operator-block layer, not inventing the symmetry layer"；Saha-Kanewala/MemoRIA 原已引；Hu/Mariani/Liu 经核查不可定位（L321 已记录）。编译 0 undef cite。
 
 ### 🟢 P2/P3（低成本）
-- [ ] **B5** Theorem 2 加一句限定（\|G\| 可指数→output-polynomial，非 input-polynomial）；abstract/intro 同步
-- [ ] **B7** 切 `\documentclass[acmsmall,review,manuscript,screen]{acmart}`；清双盲/OpenReview 残留（TOSEM 单盲）；加 ACM GenAI 披露；披露 arXiv 预印本
+- [ ] **B5** Theorem 2 加一句限定（\|G\| 可指数→output-polynomial，非 input-polynomial）；abstract/intro 同步。注：当前文本已大量限定（L626 caption/L648-652 "On infinite groups"/C2a/boundary box 均带 "finite generating set"），实际缺口极小，避免 over-editing
+- [ ] **B7 合规**：[x] ACM GenAI 披露段已补（2026-06-20，acks 内，引 §case-study/§threats，两类用途）；[ ] documentclass→acmsmall,review；[ ] 清双盲残留；[ ] 披露 arXiv 预印本
 
 ### ✅ 本会话已完成（relabel-only）
 - [x] 2026-06-20 time-reversal 记号归一 → `\mathcal{T}^{*}_{\mathrm{rev}}`（33 处，0 残留；对抗验证确认"不一致"现为 false）
