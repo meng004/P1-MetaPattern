@@ -99,11 +99,28 @@ GenMorph `eval` 在 `evaluation_states_followup` 阶段需要 **per-(MR,seed) �
   但需写成 GenMorph transformations 格式或自建对齐求值器。
 - `all`(gen+eval)能产出 followup,但会**重新 GP 出一套与发表不同的 Set G**,且耗时大、需另证对齐。
 
-**因此本回合不强行产出 Set N 多种子配对数据**(避免造数 / 引入新的重写偏差)。完整协议见 §4。
+~~因此本回合不强行产出 Set N 多种子配对数据~~ → **已由 Route B 执行并产出**(见 §4 与
+`supplementary/S5_genmorph_pilot/multiseed/routeB/`):自建 followup(克隆 source XML 改参数值)绕过了
+GP-transformation 耦合,经真实 PITestGenerator + PIT 评测 Set N,与发表 Set G 配对。
 
 ---
 
-## 4. 待执行:Set N vs Set G 完整配对多种子协议(committed follow-up)
+## 4. 已执行:Set N vs Set G 完整配对多种子(Route B,真实 PIT 机制)
+
+> **结果**(完整表 + 数据 + 脚本见 `supplementary/S5_genmorph_pilot/multiseed/routeB/README.md`):
+> 用真实 GenMorph 工具链(Randoop 输入 + 自建 Set N followup + PITestGenerator + PIT 1.7.4)在与发表
+> 同源的 mutant 集上评测 Set N,与发表 Set G 配对。
+> - **gcd(12 种子)**:Set N mean 10.8 vs Set G mean 15.0;Set N≥Set G 仅 4/12;
+>   **pooled McNemar p=2.97e-11 → Set G 显著支配 Set N**。
+> - **sin(11 有效种子;seed31 因采样含 inf/nan 全 FP 排除)**:Set N mean 14.0 vs Set G mean 15.5;
+>   **pooled p=0.0115 → Set G 支配**。
+> - **seed11(原 head-to-head 种子)对 Set N 偏有利**(gcd 唯一 Set G⊆Set N 的点)→ 单种子不代表性,
+>   正是 A7 选择偏差的实证。**旧 pilot 的 gcd 5/17、sin 11/2 是 Python 重写失真,已被真实机制数字替换。**
+> - 对齐校验(seed11 gcd):25 mutant 与发表一致,setG_only=0(Set G⊆Set N),强证 mutant 同序对齐。
+> - 诚实 caveat 见 routeB/README.md(mono/bound 为 O≤ 单次不变量;scale int 溢出;complement/period 浮点 FP;
+>   seed31 inf/nan 全作废不重采样)。
+>
+> 以下为执行所用协议(留档):
 
 目标:在**同一 mutant 集、同一评测机制**下,得到 Set N 与 Set G 的逐 mutant 0/1 杀死向量,
 做**逐种子 paired McNemar + pooled**。两条等价路线,任选其一:

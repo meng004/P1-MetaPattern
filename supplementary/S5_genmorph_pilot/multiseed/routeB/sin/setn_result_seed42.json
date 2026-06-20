@@ -1,0 +1,122 @@
+{
+  "subject": "MathClass?sin?0",
+  "seed": "42",
+  "n_mutants": 26,
+  "setN_valid_MRs": [
+    "bound",
+    "oddsym"
+  ],
+  "setN_invalid_MRs": [
+    "complement",
+    "period"
+  ],
+  "per_mr": {
+    "bound": {
+      "test_class": "TestSuite_setN_MathClass_sin_0_rho_bound",
+      "fp": 0,
+      "killed": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "n_killed": 7,
+      "n_mutants": 26
+    },
+    "complement": {
+      "test_class": "TestSuite_setN_MathClass_sin_0_rho_complement",
+      "fp": 6,
+      "killed": null
+    },
+    "oddsym": {
+      "test_class": "TestSuite_setN_MathClass_sin_0_rho_oddsym",
+      "fp": 0,
+      "killed": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "n_killed": 14,
+      "n_mutants": 26
+    },
+    "period": {
+      "test_class": "TestSuite_setN_MathClass_sin_0_rho_period",
+      "fp": 4,
+      "killed": null
+    }
+  },
+  "setN_union_killed": 14,
+  "setN_union_vector": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0
+  ]
+}
