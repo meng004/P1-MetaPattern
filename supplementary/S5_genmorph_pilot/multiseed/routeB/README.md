@@ -16,8 +16,30 @@
 | Set G | 直接用 GenMorph **发表** `mutants_killed.csv` 的 matched-seed union(不重跑,无重写) |
 | 配对 | 逐 mutant 2×2 + 精确 McNemar;前提"同工具链 PIT mutant 同序" |
 
-脚本:`setn_eval.py`(gcd)、`setn_eval2.py`(通用 gcd+sin)、`summarize_multiseed.py`、`pair_seed11.py`。
+脚本:`setn_eval.py`(gcd)、`setn_eval2.py`(通用 gcd+sin)、`summarize_multiseed.py`、`pair_seed11.py`、
+批量编排 `run_gcd_multiseed.sh`、`run_sin_multiseed.sh`。
 原始结果:`gcd/setn_result_seed*.json`、`sin/setn_result_seed*.json`、`multiseed_pair_summary.json`。
+
+### 端到端复现
+
+```
+# 0. 前置:JDK8/11 + maven;GenMorph 包 Zenodo 10067096 解压到
+#    /tmp/genmorph_pilot/genmorph_full/(见 ../analyze_published_multiseed.py 与
+#    docs/review_2026-06-20/mvp_s5_aligned_multiseed_runbook.md §5);JAVA_HOME 指向 JDK8。
+# 1. source + 评测(每 subject 12 种子):批量脚本内部 = 配置 seed →
+#    genmorph.py eval 生成 source test inputs(Randoop;followup 阶段会因缺 gen-transformations
+#    报错,但 source 已落地)→ setn_eval{,2}.py 克隆 source XML 生成 Set N followup →
+#    PITestGenerator → PIT → setn_result.json。
+bash run_gcd_multiseed.sh      # MathClass?gcd?0 × 12 seeds
+bash run_sin_multiseed.sh      # MathClass?sin?0 × 12 seeds
+# 2. 配对汇总(Set N vs 发表 Set G,逐种子 + pooled McNemar):
+python3 summarize_multiseed.py "MathClass?gcd?0" "MathClass?sin?0"
+# 3. 对齐校验(seed11 gcd:25 mutant 与发表一致,setG_only=0):
+python3 pair_seed11.py
+```
+
+> 注:脚本中 `setn_eval*.py` 与 GenMorph 包路径(`/tmp/genmorph_pilot`)是执行时的位置,
+> 按你的 checkout / 解压位置调整;`NSAMPLE=100`(对齐 GenMorph `max_tests=100`)。
 
 ## 对齐校验(seed11 gcd,`pair_seed11.json` + `gcd/mutations_eqref.csv`)
 
