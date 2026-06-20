@@ -48,6 +48,7 @@ commit. Each item is independent and can be done in any order.
 
 ### 🟡 P1（2-3 周，最大天花板）
 - [~] **B2/A9 篇幅压缩（2026-06-20 停在 81 页，用户决策"停 A9 转绑定约束"）**：方案 `docs/review_2026-06-20/a9_compression_plan.md`。**实测关键发现：表迁移≈每个省 1 页，页数由 verdict 散文主导，非表格**。已做：DeepCrime contingency 表删 + METRIC+ 3 表迁 S8（commit 746e046），82→81。剩余可迁表 per-block-headtohead(7ref)/gen-cost(6ref)/two-stratum(5ref) 高引用、各仅省 1 页、ROI 差。**温和表迁移地板≈75 页，到不了 60-65；60-65 必须压 verdict 散文（撞 B2 护栏，已否决）**。结论：篇幅非 blocker，停在 81，精力转绑定约束（实验）。如日后要继续，只剩压散文一条路。
+  - **反漂移核查（事后补，2026-06-20）**：对照 `rq_plan_anchor.md` D1-D7 逐条核本轮全部改动（工业整合 P0/P2 + Theorem 2 一致性 + DeepCrime/METRIC+ 压缩）→ **全部通过，无主题漂移**。证据：McNemar p=0.0043 box 完整(L1833)、四条 "does not establish" 完整(L276-281)、METRIC+ verdict 留主文(9/11 L2378、6/5/3 L2392、卡数 L2431)、underpowered 标注保留。**教训：反漂移 checklist 须动手前跑，不是事后补**（已存记忆 anti-drift-check-before-revision）。
 - [x] **B6/A6 最近邻文献（已补 2026-06-20，第1轮）**：6 条经 paper-search-mcp 核实的 bibtex（Gotlieb 2003/2006、Patel-Hierons 2018、Khritankov-Iakusheva 2024、Gruver 2023、Kaba 2023）入 `NOETHER_paper.bib`（69→75 条）+ §2.3 末插入 195 词对照段，delta 定位为"construction+proof over operator-block layer, not inventing the symmetry layer"；Saha-Kanewala/MemoRIA 原已引；Hu/Mariani/Liu 经核查不可定位（L321 已记录）。编译 0 undef cite。
 
 ### 🟢 P2/P3（低成本）
