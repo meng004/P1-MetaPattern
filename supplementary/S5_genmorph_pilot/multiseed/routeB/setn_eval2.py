@@ -3,6 +3,7 @@
 original; this version is SUBJECT_SPEC-driven so sin (double param x, with PI
 constant) works too. Authentic GenMorph PITestGenerator + PIT toolchain."""
 import sys, os, glob, shutil, json, math, xml.etree.ElementTree as ET
+_ROUTEB_DIR = os.path.dirname(os.path.abspath(__file__))  # repo path captured before chdir
 GM="/tmp/genmorph_pilot/genmorph_full/genmorph"; os.chdir(GM); sys.path.insert(0,GM+"/scripts")
 from evaluation.pitest_generator import pitest_generator
 from tools import pitest
@@ -28,7 +29,7 @@ SPEC = {
 SUBJECT = sys.argv[1]; SEED = sys.argv[2]
 spec = SPEC[SUBJECT]; METHOD = SUBJECT.split("?")[1]; MIDX = int(SUBJECT.split("?")[2])
 NSAMPLE = int(os.environ.get("NSAMPLE","100"))
-SETN_SRC = f"/home/user/P1-MetaPattern/supplementary/S5_genmorph_pilot/aligned/set_n_mrs/{SUBJECT}"
+SETN_SRC = f"{_ROUTEB_DIR}/../../aligned/set_n_mrs/{SUBJECT}"
 OUT=f"{GM}/output_dir_math"; SRC_DIR=f"{OUT}/evaluation_test_inputs_seed{SEED}"
 W=f"{OUT}/setn_run_seed{SEED}/{SUBJECT}"; FU=f"{W}/followup"; MRS=f"{W}/mrs"; TESTS=f"{W}/tests"
 EXP="setN"; SJAVA=f"{GM}/configs/math-sut/src/main/java"; SCL=f"{GM}/configs/math-sut/target/classes"

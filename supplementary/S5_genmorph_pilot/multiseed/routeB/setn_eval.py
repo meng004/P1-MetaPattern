@@ -17,6 +17,7 @@ FP-free MRs. Output mutant vector is over gcd-method-line mutants (== published 
 """
 import sys, os, glob, re, shutil, json, xml.etree.ElementTree as ET
 
+_ROUTEB_DIR = os.path.dirname(os.path.abspath(__file__))  # repo path captured before chdir
 GM = "/tmp/genmorph_pilot/genmorph_full/genmorph"
 os.chdir(GM); sys.path.insert(0, os.path.join(GM, "scripts"))
 from evaluation.pitest_generator import pitest_generator
@@ -29,7 +30,7 @@ SEED      = sys.argv[2] if len(sys.argv) > 2 else "11"
 SUTCLASS, METHOD = "MathClass", SUBJECT.split("?")[1]
 MIDX      = int(SUBJECT.split("?")[2])
 NSAMPLE   = int(os.environ.get("NSAMPLE", "100"))   # align GenMorph max_tests=100
-SETN_SRC  = f"/home/user/P1-MetaPattern/supplementary/S5_genmorph_pilot/aligned/set_n_mrs/{SUBJECT}"
+SETN_SRC  = f"{_ROUTEB_DIR}/../../aligned/set_n_mrs/{SUBJECT}"
 
 OUT       = f"{GM}/output_dir_math"
 SRC_DIR   = f"{OUT}/evaluation_test_inputs_seed{SEED}"          # has <SUBJECT>/*.methodinputs
