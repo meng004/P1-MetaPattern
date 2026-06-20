@@ -20,12 +20,22 @@
 批量编排 `run_gcd_multiseed.sh`、`run_sin_multiseed.sh`。
 原始结果:`gcd/setn_result_seed*.json`、`sin/setn_result_seed*.json`、`multiseed_pair_summary.json`。
 
+### 复现所需资料
+
+| 资料 | 来源 / 位置 | 入库? |
+|---|---|---|
+| GenMorph 包(SUT + 预编译 GAssert/Randoop/PIT jars + 发表 Set G) | 第三方,Zenodo 10067096;`bash fetch_genmorph.sh /tmp/genmorph_pilot` 一键获取 | 否(体积/版权) |
+| Set N MR 定义(`.jir`/`.jor`) | `../../aligned/set_n_mrs/MathClass?{gcd,sin}?0/` | 是 |
+| 发表 Set G 基准向量(gcd/sin × 12 种子,配对基准,可独立复核) | `published_setg_union.json`(本目录;由发表 `mutants_killed.csv` 提取) | 是 |
+| 评测 / 汇总 / 对齐 / 批量脚本 | `setn_eval*.py`、`summarize_multiseed.py`、`pair_seed11.py`、`run_*.sh` | 是 |
+| 本次结果 | `gcd/`、`sin/`、`multiseed_pair_summary.json` | 是 |
+| 环境 | OpenJDK 8 + 11、Maven 3.6+、Python 3.8+(仅标准库) | — |
+
 ### 端到端复现
 
 ```
-# 0. 前置:JDK8/11 + maven;GenMorph 包 Zenodo 10067096 解压到
-#    /tmp/genmorph_pilot/genmorph_full/(见 ../analyze_published_multiseed.py 与
-#    docs/review_2026-06-20/mvp_s5_aligned_multiseed_runbook.md §5);JAVA_HOME 指向 JDK8。
+# 0. 前置:apt 装 openjdk-8-jdk openjdk-11-jdk maven;JAVA_HOME 指向 JDK8。
+#    取第三方 GenMorph 包(不入库):bash fetch_genmorph.sh /tmp/genmorph_pilot
 # 1. source + 评测(每 subject 12 种子):批量脚本内部 = 配置 seed →
 #    genmorph.py eval 生成 source test inputs(Randoop;followup 阶段会因缺 gen-transformations
 #    报错,但 source 已落地)→ setn_eval{,2}.py 克隆 source XML 生成 Set N followup →
