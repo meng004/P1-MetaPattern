@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "n_items": 36,
+  "vendors": [
+    "bltcy_opus",
+    "chatgpt",
+    "deepseek"
+  ],
+  "categories": [
+    "G",
+    "O_le",
+    "T_star",
+    "T_rev",
+    "L_star",
+    "D_star",
+    "E_star",
+    "B_rel",
+    "orphan"
+  ],
+  "cohens_kappa_per_llm": {
+    "bltcy_opus": {
+      "kappa": 0.9272727272727272,
+      "p_o": 0.9411764705882353,
+      "p_e": 0.1911764705882353,
+      "n": 34,
+      "n_agree": 32,
+      "categories": [
+        "G",
+        "O_le",
+        "T_star",
+        "T_rev",
+        "L_star",
+        "D_star",
+        "E_star",
+        "B_rel",
+        "orphan"
+      ],
+      "band": "almost perfect",
+      "n_parseable": 34,
+      "n_missing": 2
+    },
+    "chatgpt": {
+      "kappa": 0.9272727272727272,
+      "p_o": 0.9411764705882353,
+      "p_e": 0.1911764705882353,
+      "n": 34,
+      "n_agree": 32,
+      "categories": [
+        "G",
+        "O_le",
+        "T_star",
+        "T_rev",
+        "L_star",
+        "D_star",
+        "E_star",
+        "B_rel",
+        "orphan"
+      ],
+      "band": "almost perfect",
+      "n_parseable": 34,
+      "n_missing": 2
+    },
+    "deepseek": {
+      "kappa": 0.928644240570846,
+      "p_o": 0.9428571428571428,
+      "p_e": 0.19918367346938773,
+      "n": 35,
+      "n_agree": 33,
+      "categories": [
+        "G",
+        "O_le",
+        "T_star",
+        "T_rev",
+        "L_star",
+        "D_star",
+        "E_star",
+        "B_rel",
+        "orphan"
+      ],
+      "band": "almost perfect",
+      "n_parseable": 35,
+      "n_missing": 1
+    }
+  },
+  "fleiss_kappa_across_llms": {
+    "kappa": 1.0,
+    "n": 33,
+    "n_raters": 3,
+    "P_bar": 1.0,
+    "P_e": 0.19191919191919193,
+    "categories": [
+      "G",
+      "O_le",
+      "T_star",
+      "T_rev",
+      "L_star",
+      "D_star",
+      "E_star",
+      "B_rel",
+      "orphan"
+    ],
+    "band": "almost perfect",
+    "n_excluded": 3
+  },
+  "cohens_kappa_majority_vs_author": {
+    "kappa": 0.9307692307692308,
+    "p_o": 0.9444444444444444,
+    "p_e": 0.19753086419753085,
+    "n": 36,
+    "n_agree": 34,
+    "categories": [
+      "G",
+      "O_le",
+      "T_star",
+      "T_rev",
+      "L_star",
+      "D_star",
+      "E_star",
+      "B_rel",
+      "orphan"
+    ],
+    "band": "almost perfect",
+    "n_no_majority": 0
+  },
+  "disagreements": [
+    {
+      "subject": "MathSignalClass?exactLog2?0",
+      "mr_name": "L_idem_at_one",
+      "author_label": "L_star",
+      "majority_label": "T_star",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "label": "T_star",
+          "reasoning": "The JIR doubles the input (i_n_f = 2*i_n_s) and the JOR adds 1 to the output (o_return_f = o_return_s + 1), which matches the translation pattern for logarithms where multiplicative input change corre"
+        },
+        {
+          "vendor": "bltcy_opus",
+          "label": "T_star",
+          "reasoning": "The JIR doubles the input (i_n_f == 2 * i_n_s), which in log-space corresponds to an additive shift of +1, and the JOR confirms o_return_f == o_return_s + 1, matching the translation canonical form f("
+        },
+        {
+          "vendor": "deepseek",
+          "label": "T_star",
+          "reasoning": "The MR encodes the log-doubling property: doubling the input (2*x) increments the output by 1 (f(x)+1), which corresponds to a translation in exponent space, as explicitly included in the T_star block"
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?isSequence?0",
+      "mr_name": "B_rel_xor_reverse",
+      "author_label": "B_rel",
+      "majority_label": "T_rev",
+      "votes": [
+        {
+          "vendor": "bltcy_opus",
+          "label": "T_rev",
+          "reasoning": "The JIR reverses the input triple (a,b,c) to (c,b,a) and the JOR asserts that the original and reversed inputs cannot both satisfy the boolean predicate, matching the forward-backward exclusion canoni"
+        },
+        {
+          "vendor": "chatgpt",
+          "label": "T_rev",
+          "reasoning": "The JIR swaps the first and third inputs (a,b,c) -> (c,b,a), i.e. a reversal of the triple, and the JOR enforces forward-backward exclusion (!(f(rev(x)) && f(x))), which is the canonical boolean form "
+        },
+        {
+          "vendor": "deepseek",
+          "label": "T_rev",
+          "reasoning": "The JIR implements an approximate input reversal (swapping a and c, keeping b) and the JOR asserts the boolean exclusion !(f(x) && f(rev(x))), which is the canonical T_rev form for boolean SUTs."
+        }
+      ]
+    }
+  ]
+}
