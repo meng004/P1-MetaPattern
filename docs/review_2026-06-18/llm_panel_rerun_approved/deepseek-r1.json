@@ -1,0 +1,40 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 4,
+    "novelty": 5,
+    "significance": 5,
+    "presentation": 4,
+    "reproducibility": 5
+  },
+  "summary": "This paper proposes NOETHER, a framework that derives metamorphic testing patterns (MetaPatterns) from the operator algebra of program families. It claims algebraic closure for a defined class of MRs in Theorem 1, falsifies absolute completeness via reactor-physics counterexamples, and demonstrates transfer to three domains (physics, ML, relational) with initial empirical validation.",
+  "strengths": [
+    "Novel algebraic grounding of MetaPatterns via operator algebras, addressing the origin-closure-transferability gap",
+    "Rigorous theoretical contributions: Theorem 1 (closure) and Theorem 2 (decidability), plus falsification of absolute completeness (Theorem 1')",
+    "Methodical validation: instantiations in three domains, case study, and a falsifiable prediction (L*-blindness)",
+    "Strong reproducibility: pre-registered protocols and comprehensive artefact"
+  ],
+  "publication_blockers": [],
+  "major_weaknesses": [
+    {
+      "section": "Section 5 / Empirical evaluation",
+      "issue": "Empirical validation relies heavily on constructed case studies and underpowered pilots; real-world generalizability remains undemonstrated",
+      "suggested_fix": "Execute pre-registered comparative protocols urgently; report real-bug results even if underpowered to provide counterweight to synthetic cases"
+    },
+    {
+      "section": "Section 3.1 / Operator-algebraic preliminaries",
+      "issue": "Upstream layer (algebra distillation) remains manual and hypothesis-bound; Hypothesis 1 has no derivation.",
+      "suggested_fix": "Provide mechanistic justification for 8-block decomposition (e.g., via category theory); explicitly contrast with prior structuring attempts (e.g., METRIC+ categories)"
+    }
+  ],
+  "minor_issues": [
+    "Dense presentation obscures core theoretical advances; streamline Section 3.4 (IBT) and move illustrative appendices to supplement",
+    "Overclaim in reactor physics 'prediction' (Section 4.3): T*/T* blocks were curated from domain knowledge but presented as algebraic discoveries"
+  ],
+  "questions_to_authors": [
+    "Could you bound worst-case |M(A_P)| under branching invariants (per Remark 4)? This matters for complex algebras.",
+    "For the LLM-audited orphans (Rem369): Why not include metric-stability block formally, given explicit Translate design?",
+    "In Table 4 (case study): How were Set-L/B MRs screened? Were equivalent mutants excluded? Protocol missing."
+  ]
+}

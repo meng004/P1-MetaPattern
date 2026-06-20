@@ -1,0 +1,73 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 3,
+    "novelty": 4,
+    "significance": 3,
+    "presentation": 2,
+    "reproducibility": 2
+  },
+  "summary": "The paper proposes NOETHER, a theory-guided framework to identify metamorphic-relation (MR) classes (MetaPatterns) from an operator-algebraic view of a program family. It defines eight upstream operator blocks (symmetry, order, self-adjointness, time reversal, limits, qualitative dynamics, method comparison, relational equivalence) and a downstream CONSTRUCT-MP procedure producing MetaPatterns with a by-construction closure theorem. It also contributes an Invariance-Blindness Theorem for two blocks, three domain instantiations, and a negative PWR case falsifying a stronger completeness claim.",
+  "strengths": [
+    "Ambitious, well-motivated attempt to formalize MR identification around an operator-algebraic scaffold and to articulate origin–closure–transferability explicitly (Section 1).",
+    "Clear scoping of claims, including a candid negative result falsifying a stronger completeness claim on PWR diffusion and enumerating Translate obstructions (Section 3.7, Appendix C.6).",
+    "Invariance-Blindness Theorem provides a non-tautological detection-kernel characterization for symmetry/self-adjoint blocks under linear assumptions (Section 3.3).",
+    "Cross-domain instantiations (reactor physics, equivariant ML, relational optimizers) show the idea’s reach beyond a single domain (Sections 4, 5, 6)."
+  ],
+  "publication_blockers": [
+    {
+      "section": "Section 3.2 (Decidability Theorem, Theorem 2) and Table 1; Definitions 3.1–3.4",
+      "issue": "The Decidability/complexity claim for CONSTRUCT-MP is under-specified and likely incorrect; Step 1 \"invariant extraction\" is left abstract, yet the theorem claims O(n · max t_i · log n) without a precise, executable algorithm or bounds on the size/structure of invariants, even for nontrivial algebras (e.g., Lie groups, PDE operators).",
+      "why_fatal": "A core claimed contribution is algorithmic decidability/complexity. As stated, the theorem’s premises hide the hard part (computing invariants) inside opaque t_i and assume finite, tractable sets without proof. For several blocks, invariant computation is nontrivial or undecidable in general. Without a rigorous, per-block algorithm and complexity analysis (or a greatly narrowed scope), the complexity theorem is misleading and unsound."
+    },
+    {
+      "section": "Definitions 3.2–3.4; Table A.1 (Translate templates) and Theorem 1",
+      "issue": "Translate and the invariant/equivalence machinery are not formally specified to a level that supports the closure theorem beyond a by-construction tautology. Phrases like “canonical order specified by s” and “constraint equality up to relabelling” are not defined precisely per block, and equivalence classes are not given an effective decision procedure.",
+      "why_fatal": "The claimed closure result hinges on a well-defined Translate and a computable equivalence on invariants. As written, these notions are partly informal and leave ambiguity (e.g., what canonical order means per block, which constraints are admitted). This undermines the theorem’s substance and reproducibility; minimal formalization is needed to make the result rigorous and evaluable."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Sections 5–7 (empirical evaluations: ML case study, PIT/GenMorph head-to-head, METRIC+ comparisons)",
+      "issue": "The empirical evidence is sprawling but underpowered and selection-biased: small N in the ML case (n=20 constructed mutants), multiple claims depend on author re-implementations of baselines (or omissions), use of LLM raters as “independent audit,” and heavy reliance on supplementary artifacts not provided.",
+      "suggested_fix": "Provide a consolidated, preregistered evaluation on public subjects with publicly available code and data; avoid LLM raters as validators; add stronger and fair baselines (e.g., MR-Scout, METRIC+ realizations) or clearly separate them as out-of-scope; release the complete artifact to enable replication."
+    },
+    {
+      "section": "Section 3.1 (Block decomposition hypothesis) and throughout",
+      "issue": "Upstream modeling is an empirical hypothesis with no methodology for consistent, reproducible distillation of A_P; risks of subjectivity and poor inter-rater reliability are unaddressed (LLM ‘agreement’ is not a valid substitute for human inter-rater reliability).",
+      "suggested_fix": "Define and evaluate a concrete, auditable protocol for distilling A_P (coding guide, training, examples), and report human inter-rater agreement on multiple domains; include failure cases and decision logs."
+    },
+    {
+      "section": "Sections 4–6 (instantiations) and 7.4 (Path A)",
+      "issue": "Several comparisons rely on author-constructed SUTs or re-implementations (e.g., METRIC+ benchmark programs) and ‘pre-registered’ configs stored in a private supplement; this weakens external validity.",
+      "suggested_fix": "Use original benchmark implementations where possible; if re-implementation is unavoidable, have an independent team supply them; host prereg and all scripts in an accessible artifact for review."
+    },
+    {
+      "section": "Section 3.2 and Theorem statements",
+      "issue": "Theorems (closure, decidability) conflate definitional closure with meaningful completeness, and complexity is presented without acknowledging known hardness for some operator classes (e.g., symbolic invariants, relational equivalence generality).",
+      "suggested_fix": "Recast Theorem 1 explicitly as a definitional closure lemma, and either (i) drop Theorem 2 or (ii) scope it to a narrowly defined class with a fully specified algorithm and proven bounds; add counterexamples and limits where invariant extraction is intractable."
+    },
+    {
+      "section": "Presentation throughout",
+      "issue": "The paper is overlong and hard to follow (many detours, footnotes, sidebars, future-work placeholders); core technical definitions are scattered; results depend heavily on out-of-band supplements.",
+      "suggested_fix": "Substantially streamline: concentrate core definitions and theorems; move long empirical discursions to an artifact or appendix; present one focused, well-powered evaluation."
+    }
+  ],
+  "minor_issues": [
+    "Overuse of rhetorical caveats (“pre-registered,” “committed as follow-up”) in a journal article; focus on completed, verifiable results.",
+    "Some references look uncertain or uncheckable in context (e.g., regulatory guide numbering); verify all citations.",
+    "Inconsistent naming (Theorem 1′ is called a conjecture then a theorem; clarify).",
+    "Canonical-block ordering rationale is weak; justify or treat it as a tie-breaker convention explicitly.",
+    "Several per-block Translate templates remain informal; provide precise signatures and examples, or collapse into a minimal core.",
+    "Tables/figures frequently refer to supplements; ensure all essential material is in the paper or an accessible artifact."
+  ],
+  "questions_to_authors": [
+    "Provide a precise, per-block formal definition of Translate, including how input tuples are generated, what constraints π may express, and a decision procedure for the equivalence ~s. Can this be machine-checked on your artifacts?",
+    "Give a concrete algorithm for Step 1 (invariant extraction) per block with complexity analysis; show it on at least one nontrivial algebra (e.g., SO(3) for equivariance) without handwaving t_i.",
+    "Release the full artifact (code, data, preregistration documents) used for all empirical results so reviewers can verify claims and reproduce numbers.",
+    "Demonstrate inter-rater reliability for human experts in distilling A_P on at least two domains; avoid LLM raters as proxies for independent human judgment.",
+    "For METRIC+ and MR-Scout comparisons: provide fair, executed baselines or move these to future work; alternatively, narrow the claims to structural mapping and remove any performance implications.",
+    "Clarify the scope of the Decidability theorem: for which classes of algebras and invariant schemas is it actually computable in polynomial time? If this is not defensible, remove or restate as an assumption."
+  ]
+}

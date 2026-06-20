@@ -1,0 +1,43 @@
+{
+  "Kimi-K2-Instruct": {
+    "model": "Kimi-K2-Instruct",
+    "status": "error",
+    "error": "InternalServerError: Error code: 503 - {'error': {'message': '分组 企业级高可用大模型、官转克劳德1、优质gpt、default 下模型 Kimi-K2-Instruct 无可用渠道（distributor） (request id: 2026061822451790874113442N7fjEi)', 'type': 'new_api_error'}}"
+  },
+  "gpt-5": {
+    "model": "gpt-5",
+    "status": "ok",
+    "elapsed_s": 103.6,
+    "usage": {
+      "prompt": 98148,
+      "completion": 6060
+    }
+  },
+  "claude-opus-4-6": {
+    "model": "claude-opus-4-6",
+    "status": "ok",
+    "elapsed_s": 141.3,
+    "usage": {
+      "prompt": 115657,
+      "completion": 5052
+    }
+  },
+  "deepseek-r1": {
+    "model": "deepseek-r1",
+    "status": "ok",
+    "elapsed_s": 144.4,
+    "usage": {
+      "prompt": 92020,
+      "completion": 2428
+    }
+  },
+  "glm-5.2": {
+    "model": "glm-5.2",
+    "status": "ok",
+    "elapsed_s": 159.5,
+    "usage": {
+      "prompt": 98881,
+      "completion": 9566
+    }
+  }
+}

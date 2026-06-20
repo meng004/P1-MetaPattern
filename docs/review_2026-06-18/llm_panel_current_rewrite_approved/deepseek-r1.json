@@ -1,0 +1,50 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 3,
+    "novelty": 5,
+    "significance": 4,
+    "presentation": 3,
+    "reproducibility": 4
+  },
+  "summary": "The paper introduces NOETHER, a framework for deriving metamorphic relations (MRs) from operator algebras. It claims to address origin, closure, and transferability in MR identification via a two-layer approach: upstream curation of program-family operator algebra, and downstream mechanical derivation of MR classes. Evaluation covers expert-block coverage, comparison with search-based methods, and cross-domain derivability.",
+  "strengths": [
+    "Theoretical grounding: Provides theorems for algebraic closure (Theorem 1) and polynomial-time decidability (Theorem 2)",
+    "Framework design: Clear separation of empirical upstream (algebra curation) and mechanical downstream (MR derivation)",
+    "Cross-domain demonstration: Non-vacuous instantiations on three domains (Boltzmann physics, equivariant ML, relational DB)"
+  ],
+  "publication_blockers": [
+    {
+      "section": "Hypothesis 1 (Sec 3.2) and Theorem 1' (Conjecture in App C.4)",
+      "issue": "Lack of theoretical justification for operator-block decomposition",
+      "why_fatal": "The 8-block decomposition is presented as an empirical artifact without derivation from algebraic principles. Sec 3.4 shows two critical reactor-physics MRs not derivable within the framework, undermining closure claims."
+    },
+    {
+      "section": "Section 4.3 and Case Study (Sec 5.1)",
+      "issue": "Insufficient empirical validation beyond LLM-audit and constructed mutants",
+      "why_fatal": "Primary evidence relies on LLM-labeled MR audits (S2) and small-scale constructed mutations. Real-world program validation (e.g., production reactors, industrial DBs) is committed as follow-up work only."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Translation operator signature (Def 3.4, Sec 3.4)",
+      "issue": "'Translate' fails to capture fundamental MR patterns (operator-spectrum outputs, homomorphism failures)",
+      "suggested_fix": "Redesign 'Translate' to support compositional invariants and operator-spectrum constraints; provide formal extension guarantees"
+    },
+    {
+      "section": "Section 5.3 (PMCM coverage)",
+      "issue": "Empirical coverage claims conflate induction validity with block compression",
+      "suggested_fix": "Restucture to separate: (a) algebraic reformulation benefits from (b) empirical coverage evidence in cross-domain corpora"
+    }
+  ],
+  "minor_issues": [
+    "Over-reliance on LLMs for inter-rater metrics (audit κ=0.857) without human validation",
+    "Deflationary claims (Sec 5.3) lack counterfactual analysis: What patterns would have been missed without NOETHER?"
+  ],
+  "questions_to_authors": [
+    "How is Hypothesis 1's 8-block decomposition theoretically justified beyond empirical curation?",
+    "What formal extensions to 'Translate' are planned to address the 5 obstructions in Sec 3.4?",
+    "Can you provide validation against production reactor/DB systems beyond catalogued examples?"
+  ]
+}

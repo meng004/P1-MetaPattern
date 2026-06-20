@@ -3,7 +3,7 @@
 %% NOT wired into NOETHER_paper_arxiv.tex yet (no LaTeX toolchain in container;
 %% B2 integration + compile audit per CLAUDE.md §8 to be done in a LaTeX env).
 %% Uses the paper's existing environments: definition, lemma, theorem, remark,
-%% corollary*. Cross-refs to be resolved on integration (marked % TODO-ref).
+%% corollary*. Cross-refs are resolved through the main manuscript.
 %% Source of truth: docs/tosem_maturity_2026-06-16/invariance_blindness_theorem_draft.md
 %% ===========================================================================
 
@@ -121,10 +121,11 @@ commutes with every grid translation for \emph{all} constants $(c,\alpha)$; henc
 $E_G(L;\text{shift})\equiv 0$ on the whole constant-coefficient family, so
 $\ker(\rho_{\iota,G})$ contains it, including the advection-speed fault $c\mapsto c'$.
 The translation MR is therefore \emph{blind} to advection-speed errors, matching
-the empirical $0/n$ of \S\ref{sec:empirical-evaluation}.% TODO-ref empirical sec
+the secondary executability sanity check discussed in
+\S\ref{sec:results-discussion}.
 A spatially inhomogeneous coefficient $c(x)$ breaks translation equivariance, so
 $E_G\neq 0$ and the fault is detected. A faithfulness check (one generator plus an
-input basis is unisolvent) is reported in the supplement.% TODO-ref supplement S10
+input basis is unisolvent) is reported in supplementary S10.
 \end{remark}
 
 %% corollary* is unnumbered (paper preamble: \newtheorem*{corollary*}). For
@@ -161,7 +162,8 @@ fault class (Definition~\ref{def:fault-class}); it does not extend to arbitrary
 nonlinear faults. (\textbf{R2}) Detection is exact-arithmetic; an executable MR with
 tolerance $\tau$ has kernel $\ker_\tau\supseteq\ker$, so faults below $\tau$ are
 false negatives. Theorem~\ref{thm:ibt} is the $\tau\to0$ limit; the finite-$\tau$
-regime is the detectability floor of \S\ref{sec:empirical-evaluation}.% TODO-ref
+regime is outside the identification claim and is treated as a limitation in
+\S\ref{sec:threats-limitations}.
 (\textbf{R3}) Linearity of $E_s$ holds for $G$ and $T^{*}$ (commutator; symmetric
 part). It fails for $O_\le$ (monotonicity is an inequality, a cone not a subspace),
 for $\mathcal{T}^{*}_{\mathrm{rev}}$ (reversibility $R L R^{-1}-L^{-1}$ involves the inverse), and

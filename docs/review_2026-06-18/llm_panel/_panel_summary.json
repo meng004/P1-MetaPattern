@@ -1,0 +1,27 @@
+{
+  "deepseek-r1": {
+    "model": "deepseek-r1",
+    "status": "error",
+    "error": "APIConnectionError: Connection error."
+  },
+  "Kimi-K2-Instruct": {
+    "model": "Kimi-K2-Instruct",
+    "status": "error",
+    "error": "APIConnectionError: Connection error."
+  },
+  "claude-opus-4-6": {
+    "model": "claude-opus-4-6",
+    "status": "error",
+    "error": "APIConnectionError: Connection error."
+  },
+  "glm-5.2": {
+    "model": "glm-5.2",
+    "status": "error",
+    "error": "APIConnectionError: Connection error."
+  },
+  "gpt-5": {
+    "model": "gpt-5",
+    "status": "error",
+    "error": "APIConnectionError: Connection error."
+  }
+}
