@@ -5,6 +5,31 @@ commit. Each item is independent and can be done in any order.
 
 ---
 
+## ⭐⭐⭐ TOSEM 投稿成熟度 — fresh 外部网关 + 多智能体复评 (2026-06-20)
+
+> 首次对当前 TOSEM 重写稿跑通 fresh 外部面板：网关 5 厂商（gpt-5.5 / claude-opus-4-7[opus-4-8 限流回退] / glm-5.2 / deepseek-v4-pro / qwen3-max）= **3 Reject + 2 Major**；Claude 30-agent 对抗验证 workflow = **Major Revision / 55-100 / 接收概率 22%（清完 P0/P1→45-55%）**。
+> 对抗验证：17 项 blocker/major 仅 **8 项证实为真**（9 项误读/已自界定）。完整报告：`docs/review_2026-06-20/submission_maturity_assessment_2026-06-20.md`。
+> 关键洞察：冷读网关比有验证的 Claude 更狠——真实审稿人不买"self-disclosure 即免责"，提接收率须**重构叙事**而非仅修硬伤。
+
+### 🔴 P0（半天可清，解除近 desk-reject）
+- [ ] **B1 数据完整性**：Set L 结构覆盖 `0.40`→`0.20`（arxiv L1266/1277/2325 + 投稿 tex `manuscript_singleblind` L1073/2127、`manuscript_anonymized` L1051/2144），删假"L\* reached"声明（Set L 实际只达 G），重跑 `analysis.py` 确认 Table 4 重生（SSOT `table4.json`=0.2 已核验）
+- [ ] **B3 缺失 artifact**：补/改 `S3 (lrca_audit.md)`、`S2 (18mr_audit/)` 至真实路径（数据在 `experiment/s5/`），全仓库跑 supplementary 指针存在性检查；κ=0.857 原始标注若未存须重导
+- [ ] **B4 κ 误报**：正文补 majority-vs-author Cohen's κ=0.931（`lrca_kappa.json`）+ 2 处分歧，调和 n=33/36，以人评 κ 领头（勿只报 LLM-LLM Fleiss=1.000）
+
+### 🟡 P1（2-3 周，最大天花板）
+- [ ] **B2 篇幅压缩**：80 页→≤45；L\*/IBT 电池、DeepCrime pilot、METRIC+ 对决、LLM-ensemble 各降为 1 表（全表入 S9），EQ1-EQ3 提为独立主证据节；并清过程叙事残留（pre-register/committed-as-follow-up/活文档措辞 L1357）
+- [ ] **B6 最近邻文献**：补并尖锐对照 Khritankov-Iakusheva 2024、Gotlieb Symmetric Testing 2003/2006、Patel-Hierons 2018、Gruver 2023、Kaba-Ravanbakhsh 2023、Saha-Kanewala 2019、MemoRIA 2024、MUT 2024；delta 定位为"construction+proof over the layer"
+
+### 🟢 P2/P3（低成本）
+- [ ] **B5** Theorem 2 加一句限定（\|G\| 可指数→output-polynomial，非 input-polynomial）；abstract/intro 同步
+- [ ] **B7** 切 `\documentclass[acmsmall,review,manuscript,screen]{acmart}`；清双盲/OpenReview 残留（TOSEM 单盲）；加 ACM GenAI 披露；披露 arXiv 预印本
+
+### ✅ 本会话已完成（relabel-only）
+- [x] 2026-06-20 time-reversal 记号归一 → `\mathcal{T}^{*}_{\mathrm{rev}}`（33 处，0 残留；对抗验证确认"不一致"现为 false）
+- [x] 2026-06-20 Conservation 第九标签调和（§3.1 L469 加定义句，数值未动）→ EIC 确认"reconciled at L469"
+
+---
+
 ## ⭐⭐ TOSEM 投稿成熟度 — 多 LLM 网关评审裁决 (2026-06-17)
 
 > 5 跨厂商 LLM（gpt-5 / claude-opus-4-6 / deepseek-r1 / glm-5.2 / kimi-k2-instruct）网关评审 + 30-agent 对抗验证 Workflow（triage → 逐议题对照原文验证 → §10 ARS 五维 → EIC 裁决）。

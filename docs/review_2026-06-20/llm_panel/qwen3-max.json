@@ -1,0 +1,59 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 5,
+  "scores_1to5": {
+    "soundness": 3,
+    "novelty": 4,
+    "significance": 4,
+    "presentation": 3,
+    "reproducibility": 3
+  },
+  "summary": "The paper proposes NOETHER, a framework for deriving metamorphic relations (MRs) from the operator algebra of program families. It aims to address the 'origin–closure–transferability gap' in MR identification by providing algebraic grounding for MetaPatterns. The authors evaluate NOETHER on three domains (reactor physics, equivariant ML, query optimizers) and include a negative result showing limitations on PWR core diffusion.",
+  "strengths": [
+    "Ambitious theoretical framing that connects metamorphic testing to operator algebras and Noether's theorem methodology",
+    "Rigorous formalization with clear scope boundaries, including explicit negative results showing where the approach fails",
+    "Three diverse domain instantiations demonstrating structural transferability beyond typical MT evaluations",
+    "Introduction of the Invariance-Blindness Theorem providing precise characterization of detection limits"
+  ],
+  "publication_blockers": [
+    {
+      "section": "Section 4 (Experiments) and Section 5 (Results)",
+      "issue": "Statistical selection bias and underpowered pilots reported as evidence: The main empirical claim relies on a falsifiable prediction about L*-block blindness that uses a hand-selected substrate of 10 SUTs from commons-math, but the paper doesn't establish this substrate is representative. The DeepCrime pilot (n=5) and case study (n=20 mutations) are severely underpowered yet presented with confidence intervals that don't acknowledge the fundamental limitation.",
+      "why_fatal": "TOSEM requires sound empirical methodology. Presenting underpowered studies with statistical tests creates misleading impressions about the framework's effectiveness. The selection of only 'algebra-rich' programs introduces confirmation bias that isn't adequately addressed."
+    },
+    {
+      "section": "Section 3.4 (Invariance-Blindness Theorem) and Section 5.2",
+      "issue": "Gap between theoretical claims and empirical validation: The Invariance-Blindness Theorem is proven only for linear operator-implementation faults, but the empirical validation in Section 5.2 uses synthetic linear operators (N=8) rather than real-world programs. The theorem's practical relevance to actual software testing scenarios remains unestablished.",
+      "why_fatal": "The paper positions the Invariance-Blindness Theorem as a major contribution, but without validation on realistic fault models, it remains a theoretical curiosity rather than a practical testing insight. This undermines the paper's claim to advance MR identification practice."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Throughout (especially Abstract and Introduction)",
+      "issue": "Overclaimed generalization: The paper repeatedly claims 'structural transferability' based on three domains that all share similar mathematical structures (physics-inspired). The third domain (query optimizers) is superficially different but still relies on algebraic rewriting rules. True transferability to non-mathematical domains isn't demonstrated.",
+      "suggested_fix": "Reframe transferability claims to be more precise about the scope: 'transferability across mathematically-structured program families' rather than implying broader applicability. Acknowledge that the approach is fundamentally limited to programs with explicit operator-algebraic representations."
+    },
+    {
+      "section": "Section 3.2 and Appendix C.6",
+      "issue": "Circularity in the reactor physics evaluation: The authors acknowledge that the T* and T*_rev blocks were 'partly induced from reactor-physics structures,' yet they present the 'prediction' of adjoint reciprocity and time-reversal MRs as a strength. This undermines the claimed advantage over inductive approaches.",
+      "suggested_fix": "Be more transparent about the circularity and reframe this as 'reclassification under uniform algebraic structure' rather than genuine prediction. Emphasize the deflationary direction (revealing over-counting) as the primary contribution for this domain."
+    },
+    {
+      "section": "Section 5.1 and Table 4",
+      "issue": "Inadequate comparison with baselines: The comparison with GenMorph uses only one seed and doesn't account for the stochastic nature of GP. The LLM baseline uses a single prompt formulation rather than exploring the space of possible prompts that might yield better coverage.",
+      "suggested_fix": "Run multiple seeds for GenMorph and report variance. For LLM baselines, test multiple prompt formulations or use established prompting strategies from the literature. Acknowledge that the comparison is limited to specific instantiations of these methods."
+    }
+  ],
+  "minor_issues": [
+    "Excessive use of novel terminology (e.g., 'MetaPattern', 'CONSTRUCT-MP') without sufficient motivation for why existing terms are inadequate",
+    "The paper is extremely long (50+ pages) with redundant explanations; significant compression would improve readability",
+    "Figure 1 is complex and would benefit from a simplified version for quick comprehension",
+    "Some proofs in appendices are sketchy and would benefit from more detail (e.g., Theorem 2 decidability proof)"
+  ],
+  "questions_to_authors": [
+    "How would NOETHER handle programs that have multiple valid operator algebra representations? Would different representations lead to different MetaPattern sets?",
+    "What is the practical overhead of distilling the operator algebra A_P for a new program family? Could you provide concrete time estimates from your experience?",
+    "Have you considered hybrid approaches that combine NOETHER's algebraic derivation with search-based methods to cover both algebra-induced and non-algebra-induced MRs?",
+    "How sensitive are your results to the specific canonical-block ordering defined in Definition 3? Would a different ordering change your conclusions?"
+  ]
+}
