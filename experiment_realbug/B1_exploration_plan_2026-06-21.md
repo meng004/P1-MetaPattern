@@ -41,13 +41,16 @@ for repo in [e3nn, pyg, torch]:
 
 ## 3. 元模式覆盖目标(验收:每元模式 ≥1 in-scope 正样本)
 
-| 元模式 | MR | 当前 | 目标来源 |
+| 元模式 | MR | 状态 | 来源 + caveat |
 |---|---|---|---|
-| m^eq_inv (Sₙ 置换) | rho_perm | ✓ #6199 | pyg |
-| m^eq_inv (SO(3) 旋转) | rho_rot | — | e3nn |
-| m^eq_adj (自伴) | rho_adj | — | e3nn TP |
-| m^eq_mono (单调/幂等) | rho_mono | — | pyg 聚合 |
-| m^eq_conv/rev (确定性) | rho_train_inf | — | torch / pyg |
+| Sₙ 置换 | rho_perm | ✓ in-scope (算子层面) | pyg #6199 HeteroLinear, fired/held, FP-gate pass |
+| adjoint 反对称 | role-swap antisym | ✓ in-scope (算子层面) | e3nn ReducedTensorProducts f7f35fb (torch1.8.1), fired/held |
+| adjoint 对称化 | symmetrization | ✓ in-scope (数据处理层面) | pyg to_undirected bce92aa8, 2→3 edges, fired/held |
+| SO(3) 旋转 | rho_rot | ⚠ 实际不可达 | e3nn 构造性保证等变;唯一真候选 0d0e4b2 需 MinkowskiEngine 重依赖 + v2203/torch.pi caveat |
+| 单调/幂等 | rho_mono | ✗ 无清晰候选 | coalesce/dedup fix 多为 CUDA/边界/序列化,非幂等性破坏 |
+| 确定性/纯度 | rho_train_inf | ⚠ 候选有 caveat | pyg 38f2a744 from_networkx set()→list(), 非确定依赖 PYTHONHASHSEED,CPU 单进程复现微妙 |
+
+**覆盖结论(诚实)**:5 个元模式维度中,**3 个有真实可复现 in-scope 正样本**(Sₙ + adjoint×2),**2 个稀缺/不可达**(SO(3) 构造保证无 bug;mono/确定性 真实 bug 多在边界/数据处理/hash-seed)。算子层面干净 in-scope = 2(Sₙ #6199 + adjoint e3nn_reduce);数据处理层面 +1(bce92aa8 对称化)。
 
 ## 4. 进度跟踪(执行中持续更新)
 
