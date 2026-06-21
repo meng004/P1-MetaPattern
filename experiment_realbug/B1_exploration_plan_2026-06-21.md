@@ -48,7 +48,7 @@ for repo in [e3nn, pyg, torch]:
 | adjoint 对称化 | symmetrization | ✓ in-scope (数据处理层面) | pyg to_undirected bce92aa8, 2→3 edges, fired/held |
 | SO(3) 旋转 | rho_rot | ⚠ 实际不可达 | e3nn 构造性保证等变;唯一真候选 0d0e4b2 需 MinkowskiEngine 重依赖 + v2203/torch.pi caveat |
 | 单调/幂等 | rho_mono | ✗ 无清晰候选 | coalesce/dedup fix 多为 CUDA/边界/序列化,非幂等性破坏 |
-| 确定性/纯度 | rho_train_inf | ⚠ 候选有 caveat | pyg 38f2a744 from_networkx set()→list(), 非确定依赖 PYTHONHASHSEED,CPU 单进程复现微妙 |
+| 确定性/纯度 | rho_train_inf | ✓ 根因确认 (数据处理层面) | pyg 38f2a744 from_networkx set()→list();根因演示:PYTHONHASHSEED=1/2/3/7/42 给 5 种不同 node_attr 列序 → 同 graph 不同 tensor (非确定);fix=list 保序。完整 from_networkx round-trip pre/post 实跑 pending,故不计入 detection 分母 |
 
 **覆盖结论(诚实)**:5 个元模式维度中,**3 个有真实可复现 in-scope 正样本**(Sₙ + adjoint×2),**2 个稀缺/不可达**(SO(3) 构造保证无 bug;mono/确定性 真实 bug 多在边界/数据处理/hash-seed)。算子层面干净 in-scope = 2(Sₙ #6199 + adjoint e3nn_reduce);数据处理层面 +1(bce92aa8 对称化)。
 
