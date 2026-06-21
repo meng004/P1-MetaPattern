@@ -1,0 +1,132 @@
+{
+  "overall_recommendation": "Major Revision",
+  "submission_maturity_0to100": 52,
+  "acceptance_probability_pct": 25,
+  "reviewer_confidence_1to5": 4,
+  "dimension_scores_0to100": {
+    "originality": 68,
+    "methodology_rigor": 50,
+    "evidence_sufficiency": 44,
+    "argument_coherence": 58,
+    "writing_presentation": 38
+  },
+  "persona_verdicts": {
+    "EIC": {
+      "recommendation": "Major Revision",
+      "headline": "Novel algebraic framing for MR identification but massively over-length with self-referential evaluation; scope fit is good but the paper needs radical compression and independent validation legs"
+    },
+    "R1_methodology_theory": {
+      "recommendation": "Major Revision",
+      "headline": "Theorem 1 is near-tautological (by-construction closure over Translate-image); Theorem 2 'polynomial-time' is oversold; IBT is sound but limited to linear faults on G/T* only; all statistical tests underpowered"
+    },
+    "R2_domain_mt_mr": {
+      "recommendation": "Major Revision",
+      "headline": "Operator-algebraic framing is genuinely new for MT, but the eight blocks are empirically curated (not axiom-derived), the 'prediction' of m_adj/m_rev is circular, and Set N is empirically dominated by Set G on D1 mutants"
+    },
+    "R3_perspective_equivariance_safety": {
+      "recommendation": "Major Revision",
+      "headline": "IBT is the strongest cross-domain contribution; however, equivariant-ML instantiation is thin (tiny model, procedural data, ρ_train-rev only works with vanilla SGD), and industrial reactor witnesses validate only O_≤ block"
+    },
+    "devils_advocate": {
+      "critical_found": false,
+      "strongest_counterargument": "The paper's central claim — that NOETHER 'constructively identifies MR meta-patterns from operator algebras with completeness boundaries' — suffers from three compounding circularities. (1) Theorem 1's closure is by-construction over MR(A_P), defined as exactly the Translate-image of A_P; it is a well-formedness lemma, not a completeness result, yet is presented as the headline theoretical contribution. (2) The eight blocks were curated 'by inspection of mathematical structures that recur across the program families we have studied' (§3.2) — this is the same inductive process the paper claims to replace, merely relocated one level up. The 'prediction' of m_adj and m_rev on Boltzmann is explicitly acknowledged as circular since T* and T*_rev were partly motivated by reactor physics. (3) The equivariant-ML case study's star result (5/5 unique cat-(iv) detection) is construct-validity-controlled: the mutation set was built to cover one defect per block, and cat-(iv) was selected because ρ_train-rev targets it. The paper discloses all three circularities, but self-disclosure does not convert a weakness into evidence. The net result is a framework that replaces induction at the MR-instance level with induction at the block level, then wraps the downstream construction in a tautological closure guarantee, while the strongest empirical result (L*-blindness) confirms a negative prediction (zero kills) rather than demonstrating positive identification power. CRITICAL status is not reached because the IBT and Theorem 1' falsification are genuine, non-circular contributions; however, the gap between claimed and established contribution is substantial."
+    }
+  },
+  "publication_blockers": [
+    {
+      "id": "PB-1",
+      "section": "Full manuscript",
+      "issue": "Manuscript length far exceeds TOSEM soft limit (~11k words); body text alone exceeds 25,000 words with extensive repetition of boundary-of-contribution boxes (three near-identical restatements)",
+      "why_fatal": "TOSEM LEN-01 permits return-without-review for papers far exceeding the word limit; even if reviewed, the length overwhelms the signal-to-noise ratio",
+      "fixable_by": "writing"
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "§3.3 Theorem 1 + Definition 12",
+      "issue": "Theorem 1 (closure under Translate) is near-tautological: it quantifies over MR(A_P) which is defined as the Translate-image of A_P. Of course every Translate-reachable MR is assigned to a MetaPattern — that is what CONSTRUCT-MP does by construction. Presented as the headline theoretical result, it overstates the contribution.",
+      "suggested_fix": "Reframe Theorem 1 as a well-formedness/well-specifiedness guarantee (a 'no-drop' invariant), not as a closure 'theorem'. Move it from headline to supporting role. The real theoretical contributions are the IBT and the Theorem 1' falsification.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "§3.4 Theorem 2 + Table 2",
+      "issue": "Theorem 2 claims 'polynomial-time constructibility' but the bound O(n·max_i t_i·log n) hides exponential quantities: |G| can be exponential in input size, and for Lie/infinite groups the bound requires truncation or finite-dimensional substitution. The 'polynomial-time' framing is misleading.",
+      "suggested_fix": "Rename to 'polynomial-time under finite-generator assumption' in the theorem statement itself (not just in remarks). Add explicit input-size parameterization showing when the bound is genuine input-polynomial vs. output-polynomial.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "§5.2 Case study",
+      "issue": "The equivariant-ML case study (n=20 mutations, 1 model, 5,189 parameters) is severely underpowered. The 5/5 unique cat-(iv) detection is construct-validity-controlled (mutations selected to cover one defect per block). The DeepCrime pilot (n=5, McNemar p=0.500) is uninformative.",
+      "suggested_fix": "Run the committed comparative evaluation protocol (§5.2, para 'Comparative evaluation') with DeepCrime's published mutation operators on ≥2 architectures before resubmission. Report neutral-mutation results where defect categories are not selected to match blocks.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "§4.3 Reactor mapping + §5.1 Tables 5-7",
+      "issue": "EQ1/EQ3 evaluation is substantially self-referential: the reactor-physics MR catalogue is the authors' own prior work; the 18-MR audit uses LLMs (not independent humans) as raters (κ=0.857); industrial witnesses (SACOS/SPARK/LOCUST) validate primarily the O_≤ block only. The LLM-shared-training-data caveat makes κ values much weaker than human inter-rater reliability.",
+      "suggested_fix": "Obtain independent human inter-rater κ for the 18-MR audit. Apply NOETHER to an external PWR MR corpus (e.g., PARCS V&V suite) authored by an independent team. Report human-κ alongside LLM-κ.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "§5.3 Head-to-head",
+      "issue": "Set N is dominated by Set G on D1 mutants (McNemar p=0.019, n=52). The paper reframes this as 'complementarity' and 'cost-axis advantage,' but the raw detection numbers favor the baseline. The per-block decomposition shows Set N has 0/7 on the G block for gcdSig/lcmSig due to input-normalization absorption — a framework boundary, not just a substrate artifact.",
+      "suggested_fix": "Acknowledge the D1 dominance honestly as a current limitation. Investigate whether the G-block gap (input normalization absorbing the algebraic action) can be addressed by pre-normalization-aware MR templates or by recognizing a separate normalization-orthogonal block. Run the G-block fix on at least 3 additional Euclidean-style SUTs.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "§3.2 Hypothesis 1 + §3.2 Remark on empirical status",
+      "issue": "The eight blocks are empirically curated ('by-inspection enumeration of mathematical structures that recur across the program families we have studied'), not derived from algebraic axioms. The paper claims to 'replace inductive grounding with algebraic grounding' but only does so downstream of A_P; upstream, the block selection is itself inductive. The 'induction relocated, not eliminated' framing is honest but the paper's rhetorical structure still implies the framework is more deductive than it is.",
+      "suggested_fix": "Rewrite the introduction's contribution framing to make 'induction relocated, not eliminated' the primary characterization, not a caveat. Reduce rhetoric of 'derivation' and 'constructive identification' where the upstream is inductive. Clearly separate the deductive downstream (genuine) from the inductive upstream (honest limitation).",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "§4.4 ρ_train-rev",
+      "issue": "ρ_train-rev (the most novel MR in the equivariant-ML instantiation) only works with vanilla SGD, which is almost never used in production (Adam/AdamW are standard). The paper labels it 'debug-time' but this severely limits practical impact. The MR 'fails by construction' on the optimizers practitioners actually use.",
+      "suggested_fix": "Investigate whether a momentum-corrected or Adam-compatible time-reversal invariant exists (e.g., by linearizing the Adam update). If not, document this as a hard scope boundary with engineering guidance on when to use the debug-time fixture.",
+      "fixable_by": "either"
+    }
+  ],
+  "minor_issues": [
+    "Three citations (Hu et al. 2019; Mariani 2018; Liu et al. 2020) could not be located through standard databases — the fallback to 'not cited' is acceptable but the search should be documented more transparently",
+    "The 'conservation' row in Table 5 is confusing since conservation is stated to be the G-block MetaPattern m_inv (§3.2), not a separate block; the table should use consistent block nomenclature",
+    "Definition 11 (alg-induced MR) uses 'equality' ρ = Translate(ι,s) but MRs are logical statements, not syntactic objects; the equality should be specified as logical equivalence or same-semantic-content",
+    "The Path A METRIC+ head-to-head (§5.5) re-implements Sun 2021's subjects from prose by the same author who designed NOETHER — this confounds framework knowledge with implementation fidelity",
+    "Remark on metric-stability candidate ninth block (M_lip) is developed enough to be a contribution but is relegated to an appendix remark; either promote or remove",
+    "The multiple 'Boundary of contribution' tcolorboxes (§1, §3.2, §3.5, §7) are near-identical restatements; one suffices",
+    "Table 6 (search-origin-boundary) is entirely qualitative prose in table format; it presents no measured comparison",
+    "The Wilson 95% CI on D2 kill rate [0.000, 0.434] does not exclude the 10% ceiling claimed by the framework prediction at α=0.05; the paper should state this non-confirmation explicitly rather than 'consistent with direction'",
+    "§5.3 reports McNemar p=0.0043 (pooled, n=57) but this mixes D1 (in-scope) and D2 (out-of-scope) strata; the D1-only p=0.019 is the appropriate test"
+  ],
+  "highest_roi_fixes": [
+    {
+      "action": "Radically compress the paper: remove 3 duplicate boundary boxes, merge §§4.3-4.5 into a single cross-domain section, cut PWR domain exposition by 50%, target ≤15k words body",
+      "expected_gain_pp": 12,
+      "effort": "medium",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Reframe Theorem 1 from 'closure theorem' to 'no-drop well-formedness guarantee'; make IBT and Theorem 1' falsification the headline theoretical results",
+      "expected_gain_pp": 8,
+      "effort": "low",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Run equivariant-ML case study with neutral (non-block-targeted) mutations on ≥2 architectures using DeepCrime operators at n≥30; report detection without construct-control",
+      "expected_gain_pp": 10,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Obtain independent human inter-rater κ for 18-MR audit and Set N block labels; replace LLM-only κ with human+LLM comparison",
+      "expected_gain_pp": 6,
+      "effort": "medium",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Rename Theorem 2 to explicitly state 'polynomial-time under finite-generator assumption with bounded per-generator cost'; add input-size vs output-size distinction in the theorem statement",
+      "expected_gain_pp": 4,
+      "effort": "low",
+      "fixable_by": "writing"
+    }
+  ],
+  "summary": "NOETHER introduces a genuinely novel operator-algebraic framing for metamorphic relation identification. The Invariance-Blindness Theorem (§3.4) and the falsification of the absolute-completeness conjecture on A_PWR (§4.6, Appendix C.6) are solid, non-circular theoretical contributions. The L*-blindness empirical confirmation (5/6 SUTs, §5.3) is a clean falsifiable prediction validated ex-ante. However, the paper suffers from four compounding problems: (1) Theorem 1's closure is near-tautological (by-construction over the Translate-image), yet presented as the headline result; (2) the evaluation is extensively self-referential (authors' own prior catalogue, LLM-based inter-raters, construct-controlled mutations); (3) Set N is empirically dominated by Set G on algebra-disrupting mutants (McNemar p=0.019 on D1), undermining the practical case; (4) the manuscript is at least 2.5× the TOSEM word limit with substantial repetition. The eight blocks are empirically curated, not axiom-derived, making the 'replace induction with algebra' claim honest only at the downstream level. A major revision must radically compress the paper, reframe Theorem 1 honestly, add independent (human, non-block-targeted) evaluation legs, and address the G-block framework boundary on normalization-absorbing SUTs."
+}

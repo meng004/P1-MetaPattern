@@ -1,0 +1,179 @@
+{
+  "overall_recommendation": "Reject",
+  "submission_maturity_0to100": 37,
+  "acceptance_probability_pct": 6,
+  "reviewer_confidence_1to5": 4,
+  "dimension_scores_0to100": {
+    "originality": 58,
+    "methodology_rigor": 37,
+    "evidence_sufficiency": 34,
+    "argument_coherence": 31,
+    "writing_presentation": 22
+  },
+  "persona_verdicts": {
+    "EIC": {
+      "recommendation": "Reject",
+      "headline": "In scope and potentially interesting, but not submission-ready: extreme length, unstable contribution boundary, self-referential evidence, and theory/evidence overreach would likely trigger return-without-review or a severe reject."
+    },
+    "R1_methodology_theory": {
+      "recommendation": "Reject",
+      "headline": "Theorem 1 is largely definitional closure, Theorem 2 is not a meaningful polynomial-time input-complexity result, and the empirical/statistical claims are fragmented, underpowered, selectively framed, and often construct-validity-controlled."
+    },
+    "R2_domain_mt_mr": {
+      "recommendation": "Reject",
+      "headline": "The MT/MR novelty is overstated: many claimed patterns are known symmetry, monotonicity, convergence, reciprocity, and query-equivalence ideas repackaged under an operator-block vocabulary, with weak independent validation of MR identification payoff."
+    },
+    "R3_perspective_equivariance_safety": {
+      "recommendation": "Reject",
+      "headline": "The equivariant-ML and safety-critical legs are not yet independent validation: the ML case is a tiny constructed EGNN study, and the reactor industrial evidence is mostly monotonicity plus author-curated or inaccessible witness material."
+    },
+    "devils_advocate": {
+      "critical_found": true,
+      "strongest_counterargument": "The central claim is vulnerable to a circularity objection. NOETHER says it constructively identifies MR MetaPatterns from an operator algebra, but the hard part is precisely the human choice of the operator algebra and block decomposition. Hypothesis 1 is admitted to be an empirical curation, partly induced from the same reactor-physics material later used to show that NOETHER reproduces, refines, and predicts patterns. Theorem 1 then closes only the set of MRs defined as reachable by Translate; this is a no-drop property of the construction, not evidence that the construction discovers the MR design space. The negative PWR results are useful, but they mostly prove the authors' own Translate signature is too weak, not that the positive framework is mature. The empirical sections compound the problem: Set N is author-derived, many labels are audited by LLMs rather than independent domain experts, the equivariant-ML mutation categories are constructed so one NOETHER MR uniquely detects one category, and head-to-head results show GenMorph dominates on the D1 aggregate. Self-disclosure of these limitations does not cure them. The paper has an appealing vocabulary for organizing algebraic MRs, but the evidence does not yet establish constructive discovery, independent transfer, or practical superiority over existing MR-pattern and automated-generation methods."
+    }
+  },
+  "publication_blockers": [
+    {
+      "id": "B1",
+      "section": "Whole manuscript; especially Sections 1-7 and appendices",
+      "issue": "Extreme length, repetition, and uncontrolled scope far beyond a TOSEM article, with multiple tcolorbox boundary restatements, long protocol/future-work digressions, and appendices still embedded despite claims of migration.",
+      "why_fatal": "This is likely return-without-review under TOSEM length/structure expectations. The paper reads as several papers plus a lab notebook and supplementary manifest, not a disciplined journal article.",
+      "fixable_by": "writing"
+    },
+    {
+      "id": "B2",
+      "section": "Theorem 1 / Definition 3.9 / Section 3.2.3; Appendix C.4-C.6",
+      "issue": "Core theoretical result is largely by definition: MR(A_P) is defined as the Translate image, and Theorem 1 proves every Translate-reachable MR is assigned to a MetaPattern.",
+      "why_fatal": "The main advertised closure contribution cannot carry the claimed foundational weight. The negative PWR counterexamples further show that the meaningful stronger completeness claim fails under the current construction.",
+      "fixable_by": "either"
+    },
+    {
+      "id": "B3",
+      "section": "Hypothesis 1; Section 3.1.8; Section 3.4 Boltzmann instantiation; Section 7 threats",
+      "issue": "Upstream block decomposition is author-curated and partly induced from the same domains used for validation, creating circularity in the claimed pattern prediction/refinement.",
+      "why_fatal": "Without independent block extraction and held-out domain validation, the paper cannot substantiate constructive MR identification rather than post-hoc algebraic recoding.",
+      "fixable_by": "experiment"
+    },
+    {
+      "id": "B4",
+      "section": "Sections 4-5, especially Table 4, Tables 8-12, H3a verdicts, and Section 7",
+      "issue": "Empirical evidence is not sufficient for the central claims: small constructed studies, underpowered pilots, author-derived Set N, LLM-only or LLM-majority audits, non-independent corpora, and head-to-head aggregate domination by GenMorph.",
+      "why_fatal": "The evidence supports at most feasibility and some construct-validity examples, not TOSEM-level validation of a general MR-identification framework.",
+      "fixable_by": "experiment"
+    },
+    {
+      "id": "B5",
+      "section": "Data and Artifact Availability; ACM metadata; author/funding/AI disclosures",
+      "issue": "Review-anonymity and artifact statements are inconsistent: the source includes full author identities, affiliations, emails, funding, Zenodo DOI, and review-stage anonymization claims simultaneously.",
+      "why_fatal": "As submitted for double-blind review this is procedurally defective; even for journal review, the artifact and anonymity claims are internally inconsistent and undermine reproducibility checking.",
+      "fixable_by": "writing"
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Theorem 2 and Table 1",
+      "issue": "The polynomial-time constructibility theorem assumes termination and finite generating sets, hides invariant-extraction complexity in t_i, and treats output size/block enumeration ambiguously; it is not a strong algorithmic complexity result.",
+      "suggested_fix": "Recast as an implementation-cost accounting lemma under explicit finite, bounded templates; remove headline 'polynomial-time' unless input encoding, output size, and invariant-extraction decision problems are formalized.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "Section 3.5 equivariant ML, Sections 5.2-5.4 case study",
+      "issue": "Equivariant-ML validation uses a compact EGNN stand-in, an added symmetrized QK probe, constructed mutation categories, and debug-time MRs; this does not validate the claimed SE(3)-equivariant testing transfer.",
+      "suggested_fix": "Run preregistered experiments on at least one real SE(3)-Transformer/e3nn/NequIP/MACE-style architecture with real or benchmarked faults, independent baselines, and CI-feasible MRs only.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Section 5.2 Table 4 and DeepCrime pilot Table 5",
+      "issue": "Statistical testing is over-interpreted relative to design: H2 is construct-validity-controlled; n=5 DeepCrime pilot is underpowered; multiple comparisons and paired/clustered dependence are only partially handled.",
+      "suggested_fix": "Demote all p-values from these studies to descriptive appendices or expand to a sufficiently powered preregistered multi-subject design with clustered analyses.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Section 5.6 Tables 8-12",
+      "issue": "Head-to-head with GenMorph is reframed after unfavorable aggregate results; the per-block narrative is interesting but does not overcome Set G's D1 and pooled dominance.",
+      "suggested_fix": "State plainly that NOETHER loses the primary fault-detection head-to-head and restrict empirical claims to cost, interpretability, and block-specific complementarity; avoid any superiority implication.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "Section 5.1 Tables 2-4",
+      "issue": "Primary MR-identification evidence is too coarse: binary block coverage collapses quality, executability, novelty, and practical value into a 0/1 table, and 'Conservation' is inconsistently treated as both G-block and row.",
+      "suggested_fix": "Replace binary coverage as the main empirical endpoint with independently coded MR corpora, explicit unit of analysis, execution status, novelty status, and inter-rater human coding.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Section 3.6 relational query optimizers",
+      "issue": "Relational optimizer examples are standard query-equivalence identities; the section shows mapping to known algebra, not new MR-identification capability.",
+      "suggested_fix": "Evaluate against a real query-optimizer MR/test-generation benchmark such as Segura-style query-system MRs or SQLancer/QED/SPES residues, with independent baselines and measurable gains.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Section 3.7 negative PWR instantiation; Appendix C.6",
+      "issue": "The negative results are useful but their role is confused: they both delimit and weaken the framework; the manuscript treats them as maturity evidence while they expose missing Translate expressiveness.",
+      "suggested_fix": "Make the PWR negative result a central limitation and either implement Composite-Translate or narrow all positive claims to single-block first-order MRs.",
+      "fixable_by": "either"
+    },
+    {
+      "section": "Section 7 Threats to Validity",
+      "issue": "Self-disclosure is extensive but often substitutes for mitigation: LLM-only κ, same-author derivations, same-author reimplementations, and future-work commitments remain unresolved threats.",
+      "suggested_fix": "Convert key threats into completed mitigations before submission: independent human coding, independent subject implementations, and externally sourced MR corpora.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Related Work Section 2",
+      "issue": "The contrast with prior MT/MR work is sometimes straw-mannish: existing symmetry, relational-algebra, specification/model-based, and pattern-family work already provide structural grounding in narrower forms.",
+      "suggested_fix": "Sharpen the delta to 'unified operator-block recoding plus explicit Translate boundary' and remove claims implying that prior work lacks any structural source.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "Conclusion and contribution list C1-C5",
+      "issue": "Contributions are over-numbered and internally hedged; the reader cannot tell which claims are established, exploratory, negative, or future work.",
+      "suggested_fix": "Reduce to 2-3 precise claims: framework definition, scoped closure/well-formedness, and limited empirical feasibility/complementarity; move pilots/protocols/future-work matrices to supplement.",
+      "fixable_by": "writing"
+    }
+  ],
+  "minor_issues": [
+    "Title says 'discovery' in comments but 'identification' in manuscript; terminology should be consistent.",
+    "Hypothesis label 'seven-blocks' is stale while the text defines eight blocks.",
+    "Several tables and sections treat 'Conservation' as a separate row despite saying it is a G-block instance.",
+    "The acmart metadata uses an arXiv DOI and non-anonymized author information while claiming anonymized review.",
+    "Theorems, hypotheses, remarks, and boxed boundary statements are overused and dilute the actual formal contributions.",
+    "Some labels contain spaces or special characters, e.g., Table label 'tab:obstruction set', which is poor LaTeX practice.",
+    "The Data Availability section lists S1-S4, while the body repeatedly refers to S5-S12 and routeB; manifest is inconsistent.",
+    "Several claims cite supplementary material for load-bearing evidence not present in the manuscript.",
+    "The paper repeatedly says appendices are migrated but still includes long appendices and proof material.",
+    "The 'Noether-style' analogy is rhetorically heavy and sometimes obscures the actual SE contribution."
+  ],
+  "highest_roi_fixes": [
+    {
+      "action": "Cut the manuscript to a single coherent TOSEM article: remove most protocols, pilots, future-work inventories, repeated boundary boxes, and non-load-bearing appendices; target one main theory claim plus one completed evaluation.",
+      "expected_gain_pp": 12,
+      "effort": "high",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Reframe Theorem 1 as a scoped well-formedness/closure lemma and remove any implication of completeness or discovery beyond Translate-reachable single-block MRs.",
+      "expected_gain_pp": 8,
+      "effort": "medium",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Run an independent MR-corpus evaluation with human domain experts: blind code MR corpora from at least two external domains into blocks, compare NOETHER-derived classes with expert and automated baselines, and report human κ.",
+      "expected_gain_pp": 15,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Replace the constructed EGNN mutation study with a preregistered multi-architecture equivariant-ML study using real faults or standard mutation operators and CI-executable MRs.",
+      "expected_gain_pp": 10,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Make artifact and review procedure consistent: anonymize if double-blind, provide a complete SSOT manifest for S1-S12, hashes, scripts, and exact reproduction claims.",
+      "expected_gain_pp": 5,
+      "effort": "medium",
+      "fixable_by": "writing"
+    }
+  ],
+  "summary": "The manuscript has a potentially useful organizing idea—operator-block grounding of MR classes—but is far below TOSEM submission maturity. The central theory is mostly definitional within a self-defined Translate image; the upstream block taxonomy is empirical and partly circular; the empirical evidence is fragmented, often constructed, underpowered, or self/LLM-audited; and the paper is massively overlong and procedurally inconsistent. A publishable version would need major narrowing, independent validation, and a much more modest claim."
+}
