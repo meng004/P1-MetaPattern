@@ -74,7 +74,7 @@
 }
 
 %% ---- Title and metadata ----
-\title{NOETHER: A Constructive Framework for Metamorphic Pattern Identification from Operator Algebras, with a Falsifiable Invariance-Blindness Theorem}
+\title{NOETHER: Constructive Metamorphic Pattern Identification from Operator Algebras and a Falsifiable Invariance-Blindness Theorem}
 
 %% Shared three-affiliation macro
 \newcommand{\threeaffil}{%
@@ -464,9 +464,37 @@ A \emph{method-comparison operator} $\mathcal{E}$ encodes a partial order $\prec
 \subsubsection{Decomposition of an operator algebra}
 \label{subsec:decomposition}
 
-Given $\mathcal{A}_P = (\mathcal{O}, \circ, \sim_{\mathcal{F}})$, we decompose $\mathcal{O}$ along the eight building blocks introduced above:
+Given $\mathcal{A}_P = (\mathcal{O}, \circ, \sim_{\mathcal{F}})$, we decompose $\mathcal{O}$ along the eight building blocks introduced above (summarised in Figure~\ref{fig:blocks}):
 $$\mathcal{D}(\mathcal{A}_P) = \bigl(\,G,\; O_{\le},\; T^{*},\; \mathcal{T}^{*}_{\mathrm{rev}},\; \mathcal{L}^{*},\; \mathcal{D}^{*},\; \mathcal{E}^{*},\; \mathcal{B}^{*}_{\mathrm{rel}}\,\bigr),$$
 where $G$ collects symmetry subgroups, $O_{\le}$ monotone and linear operators, $T^{*}$ self-adjoint operators, $\mathcal{T}^{*}_{\mathrm{rev}}$ time-reversal operators, $\mathcal{L}^{*}$ limit operators, $\mathcal{D}^{*}$ qualitative-dynamics operators, $\mathcal{E}^{*}$ method-comparison operators, and $\mathcal{B}^{*}_{\mathrm{rel}}$ relational-equivalence operators.
+
+\begin{figure}[h]
+\centering
+\adjustbox{max width=\textwidth}{%
+\begin{tikzpicture}[font=\footnotesize, node distance=3mm and 5mm,
+  blk/.style={draw, rounded corners=2pt, align=left, inner sep=4pt, text width=52mm, minimum height=12mm, fill=gray!4}]
+\node[blk] (g) {\textbf{$G$ -- symmetry group}\\equivariance $P(g\cdot x)=\rho(g)\,P(x)$};
+\node[blk, right=of g] (o) {\textbf{$O_{\le}$ -- order}\\monotonicity / linearity};
+\node[blk, below=of g] (t) {\textbf{$T^{*}$ -- self-adjoint}\\reciprocity $\langle Lx,y\rangle=\langle x,Ly\rangle$};
+\node[blk, right=of t] (tr) {\textbf{$\mathcal{T}^{*}_{\mathrm{rev}}$ -- time reversal}\\$P(\mathcal{T}x)$ fixed by $P(x)$};
+\node[blk, below=of t] (l) {\textbf{$\mathcal{L}^{*}$ -- limit}\\convergence $\mathcal{L}_{\theta}\to\mathcal{L}_{*}$};
+\node[blk, right=of l] (d) {\textbf{$\mathcal{D}^{*}$ -- qualitative dynamics}\\shape invariants (extrema, overshoot)};
+\node[blk, below=of l] (e) {\textbf{$\mathcal{E}^{*}$ -- method comparison}\\accuracy order $M_1\preceq M_2$};
+\node[blk, right=of e] (b) {\textbf{$\mathcal{B}^{*}_{\mathrm{rel}}$ -- relational equivalence}\\rewrite-equivalence $E\equiv E'$};
+\end{tikzpicture}%
+}
+\caption{The eight operator blocks of the decomposition $\mathcal{D}(\mathcal{A}_P)$,
+each shown with the structural invariant that gives rise to its MR class. The
+symmetry ($G$), self-adjoint ($T^{*}$), and time-reversal
+($\mathcal{T}^{*}_{\mathrm{rev}}$) blocks form the Lie-group / self-adjoint /
+time-reversal mathematical core; the Invariance-Blindness Theorem
+(Theorem~\ref{thm:ibt}) characterises the detection boundary of the $G$ and
+$T^{*}$ blocks, and $\mathcal{B}^{*}_{\mathrm{rel}}$ extends the framework beyond
+the core. Blocks are populated per program family and may be empty (for example
+$\mathcal{T}^{*}_{\mathrm{rev}}$ for dissipative dynamics, $\mathcal{B}^{*}_{\mathrm{rel}}$
+for families without idempotent-semiring rewriting structure).}
+\label{fig:blocks}
+\end{figure}
 
 Conservation laws are not a ninth block: by the Noether-style correspondence between symmetries and conserved quantities, a conservation/invariance relation is the $G$-block MetaPattern $m_{\mathrm{inv}}$ (Table~\ref{tab:refinement}), so where the EQ1 and EQ3 coverage tables and the held-out transferability paragraph track a separate ``conservation invariant'' entry it denotes this conserved-quantity instance of the $G$ block rather than a distinct operator block.
 
