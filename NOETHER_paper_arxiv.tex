@@ -2146,7 +2146,7 @@ Table~\ref{tab:gen-cost}; the matrix-driven D1/D2 mutant
 stratification (Table~\ref{tab:pit-block}) operationalises the
 detection-axis claim that NOETHER is appropriate to algebra-disrupting
 mutants and out-of-scope by design on algebra-preserving mutants.
-Per-SUT delta entries in Table~\ref{tab:algebra-rich-pooled} are
+Per-SUT delta entries in the per-SUT table (supplementary~S9) are
 \emph{directional descriptors only}; under Holm-Bonferroni
 correction for the $8 \times 2 = 16$ paired comparisons across the
 two budgets, the per-SUT family-wise threshold is $\alpha/16 \approx
@@ -2167,7 +2167,7 @@ $p$ values now differ.
 The $\mathcal{L}^{*}$-blindness prediction of \S\ref{subsec:l-blindness-derivation} is derivable from public information without consulting data, and is committed to git in supplementary~S7 (\texttt{d4j/}) alongside the SUT-selection criterion before the per-MR kill-count files; a reader who distrusts the timestamp chain can re-derive the prediction independently from \S\ref{sec:framework} and~\cite{Coles2016PIT}.
 
 \paragraph{(b) Set G budget asymmetry.}
-GenMorph's published 30-min GAssert configuration is reported alongside a 1-min sensitivity rerun (Table~\ref{tab:algebra-rich-pooled}) that handicaps Set~G conservatively; the 30-min budget leaves the $\mathcal{L}^{*}$-blindness result and the structural-extension finding unchanged.
+GenMorph's published 30-min GAssert configuration is reported alongside a 1-min sensitivity rerun (the per-SUT table, supplementary~S9) that handicaps Set~G conservatively; the 30-min budget leaves the $\mathcal{L}^{*}$-blindness result and the structural-extension finding unchanged.
 
 \paragraph{(c) Sample size.}
 $n = 70$ across 10 SUTs is underpowered for a paired head-to-head verdict at $\alpha = 0.05$; the \S\ref{subsec:pooled-headtohead} reading is the honest disclosure that Set~N is dominated by Set~G in the aggregate D1 stratum (McNemar $p = 0.019$ on D1; $p = 0.0043$ pooled), with the framework's contribution read at the per-block, cost-axis, and D2-prediction layers rather than aggregate fault-detection superiority. The $\mathcal{L}^{*}$-blindness test on $n = 44$ across 6 SUTs is per-SUT (one third or more on more than one SUT), not pooled.
@@ -2667,48 +2667,7 @@ Material running CONSTRUCT-MP on the heat / continuity / momentum / slowing-down
 
 \section{Detailed empirical tables}
 \label{app:detailed-tables}
-This appendix tabulates the per-SUT head-to-head kill counts discussed in \S\ref{subsec:pooled-headtohead}, relocated here for main-body length conformance.
-
-\begin{table}[h]
-\centering
-\caption{Per-SUT PIT mutation kill counts, Set~N versus
-GenMorph-evolved Set~G at GenMorph's published 30-min GAssert budget
-(primary) and at a 1-min GAssert sensitivity rerun, on the 10
-algebra-rich Java SUTs of \S\ref{subsec:test-design}. Set~G is
-structurally absent on \texttt{ComplexSignal.add} (instance-method
-deserialisation) and \texttt{isSequence} (boolean-predicate JOR
-grammar) under both budgets (\S\ref{subsec:convergent-witnesses}).
-Set~N's kill vector is held fixed across budgets. Pooled across the
-8 head-to-head SUTs ($n = 62$ mutants), 30-min budget primary: Set~N
-$= 26$, Set~G $= 40$, McNemar exact two-sided $p = 0.0043$. The
-$\Delta$ (30-min) column reports Set~N $-$ Set~G at the 30-min budget;
-note labels are directional descriptors only and do not assert
-per-SUT statistical significance (see prose). \textbf{$n = 62$ is
-underpowered for a paired hypothesis test at $\alpha = 0.05$ in
-two-sided form.}}
-\label{tab:algebra-rich-pooled}
-\small
-\adjustbox{max width=\textwidth}{%
-\begin{tabular}{lcccccl}
-\toprule
-SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & note \\
-\midrule
-\texttt{ComplexSignal.add} &  3 & 2 & N/A & N/A &      & instance method (Set~G N/A) \\
-\texttt{midpoint}          &  3 & 3 & 3   & 3   & $0$  & tie \\
-\texttt{exactLog2}         & 10 & 4 & 0   & 0   & $+4$ & directional only \\
-\texttt{isSequence}        &  5 & 0 & N/A & N/A &      & boolean predicate (Set~G N/A) \\
-\texttt{clamp}             &  7 & 5 & 5   & 5   & $0$  & tie \\
-\texttt{signum}            &  6 & 4 & 4   & 4   & $0$  & tie \\
-\texttt{gcdSig}            &  9 & 1 & 6   & 5   & $-5$ & directional only \\
-\texttt{hypotSig}          &  4 & 2 & 4   & 4   & $-2$ & directional only \\
-\texttt{lcmSig}            & 11 & 0 & 8   & 8   & $-8$ & directional only \\
-\texttt{powerSig}          & 12 & 7 & 10  & 10  & $-3$ & directional only ($2$ Set~N MRs ineligible, see footnote) \\
-\midrule
-\textbf{pooled (head-to-head, n=62)}     &    & \textbf{26} & \textbf{40} & \textbf{39} & $-14$ & McNemar two-sided $p = 0.0043$ (30-min) \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
+This appendix tabulates the per-block head-to-head complementarity discussed in \S\ref{subsec:pooled-headtohead}, relocated here for main-body length conformance; the per-SUT kill-count table is in supplementary~S9 (\texttt{detailed\_tables}).
 
 \begin{table}[h]
 \centering
