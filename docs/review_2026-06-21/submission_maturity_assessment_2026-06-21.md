@@ -2,7 +2,7 @@
 
 > **架构（非两个 skill 各跑一遍）**
 > - **设计者** = `academic-paper-reviewer` skill：Phase 0 field-analysis 配置 5 角色（EIC + R1 理论/统计 + R2 MT/MR 领域 + R3 等变ML/安全关键 + Devil's Advocate）+ `quality_rubrics.md` 5 维加权量规 + `editorial_decision_standards.md` 决策矩阵 → 定制考卷 `task_design_personas_rubric.md`。
-> - **执行者** = LLM 网关 5 模型独立冷读全文应考：`grok-4.3` · `gpt-5.5` · `claude-opus-4-7` · `qwen3-max` · `glm-5.1`（`scripts/tosem_maturity_panel.py`，网关 `https://llm-api.net`，密钥取自 `.env` 未暴露）。
+> - **执行者** = LLM 网关 5 模型独立冷读全文应考：`grok-4.3` · `gpt-5.5` · `claude-opus-4-7` · `qwen3-max` · `glm-5.1`（`scripts/tosem_maturity_panel.py`，网关 host 与密钥均取自 `.env`、未硬编码、未暴露）。
 > - **合成者** = 编排方（Phase 2 editorial_synthesizer + 项目 §10 ARS）：本文件。
 > - 评估对象：`NOETHER_paper_arxiv.tex`（branch `codex-tosem-maturity-review-2026-06-20`，~88.6K token，82pp）。
 > - 原始产物：`docs/review_2026-06-21/gateway_panel/{grok-4.3,gpt-5.5,claude-opus-4-7,qwen3-max,glm-5.1}.{md,json}` + `_panel_summary.json`。
