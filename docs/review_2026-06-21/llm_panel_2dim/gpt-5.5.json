@@ -1,0 +1,112 @@
+{
+  "overall_recommendation": "Reject",
+  "reviewer_confidence_1to5": 5,
+  "scores_1to5": {
+    "soundness": 1,
+    "novelty": 2,
+    "significance": 2,
+    "presentation": 1,
+    "reproducibility": 2
+  },
+  "summary": "The paper proposes NOETHER, a framework for identifying metamorphic-relation MetaPatterns from a manually curated operator-block decomposition of a program family. It defines a Translate operator from block invariants to MRs, proves closure of the constructed MetaPattern set over the Translate image, and presents examples in reactor physics, equivariant ML, relational query optimizers, Java numerical routines, and several supplementary empirical comparisons. The paper explicitly limits claims about fault-detection superiority and frames most evidence as structural MR-identification evidence.",
+  "strengths": [
+    "The manuscript repeatedly distinguishes MR identification from MR fault-revealing effectiveness, which is an important distinction often blurred in MT papers.",
+    "The negative PWR examples in Section 3.7 are useful because they identify concrete MR classes that the proposed single-block Translate mechanism cannot express.",
+    "The paper attempts to expose boundaries and threats rather than claiming universal completeness; several out-of-scope classes are explicitly listed in Remarks 3.9 and 3.10.",
+    "The idea of using algebraic structures such as symmetry, order, adjointness, and relational rewriting as an MR-design scaffold is potentially useful for domains with well-specified mathematical semantics."
+  ],
+  "publication_blockers": [
+    {
+      "section": "Sections 3.1--3.3, Theorem 1, Appendix C.1--C.3",
+      "issue": "The central closure theorem is essentially definitional and does not establish a substantive completeness or discovery result.",
+      "why_fatal": "Definition 3.4 defines MR(A_P) as exactly the image of Translate from a single block invariant; CONSTRUCT-MP then groups those same invariants into MetaPatterns; Theorem 1 proves every element of the image is in the constructed image. The manuscript acknowledges this is by construction, but still uses it throughout as the main theoretical warrant for structural adequacy. This cannot support the paper's claimed advance over empirical pattern catalogues at TOSEM level."
+    },
+    {
+      "section": "Sections 3.1--3.3, Hypothesis 1, Remarks 3.6--3.11, Section 6",
+      "issue": "The upstream block taxonomy and operator algebra are manually curated, underdefined, and not reproducibly derivable from programs.",
+      "why_fatal": "The framework's substantive step is mapping a program family to A_P and to eight blocks, but this is an empirical hypothesis produced by expert judgment and sometimes by the same authors' prior catalogues. Definitions of 'operator algebra', 'block invariant', qualitative dynamics, method comparison, and relational equivalence are broad enough to classify examples post hoc but not precise enough for independent application. Without a reproducible algebra-distillation procedure, the claimed origin/transferability contribution is not technically established."
+    },
+    {
+      "section": "Sections 4--5.5, especially Tables 4--18 and Sections 5.2--5.4",
+      "issue": "The empirical evidence is not a valid test of the main claims and is heavily contaminated by constructed tasks, author-designed subjects, post hoc interpretation, and future/supplement-dependent results.",
+      "why_fatal": "Many key comparisons are explicitly secondary, underpowered, constructed to target NOETHER blocks, or admitted to be future work. The case-study mutation set is designed so Set N uniquely covers category iv; the LLM baseline is template-matched into Set N and therefore cannot exceed it; the METRIC+ Java subjects are author re-implementations; several reported claims rely on supplementary artifacts or committed future work rather than manuscript evidence. These data cannot substantiate broader claims about coverage, transferability, maintenance, or practical value."
+    },
+    {
+      "section": "Theorem 2, Table 1, Section 3.3.4, relational block discussion",
+      "issue": "The complexity/decidability claim is vacuous or misleading because the hard problem is hidden inside assumed per-generator invariant computation costs t_i.",
+      "why_fatal": "Theorem 2 assumes invariant extraction terminates in time t_i and then multiplies by max t_i; for relational equivalence and many operator identities, this is precisely the difficult or undecidable part. The claimed O(n max t_i log n) bound is therefore not a meaningful polynomial-time constructibility result in the input size of the algebraic specification, and it is repeatedly used as a theoretical contribution."
+    },
+    {
+      "section": "Section 3.4, Theorem 3 and Section 5.6",
+      "issue": "The Invariance-Blindness theorem is largely a restatement of the kernel definition under a faithfulness assumption and does not justify the empirical and theoretical weight placed on it.",
+      "why_fatal": "The detection kernel is defined as the set of operators satisfying the MR witnesses, and faithfulness is defined as equality of that kernel with the full compatible set. The theorem then concludes the kernel equals the compatible set. The nontrivial condition is entirely in faithfulness, whose existence lemma is finite-dimensional linear algebra but does not show that the generated tests attain it in realistic programs. The theorem does not repair the tautological nature of the main closure result."
+    },
+    {
+      "section": "Whole manuscript, especially Introduction, Sections 3--5, appendices",
+      "issue": "The manuscript is not in a publishable TOSEM form: it is overlong, internally repetitive, contains unresolved contradictions, and mixes theory, protocols, pilots, future work, and supplementary claims without a coherent evidentiary hierarchy.",
+      "why_fatal": "The paper repeatedly restates boundaries, introduces many side claims, reports numerous underpowered or non-load-bearing experiments, and depends on migrated appendices and supplementary files for central assertions. Several parts read as a response log rather than a mature article. This prevents reliable assessment and would require a complete rewrite, not a normal major revision."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Related Work and Introduction",
+      "issue": "Novelty over METRIC/METRIC+, symmetry-based testing, query-equivalence testing, and domain-specific MR taxonomies is overstated.",
+      "suggested_fix": "Recast the contribution as an organizing design methodology for mathematically specified domains, not as a foundational closure theory. Provide a precise mapping of prior pattern systems to the proposed blocks and identify what genuinely cannot be expressed before claiming novelty."
+    },
+    {
+      "section": "Definition 1 and Section 3.1",
+      "issue": "The term 'operator algebra' is used nonstandardly for a tuple of operators, composition, and an equivalence relation, without closure, identities, linear structure, or semantic constraints.",
+      "suggested_fix": "Either use a less formal term such as 'operator-structure specification' or give a rigorous algebraic definition with explicit domains, codomains, closure properties, and equality semantics."
+    },
+    {
+      "section": "Definition 3.2 and CONSTRUCT-MP",
+      "issue": "Block invariant extraction is specified as 'compute I_s' but no algorithm is given for the hard cases.",
+      "suggested_fix": "For each block, define concrete input syntax, decision procedure or human protocol, failure modes, and output format. Separate executable algorithms from expert annotations."
+    },
+    {
+      "section": "Section 3.6 equivariant ML",
+      "issue": "Several derived MRs are questionable or artificial for the stated EGNN subject, especially the self-adjoint attention MR and training-time reversal MR.",
+      "suggested_fix": "Use an actual architecture with the claimed attention bilinear form and reversible/vanilla-SGD fixture, or remove these as evidence and present them only as speculative templates."
+    },
+    {
+      "section": "Section 3.5 reactor mapping",
+      "issue": "The claimed prediction of m_adj and m_rev is circular because the blocks were curated partly from reactor physics and the comparator corpus is the authors' own prior catalogue.",
+      "suggested_fix": "Use an independently authored reactor MR corpus not used in block curation, freeze the taxonomy beforehand, and have independent domain experts classify results."
+    },
+    {
+      "section": "Section 5.1, Table 4",
+      "issue": "The binary coverage table is too small and confusing; it treats 'Conservation' separately despite earlier saying conservation is a G-block instance.",
+      "suggested_fix": "Use a consistent denominator, avoid counting a subcase as a separate block, and report per-corpus MR counts, executable status, and independent-labeler agreement."
+    },
+    {
+      "section": "Sections 5.2--5.4",
+      "issue": "The many empirical studies lack a clean preregistered primary endpoint and are hard to interpret collectively.",
+      "suggested_fix": "Choose one or two primary evaluations aligned with the claim, preregister hypotheses and denominators, and move exploratory pilots/future protocols out of the main paper."
+    },
+    {
+      "section": "Data and Artifact Availability",
+      "issue": "The paper contains non-anonymized author metadata, emails, funding, and a public Zenodo DOI, which conflicts with double-blind review and also makes reproducibility claims unverifiable from the manuscript alone.",
+      "suggested_fix": "Provide an anonymized artifact with fixed hash, complete manifest, scripts, and exact commands; remove identifying information in review versions."
+    }
+  ],
+  "minor_issues": [
+    "The title and Noether analogy are rhetorically strong but technically distracting; the analogy should be reduced substantially.",
+    "There are many labels and section references that appear inconsistent or duplicated, e.g., repeated labels, migrated appendices, and references to supplementary items not included in the source.",
+    "The manuscript alternates between seven and eight blocks in several places; conservation is sometimes counted separately despite being declared not a ninth block.",
+    "Several citations appear prospective or difficult to verify from the source alone, including 2025/2026 items and unpublished supplementary protocols.",
+    "The term 'polynomial-time' is repeatedly used without specifying the representation size of A_P.",
+    "LLM-based inter-rater agreement is not a substitute for independent human expert agreement, especially for domain-specific block assignments.",
+    "Many tables report statistical tests despite the authors acknowledging constructed or underpowered settings; these p-values should be removed or clearly relegated to exploratory appendices.",
+    "The paper is far beyond normal TOSEM length and density; presentation quality is a serious barrier to review and replication."
+  ],
+  "questions_to_authors": [
+    "What is the exact, independently reproducible procedure by which a new reviewer would derive A_P and D(A_P) for a previously unseen program family without using your judgment?",
+    "What theorem remains if MR(A_P) is not defined as the image of Translate? Can NOETHER prove coverage over any externally specified MR language?",
+    "Which empirical result is the single primary evidence for the main claim, and which results are exploratory or future work?",
+    "How many of the block assignments and MR derivations have been validated by independent human domain experts rather than LLMs or authors?",
+    "For Theorem 2, what is the input representation and why is invariant extraction not the dominant undecidable/intractable problem?",
+    "Can the equivariant-ML self-adjoint and time-reversal MRs be demonstrated on an architecture that natively has the stated structures rather than via debug-time probes or fixtures?",
+    "Why is conservation sometimes counted separately from G-block coverage after the paper explicitly says it is not a separate block?",
+    "What artifacts are actually available at review time, and can every numeric table in the manuscript be regenerated from a single documented command?"
+  ]
+}

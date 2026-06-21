@@ -1,0 +1,64 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 3,
+    "novelty": 4,
+    "significance": 3,
+    "presentation": 4,
+    "reproducibility": 4
+  },
+  "summary": "The manuscript presents NOETHER, a two-layer framework that derives MetaPattern equivalence classes for metamorphic relations (MRs) from the operator-algebraic structure of a program family. An upstream empirical decomposition into eight recurrent operator blocks (symmetry, order, self-adjointness, time-reversal, limits, qualitative dynamics, method comparison, relational equivalence) is fed to a downstream constructive algorithm CONSTRUCT-MP that produces a closed set of algebra-induced MR classes under Translate. The work is instantiated on Boltzmann reactor physics, equivariant ML, and relational query optimisers, reclassifies an earlier inductive PWR catalogue, falsifies a stronger absolute-completeness claim on PWR diffusion via two concrete counterexamples, and supplies an Invariance-Blindness Theorem characterizing detection kernels for the G and T* blocks within linear operator-implementation faults.",
+  "strengths": [
+    "The central methodological analogy to Noether's theorem (lifting induction from per-instance MRs to per-domain algebraic structure) is clearly articulated and shapes a coherent research programme (Introduction, §1).",
+    "The negative result on PWR diffusion (§4.5, Appendix C.6) is technically rigorous, identifies five pairwise-independent obstructions in Translate's signature, and is supported by exhaustive per-block case analysis; this is a genuine theoretical contribution that prevents overclaiming completeness.",
+    "The Invariance-Blindness Theorem (§3.4) supplies a non-tautological, falsifiable characterization of blind spots for linear faults; the finite-witness faithfulness lemma and three corollaries are cleanly proved and empirically corroborated on small linear instances (S10).",
+    "Cross-domain transferability is demonstrated at the algebra-skeleton level on three structurally distinct families; the relational-equivalence block extends the framework beyond the Lie-group/self-adjoint/time-reversal core (§4.4).",
+    "Reproducibility artefacts are extensive (Zenodo DOI, S1–S12, runner scripts, LRCA audit, pre-registered hypotheses); the supplementary material is unusually complete for a theory+empirical TOSEM submission."
+  ],
+  "publication_blockers": [
+    {
+      "section": "§1 (Contributions C2a–C2c), §4.5, Appendix C.6",
+      "issue": "The paper repeatedly frames NOETHER as supplying a 'closure guarantee' and 'structural completeness' for MR identification, yet the negative PWR result shows that two standard safety-analysis MRs (non-additivity of rod-bank worth, second-order MTC-vs-boron dependence) lie outside MR(A_PWR) while being formulable over operators of A_PWR. The boundary between 'block sufficiency' (Hypothesis 7) and 'Translate sufficiency' is acknowledged only late and inconsistently; the abstract and introduction still imply a completeness result that the body falsifies.",
+      "why_fatal": "This is a fatal soundness and significance blocker. A framework whose central claim is algebraic derivation of MetaPatterns cannot simultaneously advertise closure while exhibiting concrete, regulatorily-relevant MRs that escape the derivation. The gap between the promised 'no-drop closure invariant' (Theorem 1) and the actual Translate-bounded scope (Remark 4, Definition 5) must be stated in the abstract, introduction, and contribution list before any revision can be considered publishable."
+    },
+    {
+      "section": "§5.2 (DeepCrime-style pilot), §6.3 (L*-blindness), Table 7",
+      "issue": "The L*-block blindness prediction is presented as the 'central empirical claim' and 'falsifiable quantitative prediction', yet the pilot (n=5) and the Java head-to-head (n=62 post-exclusion) are underpowered for the statistical tests reported (McNemar exact p-values on discordant counts <25). The mutation set for the EGNN case study was explicitly constructed to cover one defect category per non-empty block, turning the 5/5 unique-detection result for ρ_train-rev into construct-validity confirmation rather than evidence of superiority. The paper acknowledges this in one paragraph but continues to cite the numbers as 'supporting the operative-mechanism reading'.",
+      "why_fatal": "Empirical software engineering at TOSEM requires that pilot-scale or construct-biased experiments not be sold as primary evidence. The L*-blindness result on the six SUTs (2/44 kills, 5/6 zero) survives, but the statistical framing, p-values, and 'corroborating per-block patterns' paragraphs must be removed or rewritten as purely descriptive before the empirical sections can support the theoretical claims."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "§3.1–3.3 (operator algebra and Translate definitions), Remark 6",
+      "issue": "The upstream empirical status of Hypothesis 7 (eight-block sufficiency) is stated clearly, yet the paper never supplies a falsification protocol or a concrete procedure by which a new program family would be shown to require a ninth block. The six out-of-scope families in Remark 9 are listed, but only metric-stability receives a Translate-template sketch; the others remain rhetorical.",
+      "suggested_fix": "Add an explicit falsification procedure (e.g., 'apply the eight-block classification to the governing equations; any operator that cannot be assigned triggers a candidate-ninth-block review') and a worked example on one of the six families (e.g., label-consistency on a supervised classifier). Move the metric-stability block proposal from the appendix into the main text with its Translate template and closure proof. This turns the empirical hypothesis into a testable claim."
+    },
+    {
+      "section": "§4.6 (Invariance-Blindness Theorem), Remark 14",
+      "issue": "The theorem is proved only for linear operator-implementation faults and for the G and T* blocks; the three corollaries are stated unconditionally. The scope remark (R1–R4) appears only after the theorem and corollaries, and the empirical evidence (S10) uses N=8 linear systems. The claim that 'completeness requires oracle families with trivial joint kernel' is therefore overstated for the general nonlinear or non-G/T* case.",
+      "suggested_fix": "Restrict the three corollaries to the linear fault class and the two blocks for which the theorem is proved. Add an explicit 'extension to nonlinear faults is future work' paragraph. Re-run the faithfulness check on at least one nonlinear SUT (e.g., a small neural net) to demonstrate that the sufficient direction still holds even when the necessary direction fails."
+    },
+    {
+      "section": "§6 (Experiments), §6.4 (head-to-head), Table 8",
+      "issue": "The per-block head-to-head is the correct analytical lens, yet the paper still reports an aggregate D1 McNemar p=0.019 that mixes in-scope and out-of-scope strata and overstates Set-G dominance. The cost-axis claim (H3a.3) is sound but is buried under detection-rate language. The LLM-ensemble baseline (Set L) is a 2-vendor × 5-temperature sample that subsumes only part of the cited SOTA LLM work; the third-vendor replication is 'committed as follow-up'.",
+      "suggested_fix": "Remove the aggregate D1 McNemar test or label it explicitly as 'scope-mismatched auxiliary'. Promote the per-block table and the cost-axis paragraph to the primary reading. Either run the third-vendor LLM arm or drop the claim that the current ensemble subsumes Shin, Zhang, GPTMR, and AutoMT. Update the 'three-SOTA-category protocol' language to reflect what was actually executed."
+    }
+  ],
+  "minor_issues": [
+    "The title uses 'Metamorphic Pattern Identification' while the abstract and body consistently use 'MetaPattern'; standardize terminology.",
+    "Figure 1's upstream layer is labelled 'empirical hypothesis' yet the downstream theorems are presented as if the hypothesis has been proved; the boundary box on p. 9 is clearer but appears too late.",
+    "The LRCA multi-LLM audit (κ=0.931) is useful but the shared pre-training caveat is mentioned only once in §5.2; repeat the limitation when the κ value is first cited.",
+    "Some supplementary references (S4 future_work.md item counts, S9 migrated appendices) are cited before they are defined; reorder or inline the first-use definitions.",
+    "The 'no-drop closure invariant' phrasing in C2a is misleading given the later negative result; replace with 'no-drop closure over the Translate-image'.",
+    "Table 5's 'unmapped' row is a lower-bound caveat on per-block denominators yet is included in the D1 aggregate row; clarify or remove from the aggregate.",
+    "The abstract claims 'broader and more explainable MR class / MetaPattern design space' but the evaluation never measures explainability or maintenance cost; either drop the claim or add a qualitative readability study."
+  ],
+  "questions_to_authors": [
+    "Given that two regulatorily-essential PWR MRs escape the Translate derivation, do the authors still claim that NOETHER supplies a 'structural source' for MetaPatterns, or only for a Translate-bounded subset? How should a practitioner decide whether a desired MR is inside or outside the framework before investing in interface instrumentation?",
+    "The metric-stability block is the only ninth-block candidate given a concrete Translate template. Why was it not promoted to the canonical decomposition, and what empirical threshold would trigger its inclusion?",
+    "The paper treats the upstream distillation of A_P as a permanent human task. What would a minimal viable LLM-assisted operator-extraction pipeline look like, and which of the six out-of-scope families in Remark 9 would it be most likely to mis-classify?",
+    "The Invariance-Blindness Theorem is proved only for linear faults on G and T*. Can the authors supply a non-linear counter-example (e.g., a small ReLU network) that would falsify the 'structure-preserving = undetected' claim outside the linear regime?",
+    "The head-to-head uses a hand-constructed mutation set biased toward one defect per block. Would the authors be willing to replace the EGNN case study with the pre-registered DeepCrime real-fault protocol (or the full 38-D4J extension) as the primary empirical evidence before acceptance?"
+  ]
+}
