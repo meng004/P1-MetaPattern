@@ -20,5 +20,6 @@
     "L": null,
     "B": false
   },
-  "notes": "HeteroLinear is_sorted=False per-row Sn equivariance; pre-fix output order not restored (pyg_lib path). env-class-B."
+  "notes": "HeteroLinear is_sorted=False per-row Sn equivariance; pre-fix output order not restored (pyg_lib path). env-class-B.",
+  "domain": "cross-domain (geometric DL: pyg/e3nn) -- supplement, NOT paper SUT domain (reactor_physics/pde_numerical/quantum_chemistry)"
 }

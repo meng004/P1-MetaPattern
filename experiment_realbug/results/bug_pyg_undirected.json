@@ -8,8 +8,21 @@
   "cpu_status": "OK",
   "env_class": "B (pre: 25abbb15 reproduces; post: pyg2.8.0)",
   "level": "data-processing (to_networkx), NOT operator-level",
-  "fired_pre":  {"N": true,  "M": null, "G": null, "L": null, "B": null},
-  "fired_post": {"N": false, "M": null, "G": null, "L": null, "B": null},
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
   "mr_used": "symmetrization completeness: to_undirected(G) must keep every directed edge as undirected (A_undirected superset of A|A^T)",
-  "notes": "git-history (test-backed, SHA from local git): to_undirected=True was erroneously treated as 'upper' (upper-triangle only) -> dropped lower-triangle edges. PRE (env-class-B 25abbb15): directed triangle 0->1->2->0 yields only 2 undirected edges [(0,1),(1,2)], dropping (0,2). POST (pyg2.8.0 fix): all 3 edges. FIRED pre / HELD post. HONEST LEVEL TAG: this is DATA-PROCESSING level (to_networkx), an adjoint-family (symmetrization) instance, NOT operator-level self-adjoint like e3nn_reduce. Recorded to show the adjoint meta-pattern spans operator + data-processing levels; counted separately from the 2 clean operator-level in-scope positives."
+  "notes": "git-history (test-backed, SHA from local git): to_undirected=True was erroneously treated as 'upper' (upper-triangle only) -> dropped lower-triangle edges. PRE (env-class-B 25abbb15): directed triangle 0->1->2->0 yields only 2 undirected edges [(0,1),(1,2)], dropping (0,2). POST (pyg2.8.0 fix): all 3 edges. FIRED pre / HELD post. HONEST LEVEL TAG: this is DATA-PROCESSING level (to_networkx), an adjoint-family (symmetrization) instance, NOT operator-level self-adjoint like e3nn_reduce. Recorded to show the adjoint meta-pattern spans operator + data-processing levels; counted separately from the 2 clean operator-level in-scope positives.",
+  "domain": "cross-domain (geometric DL: pyg/e3nn) -- supplement, NOT paper SUT domain (reactor_physics/pde_numerical/quantum_chemistry)"
 }

@@ -4,6 +4,30 @@
 > 前序教训(本会话):检索代理候选 SHA 仅 ~2/5 准、cat 易误判(#6037)、issue snippet 常过时(#6110/#6241/#6299)。
 > **本计划改用 git-history fix+test 扫描**:test 一定可跑、SHA 从 git log 真实取得、cat 复现核验。
 
+## ⚠ 重大重定向(2026-06-21,作者指示)
+
+**SUT 域纠正**:前期自选 e3nn/pyg(geometric DL)**偏离论文 SUT 域**。论文真实 SUT(`Minimum-MR-SubSet/runs/abd-analysis/subject_catalog.csv` 实证):
+
+| sut_family | 真实库 SUT |
+|---|---|
+| reactor_physics | OpenMC 0.15.3 / OpenMOC 0.4.0 / ONIX 0.1 |
+| pde_numerical | **SciPy** solvers(heat/wave/Lorenz/Schrödinger)+ OpenBLAS (E1/E2) |
+| quantum_chemistry | PySCF/libcint RHF SCF |
+| pde_sciml | PyTorch PINN(Burgers2D/Diffusion2D/PKE/cylinder-flow) |
+
+**重定向(作者确认)**:real-bug 探索转向论文 SUT 同域真实库,**起点 = SciPy**(pde_numerical / E1)。后续逐步覆盖 OpenMC/OpenMOC、PySCF。
+**e3nn/pyg 现有 4 个 in-scope(Sₙ / adjoint×2 / 确定性)降级为「跨域泛化补充」**(标注:域外 = geometric DL,非论文 SUT 域),不混入论文 SUT 域主结果。
+
+### SciPy → NOETHER 块映射(探索靶向)
+| NOETHER 块 | scipy 子模块靶点 |
+|---|---|
+| 守恒(Noether) | scipy.integrate(ODE 能量/辛守恒、solve_ivp) |
+| T*(自伴) | scipy.linalg.eigh / scipy.sparse.linalg.eigsh(Hermitian/对称) |
+| O≤(单调/线性) | scipy.interpolate(PCHIP 单调)、线性算子 |
+| L*(收敛) | scipy.integrate 收敛阶、数值方法一致性 |
+| G(对称) | scipy.fft(平移→相位)、scipy.signal |
+| Trev*(时间反演) | scipy.integrate(可逆 ODE) |
+
 ## 0. 验收标准(每个样本须全满足才计 in-scope 正样本)
 
 1. **真实 fix commit**:parent + fix SHA 从仓库 `git log` 真实取得(非臆造、非检索代理转述)。
