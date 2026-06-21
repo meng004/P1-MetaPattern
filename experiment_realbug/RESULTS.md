@@ -1,18 +1,18 @@
 # B1 Real-Bug Evaluation (e3nn / PyG) — Results
 
 Freeze hash: PENDING     Prereg integrity: intact
-Run id: b1-batch3                Branch: claude/b1-realbug-b1-batch3
+Run id: b1-scipy                Branch: claude/b1-realbug-b1-scipy
 CPU-only confirmed: yes        GPU used: no        LLM/API calls: none
 
 ## Ledger accounting
-- Ledger rows analysed: 4
-- OK (analysed): 4    CPU-INFEASIBLE (excluded): 0    BLOCKED (excluded): 0
-- Category coverage in OK set: cat-ii 1, m^eq_adj-family (graph symmetrization completeness) 1, m^eq_adj-family (role-swap duality, antisymmetric parity variant) 1, out-of-decomposition 1
+- Ledger rows analysed: 8
+- OK (analysed): 7    CPU-INFEASIBLE (excluded): 0    BLOCKED (excluded): 0
+- Category coverage in OK set: L* convergence (dense-output self-consistency) 1, T* self-adjoint (driver-invariance of the eigenproblem) 1, cat-ii 1, conservation / representation-invariance (same Jacobian, full vs banded storage) 1, m^eq_adj-family (graph symmetrization completeness) 1, m^eq_adj-family (role-swap duality, antisymmetric parity variant) 1, out-of-decomposition 1
 
 ## Per-set detection (OK bugs only; denominator = applicable bugs per set)
 | Set | fired/total | rate | Wilson 95% CI |
 |-----|------------:|-----:|---------------|
-| N | 3/3 | 1.000 | [0.439, 1.000] |
+| N | 6/6 | 1.000 | [0.610, 1.000] |
 | M | 1/1 | 1.000 | [0.207, 1.000] |
 | G | — | — | **not evaluable on library bugs** (no portable Set-G artefact; manifest) |
 | L | 0/0 | nan | [nan, nan] |
@@ -29,16 +29,16 @@ CPU-only confirmed: yes        GPU used: no        LLM/API calls: none
 ## H4 verdict (non-inferiority, Δ=0.1)
 best non-N rate = 1.000;  Set N rate = 1.000;  gap = 0.000
 => **H4 non-inferiority SUPPORTED (gap=0.000 <= Δ=0.1)**
-(Underpowered? YES; min primary discordant b+c = 0; n_ok = 4)
+(Underpowered? YES; min primary discordant b+c = 0; n_ok = 7)
 
 ## coverage_NOETHER (descriptive)
-3/4 = 0.750 of cat categories present have a block-aligned Set N MR.
+6/7 = 0.857 of cat categories present have a block-aligned Set N MR.
 
 ## False-positive check (MR fired on POST-FIX code)
 None.
 
 ## Honest negatives / limitations
-- n_ok=4 < 10 target; **underpowered for α=0.05; reported as descriptive evidence (C6).**
+- n_ok=7 < 10 target; **underpowered for α=0.05; reported as descriptive evidence (C6).**
 - Set G stated plainly: not evaluable on library bugs (substrate limitation), reported as such, not as 0 detections.
 - Cross-set overlap (rho_rot ≡ L_rot ≡ B-rotation on the same rotation category) makes set counts correlated, not independent.
 
