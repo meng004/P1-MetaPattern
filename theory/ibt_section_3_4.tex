@@ -81,7 +81,7 @@ have the same solution set, i.e.\ $\ker(\rho_{\iota,s})=\mathcal{C}(T_s)$.
 
 Lemma~\ref{lem:reachability} is the crux: tightness is \emph{not} tautological but
 follows from finite fault-dimensionality, so a finite executable MR can pin the
-exact blind set. We now characterize that set.
+exact blind set. We now characterize that set (Figure~\ref{fig:ibt}).
 
 \begin{theorem}[Invariance-Blindness, $G$ and $T^{*}$ blocks]
 \label{thm:ibt}
@@ -102,6 +102,34 @@ W^{\mathrm{test}}_s$, so $\rho_{\iota,s}$ passes and $L\in\ker$.
 (Definition~\ref{def:faithful}) $\ker(\rho_{\iota,s})=\mathcal{C}(T_s)$, so
 $L\in\mathcal{C}(T_s)$.
 \end{proof}
+
+\begin{figure}[h]
+\centering
+\adjustbox{max width=\textwidth}{%
+\begin{tikzpicture}[font=\small, arr/.style={-{Latex[length=2mm]}, thick}]
+%% Outer fault space Theta
+\node[draw, rounded corners=3pt, minimum width=86mm, minimum height=40mm, fill=gray!4] (theta) {};
+\node[font=\footnotesize\bfseries, anchor=north west, inner sep=4pt] at (theta.north west) {$\Theta=\mathbb{R}^{N\times N}$: linear operator-implementation faults};
+%% Detection kernel = structure-preserving faults (blind spot)
+\node[draw, ellipse, fill=gray!20, minimum width=42mm, minimum height=21mm, align=center, font=\footnotesize] (ker) at ([xshift=-18mm, yshift=-3mm]theta.center) {$\ker(\rho_{\iota,s})=\mathcal{C}(T_s)$\\structure-preserving\\(equivariant) faults\\\textbf{MR passes (blind)}};
+%% Detected region
+\node[align=center, font=\footnotesize] at ([xshift=24mm, yshift=-3mm]theta.center) {structure-\\violating faults\\\textbf{MR detects}};
+%% Complementary differential oracle
+\node[draw, rounded corners=2pt, fill=white, align=center, font=\footnotesize, below=7mm of ker] (diff) {neutral cross-implementation differential oracle\\(complementary common-mode oracle)};
+\draw[arr, densely dashed] (diff) -- node[right, font=\scriptsize] {covers blind set} (ker);
+\end{tikzpicture}%
+}
+\caption{The Invariance-Blindness Theorem (Theorem~\ref{thm:ibt}) for the
+symmetry ($G$) and self-adjoint ($T^{*}$) blocks. Within the linear
+operator-implementation fault class $\Theta=\mathbb{R}^{N\times N}$, an
+algebra-derived MR's detection kernel equals exactly the structure-preserving
+faults $\mathcal{C}(T_s)$: a fault survives the MR if and only if it preserves
+the structure $T_s$ the MR exploits. The characterisation is faithfulness-tight,
+attained by a finite witness set (Lemma~\ref{lem:reachability}). A neutral
+cross-implementation differential oracle is the complementary common-mode oracle
+that covers part of the structure-preserving blind set.}
+\label{fig:ibt}
+\end{figure}
 
 \begin{remark}[Per-MetaPattern granularity]
 \label{rem:ibt-mp}
