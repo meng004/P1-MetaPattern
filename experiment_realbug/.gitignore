@@ -1,0 +1,7 @@
+# B1 real-bug harness — never commit third-party sources, venv, or secrets
+libs/
+.venv_realbug/
+.env
+.env.*
+*.pyc
+__pycache__/
