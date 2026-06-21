@@ -1539,34 +1539,6 @@ typically blind to the mutant; ``$\times$'' = breaks the block
 invariant, the block's MR can typically detect the mutant; ``$\sim$''
 = case-dependent on the SUT-specific block instantiation).
 
-\begin{table}[h]
-\centering
-\caption{Typical-case compatibility of PIT default mutator categories
-with the eight NOETHER blocks. Cells reflect the dominant case for
-mutators in the category as applied to a generic algebra-rich SUT;
-SUT-specific exceptions are catalogued in
-supplementary~S7 (\texttt{d4j/}). The cells $\langle$MATH, $\mathcal{L}^{*}\rangle$
-and $\langle$RETURN\_VALS, $\mathcal{L}^{*}\rangle$ are both
-``$\circ$'' (homogeneity-preserving), and the
-$\mathcal{L}^{*}$-blindness result of \S\ref{subsec:l-blindness-confirmed}
-is the empirical specialisation of these two cells.}
-\label{tab:pit-block}
-\small
-\begin{tabular}{lcccccccc}
-\toprule
-PIT mutator category & $G$ & $O_{\le}$ & $T^{*}$ & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $\mathcal{L}^{*}$ & $\mathcal{D}^{*}$ & $\mathcal{E}^{*}$ & $\mathcal{B}^{*}_{\mathrm{rel}}$ \\
-\midrule
-CONDITIONALS\_BOUNDARY & $\circ$ & $\times$ & $\circ$ & $\circ$ & $\circ$ & $\sim$ & $\circ$ & $\circ$ \\
-INCREMENTS             & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\sim$ & $\circ$ & $\circ$ \\
-INVERT\_NEGS           & $\sim$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\sim$ & $\circ$ & $\circ$ \\
-MATH (op swap)         & $\times$ & $\sim$ & $\times$ & $\times$ & $\circ$ & $\times$ & $\sim$ & $\circ$ \\
-NEGATE\_CONDITIONALS   & $\times$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\times$ \\
-RETURN\_VALS (zero/one) & $\circ$ & $\circ$ & $\times$ & $\times$ & $\circ$ & $\circ$ & $\sim$ & $\circ$ \\
-VOID\_METHOD\_CALLS    & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\times$ & $\sim$ & $\circ$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 The matrix stratifies mutants binary: \emph{algebra-disrupting} (D1, at least one $\times$ in a populated column) vs \emph{algebra-preserving} (D2, all $\circ$ in populated columns; $\sim$ resolved by SUT-specific overrides). The framework predicts Set~N's D2 kill rate is near zero by construction: a mutant that preserves all invariants is structurally invisible to algebraic MRs. D1 is therefore Set~N's appropriate fault-detection denominator; D2 is the territory of complementary techniques (random / GP / LLM-prompted MRs). The $\mathcal{L}^{*}$-blindness result of \S\ref{subsec:l-blindness-confirmed} is the corresponding D2-cell specialisation on the wider SUT substrate.
 
 \paragraph{Kill-set overlap on the head-to-head substrate.}
@@ -1655,40 +1627,6 @@ The $L_{\mathrm{scale}}$ MR's per-SUT kill rate on PIT mutants of the
 six $\mathcal{L}^{*}$-admitting SUTs is reported in
 Table~\ref{tab:l-blindness}. The total denominator is 44 mutants. The
 total kill count is 2.
-
-\begin{table}[h]
-\centering
-\caption{Per-SUT kill rate of the $L_{\mathrm{scale}}$ MR on PIT
-mutants of the six SUTs admitting an $\mathcal{L}^{*}$-block scaling
-MR. The prediction of \S\ref{subsec:l-blindness-derivation} is that
-the kill rate is near-zero by composition of the
-homogeneity-preserving property of PIT's default mutators with the
-scaling structure of $L_{\mathrm{scale}}$. Pooled across the six SUTs:
-$2/44 \approx 4.5\%$, well below the $1/3$ falsification threshold on
-each SUT and below it on $5/6$ SUTs (\texttt{hypotSig} alone reaches
-$2/4 = 50\%$, explained in the text).}
-\label{tab:l-blindness}
-\small
-\begin{tabular}{lcc}
-\toprule
-SUT & $L_{\mathrm{scale}}$ kill / mutants & \emph{Verdict} \\
-\midrule
-\texttt{midpoint}  &  0 / 3   & Confirmed \\
-\texttt{clamp}     &  0 / 7   & Confirmed \\
-\texttt{signum}    &  0 / 6\,$^{\dagger}$ & Confirmed (no $L_{\mathrm{scale}}$ kill) \\
-\texttt{gcdSig}    &  0 / 9   & Confirmed \\
-\texttt{lcmSig}    &  0 / 11  & Confirmed \\
-\texttt{hypotSig}  &  2 / 4   & Outlier; explained below \\
-\midrule
-pooled (all six)   &  2 / 44   & 4.5\% \\
-\bottomrule
-\end{tabular}\\[0.4em]
-{\footnotesize $^{\dagger}$\,For \texttt{signum} the $\mathcal{L}^{*}$-block MR
-is positive-scalar invariance ($\mathrm{signum}(\lambda x) = \mathrm{signum}(x)$
-for $\lambda > 0$) rather than degree-$1$ homogeneity; the prediction
-applies to this MR shape \emph{a fortiori} since the right-hand side
-does not depend on $\lambda$.}
-\end{table}
 
 \paragraph{Reading.}
 On 5 of 6 SUTs the prediction is confirmed at the strongest reading
@@ -1816,23 +1754,6 @@ Set~G is searched by mutation-killing fitness with no algebraic
 structure as input. The two pipelines converge on the same algebraic
 primitives. Convergence under independent epistemic processes is
 direct corroboration of the operative-generator reading.
-
-\begin{table}[h]
-\centering
-\caption{Cross-pipeline rediscovery on \texttt{midpoint}: GP-evolved
-MRs (Set~G) and their algebra-derived counterparts (Set~N).}
-\label{tab:rediscovery}
-\small
-\begin{tabular}{lll}
-\toprule
-GP-evolved MR (Set G) & Set N counterpart & Block \\
-\midrule
-\texttt{SwitchParams??1@2}                & \texttt{G\_swap} (commutativity)         & $G$ \\
-\texttt{NumericAddition?1.000000?1}       & \texttt{T\_shift} (translation by $1$)   & $G_{\mathrm{tr}}$ \\
-\texttt{NumericMultiplication?0.500000?2} & \texttt{L\_scale} (scaling, approx.)     & $\mathcal{L}^{*}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \paragraph{Witness 2: structural coverage extension.}
 GenMorph's GP pipeline fails on two of the ten SUTs for plumbing reasons: \texttt{ComplexSignal.add} (instance method) hits an XStream \texttt{NullPointerException} on receiver deserialisation; \texttt{isSequence} (boolean predicate) yields ungrammatical JOR strings. Both SUTs admit Set~N MRs derived directly from the SUT signature (commutativity for \texttt{ComplexSignal.add}; monotonic-window translation for \texttt{isSequence}) and run to completion, covering 8 of 70 PIT mutants on which only Set~N is defined. Set~N's algebraic-derivation route operates on the SUT signature, independent of the SUT-deserialisation and JOR-grammar infrastructure GenMorph depends on; the structural-coverage extension is an architectural property of the derivation, not an empirical accident.
@@ -2693,7 +2614,86 @@ Material running CONSTRUCT-MP on the heat / continuity / momentum / slowing-down
 
 \section{Detailed empirical tables}
 \label{app:detailed-tables}
-This appendix tabulates the per-block head-to-head complementarity discussed in \S\ref{subsec:pooled-headtohead}, relocated here for main-body length conformance; the per-SUT kill-count table is in supplementary~S9 (\texttt{detailed\_tables}).
+This appendix collects detailed empirical tables relocated from the main body for length conformance: the PIT-mutator/block compatibility map, the $\mathcal{L}^{*}$-blindness per-SUT kill rates, the cross-pipeline rediscovery on \texttt{midpoint}, and the per-block head-to-head complementarity discussed in \S\ref{subsec:pooled-headtohead}; the per-SUT kill-count table is in supplementary~S9 (\texttt{detailed\_tables}).
+
+\begin{table}[h]
+\centering
+\caption{Typical-case compatibility of PIT default mutator categories
+with the eight NOETHER blocks. Cells reflect the dominant case for
+mutators in the category as applied to a generic algebra-rich SUT;
+SUT-specific exceptions are catalogued in
+supplementary~S7 (\texttt{d4j/}). The cells $\langle$MATH, $\mathcal{L}^{*}\rangle$
+and $\langle$RETURN\_VALS, $\mathcal{L}^{*}\rangle$ are both
+``$\circ$'' (homogeneity-preserving), and the
+$\mathcal{L}^{*}$-blindness result of \S\ref{subsec:l-blindness-confirmed}
+is the empirical specialisation of these two cells.}
+\label{tab:pit-block}
+\small
+\begin{tabular}{lcccccccc}
+\toprule
+PIT mutator category & $G$ & $O_{\le}$ & $T^{*}$ & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $\mathcal{L}^{*}$ & $\mathcal{D}^{*}$ & $\mathcal{E}^{*}$ & $\mathcal{B}^{*}_{\mathrm{rel}}$ \\
+\midrule
+CONDITIONALS\_BOUNDARY & $\circ$ & $\times$ & $\circ$ & $\circ$ & $\circ$ & $\sim$ & $\circ$ & $\circ$ \\
+INCREMENTS             & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\sim$ & $\circ$ & $\circ$ \\
+INVERT\_NEGS           & $\sim$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\sim$ & $\circ$ & $\circ$ \\
+MATH (op swap)         & $\times$ & $\sim$ & $\times$ & $\times$ & $\circ$ & $\times$ & $\sim$ & $\circ$ \\
+NEGATE\_CONDITIONALS   & $\times$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\times$ \\
+RETURN\_VALS (zero/one) & $\circ$ & $\circ$ & $\times$ & $\times$ & $\circ$ & $\circ$ & $\sim$ & $\circ$ \\
+VOID\_METHOD\_CALLS    & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\times$ & $\sim$ & $\circ$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Per-SUT kill rate of the $L_{\mathrm{scale}}$ MR on PIT
+mutants of the six SUTs admitting an $\mathcal{L}^{*}$-block scaling
+MR. The prediction of \S\ref{subsec:l-blindness-derivation} is that
+the kill rate is near-zero by composition of the
+homogeneity-preserving property of PIT's default mutators with the
+scaling structure of $L_{\mathrm{scale}}$. Pooled across the six SUTs:
+$2/44 \approx 4.5\%$, well below the $1/3$ falsification threshold on
+each SUT and below it on $5/6$ SUTs (\texttt{hypotSig} alone reaches
+$2/4 = 50\%$, explained in the text).}
+\label{tab:l-blindness}
+\small
+\begin{tabular}{lcc}
+\toprule
+SUT & $L_{\mathrm{scale}}$ kill / mutants & \emph{Verdict} \\
+\midrule
+\texttt{midpoint}  &  0 / 3   & Confirmed \\
+\texttt{clamp}     &  0 / 7   & Confirmed \\
+\texttt{signum}    &  0 / 6\,$^{\dagger}$ & Confirmed (no $L_{\mathrm{scale}}$ kill) \\
+\texttt{gcdSig}    &  0 / 9   & Confirmed \\
+\texttt{lcmSig}    &  0 / 11  & Confirmed \\
+\texttt{hypotSig}  &  2 / 4   & Outlier; explained below \\
+\midrule
+pooled (all six)   &  2 / 44   & 4.5\% \\
+\bottomrule
+\end{tabular}\\[0.4em]
+{\footnotesize $^{\dagger}$\,For \texttt{signum} the $\mathcal{L}^{*}$-block MR
+is positive-scalar invariance ($\mathrm{signum}(\lambda x) = \mathrm{signum}(x)$
+for $\lambda > 0$) rather than degree-$1$ homogeneity; the prediction
+applies to this MR shape \emph{a fortiori} since the right-hand side
+does not depend on $\lambda$.}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Cross-pipeline rediscovery on \texttt{midpoint}: GP-evolved
+MRs (Set~G) and their algebra-derived counterparts (Set~N).}
+\label{tab:rediscovery}
+\small
+\begin{tabular}{lll}
+\toprule
+GP-evolved MR (Set G) & Set N counterpart & Block \\
+\midrule
+\texttt{SwitchParams??1@2}                & \texttt{G\_swap} (commutativity)         & $G$ \\
+\texttt{NumericAddition?1.000000?1}       & \texttt{T\_shift} (translation by $1$)   & $G_{\mathrm{tr}}$ \\
+\texttt{NumericMultiplication?0.500000?2} & \texttt{L\_scale} (scaling, approx.)     & $\mathcal{L}^{*}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{table}[h]
 \centering
