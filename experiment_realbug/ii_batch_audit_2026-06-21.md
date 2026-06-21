@@ -17,10 +17,10 @@
 | pyg | #6199 | cat-ii | ✓ 完整走通(N rho_perm + M fired, FP-gate pass) | **in-scope 正样本** |
 | pyg | #6037 | cat-iii | ✓ 复现:行和≠0 但 L=Lᵀ 对称完好 | **out-of-decomposition**(Agent 误判已纠正) |
 | pyg | #6241 | cat-ii maybe | ✗ GDC PPR 复现 AssertionError(无确切 snippet) | BLOCKED(待确切 repro) |
-| pyg | #6110 | cat-ii maybe | 未复现(需 Data/ogbg-molhiv 装置) | maybe,待复现 |
-| pyg | #6299 | cat-ii maybe | 未复现(需 HeteroData 装置) | maybe,待复现 |
+| pyg | #6110 | cat-ii maybe | ✗ 复现失败(pyg2.2 Data 无 index_select 方法,API 与版本不符) | BLOCKED |
+| pyg | #6299 | cat-ii maybe | ✗ fix SHA 内容是 to_heterogeneous 空边 test,与 Agent 描述(to_homogeneous ptr)不符 | BLOCKED(SHA 内容不符) |
 | pyg | #6251 | cat-iv maybe | 未复现;Agent 标陷阱(fix 是 raise ValueError,非数值修复) | maybe,oracle 不可 diff |
-| pyg | #4826 | cat-v maybe | 未复现(NaN 边界,弱) | maybe,待复现 |
+| pyg | #4826 | cat-v maybe | fix SHA 准(HANConv 空 tensor NaN guard,`numel()==0` early-return);性质=边界 NaN 非不变性;复现需 parent worktree(3d76627)未执行 | out-of-decomposition(by fix-code nature) |
 | e3nn | #258 | cat-i/v maybe | 未复现(梯度 NaN,非纯前向不变性) | maybe,待复现 |
 | e3nn | #296 | out | 复现确认(表示等价 ∉ 元模式) | **out-of-decomposition** |
 | pyg #5921 / #5409, e3nn #316 / #266 | — | out/BLOCKED | Agent 标 negative(crash/export/device/API) | out |
@@ -45,3 +45,26 @@
 - #6241:需从 issue 原文取确切 GDC 参数 + 图,重试复现。
 - #6251:fix 语义是 raise,oracle 需人工预期,不能 diff pre/post——做 MT 需特殊处理。
 - 扩大 n 至 ≥10 in-scope 正样本:需更大检索池 + 逐个复现,跨多 env-class。
+
+## fix-test 反推结果 + 检索代理候选可靠性(关键 meta-发现)
+
+采用"从 fix PR 取确切复现"策略后,逐个核验 Agent 候选的 fix SHA:
+
+| 候选 | Agent fix SHA 是否对应所述 bug | 结论 |
+|---|---|---|
+| #6037 | ✓ SHA 准,但 **cat 误判**(标 cat-iii,实为行和守恒 out) | 复现后纠正 |
+| #4826 | ✓ SHA 准(HANConv 空 NaN guard) | 性质 out |
+| #6299 | ✗ SHA 内容是 to_heterogeneous 空边,与所述 to_homogeneous ptr **不符** | BLOCKED |
+| #6110 | ✗ 所述 API(Data.index_select)在 pyg2.2 不存在 | BLOCKED |
+| #6241 | ✗ 无确切 snippet,GDC 参数复现 AssertionError | BLOCKED |
+
+**检索代理候选可靠性约 2/5 SHA 准、且 SHA 准的也可能 cat 误判**。结论:自动检索的候选**不可直接用于批量计数**,每条必须复现 + 核验 fix 内容 + 核验 cat。可靠 in-scope 正样本(#6199)来自作者手工核验链(#6198/#6199 HeteroLinear),非自动代理。
+
+## 批量最终诚实结论(本轮)
+
+- **in-scope 正样本**:#6199(1 个,完整走通,N rho_perm + M fired,FP-gate pass)。
+- **out-of-decomposition 确认**:#6037(行和守恒)、#296(表示等价)、#4826(空输入 NaN,by fix-code nature)= 3 个。
+- **BLOCKED(代理数据不准)**:#6110、#6241、#6299 = 3 个。
+- **detection(in-scope)**:N 1/1、M 1/1、B 0/1;**coverage 极有限**(1 in-scope vs 3 out)。
+- **核心 IBT 发现**:NOETHER 元模式 in-scope 检出可靠,但真实 bug 中 in-scope 比例低(多为行和守恒/表示等价/空输入边界等元模式外类别);且自动检索候选需逐个复现核验,不可凭标签计数。
+- **样本量**:n=2 OK(underpowered C6),descriptive pilot,非 confirmatory。
