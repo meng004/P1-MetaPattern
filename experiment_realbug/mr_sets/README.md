@@ -53,13 +53,13 @@ MRs return `not_applicable` (then that bug is dropped from THAT set's denominato
 | MR/Set | 最终适用性 | 文件 |
 |---|---|---|
 | rho_rot (N/G) | **portable** | rho_rot.py |
-| rho_adj (N/T\*) | adaptable ⚠️fix | rho_adj.py(头部标缺陷:默认 contract 非转置不变) |
+| rho_adj (N/T\*) | adaptable ✅fixed | rho_adj.py(默认 contract 改 trace,转置不变;验证:转置对称→held/破坏→fired/非矩阵→N/A) |
 | rho_train_rev (N/𝒯\*rev) | **not_applicable**(SGD 轨迹) | rho_train_rev.py(stub) |
 | rho_mono (N/O_le) | adaptable | rho_mono.py |
 | rho_train_inf (N/L\*) | adaptable | rho_train_inf.py |
 | Set L (LLM) | adaptable | set_L_llm.py |
 | Set B (literature) | adaptable | set_B_lit.py |
 | Set G (GenMorph) | **not_applicable / not evaluable** | set_G_genmorph.py(stub) |
-| Set M (METRIC+) | adaptable ⚠️fix | set_M_metric.py(头部标缺陷:perm_equivariant+index 死分支) |
+| Set M (METRIC+) | adaptable ✅fixed | set_M_metric.py(死分支已修:perm_equivariant+index 跑 invariant 检查;验证:buggy scatter→fired) |
 
-**Set N 4/5 适用(最强腿)**;G 不可评(报 not-evaluable 非 0);分母按 per-set applicable 计,非 catalogue 原始大小。投跑前作者须:(1) 修 rho_adj/set_M 两处缺陷;(2) per-bug 写 ctx adapter(x/rotate/equivariant_out/metric_props 等)。
+**Set N 4/5 适用(最强腿)**;G 不可评(报 not-evaluable 非 0);分母按 per-set applicable 计,非 catalogue 原始大小。两处 fix_needed(rho_adj/set_M)**已于 2026-06-21 修复并功能验证**。投跑前作者剩余:per-bug 写 ctx adapter(x/rotate/equivariant_out/metric_props/index 等),把每条 bug 的复现 snippet 接到对应 MR。

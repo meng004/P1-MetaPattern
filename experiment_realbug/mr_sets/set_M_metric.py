@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-# ⚠️ FIX_NEEDED (verifier): dead branch — if ctx declares ONLY 'perm_equivariant'
-# together with ctx['index'] (scatter), NO check runs and a buggy order-dependent
-# scatter is silently 'held' (false negative). Fix: in the perm branch, when
-# has_index and 'perm_equivariant' in props, run the invariant check (lockstep perm
-# of (src,index) IS invariance) or return not_applicable instead of vacuous 'held'.
+# ✅ FIXED (2026-06-21): the former dead branch (props={'perm_equivariant'} WITH
+# ctx['index']) now runs the invariant check — lockstep permutation of (src,index)
+# is output-invariance for a scatter — so an order-dependent buggy scatter now
+# fires instead of vacuous 'held'. Verified: buggy order-dependent scatter -> fired.
 """set_M_metric — METRIC+ category-enumeration scaffold (Set M baseline).
 
 Source in the paper: NOETHER_paper_arxiv.tex L303 (METRIC+ "input-domain x
@@ -162,7 +161,13 @@ def mr_set_M_metric(fn, ctx, tol, num_samples=8):
                 except Exception as e:  # noqa: BLE001
                     return _violation("perm", f"permuted call raised {type(e).__name__}")
 
-            if "perm_invariant" in props:
+            # perm_invariant => output unchanged under row permutation. A scatter
+            # op declared perm_equivariant WITH an index is also output-invariant
+            # under LOCKSTEP permutation of (src, index) (same grouping), so the
+            # invariant check is the correct test there too -- this closes the
+            # former dead branch (perm_equivariant + has_index ran no check ->
+            # vacuous 'held' false negative).
+            if "perm_invariant" in props or ("perm_equivariant" in props and has_index):
                 if yp.shape != y0.shape:
                     return _violation("perm_inv", f"output shape changed {y0.shape}->{yp.shape}")
                 dev = float(np.max(np.abs(yp - y0)))

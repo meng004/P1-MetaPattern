@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# ⚠️ FIX_NEEDED (verifier): the default contract is NOT transpose-invariant, so it
-# FALSE-POSITIVE fires on CORRECT transpose-equal traces (Tr A(x1,x2)=Tr A(x2,x1)).
-# Before use: make the default contract trace-like / transpose-symmetric (paper's
-# invariant is Tr A), OR supply ctx['bilinear'] and only run when symmetric form is
-# known; otherwise return not_applicable. Do NOT trust the default path as-is.
+# ✅ FIXED (2026-06-21): default contract is now the matrix trace (_trace_contract),
+# which IS transpose-invariant (Tr A = Tr A^T), so it no longer false-positives on
+# correct transpose-equal role-swaps. Non-matrix outputs -> not_applicable (no
+# non-invariant fallback). Author may still override via ctx['contract'] for a
+# layer-specific Tr. Verified: transpose-equal -> held, adjoint-broken -> fired.
 """rho_adj — adjoint / role-swap duality metamorphic relation (Set N).
 
 Derived from the paper's executable MR rho_adj (NOETHER_paper_arxiv.tex,
@@ -76,25 +76,25 @@ def _to_np(a):
     return np.asarray(a, dtype=float)
 
 
-def _weighted_contract(y):
-    """Default role-swap invariant: a fixed *asymmetric* linear functional.
+def _trace_contract(y):
+    """Default role-swap invariant = the matrix trace (the paper's ``Tr A``).
 
-    A plain element sum is too weak: for many bilinear maps (e.g. any rank-1
-    outer product) sum(B(x1,x2)) == sum(B(x2,x1)) identically, so it cannot see
-    an argument-swap asymmetry. We instead contract with a fixed, deterministic,
-    position-dependent weight vector w_i = cos(i + 1). This is still a single
-    linear functional L(.) applied IDENTICALLY to B(x1,x2) and B(x2,x1) -- the
-    library-level analogue of "Tr of the Hermitian part of A" -- but its
-    asymmetric weights make L(B(x1,x2)) - L(B(x2,x1)) a sensitive probe of the
-    bilinear map's argument-swap (adjoint) symmetry. A CG-coefficient
-    sign/index defect that breaks the expected pairing symmetry makes the two
-    weighted contractions differ. Deterministic (no RNG) for reproducibility."""
-    arr = _to_np(y).ravel()
-    n = arr.shape[0]
-    if n == 0:
-        return 0.0
-    w = np.cos(np.arange(n) + 1.0)
-    return float(np.dot(arr, w))
+    Trace is transpose-invariant (Tr A = Tr A^T), so it faithfully realises the
+    paper's adjoint relation |Tr A(x1,x2) - Tr A(x2,x1)| <= tau: a CORRECT
+    bilinear map whose role-swap is a transpose (e.g. any rank-1 outer product,
+    B(x2,x1) = B(x1,x2)^T) has EQUAL traces -> no false positive; a genuine
+    adjoint-breaking defect (B(x2,x1) is not the transpose of B(x1,x2), e.g. a
+    CG sign/index error) gives UNEQUAL traces -> fired. (The earlier
+    asymmetric-weight contraction was NOT transpose-invariant and false-fired on
+    correct transpose-equal traces; this is the verifier-mandated fix.)
+
+    Returns None for non-matrix outputs, where ``Tr A`` is undefined: the caller
+    must then supply a layer-specific ctx['contract'] or the MR is
+    not_applicable (we do NOT fall back to a non-invariant default)."""
+    a = _to_np(y)
+    if a.ndim == 2:
+        return float(np.trace(a))
+    return None  # Tr undefined for non-matrix output -> caller makes it not_applicable
 
 
 def _resolve_bilinear(fn, ctx):
@@ -120,9 +120,9 @@ def mr_rho_adj(fn, ctx, tol):
                 "detail": "ctx lacks {x1, x2}; op is not role-swappable for this bug"}
 
     x1, x2 = ctx["x1"], ctx["x2"]
-    contract = ctx.get("contract", _weighted_contract)
+    contract = ctx.get("contract", _trace_contract)
     if not callable(contract):
-        contract = _weighted_contract
+        contract = _trace_contract
 
     # Establish that the op is genuinely bilinear (two-argument). If calling
     # B(x1, x2) fails with an arity/type error, this MR has no meaning here.
@@ -148,11 +148,17 @@ def mr_rho_adj(fn, ctx, tol):
                 "detail": f"role-swapped B(x2,x1) raised {type(e).__name__} while B(x1,x2) succeeded"}
 
     try:
-        t12 = float(contract(y12))
-        t21 = float(contract(y21))
+        c12 = contract(y12)
+        c21 = contract(y21)
     except Exception as e:  # noqa: BLE001
         return {"status": "not_applicable",
                 "detail": f"contract() not evaluable on outputs: {type(e).__name__}"}
+    if c12 is None or c21 is None:
+        # default Tr-contract undefined for non-matrix output; refuse a non-
+        # invariant fallback (would false-positive). Author must supply ctx['contract'].
+        return {"status": "not_applicable",
+                "detail": "default Tr-contract undefined for non-matrix output; supply ctx['contract']"}
+    t12, t21 = float(c12), float(c21)
 
     dev = abs(t12 - t21)
     # Scale-aware tolerance floor so the relation is not vacuously tight on
