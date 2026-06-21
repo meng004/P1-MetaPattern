@@ -1,0 +1,18 @@
+{
+  "id": "scipy_akima_overflow",
+  "repo": "scipy/scipy",
+  "domain": "paper SUT domain (pde_numerical / E1: SciPy)",
+  "sut_family": "interpolate.Akima1DInterpolator",
+  "cat": "BOUNDARY: numerical-robustness (overflow), O<= mapping weak -- NOT a clean NOETHER block",
+  "fix_commit": "9930630d6",
+  "pre_version": "1.16.3",
+  "post_version": "1.17.1",
+  "fired_pre": {
+    "N": null
+  },
+  "fired_post": {
+    "N": null
+  },
+  "mr_used": "isfinite(I(x_i)) for finite y -- but input is extreme (1e160 near float_max); finiteness is numerical robustness, not monotone/linear invariance",
+  "note": "EXCLUDED from clean in-scope: O<= mapping is forced (overflow robustness, not monotonicity/linearity). Agent pip-tested but recorded as boundary."
+}
