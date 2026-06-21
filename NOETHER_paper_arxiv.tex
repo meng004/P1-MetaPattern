@@ -125,11 +125,11 @@
 
 \textbf{Objective.} This paper studies MR identification rather than MR fault-revealing effectiveness. We ask whether a structured, operator-algebraic method can derive a broader and more explainable MR class / MetaPattern design space than expert MR sets and search-based MR generation, by making the algebraic origin and applicability boundary of MRs explicit from program-family governing equations.
 
-\textbf{Method.} We introduce \textbf{NOETHER}, a two-level framework for equation-governed program families. The upstream layer curates a program-family operator algebra and decomposes it into recurrent operator blocks, including symmetry, order, self-adjointness, time reversal, limits, qualitative dynamics, method comparison, and relational equivalence. The downstream layer, \texttt{CONSTRUCT-MP}, derives MR classes / MetaPatterns from those blocks and then checks whether a specific program interface exposes the inputs and observations needed to instantiate an executable MR.
+\textbf{Method.} We introduce \textbf{NOETHER}, a two-level framework for equation-governed program families. The upstream layer curates a program-family operator algebra and decomposes it into recurrent operator blocks, including symmetry, order, self-adjointness, time reversal, limits, qualitative dynamics, method comparison, and relational equivalence. The downstream layer, \texttt{CONSTRUCT-MP}, derives MR classes / MetaPatterns from those blocks and then checks whether a specific program interface exposes the inputs and observations needed to instantiate an executable MR. The downstream derivation is provable: \texttt{CONSTRUCT-MP} is closed under the derivation operator, a well-formedness guarantee, and for the symmetry and self-adjoint blocks an \emph{Invariance-Blindness Theorem} characterises exactly which implementation faults an algebra-derived MR can and cannot detect, converting that closure into a falsifiable, non-tautological prediction.
 
 \textbf{Evidence.} We evaluate NOETHER as an MR-identification method along three axes. First, we compare expert MR sets and NOETHER using binary operator-block coverage. Second, we compare NOETHER with search-based MR generation on origin explanation, boundary explanation, redundancy, readability, and maintenance. Third, we trace cross-domain derivations showing that the same operator block can explain MR classes across different program families and solvers. Mutation and head-to-head results are retained only as secondary executability and sanity-check evidence.
 
-\textbf{Conclusion.} NOETHER contributes a theory-guided MR-identification framework: it derives MR classes from governing-equation operator algebra, makes their origin and boundary auditable, and exposes structural MR design-space coverage that is not explicit in expert MR sets or search-generated candidates alone.
+\textbf{Conclusion.} NOETHER contributes a theory-guided MR-identification framework: it derives MR classes from governing-equation operator algebra, makes their origin and boundary auditable, and exposes structural MR design-space coverage that is not explicit in expert MR sets or search-generated candidates alone. A held-out evaluation confirms the Invariance-Blindness prediction, and a negative instance on a reactor-physics algebra bounds the method's completeness and localises where the derivation must be extended.
 \end{abstract}
 
 %% CCS Concepts
@@ -250,7 +250,7 @@ links the result to three domain instantiations.}
 \label{fig:noether-arch}
 \end{figure}
 
-We make five MR-identification contributions.
+We make five MR-identification contributions. The load-bearing theoretical result is an Invariance-Blindness Theorem: a falsifiable characterisation of which implementation faults an algebra-derived MR can and cannot detect, distinct from the intentionally modest by-construction closure guarantee.
 
 \begin{itemize}
   \item \textbf{C1.} We introduce NOETHER, a \emph{layered} framework for MR-class / MetaPattern identification that combines an empirically curated structural decomposition (Hypothesis~\ref{hyp:seven-blocks}; upstream layer, itself partly distilled from the present authors' prior PWR MR catalogue, see \S\ref{subsec:reactor-mapping} for provenance) with a constructive algorithm for deriving MetaPatterns from a program-induced operator algebra (downstream layer).
