@@ -1849,44 +1849,6 @@ threshold).
 \paragraph{Per-block head-to-head and complementarity (Primary, PIT arm).}
 Each Set~N MR derives from exactly one NOETHER block, so the natural head-to-head denominator is per-block rather than the operative-block union. Across the eight head-to-head SUTs, PIT's stock mutator catalogue exercises three operative (sub-)blocks: $G$ (finite-group symmetry: swap / negate), $\mathcal{L}^{*}$ (scale / homogeneity), and $G_{\mathrm{tr}}$, the translation sub-class of the symmetry block $G$ (grid shift / period). For each block~$b$, $n_{b}$ counts mutants whose (SUT, mutator) entry in \texttt{configs/sut\_block\_overrides.json} marks block~$b$ as broken (``$\times$''). Per-block kill counts and the complementarity partition (both / $N$-only / $G$-only / neither) appear in Table~\ref{tab:per-block-headtohead}.
 
-\begin{table}[h]
-\centering
-\caption{Per-block head-to-head on the three operative blocks
-exercised by PIT 1.7.4 across the eight in-scope SUTs of
-\S\ref{subsec:test-design}. Each row's denominator $n_{b}$ counts
-mutants violating block~$b$'s invariant; complementarity cells
-``both'' / ``$N$-only'' / ``$G$-only'' / ``neither'' partition $n_{b}$.
-Wilson 95\% intervals are reported alongside point rates. The five
-operative blocks PIT~1.7.4 does not exercise
-($O_{\le}, \mathcal{T}^{*}_{\mathrm{rev}}, \mathcal{D}^{*},
-\mathcal{E}^{*}, \mathcal{B}^{*}_{\mathrm{rel}}$) are addressed by
-the construct-trace consistency check on hand-crafted
-block-targeted mutants (now in supplementary~S9, item
-``D\_E\_implementation\_consistency''); those results are
-design-implied and not used as independent fault-detection
-evidence. Auxiliary rows report the D1 aggregate and the unmapped
-bucket (PIT mutants from cells without an override entry,
-principally \texttt{RETURN\_VALS} and \texttt{MATH} on SUTs where
-the Table 5 reconstruction fallback assigns D1 but does not specify
-broken blocks; lower-bound caveat, not a participating row).}
-\label{tab:per-block-headtohead}
-\small
-\adjustbox{max width=\textwidth}{%
-\begin{tabular}{lrrlrlrrrr}
-\toprule
-Block & $n_{b}$ & Set~N kills & rate (95\% CI) & Set~G kills & rate (95\% CI) & both & $N$-only & $G$-only & neither \\
-\midrule
-$G$ (sym.)       & 11 &  2 & $0.182$ $[0.051,\,0.477]$ &  9 & $0.818$ $[0.523,\,0.949]$ & 2 & 0 & 7 & 2 \\
-$\mathcal{L}^{*}$ & 24 & 10 & $0.417$ $[0.245,\,0.612]$ & 16 & $0.667$ $[0.467,\,0.820]$ & 8 & 2 & 8 & 6 \\
-$G_{\mathrm{tr}}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\,0.690]$ & 7 & 3 & 1 & 6 \\
-\midrule
-\textit{D1 aggregate, PIT-covered blocks (secondary)}            & 52 & 26 & $0.500$ $[0.369,\,0.631]$ & 37 & $0.712$ $[0.577,\,0.817]$ & 22 & 4 & 15 & 11 \\
-\textit{unmapped (lower-bound caveat)}                           & 25 & --- & --- & --- & --- & --- & --- & --- & --- \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
 The unmapped auxiliary row counts $25$ PIT mutants from cells whose D1/D2 override table does not specify broken blocks; it is a lower-bound caveat on per-block denominators (each unmapped mutant is D1-classified but its block membership is unknown), not an additional denominator added to the $G + \mathcal{L}^{*} + G_{\mathrm{tr}}$ union. The D1 pool is $n = 52$ pre and post equivalent-mutant exclusion (Table~\ref{tab:two-stratum} row~1).
 
 The per-block reading distinguishes three regimes:
@@ -2743,6 +2705,44 @@ SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & not
 \texttt{powerSig}          & 12 & 7 & 10  & 10  & $-3$ & directional only ($2$ Set~N MRs ineligible, see footnote) \\
 \midrule
 \textbf{pooled (head-to-head, n=62)}     &    & \textbf{26} & \textbf{40} & \textbf{39} & $-14$ & McNemar two-sided $p = 0.0043$ (30-min) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Per-block head-to-head on the three operative blocks
+exercised by PIT 1.7.4 across the eight in-scope SUTs of
+\S\ref{subsec:test-design}. Each row's denominator $n_{b}$ counts
+mutants violating block~$b$'s invariant; complementarity cells
+``both'' / ``$N$-only'' / ``$G$-only'' / ``neither'' partition $n_{b}$.
+Wilson 95\% intervals are reported alongside point rates. The five
+operative blocks PIT~1.7.4 does not exercise
+($O_{\le}, \mathcal{T}^{*}_{\mathrm{rev}}, \mathcal{D}^{*},
+\mathcal{E}^{*}, \mathcal{B}^{*}_{\mathrm{rel}}$) are addressed by
+the construct-trace consistency check on hand-crafted
+block-targeted mutants (now in supplementary~S9, item
+``D\_E\_implementation\_consistency''); those results are
+design-implied and not used as independent fault-detection
+evidence. Auxiliary rows report the D1 aggregate and the unmapped
+bucket (PIT mutants from cells without an override entry,
+principally \texttt{RETURN\_VALS} and \texttt{MATH} on SUTs where
+the Table 5 reconstruction fallback assigns D1 but does not specify
+broken blocks; lower-bound caveat, not a participating row).}
+\label{tab:per-block-headtohead}
+\small
+\adjustbox{max width=\textwidth}{%
+\begin{tabular}{lrrlrlrrrr}
+\toprule
+Block & $n_{b}$ & Set~N kills & rate (95\% CI) & Set~G kills & rate (95\% CI) & both & $N$-only & $G$-only & neither \\
+\midrule
+$G$ (sym.)       & 11 &  2 & $0.182$ $[0.051,\,0.477]$ &  9 & $0.818$ $[0.523,\,0.949]$ & 2 & 0 & 7 & 2 \\
+$\mathcal{L}^{*}$ & 24 & 10 & $0.417$ $[0.245,\,0.612]$ & 16 & $0.667$ $[0.467,\,0.820]$ & 8 & 2 & 8 & 6 \\
+$G_{\mathrm{tr}}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\,0.690]$ & 7 & 3 & 1 & 6 \\
+\midrule
+\textit{D1 aggregate, PIT-covered blocks (secondary)}            & 52 & 26 & $0.500$ $[0.369,\,0.631]$ & 37 & $0.712$ $[0.577,\,0.817]$ & 22 & 4 & 15 & 11 \\
+\textit{unmapped (lower-bound caveat)}                           & 25 & --- & --- & --- & --- & --- & --- & --- & --- \\
 \bottomrule
 \end{tabular}%
 }
