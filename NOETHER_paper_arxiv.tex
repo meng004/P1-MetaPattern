@@ -1305,21 +1305,7 @@ We commit in advance to the following readings of the eventual numerical outcome
 
 To begin closing the gap between protocol and result, we executed a $n=5$ pilot extension of the case study with five mutation operators systematically derived from the DeepCrime taxonomy~\cite{Humbatova2021DeepCrime} (which extracts 35 mutation operators from real DL fault studies). The pilot operators are post-training mutations on the trained EGNN checkpoint and address category labels analogous to DeepCrime's: cat-v-01 \emph{loss-reduction-like} (head-weight scaled by $1/N_{\text{classes}}$), cat-v-02 \emph{activation change} (tanh saturation), cat-v-03 \emph{layer removal} (head zeroed), cat-v-04 \emph{bias removal}, cat-v-05 \emph{weight re-init} (Glorot). The pilot was run with \texttt{runner\_pilot.py} against the same N/L/B MR sets, the same test set of eight clouds, and the same tolerance as the main case study. Results are deterministic given the seeds in supplementary S3.
 
-\begin{table}[h]
-\centering
-\caption{DeepCrime-style real-fault pilot, $n=5$ mutations on the trained EGNN checkpoint. Wilson 95\% CIs are given for context; pairwise Fisher-exact $p$-values are reported in supplementary S3 (\texttt{deepcrime\_pilot\_stats.json}).}
-\label{tab:pilot}
-\small
-\begin{tabular}{lcc}
-\toprule
-\textbf{Set} & \textbf{Detected / 5} & \textbf{Wilson 95\% CI} \\
-\midrule
-N (NOETHER) & 2/5 (cat-v-01, cat-v-03 via $\rho_{\mathrm{train}}$) & $[0.12, 0.77]$ \\
-L (LLM)     & 0/5                                           & $[0.00, 0.43]$ \\
-B (Lit.)    & 0/5                                           & $[0.00, 0.43]$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+The full pilot table (per-set detection $2/5$, $0/5$, $0/5$ with Wilson 95\% CIs $[0.12,0.77]$, $[0.00,0.43]$, $[0.00,0.43]$) is provided in supplementary~S3 (\texttt{deepcrime\_pilot\_stats.json}).
 
 \paragraph{Reading the pilot (inferential verdict).}
 At $n=5$ the appropriate paired-binary test is McNemar's exact on the discordant counts $(b, c) = (2, 0)$ for both Set N vs Set L and Set N vs Set B: two-sided exact $p = 0.500$ (and the unpaired-Fisher analogue yields two-sided $p = 0.444$ on the same contingency); the pilot is therefore underpowered for an inferential conclusion at $\alpha = 0.05$. The 2/5 vs 0/5 vs 0/5 detection contrast is reported as descriptive evidence consistent with the direction of the framework's $\mathcal{L}^{*}$-block prediction, not as a hypothesis confirmation. The pilot's load-bearing claim is that the comparative-evaluation infrastructure runs end-to-end against real-fault-style mutations on the trained checkpoint; non-vacuousness of the $\mathcal{L}^{*}$-block prediction and the parameter-distribution candidate-ninth-block reading are candidate evidence requiring a larger $n$.
