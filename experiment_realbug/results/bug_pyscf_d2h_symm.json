@@ -1,0 +1,48 @@
+{
+  "id": "pyscf_d2h_axis_orbsym",
+  "repo": "pyscf/pyscf",
+  "domain": "paper SUT domain (quantum_chemistry: PySCF symmetry-adapted RHF SCF, molecular point group)",
+  "sut_family": "symm.geom (_adjust_planar_d2h / detect_symm D2h axis convention) + scf.hf_symm orbital irrep labelling -- paper RHF SCF SUT",
+  "cat": "G symmetry (Noether: molecular point-group invariance of orbital irrep labels)",
+  "fix_commit": "4542fe9b4b28d5214dae10e57987c3182c5ebbc3",
+  "fix_commit_short": "4542fe9b",
+  "fix_title": "Fix #2773 (cf. #3166) (#3176) -- D2h axis determination / _adjust_planar_d2h",
+  "pre_fix_parent_commit": "687a9d5d6085530dacf5857b21742c9f4df3dc19",
+  "pre_version": "2.12.1",
+  "post_version": "2.13.0",
+  "tolerance": 0,
+  "cpu_status": "OK",
+  "sut": "ethylene C2H4 (planar, D2h), basis STO-3G, RHF, symmetry=True; six axis permutations of the same molecule",
+  "ref_orbsym": [0, 5, 0, 5, 6, 0, 3, 7, 2, 6, 0, 5, 3, 5],
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "G point-group invariance: a molecule's point group is a property of the molecule, not of the Cartesian orientation in which atoms are typed, so the symmetry-adapted SCF must assign the SAME irrep id to each canonical MO under any axis permutation: orbsym(perm) == orbsym(reference) for all six permutations of planar D2h ethylene. Source = canonical reference orbsym; follow-up = same molecule with x,y,z axes permuted.",
+  "fired_type": "NUMERIC/LABEL (point-group symmetry violation, NOT crash). Pre 2.12.1: the buggy _adjust_planar_d2h axis-selection logic (and a mis-indented alias_axes call) picks a D2h convention that depends on input orientation, producing 6 DISTINCT orbsym tuples across 6 orientations (only 1/6 matches the reference). The group is still correctly detected as D2h every time; it is the irrep LABELS that are orientation-dependent and partly wrong. -- TRUE point-group invariance violation.",
+  "pre_observed": {
+    "orientations_matching_reference": "1/6",
+    "distinct_orbsym_tuples": 6,
+    "groupname_each_orientation": "D2h (correct in all 6)",
+    "verdict": "FIRED"
+  },
+  "post_observed": {
+    "orientations_matching_reference": "6/6",
+    "distinct_orbsym_tuples": 1,
+    "verdict": "HELD"
+  },
+  "verified": "SELF-RUN pip released-to-released: pre 2.12.1 FIRED (6 distinct orbsym tuples, 1/6 == reference) / post 2.13.0 HELD (all 6 orientations == reference, 1 distinct tuple). Python 3.11, numpy 2.4.6, scipy 1.17.1 -- modern pyscf 2.12+ has no numpy<2 constraint.",
+  "upstream": "gh-2773 / gh-3166 (issues) / gh-3176 (PR)",
+  "repro_script": "results/pyscf_repro/repro_pyscf_d2h_symm.py",
+  "note": "FILLS the previously-empty pyscf x G-symmetry cell in COVERAGE_SUMMARY.md (was 'unexplored: point group v1.4.3 too old'). This is a MODERN pip-installable point-group bug (2.12.1 -> 2.13.0), giving quantum_chemistry a clean in-the-wild G-symmetry positive in addition to its conservation (smearing) and L*-convergence (DIIS) positives. The MR is the canonical Noether point-group statement: molecular point group => irrep labels invariant under symmetry-equivalent (axis-permuted) descriptions of the same molecule. Reference orbsym tuple and geometry taken verbatim from upstream unittest pyscf/symm/test/test_d2h_conventions.py (commit 4542fe9b). [schema: fired keys are MR-sets {N,M,G,L,B}; NOETHER MR is set N, cat field carries the G block name]"
+}

@@ -23,9 +23,10 @@
 | 守恒/表示不变:同算子不同存储同轨迹 | scipy cb0538877 (banded Jacobian) | pre 1.15.3 FIRED / post 1.16.3 (\|y_b-y_f\|=0) |
 | T\*:自伴谱 driver-invariant | scipy 178a12572 (eigh driver) | pre 1.13.0 FIRED / post 1.13.1 HELD |
 | T\*:对称结构不变 `solve/inv(A,sym)==solve/inv(A)`(A==A^T) | scipy 50951d25c (complex-symmetric, gh-24359) | pre 1.18.0.dev0+git20260120.d292d32 FIRED (max\|X@a-I\|=9.11) / post 1.18.0.dev0+git20260121.50951d2 HELD(源码编译 meson) |
+| O≤:shape-preserving 插值,2 个单调点须为线性弦 `I((x0+x1)/2)==(y0+y1)/2` | scipy ef7437afc (Akima 两点线性, gh-22278) | pre 1.15.2 FIRED (I(0.5)=1.25≠1.0,或 `np.empty` 未初始化斜率致非有限崩溃)/ post 1.16.0 HELD (I(0.5)=1.0,max\|I-弦\|=0) |
 
 ### 1c. 证据链闭合
-热方程算子代数**先验**给出 T\*/O≤/L\*/守恒/G(+Trev\*=∅);scipy 实现中 **L\*/守恒/T\* 三块各有独立真实缺陷**违反对应先验 MR(T\* 两实例:eigh driver-invariance + complex-symmetric 对称结构)。**完整。**
+热方程算子代数**先验**给出 T\*/O≤/L\*/守恒/G(+Trev\*=∅);scipy 实现中 **L\*/守恒/T\*/O≤ 四块各有独立真实缺陷**违反对应先验 MR(T\* 两实例:eigh driver-invariance + complex-symmetric 对称结构;O≤:Akima 两点线性 shape-preservation)。**完整。**
 
 ---
 
@@ -45,10 +46,11 @@
 |---|---|---|
 | 守恒:`sum(occ)=N_elec` | pyscf ebf4e676 (smearing #2290) | pre 2.6.2 FIRED (14≠13) / post 2.7.0 HELD |
 | L\*:对称自适应 SCF 不动点不受数值噪声影响(收敛 + e_tot 确定) | pyscf 15920e60 (DIIS 数值噪声 #1638) | pre 2.2.0 FIRED (0/5 收敛,e_tot 抖动 1.76e-2) / post 2.2.1 HELD (5/5 收敛,e_tot=-74.7874921601011) |
+| G 点群:分子点群 ⟹ MO irrep 标签朝向不变 `orbsym(perm)==orbsym(ref)` | pyscf 4542fe9b (D2h 轴向 #3176) | pre 2.12.1 FIRED (乙烯 STO-3G RHF,6 朝向 6 个 orbsym,1/6 对参考)/ post 2.13.0 HELD (6/6 对,1 个 orbsym) |
 | T\* Fock-Hermitian | 构造保证 ⟹ vanilla 真实 bug 稀缺(仅 int-DM 边界 #1114) | — (诚实负结果) |
 
 ### 2c. 证据链闭合
-RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(smearing,纯数值违反 14 vs 13),**L\* 收敛块亦有独立真实缺陷**(对称自适应 DIIS 数值噪声,0/5→5/5)。T\* 由实现**构造保证**(印证论文:构造保证块真实 bug 稀缺)。**守恒 + L\* 块完整。**
+RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(smearing,纯数值违反 14 vs 13),**L\* 收敛块亦有独立真实缺陷**(对称自适应 DIIS 数值噪声,0/5→5/5),**G 点群块亦有独立真实缺陷**(D2h 轴向 orbsym 朝向依赖,6→1)。T\* 由实现**构造保证**(印证论文:构造保证块真实 bug 稀缺)。**守恒 + L\* + G 块完整。**
 
 ---
 
