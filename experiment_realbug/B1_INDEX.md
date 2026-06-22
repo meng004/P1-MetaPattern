@@ -9,7 +9,7 @@
 - `RESULTS.md` — analyze 输出(detection / Wilson CI)
 - `B1_INDEX.md`(本文件)— 成果索引 + 复现指南
 
-## A. 论文 SUT 域 in-scope 正样本(n=11,pip + conda + 源码编译核验)
+## A. 论文 SUT 域 in-scope 正样本(n=15,pip + conda + 源码编译核验)
 
 | bug_json | 域 | NOETHER 块 | fix SHA | pre→post | 复现脚本 |
 |---|---|---|---|---|---|
@@ -17,13 +17,17 @@
 | bug_scipy_banded_jac.json | pde_numerical | 守恒/表示不变 | cb0538877 | scipy 1.15.3→1.16.3 | results/scipy_repro/repro_banded.py |
 | bug_scipy_eigh_driver.json | pde_numerical | T\* 自伴 | 178a12572 | scipy 1.13.0→1.13.1 | results/scipy_repro/repro_eigh.py |
 | bug_scipy_complexsym.json | pde_numerical | T\* 自伴/对称结构 | 50951d25c | scipy 1.18.0.dev0+git20260120.d292d32→1.18.0.dev0+git20260121.50951d2 (源码编译 meson) | results/scipy_repro/repro_complex_sym.py |
+| bug_scipy_akima_linear2pt.json | pde_numerical | O≤ 单调/线性 | ef7437afc | scipy 1.15.2→1.16.0 | results/scipy_repro/repro_akima_linear2pt.py |
 | bug_pyscf_smearing.json | quantum_chemistry | 守恒(Noether) | ebf4e676 | pyscf 2.6.2→2.7.0 | results/pyscf_repro/repro_smearing.py |
 | bug_pyscf_diis.json | quantum_chemistry | L\* 收敛 | 15920e60 | pyscf 2.2.0→2.2.1 (numpy<1.24+scipy<1.10+h5py<3.9) | results/pyscf_repro/repro_pyscf_diis.py |
+| bug_pyscf_d2h_symm.json | quantum_chemistry | G 对称(点群) | 4542fe9b | pyscf 2.12.1→2.13.0 | results/pyscf_repro/repro_pyscf_d2h_symm.py |
 | bug_openmc_normalize.json | reactor_physics | G 对称 | 3bf1486f4 | openmc 0.15.0→0.15.3 (conda) | results/openmc_repro/noether_reactor_normalize.py |
 | bug_openmc_no_reduce.json | reactor_physics | 守恒(MPI no_reduce) | bd76fc056 | openmc 0.15.2→0.15.3 (conda+MPI) | results/openmc_repro/noether_reactor_no_reduce.py |
 | bug_openmc_rotperiodic.json | reactor_physics | G 对称(旋转周期) | c7d7fa461 | openmc 0.15.4-dev30→0.15.4-dev31 (源码编译,parent 818fd11b1) | results/openmc_repro/repro_rotational_periodic.py |
+| bug_openmc_ifp_adjoint.json | reactor_physics | T\* 自伴/伴随对偶 | 767db7e6a | openmc 66e7d863→767db7e6a (源码编译,parent 66e7d863) | results/openmc_repro/repro_ifp_adjoint.py |
 | bug_deepxde_neumann.json | pde_sciml (第三方) | 守恒/flux | 4bac5eb | deepxde 1.3.0→1.3.1 (pip) | results/deepxde_repro/repro_deepxde_neumann.py |
 | bug_deepxde_periodic.json | pde_sciml (第三方) | G 对称(周期/平移) | 8353540 | deepxde 0.8.6→0.9.0 (pip) | results/deepxde_repro/repro_deepxde_periodic.py |
+| bug_deepxde_resample.json | pde_sciml (第三方) | L\* 收敛 | 4adcde7 | deepxde 0.5.0→0.5.1 (pip) | results/deepxde_repro/repro_deepxde_resample.py |
 
 **复现命令**(以 pyscf_smearing 为例):
 ```bash
@@ -60,11 +64,12 @@ python results/pyscf_repro/repro_smearing.py
 | D (conda) | micromamba + multi-group XS(无 CE 核数据) | openmc normalize / no_reduce(conda 0.15.0/0.15.2/0.15.3,no_reduce 需 MPI build) |
 | E (源码编译) | scipy meson editable build,py3.12 + openblas | scipy complex-symmetric(unreleased fix 50951d25c,pre/post 源码编译) |
 | F (源码编译) | micromamba omc_src,cmake+ninja Release,MPI/OpenMP,multi-group XS | openmc RotationalPeriodicBC(unreleased fix c7d7fa461,pre=parent 818fd11b1 / post=c7d7fa461,仅 C++ 改动) |
+| G (源码编译) | micromamba omc_src,cmake+ninja Release,continuous-energy ENDF/B-VIII.0 U235 via NJOY | openmc IFP adjoint-weighted kinetics(unreleased fix 767db7e6a/#3580,pre=parent 66e7d863 / post=767db7e6a,仅 C++ 改动;CE U235 + 6 延迟群数据 on-box NJOY 生成) |
 
 ## E. 诚实标注(贯穿)
 
-- **FIRED 类型**:11 个 in-scope 中 5 个 crash-type(3 scipy + 2 DeepXDE,follow-up 合法输入崩溃→违反 MR 关系)、4 个纯数值违反(scipy complexsym、pyscf smearing 14 vs 13、openmc normalize、openmc no_reduce)、1 个收敛/自洽(pyscf DIIS 0/5→5/5)、1 个 transport 失败(openmc rotperiodic 丢粒子)。
+- **FIRED 类型**:15 个 in-scope 中 5 个 crash-type(3 scipy + 2 DeepXDE,follow-up 合法输入崩溃→违反 MR 关系)、7 个纯数值违反(scipy complexsym、scipy akima、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize、openmc no_reduce、openmc ifp_adjoint beta_eff 687.4→498.7 pcm)、2 个收敛/自洽(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样)、1 个 transport 失败(openmc rotperiodic 丢粒子)。
 - **稀缺块**:scipy Trev\*/O≤/G 在 pip 可复现范围稀缺;pyscf T\* Fock-Hermitian 构造保证(需 int-DM 边界)。
 - **不可达(已解决)**:OpenMC/OpenMOC 无 PyPI(需 conda+核数据,Tier-C);unreleased fix(openmc rotperiodic、scipy complexsym)经源码编译 pre/post 闭合。
-- **样本量**:n=11 论文 SUT 域,underpowered for α=0.05(C6),descriptive 证据。
+- **样本量**:n=15 论文 SUT 域,underpowered for α=0.05(C6),descriptive 证据。
 - **覆盖规律**:NOETHER 真实 bug 数值算法库(scipy)富集,构造保证物理库(pyscf/e3nn)稀缺,守恒/计数不变量有真实数值 bug。

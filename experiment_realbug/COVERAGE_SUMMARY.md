@@ -3,7 +3,7 @@
 > real-bug in-the-wild 佐证,**对齐论文 SUT 域**(subject_catalog.csv:reactor_physics / pde_numerical / quantum_chemistry / pde_sciml)。
 > 多数 pip / conda released-to-released 复现(pre FIRED / post HELD 自跑核验);2 个 unreleased-fix(scipy complexsym、openmc rotperiodic)经源码编译 pre/post 闭合。
 
-## 1. 论文 SUT 域 in-scope 正样本(n=13,pip + conda + 源码编译核验)
+## 1. 论文 SUT 域 in-scope 正样本(n=15,pip + conda + 源码编译核验)
 
 | # | 域 | 库 | bug | NOETHER 块 | pre→post | FIRED 类型 |
 |---|---|---|---|---|---|---|
@@ -20,14 +20,16 @@
 | 11 | pde_sciml | DeepXDE GeometryXTime.periodic_point (第三方) | 周期/平移对称 (8353540) | G 对称 | v0.8.6→v0.9.0 | crash(对称映射不可构造) |
 | 12 | quantum_chemistry | pyscf.symm.geom + scf.hf_symm | D2h 轴向 orbsym 朝向依赖 (4542fe9b/#3176) | G 对称(点群) | 2.12.1→2.13.0 | **数值/标签**(6 朝向→6 个 orbsym,1/6 对) |
 | 13 | pde_numerical | scipy.interpolate.Akima1DInterpolator | 两点须为线性弦 (ef7437afc/#22278) | O≤ 单调/线性 | 1.15.2→1.16.0 | **数值/crash**(I(0.5)=1.25≠1.0 或非有限) |
+| 14 | reactor_physics | openmc IFP adjoint-weighted kinetics | 伴随权重朝向不变 (767db7e6a/#3580) | T\* 自伴/伴随对偶 | 66e7d863→767db7e6a (源码编译) | **数值**(beta_eff 687.4→498.7 pcm) |
+| 15 | pde_sciml | DeepXDE PDE.train_next_batch (第三方) | 固定 collocation 集收敛 (4adcde7) | L\* 收敛 | v0.5.0→v0.5.1 | 收敛/L\*(5→0 重采样) |
 
 ## 2. NOETHER 块 × 论文 SUT 域覆盖矩阵(pip / conda / 源码编译可复现)
 
 | 块 | scipy (pde_numerical) | pyscf (quantum_chemistry) | openmc (reactor_physics) | DeepXDE (pde_sciml) |
 |---|---|---|---|---|
-| L\* 收敛 | ✓ LSODA dense-output | ✓ DIIS(15920e60, 2.2.0→2.2.1;numpy<1.24+scipy<1.10+h5py<3.9 解依赖) | 未探索 | — |
+| L\* 收敛 | ✓ LSODA dense-output | ✓ DIIS(15920e60, 2.2.0→2.2.1;numpy<1.24+scipy<1.10+h5py<3.9 解依赖) | 未探索 | **✓ train_next_batch 固定 collocation(4adcde7, 0.5.0→0.5.1;5→0 重采样)** |
 | 守恒 | ✓ banded Jacobian | ✓ smearing 电子数 | ✓ tally-norm no_reduce (bd76fc056, 0.15.2→0.15.3 conda+MPI) | ✓ Neumann/Robin flux (4bac5eb, 1.3.0→1.3.1) |
-| T\* 自伴 | ✓ eigh driver(178a12572)、✓ complex-symmetric solve/inv(50951d25c,源码编译 meson) | ✗ Fock-Hermitian **构造保证**(仅 int-DM 边界) | 未探索 | — |
+| T\* 自伴 | ✓ eigh driver(178a12572)、✓ complex-symmetric solve/inv(50951d25c,源码编译 meson) | ✗ Fock-Hermitian **构造保证**(仅 int-DM 边界) | **✓ IFP 伴随权重(767db7e6a/#3580,源码编译 66e7d863→767db7e6a;beta_eff 687.4→498.7 pcm)** | — |
 | G 对称 | ✗ 稀缺(fft array-API dev-regression) | **✓ D2h 轴向 orbsym(4542fe9b/#3176, 2.12.1→2.13.0;乙烯 STO-3G RHF,6 朝向 6 个不同 orbsym→1 个)** | **✓ Surface.normalize (3bf1486f4, 0.15.0→0.15.3)**、✓ RotationalPeriodicBC(c7d7fa461,源码编译 0.15.4-dev30→dev31) | ✓ periodic_point(8353540, 0.8.6→0.9.0) |
 | O≤ 单调/线性 | **✓ Akima 两点线性(ef7437afc/#22278, 1.15.2→1.16.0;2 点 shape-preserving 须为线性弦,pre I(0.5)=1.25≠1.0 或非有限崩溃)** | — | 未探索 | — |
 | Trev\* 时间反演 | ✗ 未找到 pip 可复现候选(已确认稀缺:scipy 无 symplectic/leapfrog 积分器;唯一 backward 候选 d620670a5 为 2018 v1.2.0 first_step ENH+BUG,非可逆性不变量违反) | — | 未探索 | — |
@@ -59,9 +61,9 @@ e3nn/pyg(domain 字段标 cross-domain):Sₙ 置换(#6199)、adjoint 反对称(e
 
 ## 6. FIRED 类型的诚实区分
 
-- 论文 SUT 域 11 个中,**5 个 crash-type**(3 scipy lsoda/banded/eigh + 2 DeepXDE neumann/periodic,follow-up 在合法输入崩溃 → 违反 MR 不变性关系),**4 个纯数值违反**(scipy complexsym max\|X@a-I\|=9.11、pyscf smearing 14 vs 13、openmc normalize 符号丢失、openmc no_reduce 偏 1/n_ranks),**1 个收敛/自洽**(pyscf DIIS 0/5→5/5),**1 个 transport 失败**(openmc rotperiodic 丢粒子)。
+- 论文 SUT 域 15 个中,**5 个 crash-type**(3 scipy lsoda/banded/eigh + 2 DeepXDE neumann/periodic,follow-up 在合法输入崩溃 → 违反 MR 不变性关系),**7 个纯数值违反**(scipy complexsym max\|X@a-I\|=9.11、scipy akima I(0.5)=1.25≠1.0、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize 符号丢失、openmc no_reduce 偏 1/n_ranks、openmc ifp_adjoint beta_eff 687.4→498.7 pcm),**2 个收敛/自洽**(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样),**1 个 transport 失败**(openmc rotperiodic 丢粒子)。
 - scipy 真实 bug 多为数值鲁棒性 / 边界 crash;NOETHER 的表示不变性 / 方法对比 / 自洽 MR 通过"合法输入下 follow-up 崩溃"检出它们。
 
 ## 7. 样本量诚实标注
 
-n=13 论文 SUT 域 in-scope(+ 3 跨域),**underpowered for α=0.05 confirmatory**(CLAUDE.md C6)。descriptive 证据:NOETHER 块 MR 在论文 SUT 域(scipy/pyscf/openmc/DeepXDE)检出真实缺陷,覆盖 **L\*/守恒/T\*/G/O≤ 五块、四域**(pde_numerical/quantum_chemistry/reactor_physics/pde_sciml);Trev\* 在 scipy pip 可复现范围真实稀缺(无 symplectic 基底,已确认)。
+n=15 论文 SUT 域 in-scope(+ 3 跨域),**underpowered for α=0.05 confirmatory**(CLAUDE.md C6)。descriptive 证据:NOETHER 块 MR 在论文 SUT 域(scipy/pyscf/openmc/DeepXDE)检出真实缺陷,覆盖 **L\*/守恒/T\*/G/O≤ 五块、四域**(pde_numerical/quantum_chemistry/reactor_physics/pde_sciml);Trev\* 在 scipy pip 可复现范围真实稀缺(无 symplectic 基底,已确认)。
