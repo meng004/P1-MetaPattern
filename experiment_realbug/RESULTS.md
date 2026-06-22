@@ -1,11 +1,11 @@
 # B1 Real-Bug Evaluation (e3nn / PyG) — Results
 
 Freeze hash: PENDING     Prereg integrity: intact
-Run id: b1-dxde-periodic                Branch: claude/b1-realbug-b1-dxde-periodic
+Run id: b1-rotperiodic                Branch: claude/b1-realbug-b1-rotperiodic
 CPU-only confirmed: yes        GPU used: no        LLM/API calls: none
 
 ## Ledger accounting
-- Ledger rows analysed: 16
+- Ledger rows analysed: 17
 - OK (analysed): 9    CPU-INFEASIBLE (excluded): 0    BLOCKED (excluded): 0
 - Category coverage in OK set: L* convergence (dense-output self-consistency) 1, T* self-adjoint (driver-invariance of the eigenproblem) 1, cat-ii 1, conservation (Noether: electron-number conservation) 1, conservation / representation-invariance (same Jacobian, full vs banded storage) 1, m^eq_adj-family (graph symmetrization completeness) 1, m^eq_adj-family (role-swap duality, antisymmetric parity variant) 1, out-of-decomposition 1, self-consistency / convergence (NOETHER L* block) 1
 

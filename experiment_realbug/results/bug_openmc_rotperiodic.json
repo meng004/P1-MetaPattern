@@ -1,0 +1,65 @@
+{
+  "id": "openmc_rotational_periodic",
+  "repo": "openmc-dev/openmc",
+  "domain": "paper SUT domain (reactor_physics: OpenMC)",
+  "sut_family": "RotationalPeriodicBC (rotational periodic boundary conditions) -- 2-group multi-group eigenvalue transport on a 6-fold rotational-periodic wedge",
+  "cat": "G symmetry (rotational geometric-equivalence invariance)",
+  "fix_commit": "c7d7fa461",
+  "parent_commit": "818fd11b1",
+  "pre_version": "0.15.4-dev30 (source-built, parent 818fd11b1)",
+  "post_version": "0.15.4-dev31 (source-built, fix c7d7fa461)",
+  "tolerance": 0.005,
+  "cpu_status": "OK (SOURCE-BUILT pre/post via micromamba omc_src; MPI/OpenMP; multi-group XS; no CE nuclear data)",
+  "build": "FROM SOURCE -- fix is UNRELEASED (v0.15.4-dev31, no conda post-binary). PRE=parent 818fd11b1, POST=c7d7fa461; both cmake+ninja Release, vendored libs, fix touches only C++ (Python API identical pre/post, verified by diff).",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "k_eff_pre": {
+    "False-False": [
+      1.527569,
+      0.000276
+    ],
+    "True-True": [
+      1.527569,
+      0.000276
+    ]
+  },
+  "k_eff_post": {
+    "False-False": [
+      1.527569,
+      0.000276
+    ],
+    "False-True": [
+      1.527569,
+      0.000276
+    ],
+    "True-False": [
+      1.527569,
+      0.000276
+    ],
+    "True-True": [
+      1.527569,
+      0.000276
+    ]
+  },
+  "pre_failed_reps": [
+    "False-True",
+    "True-False"
+  ],
+  "mr_used": "k_eff(flip1,flip2) == k_eff(False,False) for all (flip1,flip2) in {False,True}^2: the four algebraically-opposite sign conventions of the two periodic bounding planes describe the IDENTICAL rotational-periodic wedge, so the eigenvalue must be invariant to the plane sense.",
+  "fired_type": "TRANSPORT FAILURE under sign-flip (NOT a crash in setup): pre, the mixed-sign reps (False,True) and (True,False) hit 'Maximum number of lost particles' because the rotational-periodic BC does not map particles across the boundary for the flipped plane sense; (False,False) and (True,True) run and agree at k=1.527569. post, all four reps run and agree at k=1.527569. On byte-identical input XML the PRE kernel aborts (exit 255, lost particles) while the POST kernel gives Combined k-eff=1.52757 -- the C++ BC fix is the only difference.",
+  "verified": "SELF-RUN source-built: PRE 818fd11b1 FIRED (exit 1; reps (False,True)/(True,False) lose all particles) / POST c7d7fa461 HELD (exit 0; all four reps k=1.527569). Also confirmed by running both kernels on identical exported XML.",
+  "upstream": "gh-3692",
+  "note": "reactor_physics 3rd block (G-symmetry, rotational). Fix rewrites RotationalPeriodicBC: signed angle atan2((n1 x n2).a, n1.n2) with surface signs folded in via copysign, plus flip_sense_ = (i_sign*j_sign>0) to flip the partner surface sense; handle_particle no longer branches on which surface was struck. Geometry ported from OpenMC's own fix-commit regression test tests/regression_tests/periodic_6fold/test.py (which asserts all four flip cases give the same k-combined), instantiated in 2-group multi-group (shared build_two_group_mgxs with sibling reactor_physics repros) since no CE nuclear data is available. Distinct from the conda-reproducible openmc blocks: Surface.normalize (3bf1486f4, G geometry-canonicalization) and no_reduce tally (bd76fc056, conservation/MPI); this one is the rotational-BC transport bug whose fix is unreleased. [schema fix: fired keys are MR-sets {N,M,G,L,B}; NOETHER MR=set N; G-symmetry is the cat/block name, NOT the GenMorph G key]"
+}
