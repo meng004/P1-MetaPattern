@@ -36,8 +36,8 @@
 | 守恒 | ✓ banded Jacobian | ✓ smearing 电子数 | ✓ tally-norm no_reduce (bd76fc056, 0.15.2→0.15.3 conda+MPI) | ✓ Neumann/Robin flux (4bac5eb, 1.3.0→1.3.1) |
 | T\* 自伴 | ✓ eigh driver(178a12572)、✓ complex-symmetric solve/inv(50951d25c,源码编译 meson) | ✗ Fock-Hermitian **构造保证**(仅 int-DM 边界) | **✓ IFP 伴随权重(767db7e6a/#3580,源码编译 66e7d863→767db7e6a;beta_eff 687.4→498.7 pcm)** | **△ forward-mode Hessian 自伴(46e2c2e/#1591,源码编译 9d9d0b0→46e2c2e;H[i,j]≠H[j,i] J-col 误差 6.185→0;但 forward-mode 在该 commit 未接入 public 默认路径——稀缺,reachability caveat)** |
 | G 对称 | **△ fht Hermitian 保持(170f9e69a/gh-21661, 1.14.1→1.15.0;scipy 自带 test_gh_21661,奇 n rel-err 7.288e16≥阈 vs post 7.225e16<阈,偶 n 控制位相同;edge-dominated 信号边际,scipy G 干净候选仍稀缺)** | **✓ D2h 轴向 orbsym(4542fe9b/#3176, 2.12.1→2.13.0;乙烯 STO-3G RHF,6 朝向 6 个不同 orbsym→1 个)** | **✓ Surface.normalize (3bf1486f4, 0.15.0→0.15.3)**、✓ RotationalPeriodicBC(c7d7fa461,源码编译 0.15.4-dev30→dev31) | ✓ periodic_point(8353540, 0.8.6→0.9.0) |
-| O≤ 单调/线性 | **✓ Akima 两点线性(ef7437afc/#22278, 1.15.2→1.16.0;2 点 shape-preserving 须为线性弦,pre I(0.5)=1.25≠1.0 或非有限崩溃)** | — | **✓ CRAM 负密度 clip(1f7ac4215, a1df5842e→1f7ac4215 源码编译;depletion/burnup 数密度 min N=−5.8e-2<0,post Integrator.integrate 加 r.clip(min=0)→0)** | **✓ float32 边界检测(8a644fe/#1267, 1.8.4→1.9.0;Dirichlet 边界点 x≈0 因 np.isclose atol=1e-8 漏判为内部,on_boundary False→True、normal 0→-1、DirichletBC 丢点→保留)** |
-| Trev\* 时间反演 | ✗ 未找到 pip 可复现候选(已确认稀缺:scipy 无 symplectic/leapfrog 积分器;唯一 backward 候选 d620670a5 为 2018 v1.2.0 first_step ENH+BUG,非可逆性不变量违反) | — | 未探索 | — |
+| O≤ 单调/线性 | **✓ Akima 两点线性(ef7437afc/#22278, 1.15.2→1.16.0;2 点 shape-preserving 须为线性弦,pre I(0.5)=1.25≠1.0 或非有限崩溃)** | ✗ **构造保证**(occupation/density/variational 由构造钳制,负结果) | **✓ CRAM 负密度 clip(1f7ac4215, a1df5842e→1f7ac4215 源码编译;depletion/burnup 数密度 min N=−5.8e-2<0,post Integrator.integrate 加 r.clip(min=0)→0)** | **✓ float32 边界检测(8a644fe/#1267, 1.8.4→1.9.0;Dirichlet 边界点 x≈0 因 np.isclose atol=1e-8 漏判为内部,on_boundary False→True、normal 0→-1、DirichletBC 丢点→保留)** |
+| Trev\* 时间反演 | ✗ 未找到 pip 可复现候选(已确认稀缺:scipy 无 symplectic/leapfrog 积分器;唯一 backward 候选 d620670a5 为 2018 v1.2.0 first_step ENH+BUG,非可逆性不变量违反) | — | ✗ 无可逆动力学基底(负结果,git 考古 0 命中,见 NEGATIVE_openmc_trev.md) | — |
 
 ## 3. 诚实负结果与 caveat(同等重要)
 
@@ -47,6 +47,7 @@
 - **scipy G 边际填补(caveated)**:fht rfft/irfft Hermitian 保持(170f9e69a/gh-21661, 1.14.1→1.15.0)是真实上游 fix,且为 scipy 自带回归测试 test_gh_21661——pre 1.14.1 未守 `if n%2==0` 无条件 `u.imag[-1]=0`,奇 n=129 破坏非 Nyquist 系数虚部。但信号 edge-dominated:rel-err 在 ~7.2e16 量级,pre 7.288e16≥阈 vs post 7.225e16<阈,偶 n 控制位相同。区分真实但**数值边际**,故矩阵标 △;scipy G 的干净 order-of-magnitude 候选仍稀缺。
 - **DeepXDE T\* reachability(caveated)**:forward-mode Hessian 自伴 H[i,j]=H[j,i](46e2c2e/#1591,源码编译 9d9d0b0→46e2c2e)是真实 forward-mode Jacobian 索引 bug(返回第 0 列→Hessian 非对称,J-col 误差 6.185→0)。但 pre/post 两 commit 的 `gradients/__init__.py` 默认走 reverse-mode、forward-mode import 被注释,该缺陷未进 public 默认路径的 released tag(须显式 `from ...gradients_forward import`),故矩阵标 △ reachability;reverse-mode Hessian 对称由 autodiff 构造保证,DeepXDE 算子自伴干净候选稀缺。
 - **pyscf T\* Fock-Hermitian 构造保证**:vanilla float64 RHF 的 Fock 厄米性由构造保证,真实 bug 仅在**非标准 int-DM 输入**(#1114/#1537)触发——边界,非干净 in-scope。
+- **pyscf O≤ 构造保证(负结果,确认)**:占据数/密度/变分界在 PySCF 中**由构造钳制**——aufbau 占据恒取 0/2、smearing 为单调有界映射(Fermi-Dirac/Gaussian erfc∈(0,1))、变分 RDM 构造 PSD ⟹ NOON≥0、变分界由 Rayleigh 商保证,故无 numeric clamp/positivity fix 可作 pre→post 复现。git 考古(全历史)逐查 negative-occupation/clip/maximum/positive-semidefinite 等关键词,命中的 8 个候选(a140208c 熵项、ebf4e676 守恒已占、a40f48d3/c36be01d raise 守卫、9fc6f993 C 端 shell 索引等)逐一打开 diff 均**非 O≤ 界违反修复**;MP2/CC 微扰 RDM 的 NOON 越界是已知物理性质非软件缺陷,上游无对应 fix。与 Fock-Hermitian T\* 同属构造保证稀缺。详见 `results/NEGATIVE_pyscf_o_le.md`。
 - **pyscf 老版本 pip 依赖**(已解决):2.2.x 与现代 numpy/scipy 冲突,通过 Python 3.10 上 pin numpy<1.24 + scipy<1.10 + h5py<3.9 解依赖,L\* DIIS(15920e60)已干净 pip released-to-released 复现(0/5→5/5 收敛)。
 - **reactor_physics(OpenMC/OpenMOC)无 PyPI**:需 conda + 核数据(Tier-C 重运行时);未 release 的 RotationalPeriodicBC fix(c7d7fa461)无 conda post-binary,已通过源码编译(parent 818fd11b1 → fix c7d7fa461,cmake+ninja Release,multi-group XS)闭合。
 - **scipy complex-symmetric T\***:fix(50951d25c)在 1.18.0.dev0 dev-window,无 released wheel,已通过 scipy meson editable build(py3.12 + openblas)源码编译闭合(pre/post)。
@@ -57,10 +58,10 @@
 | 不变性来源 | 例子 | 真实可复现 bug |
 |---|---|---|
 | **数值算法**(非构造保证) | scipy L\*/守恒/T\* | **富集** |
-| **构造保证**(Hermitian/等变) | pyscf Fock-Hermitian、e3nn SO(3) | **稀缺**(需边界输入) |
+| **构造保证**(Hermitian/等变/有界) | pyscf Fock-Hermitian(T\*)+ 占据/密度/变分界(O≤)、e3nn SO(3) | **稀缺**(构造钳制,真实 bug 仅边界输入) |
 | **守恒律/计数**(occupation) | pyscf 电子数 smearing | **有真实数值 bug** |
 
-**关键洞察**:同一个 PySCF,T\* 自伴**构造保证**(稀缺),但守恒块有**真实数值 bug**(smearing)。这个域内不对称正是论文该诚实呈现的 coverage 精细结构。
+**关键洞察**:同一个 PySCF,**构造保证的两块**(T\* 自伴 Fock-Hermitian、O≤ 占据/密度/变分界)真实 bug 稀缺,而**非构造保证的三块**(守恒 smearing、L\* DIIS、G D2h orbsym)各有真实数值 bug。这个域内不对称(构造钳制⟹稀缺 vs 数值算法⟹富集)正是论文该诚实呈现的 coverage 精细结构。
 
 ## 5. 跨域补充(geometric DL,**非论文 SUT 域**,标注隔离)
 

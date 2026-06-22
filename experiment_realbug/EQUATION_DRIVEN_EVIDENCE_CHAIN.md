@@ -49,9 +49,10 @@
 | L\*:对称自适应 SCF 不动点不受数值噪声影响(收敛 + e_tot 确定) | pyscf 15920e60 (DIIS 数值噪声 #1638) | pre 2.2.0 FIRED (0/5 收敛,e_tot 抖动 1.76e-2) / post 2.2.1 HELD (5/5 收敛,e_tot=-74.7874921601011) |
 | G 点群:分子点群 ⟹ MO irrep 标签朝向不变 `orbsym(perm)==orbsym(ref)` | pyscf 4542fe9b (D2h 轴向 #3176) | pre 2.12.1 FIRED (乙烯 STO-3G RHF,6 朝向 6 个 orbsym,1/6 对参考)/ post 2.13.0 HELD (6/6 对,1 个 orbsym) |
 | T\* Fock-Hermitian | 构造保证 ⟹ vanilla 真实 bug 稀缺(仅 int-DM 边界 #1114) | — (诚实负结果) |
+| O≤ 变分/占据/密度:`0≤n_i≤2`、`ρ≥0`、1-RDM PSD、`E[Ψ]≥E_0` | 构造保证 ⟹ aufbau 占据钳制 0/2、smearing 单调有界(Fermi-Dirac/erfc∈(0,1))、变分 RDM PSD ⟹ NOON≥0、Rayleigh 商保证变分界 | — (诚实负结果,git 考古全历史 8 候选逐一排除,详见 `results/NEGATIVE_pyscf_o_le.md`) |
 
 ### 2c. 证据链闭合
-RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(smearing,纯数值违反 14 vs 13),**L\* 收敛块亦有独立真实缺陷**(对称自适应 DIIS 数值噪声,0/5→5/5),**G 点群块亦有独立真实缺陷**(D2h 轴向 orbsym 朝向依赖,6→1)。T\* 由实现**构造保证**(印证论文:构造保证块真实 bug 稀缺)。**守恒 + L\* + G 块完整。**
+RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(smearing,纯数值违反 14 vs 13),**L\* 收敛块亦有独立真实缺陷**(对称自适应 DIIS 数值噪声,0/5→5/5),**G 点群块亦有独立真实缺陷**(D2h 轴向 orbsym 朝向依赖,6→1)。**T\* 与 O≤ 两块均由实现构造保证**(印证论文核心规律:构造保证块真实 bug 稀缺——pyscf 构造保证两块 T\*+O≤ 皆负结果,非构造三块守恒/L\*/G 各有真实缺陷)。**守恒 + L\* + G 三块完整,T\*+O≤ 构造保证负结果。**
 
 ---
 
@@ -118,7 +119,7 @@ RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(
 | SUT 域 | 方程先验 | SUT 真实缺陷证据 | 完整元模式实例 |
 |---|---|---|---|
 | pde_numerical (scipy) | ✓ 6 块 | ✓ L\*/守恒/T\*(T\* 两实例:eigh + complex-symmetric)/O≤(Akima 两点线性)+ G(fht Hermitian,**边际**)(6 真实缺陷) | **✓ 完整(G 边际)** |
-| quantum_chemistry (pyscf) | ✓ 5 块 | ✓ 守恒 + L\* 收敛 + G 点群(D2h orbsym)(3 真实缺陷) + T\* 构造保证负结果 | **✓ 守恒+L\*+G 完整** |
+| quantum_chemistry (pyscf) | ✓ 5 块 | ✓ 守恒 + L\* 收敛 + G 点群(D2h orbsym)(3 真实缺陷) + T\*+O≤ 构造保证负结果 | **✓ 守恒+L\*+G 完整,T\*+O≤ 构造负** |
 | reactor_physics (openmc) | ✓ 5 块 | ✓ G 几何对称(normalize + RotationalPeriodicBC)+ 守恒(no_reduce)+ T\* 伴随对偶(IFP)+ O≤ 正性(CRAM clip)+ L\* 收敛(tally trigger)(6,conda/MPI/源码编译) | **✓ G+守恒+T\*+O≤+L\* 完整(块覆盖最全)** |
 | pde_sciml (DeepXDE) | ✓ 5 块 | ✓ 守恒/flux + G/对称 + L\* 收敛 + O≤/边界(float32)+ T\* 自伴(forward Hessian,**△ reachability**)(均第三方 in-the-wild)(5)+ 自建 PINN mutant(论文 T2 补) | **✓ 守恒+G+L\*+O≤ 完整,T\* 边际(第三方)** |
 
