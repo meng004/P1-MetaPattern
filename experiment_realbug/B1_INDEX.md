@@ -9,7 +9,7 @@
 - `RESULTS.md` — analyze 输出(detection / Wilson CI)
 - `B1_INDEX.md`(本文件)— 成果索引 + 复现指南
 
-## A. 论文 SUT 域 in-scope 正样本(n=5,pip + conda 核验)
+## A. 论文 SUT 域 in-scope 正样本(n=7,pip + conda 核验)
 
 | bug_json | 域 | NOETHER 块 | fix SHA | pre→post | 复现脚本 |
 |---|---|---|---|---|---|
@@ -18,6 +18,8 @@
 | bug_scipy_eigh_driver.json | pde_numerical | T\* 自伴 | 178a12572 | scipy 1.13.0→1.13.1 | results/scipy_repro/repro_eigh.py |
 | bug_pyscf_smearing.json | quantum_chemistry | 守恒(Noether) | ebf4e676 | pyscf 2.6.2→2.7.0 | results/pyscf_repro/repro_smearing.py |
 | bug_openmc_normalize.json | reactor_physics | G 对称 | 3bf1486f4 | openmc 0.15.0→0.15.3 (conda) | results/openmc_repro/noether_reactor_normalize.py |
+| bug_openmc_no_reduce.json | reactor_physics | 守恒(MPI no_reduce) | bd76fc056 | openmc 0.15.2→0.15.3 (conda+MPI) | results/openmc_repro/noether_reactor_no_reduce.py |
+| bug_deepxde_neumann.json | pde_sciml (第三方) | 守恒/flux | 4bac5eb | deepxde 1.3.0→1.3.1 (pip) | results/deepxde_repro/repro_deepxde_neumann.py |
 
 **复现命令**(以 pyscf_smearing 为例):
 ```bash

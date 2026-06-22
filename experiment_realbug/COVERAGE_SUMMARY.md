@@ -3,7 +3,7 @@
 > real-bug in-the-wild 佐证,**对齐论文 SUT 域**(subject_catalog.csv:reactor_physics / pde_numerical / quantum_chemistry / pde_sciml)。
 > 全部 pip released-to-released 复现(pre FIRED / post HELD 自跑核验,无源码编译)。
 
-## 1. 论文 SUT 域 in-scope 正样本(n=5,pip + conda 核验)
+## 1. 论文 SUT 域 in-scope 正样本(n=7,pip + conda 核验)
 
 | # | 域 | 库 | bug | NOETHER 块 | pre→post | FIRED 类型 |
 |---|---|---|---|---|---|---|
@@ -12,6 +12,8 @@
 | 3 | pde_numerical | scipy.linalg.eigh | driver-invariance (178a12572) | T\* 自伴 | 1.13.0→1.13.1 | crash(lwork) |
 | 4 | quantum_chemistry | pyscf.scf.addons.smearing | 电子数守恒 (ebf4e676/#2290) | 守恒(Noether) | 2.6.2→2.7.0 | **数值**(14 vs 13) |
 | 5 | reactor_physics | openmc.Surface.normalize | 几何对称规范 (3bf1486f4/#3270) | G 对称 | 0.15.0→0.15.3 | **数值**(符号丢失) |
+| 6 | reactor_physics | openmc tally no_reduce (MPI) | 归一化 (bd76fc056/#3619) | 守恒/方法不变 | 0.15.2→0.15.3 | **数值**(偏 1/n_ranks=0.5) |
+| 7 | pde_sciml | DeepXDE NeumannBC/RobinBC (第三方) | 通量/守恒边界 (4bac5eb) | 守恒/flux | v1.3.0→v1.3.1 | crash(残差不可构造) |
 
 ## 2. NOETHER 块 × 论文 SUT 域覆盖矩阵(pip 可复现)
 
