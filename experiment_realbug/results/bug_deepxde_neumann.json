@@ -1,0 +1,34 @@
+{
+  "id": "deepxde_neumann_robin_flux",
+  "repo": "lululxvi/deepxde",
+  "domain": "paper SUT domain (pde_sciml: DeepXDE -- THIRD-PARTY PINN library, in-the-wild)",
+  "sut_family": "deepxde.icbc.boundary_conditions.BC.normal_derivative (Neumann/Robin flux residual) -- anchored on 1D Poisson PINN with a Neumann (flux) boundary",
+  "cat": "conservation / flux (Neumann no-flux == mass/energy conservation boundary; Noether)",
+  "fix_commit": "4bac5ebb5cd7ac07356c95e283c6a05838f6bf34",
+  "fix_commit_short": "4bac5eb",
+  "fix_title": "Bug fix: NeumannBC and RobinBC",
+  "pre_version": "1.3.0",
+  "post_version": "1.3.1",
+  "tolerance": 0,
+  "cpu_status": "OK (pip released-to-released, PyTorch CPU backend, tiny net, no training -- direct BC flux-residual call, CPU milliseconds)",
+  "confounder_check": "Only 4 commits between v1.3.0 and v1.3.1 (9d270a6 FAQ doc, fab492b issue config, 4bac5eb THE fix, fb01d68 version bump); 4bac5eb is the ONLY functional change to BC code -> FIRED->HELD attributable to exactly this fix.",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "conservation/flux block: a Neumann BC n.grad u = g is the discrete statement of a prescribed boundary flux (g=0 == zero-flux mass-conservation boundary d/dt int_Omega u = 0). PINN oracle: the flux residual r_flux = n.grad u - g must be COMPUTABLE/finite at boundary collocation points.",
+  "fired_type": "CRASH (TypeError: Interval.boundary_normal() missing 1 required positional argument: '_') -- the Neumann/Robin flux residual cannot be formed at all, so the conservation/flux MR is unenforceable.",
+  "verified": "SELF-RUN pip: pre 1.3.0 FIRED (NeumannBC.error -> TypeError missing arg '_'; RobinBC.error same TypeError) / post 1.3.1 HELD (NeumannBC flux residual n.grad u - g = -3.0, finite). u=x => du/dx=1, n=+1 at x=1, g=2(x+1)=4 => residual 1-4=-3.0.",
+  "upstream": "DeepXDE git commit 4bac5eb (root cause: BC.normal_derivative called self.boundary_normal(X,beg,end) with 3 args, but the npfunc_range_autocache wrapper requires 4 args (X,beg,end,_); fix adds the 4th arg None).",
+  "note": "THIRD-PARTY in-the-wild bug in the most widely used PINN library (DeepXDE), NOT paper-authored, NOT a mutant. Strengthens the pde_sciml conservation block which previously had only a self-built PINN mutant (M_TIME_NEG, paper T2). Both NeumannBC AND RobinBC fire on pre (matches fix title). HONEST LEVEL: crash-type (the flux/conservation boundary residual is uncomputable in v1.3.0), reproduced via the exact buggy call path (BC.error -> normal_derivative -> boundary_normal) on PyTorch CPU backend with a tiny net and no training. Library default backend is tensorflow.compat.v1; reproduced on the pytorch backend (set DDEBACKEND=pytorch). Repro: results/deepxde_repro/repro_deepxde_neumann.py."
+}
