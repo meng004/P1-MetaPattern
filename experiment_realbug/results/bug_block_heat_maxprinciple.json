@@ -22,5 +22,6 @@
   "mr_used": "no-source heat: max_x u(t) <= max_x u(0) (parabolic maximum principle)",
   "fired_type": "numeric (baseline max_t(u)=0.9927<=max(u0)=0.9927 HELD ; mutant max_t(u)=1.8812>max(u0) FIRED)",
   "verified": "SELF-RUN scipy 1.18.0: baseline HELD / mutant FIRED",
-  "note": "Block-densification: this NOETHER block's in-the-wild scipy bug is scarce; the prior MR is derived from the equation algebra and shown DETECTABLE via a controlled mutant on the real scipy solver. Honestly tagged CONTROLLED-MUTANT, distinct from the 7 in-the-wild positives."
+  "note": "Block-densification: this NOETHER block's in-the-wild scipy bug is scarce; the prior MR is derived from the equation algebra and shown DETECTABLE via a controlled mutant on the real scipy solver. Honestly tagged CONTROLLED-MUTANT, distinct from the 7 in-the-wild positives.",
+  "cpu_status": "OK"
 }

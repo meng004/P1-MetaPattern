@@ -8,7 +8,7 @@
   "pre_version": "0.15.0",
   "post_version": "0.15.3",
   "tolerance": 0,
-  "cpu_status": "OK (conda/micromamba, multi-group XS, no GB nuclear data)",
+  "cpu_status": "OK",
   "fired_pre": {
     "N": true,
     "M": null,
@@ -27,5 +27,5 @@
   "fired_type": "NUMERIC (normalize tuple differs: pre normalize(P)=(-1.0,0.577..) vs normalize(-P)=(1.0,-0.577..), sign lost) -- TRUE symmetry violation, NOT crash",
   "verified": "SELF-RUN conda: pre 0.15.0 FIRED (invariant=False) / post 0.15.3 HELD (invariant=True)",
   "upstream": "gh-3270",
-  "note": "Bug: pre used abs(coeffs[0]) dropping sign -> equivalent plane reps (hex pin-cell +-60deg wedge symmetry boundaries, +/- sense) canonicalize differently, breaking Surface.is_equal/periodic-pairing/geometry-dedup. HONEST LEVEL: bug at geometry-canonicalization API, not Monte-Carlo transport output; anchored on MG pin-cell transport (k_eff pre 1.5274/post 1.5262) for reactor-domain relevance. First reactor_physics in-scope. NOTE: top candidate c7d7fa461 (rotational periodic boundary) fix UNRELEASED (no conda post); bd76fc056 (conservation) fix first in 0.15.3 -- this G-symmetry one has both pre/post in conda (0.15.0/0.15.3)."
+  "note": "Bug: pre used abs(coeffs[0]) dropping sign -> equivalent plane reps (hex pin-cell +-60deg wedge symmetry boundaries, +/- sense) canonicalize differently, breaking Surface.is_equal/periodic-pairing/geometry-dedup. HONEST LEVEL: bug at geometry-canonicalization API, not Monte-Carlo transport output; anchored on MG pin-cell transport (k_eff pre 1.5274/post 1.5262) for reactor-domain relevance. First reactor_physics in-scope. NOTE: top candidate c7d7fa461 (rotational periodic boundary) fix UNRELEASED (no conda post); bd76fc056 (conservation) fix first in 0.15.3 -- this G-symmetry one has both pre/post in conda (0.15.0/0.15.3). [cpu env: conda/micromamba, multi-group XS, no GB nuclear data]"
 }
