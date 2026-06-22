@@ -10,15 +10,19 @@ There is **no** in-the-wild, fixed OpenMC bug that violates a *time-reversibilit
 (microscopic-reversibility / detailed-balance / reversible-integrator) invariant,
 because **OpenMC has no reversible-dynamics substrate to begin with**.
 
-## Evidence (git archaeology on /tmp/openmc_git, full history, HEAD v0.15.3-181-g09ee8308d)
+## Evidence (git archaeology on a full-history openmc clone, HEAD v0.15.3-181-g09ee8308d, 16181 commits)
+
+Method note: `git log` rejects the combined `-iE` flag (`fatal: unrecognized argument: -iE`);
+flags must be separated as `-i -E`, and `grep` alternation needs `-E`. All counts below
+were re-verified with the corrected forms (every search genuinely returns 0).
 
 | Search | Command | Result |
 |---|---|---|
-| time-reversal / reversibility | `git log --all -iE --grep='time.?revers\|reversib\|micro.?revers'` | 0 commits |
-| detailed balance / reciprocity | `git log --all -iE --grep='detailed.?balance\|recipro'` | 0 commits |
-| symplectic / Verlet / leapfrog / Hamiltonian | `git log --all -iE --grep='symplect\|verlet\|leapfrog\|hamiltonian\|stormer'` | 0 commits |
-| reverse / backward depletion, negative timestep | `git log --all -iE --grep='reverse.?deplet\|backward.?deplet\|negative.?timestep'` | 0 commits |
-| source grep | `grep -rli 'time.reversal\|reciprocity\|detailed balance\|microscopic revers' src/ openmc/ docs/` | 0 files |
+| time-reversal / reversibility | `git log --all -i -E --grep='time.?revers\|reversib\|micro.?revers'` | 0 commits |
+| detailed balance / reciprocity | `git log --all -i -E --grep='detailed.?balance\|recipro'` | 0 commits |
+| symplectic / Verlet / leapfrog / Hamiltonian | `git log --all -i -E --grep='symplect\|verlet\|leapfrog\|hamiltonian\|stormer'` | 0 commits |
+| reverse / backward depletion, negative timestep | `git log --all -i -E --grep='reverse.?deplet\|backward.?deplet\|negative.?timestep'` | 0 commits |
+| source grep | `grep -rliE 'time.?reversal\|reciprocity\|detailed balance\|microscopic revers' src/ openmc/ docs/` | 0 files |
 
 ## Why it is structurally absent (not just "we didn't find it")
 
