@@ -1,0 +1,48 @@
+{
+  "id": "deepxde_resample_convergence",
+  "repo": "lululxvi/deepxde",
+  "domain": "paper SUT domain (pde_sciml: DeepXDE -- THIRD-PARTY PINN library, in-the-wild)",
+  "sut_family": "deepxde.data.pde.PDE.train_next_batch (PINN collocation-set caching / training-data limit) -- anchored on an unsupervised PINN (func=None) over Interval[0,1] with a Dirichlet boundary",
+  "cat": "L* convergence / limit operator (a PINN minimises a residual loss on a FIXED collocation set X; training is a discrete limit theta_t -> theta* converging to the minimiser of L(theta;X); if X is re-sampled every step the objective L(theta;X_t) moves and the limit operator is broken; NOETHER L* block)",
+  "fix_commit": "4adcde78349c3c1534542a19bdb6afa84501ad26",
+  "fix_commit_short": "4adcde7",
+  "fix_title": "Bug fix: re-generate data each step",
+  "pre_version": "0.5.0",
+  "post_version": "0.5.1",
+  "tolerance": 0,
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "L* convergence: the training objective must be defined on a FIXED collocation set across optimisation steps, so the loss-minimisation sequence converges to the minimiser of a single fixed problem. Operationally: calling train_next_batch() repeatedly (= successive training steps) must NOT re-generate the collocation set once it has been built. FIRED <=> the set is regenerated on subsequent steps (train_points() re-invoked -> moving objective); HELD <=> the set is cached/fixed across steps.",
+  "fired_type": "CONVERGENCE/L* (pre: train_points() re-invoked 5 times over 5 simulated steps -> collocation set re-sampled every step -> the PINN objective is a moving target -> no convergence to a fixed problem; post: 0 re-invocations -> cached fixed set). Deterministic verdict. NOT a crash -- a silent convergence/limit defect.",
+  "pre_observed": {
+    "unsupervised_func_none": true,
+    "train_points_calls_in_init": 1,
+    "train_points_reinvoked_over_5_steps": 5,
+    "verdict": "FIRED"
+  },
+  "post_observed": {
+    "unsupervised_func_none": true,
+    "train_points_calls_in_init": 1,
+    "train_points_reinvoked_over_5_steps": 0,
+    "verdict": "HELD"
+  },
+  "confounder_check": "git describe --tags --contains 4adcde7 = v0.5.1~1 (lands in v0.5.1, NOT in v0.5.0). Between v0.5.0 (2020-03-26) and v0.5.1 (2020-04-01) the ONLY commit touching deepxde/data/pde.py or deepxde/data/ide.py is 4adcde7 (other commits in the window touch GeometryXTime / formatting / warnings) -> FIRED->HELD attributable to exactly this fix (confounder count = 1). The decorator helpers run_if_all_none / run_if_any_none in deepxde/utils.py are unchanged across the window.",
+  "verified": "SELF-RUN pip released-to-released: pre 0.5.0 FIRED (train_points re-invoked 5/5 steps) / post 0.5.1 HELD (0/5). Both with tensorflow-cpu 2.15.1 + numpy<2 on a py3.9 venv (TF only needed to satisfy the module-top `import tensorflow as tf` in the 2020-era pde.py; it is never EXECUTED on the buggy numpy path -- no net, no session, no gradient).",
+  "upstream": "DeepXDE git commit 4adcde7 (root cause: PDE.train_next_batch / test were decorated @run_if_any_none(\"train_x\",\"train_y\"), which re-runs the wrapped method if ANY named attribute is None; for an unsupervised PINN func=None makes train_y ALWAYS None, so the guard fires every call and the collocation set is re-sampled each step. Fix changes the decorator to @run_if_all_none(\"train_x\",\"train_y\") so the set is cached once train_x exists. Same change applied in deepxde/data/ide.py).",
+  "repro_script": "results/deepxde_repro/repro_deepxde_resample.py",
+  "env": "uv venv --python 3.9 ; deepxde==0.5.0 (pre) / ==0.5.1 (post) + tensorflow-cpu>=2,<2.16 (2.15.1) + numpy<2. The buggy path PDE.__init__ -> train_next_batch -> train_points is pure NumPy geometry sampling; TF is importable but unused on this path.",
+  "note": "THIRD-PARTY in-the-wild bug in the most widely used PINN library (DeepXDE), NOT paper-authored, NOT a mutant. THIRD DeepXDE positive: lands in the L* CONVERGENCE block, complementing deepxde_periodic (symmetry/G block, periodic_point crash) and deepxde_neumann (conservation/flux block, Neumann BC). Distinct from both: not geometry, not BC, and a SILENT convergence/limit defect rather than a crash. The MR is the L* prediction that a PINN's training must converge to the minimiser of a FIXED objective; re-sampling collocation points each step makes the objective a moving target so the limit operator (convergence) is broken -- exactly what the L* block flags. HONEST LEVEL: the verdict is the exact buggy decorator path (PDE.train_next_batch -> train_points) instrumented to count re-generation events; deterministic FIRED(5/5 re-samples)->HELD(0/5). This counts the re-generation MECHANISM directly rather than running a full training to observe loss-limit drift, because the re-sampling guard IS the defect and is exercised on the real PDE.__init__ path in CPU milliseconds with no tensor backend executed. KEY ENV FINDING: the 2020-era pde.py hard-imports tensorflow at module top, so a TF2 wheel must be installed to import deepxde, but the numpy collocation path never touches TF -- the same backend-sidestep used by deepxde_periodic. 'N' set-slot is the directly-evaluated NOETHER L* MR (same convention as deepxde_periodic/neumann); 'G' set-key is GenMorph (not_applicable to library bugs). [cpu env: pip released-to-released; PURE-NUMPY collocation path, no tensor backend executed, no net, no training -- direct re-generation-count check, CPU milliseconds]"
+}
