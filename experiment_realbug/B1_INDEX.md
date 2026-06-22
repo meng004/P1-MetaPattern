@@ -1,0 +1,59 @@
+# B1 真缺陷 MT 实验 — 成果索引 (2026-06-22)
+
+> in-the-wild 真缺陷佐证 NOETHER 元模式 MR 检出能力。分支 `claude/b1-realbug-2026-06-21`。
+> 全部 git-history 取真 SHA + pip released-to-released 复现(pre FIRED / post HELD 自跑核验)。
+
+## 文档导航
+- `COVERAGE_SUMMARY.md` — 论文 SUT 域覆盖矩阵 + 块覆盖 + 诚实稀缺结果 + 覆盖规律
+- `B1_exploration_plan_2026-06-21.md` — 探索计划 + 验收标准 + 重定向记录
+- `RESULTS.md` — analyze 输出(detection / Wilson CI)
+- `B1_INDEX.md`(本文件)— 成果索引 + 复现指南
+
+## A. 论文 SUT 域 in-scope 正样本(n=4,全 pip 核验)
+
+| bug_json | 域 | NOETHER 块 | fix SHA | pre→post | 复现脚本 |
+|---|---|---|---|---|---|
+| bug_scipy_lsoda_densesol.json | pde_numerical | L\* 收敛 | c374ca7fd | scipy 1.11.4→1.12.0 | results/scipy_repro/repro_lsoda_event.py |
+| bug_scipy_banded_jac.json | pde_numerical | 守恒/表示不变 | cb0538877 | scipy 1.15.3→1.16.3 | results/scipy_repro/repro_banded.py |
+| bug_scipy_eigh_driver.json | pde_numerical | T\* 自伴 | 178a12572 | scipy 1.13.0→1.13.1 | results/scipy_repro/repro_eigh.py |
+| bug_pyscf_smearing.json | quantum_chemistry | 守恒(Noether) | ebf4e676 | pyscf 2.6.2→2.7.0 | results/pyscf_repro/repro_smearing.py |
+
+**复现命令**(以 pyscf_smearing 为例):
+```bash
+uv venv --python 3.11 /tmp/v && . /tmp/v/bin/activate
+uv pip install "pyscf==2.6.2"                  # PRE  -> FIRED (sum(mo_occ)=14)
+python results/pyscf_repro/repro_smearing.py
+uv pip install "pyscf==2.7.0"                  # POST -> HELD  (sum(mo_occ)=13)
+python results/pyscf_repro/repro_smearing.py
+```
+
+## B. 跨域补充(geometric DL,非论文 SUT 域,domain 字段隔离)
+
+| bug_json | 库 | NOETHER 块 | 环境栈 |
+|---|---|---|---|
+| bug_pyg_6199.json | pytorch_geometric | Sₙ 置换 (m^eq_inv) | env-class-B: py3.10+torch1.13+pyg2.2 |
+| bug_e3nn_reduce.json | e3nn | adjoint 反对称 (m^eq_adj) | env-class-C: py3.9+torch1.8.1+e3nn0.2.7 |
+| bug_pyg_undirected.json | pytorch_geometric | adjoint 对称化 | env-class-B |
+
+## C. 边界 / out / 排除(诚实记录)
+
+| bug_json | 状态 | 原因 |
+|---|---|---|
+| bug_scipy_akima_overflow.json | 边界 | O≤ 映射勉强(overflow 鲁棒性,非单调性);极端输入 1e160 |
+| bug_pyg_6037.json | out-of-decomposition | 行和守恒,不映射元模式 |
+
+## D. 环境栈(三 env-class,单容器)
+
+| env-class | 栈 | 用途 |
+|---|---|---|
+| A | py3.11 + torch2.12 | scipy/pyscf pip venv(/tmp/venv_scipy, /tmp/venv_pyscf) |
+| B | py3.10 + torch1.13 + pyg2.2 | pyg 跨域(/tmp/venv_6199) |
+| C | py3.9 + **torch1.8.1** + e3nn0.2.7 | e3nn 跨域(/tmp/venv_c2);关键:torch1.8.1 解 e3nn fx |
+
+## E. 诚实标注(贯穿)
+
+- **FIRED 类型**:scipy 3 个为 crash-type(follow-up 合法输入崩溃→违反 MR 关系);pyscf 1 个为纯数值违反(14 vs 13 电子)。
+- **稀缺块**:scipy Trev\*/O≤/G 在 pip 可复现范围稀缺;pyscf T\* Fock-Hermitian 构造保证(需 int-DM 边界)。
+- **不可达**:OpenMC/OpenMOC 无 PyPI(需 conda+核数据,Tier-C)。
+- **样本量**:n=4 论文 SUT 域,underpowered for α=0.05(C6),descriptive 证据。
+- **覆盖规律**:NOETHER 真实 bug 数值算法库(scipy)富集,构造保证物理库(pyscf/e3nn)稀缺,守恒/计数不变量有真实数值 bug。
