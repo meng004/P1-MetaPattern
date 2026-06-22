@@ -80,11 +80,17 @@ RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(
 | **L\*** | 解光滑性、参考包络 | ✓ |
 | **G** 对称 | 域对称 ⟹ 解对称 | ✓ |
 
-### 4b. SUT 角度证据
-- **缺口**:论文 pde_sciml SUT 是**自建 PINN**(PyTorch),无真实第三方库缺陷历史 ⟹ 证据须来自**注入 mutant**(论文受控实验方式),不在"现成 git-history 缺陷"路径内。
+### 4b. SUT 角度证据(论文 T2 已有 PINN witness)
+| 先验 MR | SUT 证据 | 检出 |
+|---|---|---|
+| 守恒:Neumann 零通量 ⟹ `∫u` 跨快照守恒(梯形积分) | diffusion2d PINN + mutant `M_TIME_NEG` | **killed=1**(residual 0.326 > tol 0.023);coord/act mutant killed=0(MR 不误杀) |
 
-### 4c. 证据链状态
-方程先验给出 守恒/L\*/G;**SUT 证据缺**(自建 PINN 需 mutant 路径)。**未闭合。**
+- 路径:`Minimum-MR-SubSet/runs/abd-witness-diffusion2d-pinn-20260608T032704Z/kill_matrix.csv`(论文 T2 已跑)。
+- MR catalog:`DIFFUSION_PINN_MR_NEUMANN_MASS_CONSERVATION`("integral of u over spatial domain must be conserved across snapshots")。
+- **诚实区分**:此为 **mutant 注入**(论文受控实验),非 B1 in-the-wild 真实库缺陷。
+
+### 4c. 证据链闭合(mutant 路径)
+方程先验 **Neumann 质量守恒 MR** ← diffusion2d PINN 上 `M_TIME_NEG` mutant 违反(killed,residual 14× 超容差)。**守恒块闭合(mutant 路径,诚实标注非 in-the-wild)。**
 
 ---
 
@@ -95,10 +101,16 @@ RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(
 | pde_numerical (scipy) | ✓ 6 块 | ✓ L\*/守恒/T\* (3 真实缺陷) | **✓ 完整** |
 | quantum_chemistry (pyscf) | ✓ 5 块 | ✓ 守恒 (1) + T\* 构造保证负结果 | **✓ 守恒完整** |
 | reactor_physics (openmc) | ✓ 4 块 | ✓ G 几何对称 (1,conda) | **✓ G 完整** |
-| pde_sciml (PINN) | ✓ 3 块 | ✗ 自建 PINN,需 mutant | **✗ 未闭合** |
+| pde_sciml (PINN) | ✓ 3 块 | ✓ 守恒 mutant `M_TIME_NEG` killed(论文 T2) | **✓ 守恒闭合(mutant 路径)** |
 
-**3/4 域有完整元模式实例**(方程先验 + 独立真实缺陷证据)。缺口 = pde_sciml(自建 PINN,须 mutant 路径)。
+**4/4 域均有完整元模式实例**:**3 域 in-the-wild 真实库缺陷**(scipy/pyscf/openmc)+ **1 域 mutant**(pde_sciml PINN,论文受控实验)。诚实区分两类证据。
 
-## 待补缺口(下一步候选)
-1. **pde_sciml 闭合**:从 Neumann 质量守恒先验 MR 出发,在自建 PINN 注入 mutant(论文受控实验方式)或边界探测,组成证据。
-2. **块加密**(可选):heat 的 O≤ 最大值原理、wave 的 Trev\* 时间反演——先验存在,真实库证据稀缺,可用 mutant 补。
+## 证据来源分层(诚实)
+| 层 | 域 | 证据性质 |
+|---|---|---|
+| **in-the-wild 真实缺陷**(B1 本体) | scipy / pyscf / openmc | git-history fix 的 pre/post,pip/conda 实测,作者未介入缺陷生成 |
+| **受控 mutant**(论文 T2 已有) | PINN diffusion2d | 注入 mutant + 守恒 MR kill,受控实验 |
+
+## 待补缺口(下一步候选,可选)
+1. **块加密**:heat 的 O≤ 最大值原理、wave 的 Trev\* 时间反演——方程先验存在,in-the-wild 真实库证据稀缺,可用 mutant 补(同 PINN 路径)。
+2. **reactor 守恒块闭合**:openmc bd76fc056 (tally-norm) fix 首入 0.15.3,需找 conda pre 或源码编译。
