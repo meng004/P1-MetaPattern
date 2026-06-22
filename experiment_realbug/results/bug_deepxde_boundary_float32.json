@@ -1,0 +1,60 @@
+{
+  "id": "deepxde_boundary_float32_isclose",
+  "repo": "lululxvi/deepxde",
+  "domain": "paper SUT domain (pde_sciml: DeepXDE -- THIRD-PARTY PINN library, in-the-wild)",
+  "sut_family": "deepxde.geometry.geometry_1d.Interval.on_boundary / boundary_normal / periodic_point (boundary-point detection for Dirichlet BC enforcement), via the dtype-aware deepxde.utils.isclose -- anchored on a 1D Dirichlet PINN over Interval[0,1] in DeepXDE's default float32 precision.",
+  "cat": "O<= monotonicity / boundary-value / order-preservation (NOETHER O<= block: a Dirichlet boundary condition u=g must be ENFORCED at boundary collocation points; a point lying ON the boundary must be detected as boundary -- on_boundary=True, nonzero outward normal -- and selected by the BC filter. The boundary-value side of the order/boundary block).",
+  "fix_commit": "8a644fe265dc77f693853a76295d140c6b21fccc",
+  "fix_commit_short": "8a644fe",
+  "fix_title": "Fix bug with `np.isclose` for float16 (#1267)",
+  "pre_commit": "b87c1c6499b12c6de6641236c3ea7267340d99db",
+  "pre_commit_note": "8a644fe^ (parent of the fix); informational -- reproduction uses RELEASED pip wheels 1.8.4 (pre) / 1.9.0 (post). 8a644fe^ describes as v1.8.4-2-gb87c1c6 (i.e. 2 commits after the v1.8.4 tag), and the parent b87c1c6 is a np.int->int deprecation rename with no functional effect on the boundary path.",
+  "pre_version": "1.8.4",
+  "post_version": "1.9.0",
+  "released_window": "Fix 8a644fe is v1.9.0~15: NOT in v1.8.4, present in v1.9.0. git describe --tags 8a644fe^ = v1.8.4-2-gb87c1c6 (last release tag before the fix is v1.8.4); git describe --tags --contains 8a644fe = v1.9.0~15. Clean RELEASED pip pair: PRE=1.8.4 (FIRED), POST=1.9.0 (HELD); both pip-installable and verified on the actual wheels.",
+  "tolerance": 0,
+  "cpu_status": "OK",
+  "sut": "deepxde.geometry.Interval(0.0, 1.0) (1D Dirichlet domain), DeepXDE default dtype float32. Boundary point x = float32(0.7) - float32(0.4) - float32(0.3) = -2.9802322e-08 (deterministic float32 cancellation, representing the intended left-boundary coordinate 0.0). on_boundary / boundary_normal / DirichletBC.filter evaluated on [x~0, 0.0, 1.0]. Pure-numpy geometry path -- no tensor backend executed, no net, no training.",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "O<= boundary-value enforcement: a collocation point lying ON the Dirichlet boundary must satisfy geom.on_boundary(x)==True, receive a nonzero outward boundary_normal, and be selected by DirichletBC.filter for BC enforcement, so the boundary value u=g is actually applied there. FIRED <=> a float32 boundary point at coordinate ~0 (within float32 rounding error of the boundary) is judged INTERIOR: on_boundary=False, |normal|=0, and DirichletBC drops it -> the boundary-value constraint is silently not enforced. HELD <=> the point is detected (on_boundary=True, |normal|=1) and kept by the BC filter.",
+  "fired_type": "NUMERIC / SILENT (no crash): the boundary point is silently misclassified as interior. on_boundary([x~0,0,1]) = [False,True,True] (pre) vs [True,True,True] (post); boundary_normal[x~0] = 0.0 (pre) vs -1.0 (post); DirichletBC selects [0.0,1.0] (pre, left boundary dropped) vs [-2.98e-08,0.0,1.0] (post, both kept). Deterministic (the float32 cancellation residual -2.9802322e-08 is exact and reproducible). The exact-0 literal and the right boundary x=1 are detected in BOTH versions, isolating the fault to the float32 near-zero boundary coordinate.",
+  "pre_observed": {
+    "deepxde_version": "1.8.4",
+    "default_float": "float32",
+    "boundary_residual": -2.9802322387695312e-08,
+    "on_boundary": [false, true, true],
+    "boundary_normal": [0.0, -1.0, 1.0],
+    "dirichlet_selects": [0.0, 1.0],
+    "left_boundary_detected": false,
+    "verdict": "FIRED"
+  },
+  "post_observed": {
+    "deepxde_version": "1.9.0",
+    "default_float": "float32",
+    "boundary_residual": -2.9802322387695312e-08,
+    "on_boundary": [true, true, true],
+    "boundary_normal": [-1.0, -1.0, 1.0],
+    "dirichlet_selects": [-2.9802322387695312e-08, 0.0, 1.0],
+    "left_boundary_detected": true,
+    "verdict": "HELD"
+  },
+  "confounder_check": "Between v1.8.4 and v1.9.0, deepxde/geometry/geometry_1d.py (the file this repro exercises) is touched by EXACTLY ONE commit: the fix 8a644fe (git log v1.8.4..v1.9.0 -- deepxde/geometry/geometry_1d.py = single entry). Across all of deepxde/geometry/ only two commits appear: 8a644fe and b87c1c6 (a np.int->int deprecation rename with no functional effect). -> FIRED->HELD attributable to exactly this fix (confounder count = 1 for the exercised file). The same fix commit also black-reformats unrelated files cosmetically; those do not touch the boundary-detection lines.",
+  "verified": "SELF-RUN pip released-to-released, independently re-run by the orchestrator: PRE deepxde 1.8.4 FIRED (on_boundary=[False,True,True], normal[x~0]=0.0, DirichletBC drops the float32 left-boundary point -> selects [0.0,1.0]) / POST deepxde 1.9.0 HELD (on_boundary=[True,True,True], normal[x~0]=-1.0, DirichletBC keeps it -> selects [-2.98e-08,0.0,1.0]). Both on py3.11 venvs with numpy<2 and CPU torch (DDEBACKEND=pytorch, import-only -- the boundary path is pure numpy and never executes the backend).",
+  "upstream": "DeepXDE git commit 8a644fe (#1267). Root cause: geometry boundary tests used bare np.isclose(x, bound) with NumPy default atol=1e-8. The fix adds a dtype-aware deepxde.utils.isclose that sets atol=1e-6 for float32 (1e-4 for float16, 1e-8 for float64) and swaps every geometry call (Interval/Hypercube/Hypersphere on_boundary, boundary_normal, periodic_point) to it. DeepXDE's default dtype is float32; at a boundary coordinate of 0 the relative term rtol*|b| vanishes (b=0) so only atol governs, and a float32 coordinate's ~3e-8 rounding error exceeds the old 1e-8 atol (but is below the new 1e-6), so the boundary point was classified interior and its Dirichlet condition silently dropped. POST raises atol to 1e-6 for float32 and the point is correctly detected.",
+  "repro_script": "results/deepxde_repro/repro_deepxde_boundary_float32.py",
+  "env": "python3 -m venv <v>; pip install deepxde==1.8.4 (pre) / ==1.9.0 (post) + numpy<2 + torch (CPU, from download.pytorch.org/whl/cpu). Run with DDEBACKEND=pytorch (only to satisfy deepxde's top-level backend import; the SUT path is pure NumPy geometry and never touches the backend). py3.11; CPU milliseconds, no net, no training.",
+  "note": "THIRD-PARTY in-the-wild bug in the most widely used PINN library (DeepXDE), NOT paper-authored, NOT a mutant. Fills the pde_sciml O<= (monotonicity / boundary-value / order-preservation) block, which was previously blank; it joins the three existing DeepXDE positives -- conservation/flux (Neumann/Robin 4bac5eb), symmetry/G (periodic_point 8353540), and L* convergence (resample 4adcde7) -- and is DISTINCT from all of them (different file, different defect, a SILENT numeric misclassification rather than a crash). The MR is the O<= prediction that a Dirichlet boundary point must be DETECTED and have its boundary value ENFORCED; a float32 boundary coordinate at ~0 is silently treated as interior in v1.8.4, so the boundary-value constraint is not applied there. HONEST LEVEL: numeric/silent (on_boundary False->True, normal 0.0->-1.0, DirichletBC drops->keeps the point), reproduced via the EXACT buggy call path (Interval.on_boundary / boundary_normal / DirichletBC.filter) on released pip wheels. KEY ENV FINDING: the defect only manifests in float32 (DeepXDE's DEFAULT precision) at a boundary coordinate of exactly 0, where np.isclose's relative term collapses; a float64 run or a nonzero boundary would mask it -- which is precisely why it is a subtle order/boundary-block bug. The geometry path is pure numpy so the tensor backend is import-only. 'N' set-slot is the directly-evaluated NOETHER O<= MR (same convention as the other DeepXDE entries); 'G' set-key is GenMorph (not_applicable to library bugs), distinct from the semantic symmetry/G block name. [cpu env: pip released-to-released (1.8.4 / 1.9.0); PURE-NUMPY geometry path, no tensor backend executed, no net, no training -- direct boundary-detection + DirichletBC selection check, CPU milliseconds]"
+}

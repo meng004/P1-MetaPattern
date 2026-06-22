@@ -1,0 +1,33 @@
+{
+  "id": "openmc_cram_clip_negative_density",
+  "repo": "openmc-dev/openmc",
+  "domain": "paper SUT domain (reactor_physics: OpenMC depletion/burnup)",
+  "sut_family": "openmc.deplete Integrator (CRAM matrix-exponential burnup solver) -- anchored on the DummyOperator 2-species toy Bateman system y'=f(y)y (no nuclear data / no MC transport required; openmc.lib mocked)",
+  "cat": "O<= positivity (physical-quantity non-negativity: number densities N >= 0)",
+  "fix_commit": "1f7ac4215",
+  "fix_commit_full": "1f7ac4215f45dc0c88a36240230cf16d7cb4cc5b",
+  "parent_commit": "a1df5842e048f070544e1f79a9a6979862c8eaa2",
+  "pre_version": "v0.15.3-154-ga1df5842e (source-compiled editable; CRAM clip absent)",
+  "post_version": "v0.15.3-155-g1f7ac4215 (source-compiled editable; CRAM clip present)",
+  "tolerance": 0,
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "For every nuclide i in every material m at every depletion step t: N_{m,i}(t) >= 0. A depletion/burnup solver applied to a non-negative initial number-density vector must return a non-negative number-density vector (atom concentrations are intensive physical quantities >= 0). CRAM (Chebyshev Rational Approximation Method) approximates exp(A*t)*n0 for the stiff Bateman equations and can return small NEGATIVE number densities, violating the non-negativity invariant.",
+  "fired_type": "NUMERIC (unphysical negative number density). Predictor integrator on DummyOperator (two 0.75 s steps, power 1.0 W): nuclide-2 atom count at t=1.5 s = -0.05816922325134747 (< 0) -- a TRUE positivity-MR violation, NOT a crash. Exactly matches the in-repo expected value -0.0581692232513460 that PR #3879 replaced with 0.0.",
+  "verified": "SOURCE-COMPILED pre/post (openmc editable pure-Python install, uv venv py3.12, numpy/scipy/h5py/uncertainties/endf; openmc.lib forced to Mock via READTHEDOCS=True since the C++ libopenmc.so is not built and the DummyOperator path never calls into it): PRE a1df5842e FIRED -- min number density = -5.816922e-02 (< 0), nuclide-2 trajectory [1.0, 0.98643123, -0.05816922]; POST 1f7ac4215 HELD -- min number density = 0.0, nuclide-2 trajectory [1.0, 0.98643123, 0.0] (Integrator.integrate now runs `for r in results: r.clip(min=0.0, out=r)`).",
+  "upstream": "gh-3879",
+  "note": "Bug: openmc/deplete/abc.py Integrator.integrate() returned raw CRAM results without flooring at zero; for stiff burnup systems the rational matrix-exponential approximation yields slightly negative atom densities, which are physically impossible (an atom count cannot be < 0) and corrupt downstream reaction-rate / decay-heat / activation calculations. Fix clips every result to min=0.0. HONEST LEVEL: bug at the depletion-solver number-density output (deplete module), pure-Python; demonstrated on the in-repo DummyOperator toy Bateman system so it is self-contained (no GB nuclear data, no Monte-Carlo transport). First reactor_physics O<= (positivity) in-scope, complementing the existing G-symmetry (Surface.normalize), conservation (tally no_reduce) and T* (IFP adjoint) reactor_physics entries. UNRELEASED fix (first appears after 0.15.3 at v0.15.3-155); no conda post-binary, so closed by source-compiled editable pre/post like the RotationalPeriodicBC and IFP-adjoint entries. [cpu env: uv venv py3.12, pure-Python editable openmc, libopenmc mocked]"
+}

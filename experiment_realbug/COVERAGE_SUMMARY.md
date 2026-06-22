@@ -3,7 +3,7 @@
 > real-bug in-the-wild 佐证,**对齐论文 SUT 域**(subject_catalog.csv:reactor_physics / pde_numerical / quantum_chemistry / pde_sciml)。
 > 多数 pip / conda released-to-released 复现(pre FIRED / post HELD 自跑核验);2 个 unreleased-fix(scipy complexsym、openmc rotperiodic)经源码编译 pre/post 闭合。
 
-## 1. 论文 SUT 域 in-scope 正样本(n=15,pip + conda + 源码编译核验)
+## 1. 论文 SUT 域 in-scope 正样本(n=20,pip + conda + 源码编译核验;含 2 个 caveated:#17 fht G 边际、#20 forward-mode Hessian T\* reachability)
 
 | # | 域 | 库 | bug | NOETHER 块 | pre→post | FIRED 类型 |
 |---|---|---|---|---|---|---|
@@ -22,16 +22,21 @@
 | 13 | pde_numerical | scipy.interpolate.Akima1DInterpolator | 两点须为线性弦 (ef7437afc/#22278) | O≤ 单调/线性 | 1.15.2→1.16.0 | **数值/crash**(I(0.5)=1.25≠1.0 或非有限) |
 | 14 | reactor_physics | openmc IFP adjoint-weighted kinetics | 伴随权重朝向不变 (767db7e6a/#3580) | T\* 自伴/伴随对偶 | 66e7d863→767db7e6a (源码编译) | **数值**(beta_eff 687.4→498.7 pcm) |
 | 15 | pde_sciml | DeepXDE PDE.train_next_batch (第三方) | 固定 collocation 集收敛 (4adcde7) | L\* 收敛 | v0.5.0→v0.5.1 | 收敛/L\*(5→0 重采样) |
+| 16 | reactor_physics | openmc depletion/burnup (CRAM) | 数密度非负 clip (1f7ac4215) | O≤ 正性 | a1df5842e→1f7ac4215 (源码编译) | **数值**(min N=−5.8e-2<0→0) |
+| 17 | pde_numerical | scipy.fft.fht | rfft/irfft Hermitian 保持 (170f9e69a/gh-21661) | G 对称(**边际**) | 1.14.1→1.15.0 | **数值/边际**(scipy 自带 test_gh_21661,奇 n 7.288e16≥阈 vs 7.225e16<阈) |
+| 18 | reactor_physics | openmc tally trigger | 收敛触发器 score 绑定 (b54de4d76/#3155) | L\* 收敛 | 0.15.0→0.15.3 (conda) | crash(score 名往返失败→收敛环不可建立) |
+| 19 | pde_sciml | DeepXDE DirichletBC/geometry (第三方) | float32 边界点检测 (8a644fe/#1267) | O≤ 边界/单调 | 1.8.4→1.9.0 | **数值**(边界点 x≈0 漏判→丢点) |
+| 20 | pde_sciml | DeepXDE forward-mode Hessian (第三方) | 算子自伴 H[i,j]=H[j,i] (46e2c2e/#1591) | T\* 自伴(**△ reachability**) | 9d9d0b0→46e2c2e (源码编译) | **数值**(J-col 误差 6.185→0;forward-mode 非默认路径) |
 
 ## 2. NOETHER 块 × 论文 SUT 域覆盖矩阵(pip / conda / 源码编译可复现)
 
 | 块 | scipy (pde_numerical) | pyscf (quantum_chemistry) | openmc (reactor_physics) | DeepXDE (pde_sciml) |
 |---|---|---|---|---|
-| L\* 收敛 | ✓ LSODA dense-output | ✓ DIIS(15920e60, 2.2.0→2.2.1;numpy<1.24+scipy<1.10+h5py<3.9 解依赖) | 未探索 | **✓ train_next_batch 固定 collocation(4adcde7, 0.5.0→0.5.1;5→0 重采样)** |
+| L\* 收敛 | ✓ LSODA dense-output | ✓ DIIS(15920e60, 2.2.0→2.2.1;numpy<1.24+scipy<1.10+h5py<3.9 解依赖) | **✓ tally trigger 收敛准则(b54de4d76/#3155, 0.15.0→0.15.3 conda;eigenvalue 触发器绑定 *-production score 崩溃→收敛环不可建立;post fission 触发器 15→40 批至 rel_err<0.01)** | **✓ train_next_batch 固定 collocation(4adcde7, 0.5.0→0.5.1;5→0 重采样)** |
 | 守恒 | ✓ banded Jacobian | ✓ smearing 电子数 | ✓ tally-norm no_reduce (bd76fc056, 0.15.2→0.15.3 conda+MPI) | ✓ Neumann/Robin flux (4bac5eb, 1.3.0→1.3.1) |
-| T\* 自伴 | ✓ eigh driver(178a12572)、✓ complex-symmetric solve/inv(50951d25c,源码编译 meson) | ✗ Fock-Hermitian **构造保证**(仅 int-DM 边界) | **✓ IFP 伴随权重(767db7e6a/#3580,源码编译 66e7d863→767db7e6a;beta_eff 687.4→498.7 pcm)** | — |
-| G 对称 | ✗ 稀缺(fft array-API dev-regression) | **✓ D2h 轴向 orbsym(4542fe9b/#3176, 2.12.1→2.13.0;乙烯 STO-3G RHF,6 朝向 6 个不同 orbsym→1 个)** | **✓ Surface.normalize (3bf1486f4, 0.15.0→0.15.3)**、✓ RotationalPeriodicBC(c7d7fa461,源码编译 0.15.4-dev30→dev31) | ✓ periodic_point(8353540, 0.8.6→0.9.0) |
-| O≤ 单调/线性 | **✓ Akima 两点线性(ef7437afc/#22278, 1.15.2→1.16.0;2 点 shape-preserving 须为线性弦,pre I(0.5)=1.25≠1.0 或非有限崩溃)** | — | 未探索 | — |
+| T\* 自伴 | ✓ eigh driver(178a12572)、✓ complex-symmetric solve/inv(50951d25c,源码编译 meson) | ✗ Fock-Hermitian **构造保证**(仅 int-DM 边界) | **✓ IFP 伴随权重(767db7e6a/#3580,源码编译 66e7d863→767db7e6a;beta_eff 687.4→498.7 pcm)** | **△ forward-mode Hessian 自伴(46e2c2e/#1591,源码编译 9d9d0b0→46e2c2e;H[i,j]≠H[j,i] J-col 误差 6.185→0;但 forward-mode 在该 commit 未接入 public 默认路径——稀缺,reachability caveat)** |
+| G 对称 | **△ fht Hermitian 保持(170f9e69a/gh-21661, 1.14.1→1.15.0;scipy 自带 test_gh_21661,奇 n rel-err 7.288e16≥阈 vs post 7.225e16<阈,偶 n 控制位相同;edge-dominated 信号边际,scipy G 干净候选仍稀缺)** | **✓ D2h 轴向 orbsym(4542fe9b/#3176, 2.12.1→2.13.0;乙烯 STO-3G RHF,6 朝向 6 个不同 orbsym→1 个)** | **✓ Surface.normalize (3bf1486f4, 0.15.0→0.15.3)**、✓ RotationalPeriodicBC(c7d7fa461,源码编译 0.15.4-dev30→dev31) | ✓ periodic_point(8353540, 0.8.6→0.9.0) |
+| O≤ 单调/线性 | **✓ Akima 两点线性(ef7437afc/#22278, 1.15.2→1.16.0;2 点 shape-preserving 须为线性弦,pre I(0.5)=1.25≠1.0 或非有限崩溃)** | — | **✓ CRAM 负密度 clip(1f7ac4215, a1df5842e→1f7ac4215 源码编译;depletion/burnup 数密度 min N=−5.8e-2<0,post Integrator.integrate 加 r.clip(min=0)→0)** | **✓ float32 边界检测(8a644fe/#1267, 1.8.4→1.9.0;Dirichlet 边界点 x≈0 因 np.isclose atol=1e-8 漏判为内部,on_boundary False→True、normal 0→-1、DirichletBC 丢点→保留)** |
 | Trev\* 时间反演 | ✗ 未找到 pip 可复现候选(已确认稀缺:scipy 无 symplectic/leapfrog 积分器;唯一 backward 候选 d620670a5 为 2018 v1.2.0 first_step ENH+BUG,非可逆性不变量违反) | — | 未探索 | — |
 
 ## 3. 诚实负结果与 caveat(同等重要)
@@ -39,6 +44,8 @@
 - **scipy Trev\* 稀缺(确认)**:scipy 无 symplectic/leapfrog/Verlet 积分器(`git log` symplectic/leapfrog/verlet/stormer 全空),故"结构保持可逆积分"基底缺失;唯一 backward-time 候选 d620670a5(2018, v1.2.0)为 first_step 启发式 ENH+BUG,非 forward→reverse→初值 可逆性不变量违反,且太老难 py3.11 pip。Trev\* 在 scipy 中真实稀缺,诚实记录为负结果。
 - **scipy O≤ 已升级 in-the-wild**:Akima 两点线性(ef7437afc/#22278, 1.15.2→1.16.0)是干净 pip 可复现 shape-preservation bug——2 个单调点的 shape-preserving 插值须为线性弦,pre 因 `np.empty` 未初始化斜率缓冲返回 I(0.5)=1.25≠1.0 或非有限崩溃。区别于先前排除的 overflow 边界(9930630d6)。isotonic_regression 仍仅 ENH 无 bug。
 - **pyscf G 已填补 in-the-wild**:D2h 轴向 orbsym(4542fe9b/#3176, 2.12.1→2.13.0)是现代 pip 可复现点群 bug——乙烯 STO-3G RHF 的 MO irrep 标签随输入朝向变化(6 朝向→6 个 orbsym,1/6 对参考),违反"分子点群 ⟹ irrep 标签朝向不变"。先前"点群 v1.4.3 太老"的 caveat 已解决:2.12+ 无 numpy<2 约束。
+- **scipy G 边际填补(caveated)**:fht rfft/irfft Hermitian 保持(170f9e69a/gh-21661, 1.14.1→1.15.0)是真实上游 fix,且为 scipy 自带回归测试 test_gh_21661——pre 1.14.1 未守 `if n%2==0` 无条件 `u.imag[-1]=0`,奇 n=129 破坏非 Nyquist 系数虚部。但信号 edge-dominated:rel-err 在 ~7.2e16 量级,pre 7.288e16≥阈 vs post 7.225e16<阈,偶 n 控制位相同。区分真实但**数值边际**,故矩阵标 △;scipy G 的干净 order-of-magnitude 候选仍稀缺。
+- **DeepXDE T\* reachability(caveated)**:forward-mode Hessian 自伴 H[i,j]=H[j,i](46e2c2e/#1591,源码编译 9d9d0b0→46e2c2e)是真实 forward-mode Jacobian 索引 bug(返回第 0 列→Hessian 非对称,J-col 误差 6.185→0)。但 pre/post 两 commit 的 `gradients/__init__.py` 默认走 reverse-mode、forward-mode import 被注释,该缺陷未进 public 默认路径的 released tag(须显式 `from ...gradients_forward import`),故矩阵标 △ reachability;reverse-mode Hessian 对称由 autodiff 构造保证,DeepXDE 算子自伴干净候选稀缺。
 - **pyscf T\* Fock-Hermitian 构造保证**:vanilla float64 RHF 的 Fock 厄米性由构造保证,真实 bug 仅在**非标准 int-DM 输入**(#1114/#1537)触发——边界,非干净 in-scope。
 - **pyscf 老版本 pip 依赖**(已解决):2.2.x 与现代 numpy/scipy 冲突,通过 Python 3.10 上 pin numpy<1.24 + scipy<1.10 + h5py<3.9 解依赖,L\* DIIS(15920e60)已干净 pip released-to-released 复现(0/5→5/5 收敛)。
 - **reactor_physics(OpenMC/OpenMOC)无 PyPI**:需 conda + 核数据(Tier-C 重运行时);未 release 的 RotationalPeriodicBC fix(c7d7fa461)无 conda post-binary,已通过源码编译(parent 818fd11b1 → fix c7d7fa461,cmake+ninja Release,multi-group XS)闭合。
@@ -61,9 +68,9 @@ e3nn/pyg(domain 字段标 cross-domain):Sₙ 置换(#6199)、adjoint 反对称(e
 
 ## 6. FIRED 类型的诚实区分
 
-- 论文 SUT 域 15 个中,**5 个 crash-type**(3 scipy lsoda/banded/eigh + 2 DeepXDE neumann/periodic,follow-up 在合法输入崩溃 → 违反 MR 不变性关系),**7 个纯数值违反**(scipy complexsym max\|X@a-I\|=9.11、scipy akima I(0.5)=1.25≠1.0、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize 符号丢失、openmc no_reduce 偏 1/n_ranks、openmc ifp_adjoint beta_eff 687.4→498.7 pcm),**2 个收敛/自洽**(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样),**1 个 transport 失败**(openmc rotperiodic 丢粒子)。
+- 论文 SUT 域 20 个中,**6 个 crash-type**(3 scipy lsoda/banded/eigh + 2 DeepXDE neumann/periodic + openmc keff_trigger fatal_error,follow-up 在合法输入崩溃 → 违反 MR 不变性关系),**11 个纯数值违反**(scipy complexsym max\|X@a-I\|=9.11、scipy akima I(0.5)=1.25≠1.0、scipy fht 奇 n 7.288e16 边际、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize 符号丢失、openmc no_reduce 偏 1/n_ranks、openmc ifp_adjoint beta_eff 687.4→498.7 pcm、openmc cram_clip min N=−5.8e-2<0、DeepXDE boundary_float32 边界点漏判、DeepXDE forward-mode Hessian J-col 6.185),**2 个收敛/自洽**(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样),**1 个 transport 失败**(openmc rotperiodic 丢粒子)。
 - scipy 真实 bug 多为数值鲁棒性 / 边界 crash;NOETHER 的表示不变性 / 方法对比 / 自洽 MR 通过"合法输入下 follow-up 崩溃"检出它们。
 
 ## 7. 样本量诚实标注
 
-n=15 论文 SUT 域 in-scope(+ 3 跨域),**underpowered for α=0.05 confirmatory**(CLAUDE.md C6)。descriptive 证据:NOETHER 块 MR 在论文 SUT 域(scipy/pyscf/openmc/DeepXDE)检出真实缺陷,覆盖 **L\*/守恒/T\*/G/O≤ 五块、四域**(pde_numerical/quantum_chemistry/reactor_physics/pde_sciml);Trev\* 在 scipy pip 可复现范围真实稀缺(无 symplectic 基底,已确认)。
+n=20 论文 SUT 域 in-scope(+ 3 跨域),**underpowered for α=0.05 confirmatory**(CLAUDE.md C6)。descriptive 证据:NOETHER 块 MR 在论文 SUT 域(scipy/pyscf/openmc/DeepXDE)检出真实缺陷,覆盖 **L\*/守恒/T\*/G/O≤ 五块、四域**(pde_numerical/quantum_chemistry/reactor_physics/pde_sciml);其中 2 个 caveated(scipy fht G 信号边际、DeepXDE forward-mode Hessian T\* 非默认路径 reachability),已诚实标注;Trev\* 在 scipy pip 可复现范围真实稀缺(无 symplectic 基底,已确认)。

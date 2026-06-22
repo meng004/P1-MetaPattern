@@ -9,7 +9,7 @@
 - `RESULTS.md` — analyze 输出(detection / Wilson CI)
 - `B1_INDEX.md`(本文件)— 成果索引 + 复现指南
 
-## A. 论文 SUT 域 in-scope 正样本(n=15,pip + conda + 源码编译核验)
+## A. 论文 SUT 域 in-scope 正样本(n=20,pip + conda + 源码编译核验;含 2 个 caveated:fht G 边际、forward-mode Hessian T\* reachability)
 
 | bug_json | 域 | NOETHER 块 | fix SHA | pre→post | 复现脚本 |
 |---|---|---|---|---|---|
@@ -28,6 +28,11 @@
 | bug_deepxde_neumann.json | pde_sciml (第三方) | 守恒/flux | 4bac5eb | deepxde 1.3.0→1.3.1 (pip) | results/deepxde_repro/repro_deepxde_neumann.py |
 | bug_deepxde_periodic.json | pde_sciml (第三方) | G 对称(周期/平移) | 8353540 | deepxde 0.8.6→0.9.0 (pip) | results/deepxde_repro/repro_deepxde_periodic.py |
 | bug_deepxde_resample.json | pde_sciml (第三方) | L\* 收敛 | 4adcde7 | deepxde 0.5.0→0.5.1 (pip) | results/deepxde_repro/repro_deepxde_resample.py |
+| bug_openmc_cram_clip.json | reactor_physics | O≤ 正性(数密度非负) | 1f7ac4215 | openmc a1df5842e→1f7ac4215 (源码编译,纯 Python depletion) | results/openmc_repro/repro_cram_clip.py |
+| bug_scipy_fht_hermitian.json | pde_numerical | G 对称(**边际**) | 170f9e69a | scipy 1.14.1→1.15.0 (pip) | results/scipy_repro/repro_fht_hermitian.py |
+| bug_openmc_keff_trigger.json | reactor_physics | L\* 收敛 | b54de4d76 | openmc 0.15.0→0.15.3 (conda) | results/openmc_repro/repro_keff_trigger_convergence.py |
+| bug_deepxde_boundary_float32.json | pde_sciml (第三方) | O≤ 边界/单调 | 8a644fe | deepxde 1.8.4→1.9.0 (pip) | results/deepxde_repro/repro_deepxde_boundary_float32.py |
+| bug_deepxde_forward_hessian_symmetry.json | pde_sciml (第三方) | T\* 自伴(**△ reachability**) | 46e2c2e | deepxde 9d9d0b0→46e2c2e (源码编译 worktree) | results/deepxde_repro/repro_deepxde_forward_hessian_symmetry.py |
 
 **复现命令**(以 pyscf_smearing 为例):
 ```bash
@@ -61,15 +66,17 @@ python results/pyscf_repro/repro_smearing.py
 | A' | py3.10 + numpy<1.24 + scipy<1.10 + h5py<3.9 | pyscf 2.2.0/2.2.1 DIIS pip venv(/tmp/venv_pyscf22);解 2.2.x vs 现代 numpy/scipy 冲突 |
 | B | py3.10 + torch1.13 + pyg2.2 | pyg 跨域(/tmp/venv_6199) |
 | C | py3.9 + **torch1.8.1** + e3nn0.2.7 | e3nn 跨域(/tmp/venv_c2);关键:torch1.8.1 解 e3nn fx |
-| D (conda) | micromamba + multi-group XS(无 CE 核数据) | openmc normalize / no_reduce(conda 0.15.0/0.15.2/0.15.3,no_reduce 需 MPI build) |
+| D (conda) | micromamba + multi-group XS(无 CE 核数据) | openmc normalize / no_reduce / keff_trigger(conda 0.15.0/0.15.2/0.15.3,no_reduce 需 MPI build;keff_trigger 0.15.0 FIRED→0.15.3 HELD,复用 omc_pre/omc) |
 | E (源码编译) | scipy meson editable build,py3.12 + openblas | scipy complex-symmetric(unreleased fix 50951d25c,pre/post 源码编译) |
 | F (源码编译) | micromamba omc_src,cmake+ninja Release,MPI/OpenMP,multi-group XS | openmc RotationalPeriodicBC(unreleased fix c7d7fa461,pre=parent 818fd11b1 / post=c7d7fa461,仅 C++ 改动) |
 | G (源码编译) | micromamba omc_src,cmake+ninja Release,continuous-energy ENDF/B-VIII.0 U235 via NJOY | openmc IFP adjoint-weighted kinetics(unreleased fix 767db7e6a/#3580,pre=parent 66e7d863 / post=767db7e6a,仅 C++ 改动;CE U235 + 6 延迟群数据 on-box NJOY 生成) |
+| H (源码编译) | uv venv py3.12,openmc editable 纯 Python install(numpy/scipy/h5py/uncertainties/endf),openmc.lib 经 READTHEDOCS=True 强制 Mock(C++ libopenmc.so 未 build,DummyOperator depletion 路径不调用 C++) | openmc CRAM 负密度 clip(a1df5842e→1f7ac4215;depletion/burnup 纯 Python 数密度轨迹,无需核数据) |
+| I (源码编译) | deepxde git worktree(/tmp/dde_wt_pre @ 9d9d0b0 / post @ 46e2c2e)+ 逐 commit pip --no-deps install,py3.11 + CPU torch/jax | DeepXDE forward-mode Hessian 自伴(9d9d0b0→46e2c2e,fix 首入 released v1.10.1;forward-mode 须显式 import,非默认路径) |
 
 ## E. 诚实标注(贯穿)
 
-- **FIRED 类型**:15 个 in-scope 中 5 个 crash-type(3 scipy + 2 DeepXDE,follow-up 合法输入崩溃→违反 MR 关系)、7 个纯数值违反(scipy complexsym、scipy akima、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize、openmc no_reduce、openmc ifp_adjoint beta_eff 687.4→498.7 pcm)、2 个收敛/自洽(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样)、1 个 transport 失败(openmc rotperiodic 丢粒子)。
-- **稀缺块**:scipy Trev\*/G 在 pip 可复现范围稀缺(O≤ 已由 Akima 两点线性 ef7437afc 升级为 in-the-wild);pyscf T\* Fock-Hermitian 构造保证(需 int-DM 边界)。
+- **FIRED 类型**:20 个 in-scope 中 6 个 crash-type(3 scipy + 2 DeepXDE + openmc keff_trigger fatal_error,follow-up 合法输入崩溃→违反 MR 关系)、11 个纯数值违反(scipy complexsym、scipy akima、scipy fht 边际、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize、openmc no_reduce、openmc ifp_adjoint beta_eff 687.4→498.7 pcm、openmc cram_clip min N=−5.8e-2、DeepXDE boundary_float32 漏判、DeepXDE forward-mode Hessian J-col 6.185)、2 个收敛/自洽(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样)、1 个 transport 失败(openmc rotperiodic 丢粒子)。
+- **稀缺块**:scipy Trev\* 在 pip 可复现范围稀缺;scipy G 由 fht(170f9e69a/gh-21661, 1.14.1→1.15.0)**边际**填补(scipy 自带 test_gh_21661,信号 edge-dominated 7.2e16 量级,干净候选仍稀缺);scipy O≤ 已由 Akima 两点线性(ef7437afc)升级为 in-the-wild;pyscf T\* Fock-Hermitian 构造保证(需 int-DM 边界);DeepXDE T\* 由 forward-mode Hessian(46e2c2e)填补但 **△ reachability**(非 public 默认路径)。
 - **不可达(已解决)**:OpenMC/OpenMOC 无 PyPI(需 conda+核数据,Tier-C);unreleased fix(openmc rotperiodic、scipy complexsym)经源码编译 pre/post 闭合。
-- **样本量**:n=15 论文 SUT 域,underpowered for α=0.05(C6),descriptive 证据。
+- **样本量**:n=20 论文 SUT 域(含 2 个 caveated:fht G 边际、forward-mode Hessian T\* reachability),underpowered for α=0.05(C6),descriptive 证据。
 - **覆盖规律**:NOETHER 真实 bug 数值算法库(scipy)富集,构造保证物理库(pyscf/e3nn)稀缺,守恒/计数不变量有真实数值 bug。
