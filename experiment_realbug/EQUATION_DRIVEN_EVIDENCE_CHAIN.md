@@ -25,9 +25,10 @@
 | c T\*·sa (M) | 对称结构不变 `solve/inv(A,sym)==solve/inv(A)`(A==A^T) | scipy 50951d25c (complex-symmetric, gh-24359) | pre 1.18.0.dev0+git20260120.d292d32 FIRED (max\|X@a-I\|=9.11) / post 1.18.0.dev0+git20260121.50951d2 HELD(源码编译 meson) |
 | f O≤·stat (I) | shape-preserving 插值,2 单调点须为线性弦 `I((x0+x1)/2)==(y0+y1)/2` | scipy ef7437afc (Akima 两点线性, gh-22278) | pre 1.15.2 FIRED (I(0.5)=1.25≠1.0,或 `np.empty` 未初始化斜率致非有限崩溃)/ post 1.16.0 HELD (I(0.5)=1.0,max\|I-弦\|=0) |
 | a G·eqv (I,**边际**) | 谱方法依赖 rfft/irfft Hermitian 布局,fast Hankel 须对任意 n 保持该对称 | scipy 170f9e69a (fht Hermitian, gh-21661) | pre 1.14.1 FIRED (奇 n=129 rel-err 7.288e16≥scipy 自带 test_gh_21661 阈 7.28e16)/ post 1.15.0 HELD (7.225e16<阈,偶 n 控制位相同);**信号 edge-dominated,数值边际** |
+| i L\*·acc (M) | 复合 Simpson 文档声称全局 4 阶,观测阶须匹配声称(Mode M:avg-边界 vs 抛物校正两方法比较)| scipy 572a373a (simpson 偶点, #18209) | pre 1.10.1 FIRED (偶点 `even='avg'` 边界梯形注入 O(h³),观测阶 3.018<4)/ post 1.11.0 HELD (Cartwright 抛物校正 `even='simpson'`,观测阶 3.987;严格框定为观测收敛阶/速率,非 degree-of-exactness) |
 
 ### 1c. 证据链闭合
-热方程算子代数**先验**给出 $G/T^*/O_{\le}/\mathcal L^*$(+$\mathcal T^*_{\mathrm{rev}}$=∅);scipy 实现中 **h/j/c/f 四族各有独立真实缺陷**违反对应先验 MR(c 两实例:eigh driver-invariance + complex-symmetric 对称结构;j:banded 表示不变,Mode M),**a 族由谱方法 fht Hermitian 实例边际填补**(scipy 自带 test_gh_21661,信号 edge-dominated 标 △)。scipy 无 b(Noether 守恒)in-the-wild;g(𝒟\* 形状)、i(ℰ\* 精度阶)gap;e(Trev\*)可证为空。**h/j/c/f 完整,a 边际。**
+热方程算子代数**先验**给出 $G/T^*/O_{\le}/\mathcal L^*$(+$\mathcal T^*_{\mathrm{rev}}$=∅);scipy 实现中 **h/j/c/f/i 五族各有独立真实缺陷**违反对应先验 MR(c 两实例:eigh driver-invariance + complex-symmetric 对称结构;j:banded 表示不变,Mode M;i:simpson 偶点观测阶 4→3,Mode M),**a 族由谱方法 fht Hermitian 实例边际填补**(scipy 自带 test_gh_21661,信号 edge-dominated 标 △)。scipy 无 b(Noether 守恒)in-the-wild;g(𝒟\* 形状)构造性负(PCHIP 构造即单调 + 无 TVD 底座,NEGATIVE_scipy_dstar.md);e(Trev\*)可证为空。**h/j/c/f/i 完整,a 边际,g 构造性负。**
 
 ---
 
@@ -116,12 +117,12 @@ RHF 先验给出 $G/T^*/O_{\le}/\mathcal L^*$;pyscf **b 守恒族有独立真实
 
 | SUT 域 | 方程先验(元模式) | SUT 真实缺陷证据(族) | 完整族实例 |
 |---|---|---|---|
-| pde_numerical (scipy) | $G/T^*/O_{\le}/\mathcal L^*$(+Trev\*=∅) | h(LSODA)、j(banded)、c(eigh+complexsym)、f(Akima)、a(fht 边际)(6 缺陷) | **✓ h/j/c/f 完整,a 边际** |
+| pde_numerical (scipy) | $G/T^*/O_{\le}/\mathcal L^*$(+Trev\*=∅) | h(LSODA)、j(banded)、c(eigh+complexsym)、f(Akima)、i(simpson)、a(fht 边际)(7 缺陷);g 构造性负 | **✓ h/j/c/f/i 完整,a 边际,g 构造负** |
 | quantum_chemistry (pyscf) | $G/T^*/O_{\le}/\mathcal L^*$ | b(smearing)、h(DIIS)、a(D2h)(3 缺陷)+ c/f 构造保证负结果 | **✓ a/b/h 完整,c+f 构造负** |
 | reactor_physics (openmc) | $G/T^*/O_{\le}/\mathcal L^*$ | a(normalize+rotperiodic)、j(no_reduce)、d(IFP)、f(CRAM)、h(keff)(6 缺陷) | **✓ a/j/d/f/h 完整(族覆盖最全)** |
 | pde_sciml (DeepXDE) | $G/T^*/O_{\le}/\mathcal L^*$ | b(Neumann)、a(periodic)、h(resample)、f(boundary)、c(forward-Hessian △)(5 缺陷)+ T2 mutant | **✓ b/a/h/f 完整,c 边际(第三方)** |
 
-**4/4 域均有完整族实例,全部第三方 in-the-wild 真实库缺陷证据**(scipy/pyscf/openmc/DeepXDE);pde_sciml 额外有论文 T2 自建 PINN mutant 受控补充。**共 20 个论文 SUT 域 in-scope 真实缺陷**,分布于 **7 族(a,b,c,d,f,h,j)**,in-scope N detection 20/20(含 2 caveated:scipy fht a 信号边际、DeepXDE forward-mode Hessian c 非默认路径 reachability)。
+**4/4 域均有完整族实例,全部第三方 in-the-wild 真实库缺陷证据**(scipy/pyscf/openmc/DeepXDE);pde_sciml 额外有论文 T2 自建 PINN mutant 受控补充。**共 21 个论文 SUT 域 in-scope 真实缺陷**,分布于 **8 族(a,b,c,d,f,h,i,j)**,in-scope N detection 21/21(含 2 caveated:scipy fht a 信号边际、DeepXDE forward-mode Hessian c 非默认路径 reachability)。**e(Trev\*)、g(𝒟\*)两族结构性负,0 实证 gap。**
 
 ## 证据来源分层(诚实)
 | 层 | 域 | 证据性质 |
@@ -136,4 +137,4 @@ RHF 先验给出 $G/T^*/O_{\le}/\mathcal L^*$;pyscf **b 守恒族有独立真实
 4. **剩余诚实负结果与 gap**:
    - **e Trev\* 全四域确认结构性稀缺**(scipy 无 symplectic 积分器、openmc 无可逆动力学基底、pyscf rt-TDDFT 已 v2.0.0 移出主仓 + BOMD velocity-Verlet 构造可逆实测 6.66e-16 HELD、DeepXDE 无时间步进积分器;四份 `NEGATIVE_*_trev.md`)。**Trev\* 是唯一在全部四域均为结构性负结果的元模式——因四域核心都不是可逆动力学模拟器(稳态求解/本征/不动点 SCF/残差最小化 PINN)。**
    - pyscf **c Fock-Hermitian + f 占据/密度/变分界**(均构造保证,`NEGATIVE_pyscf_o_le.md`);scipy a 干净 order-of-magnitude 候选(fht 边际填补后,非边际候选仍稀缺)。
-   - **实证 gap:g(𝒟\* 形状/Sturm 振荡 overshoot)、i(ℰ\* 精度-阶退化)两族 B1 未测**——须补真实缺陷或显式标注。
+   - **实证缺口已闭合(0 gap)**:i(ℰ\* 精度-阶退化)由 scipy simpson 偶点观测阶 4→3 填补(572a373a/#18209, 1.10.1→1.11.0,Mode M);g(𝒟\* 形状/Sturm 振荡 overshoot)确立为构造性负结果(scipy PCHIP 构造即单调 Fritsch-Carlson + 无 TVD 底座 + 跨域全空,`NEGATIVE_scipy_dstar.md`)。e(Trev\*)、g(𝒟\*)为 present-by-derivation 结构性负。

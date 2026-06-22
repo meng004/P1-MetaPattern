@@ -11,7 +11,7 @@
 - `RESULTS.md` — analyze 输出(detection / Wilson CI)
 - `B1_INDEX.md`(本文件)— 成果索引 + 复现指南
 
-## A. 论文 SUT 域 in-scope 正样本(n=20,pip + conda + 源码编译核验;含 2 个 caveated:fht a 边际、forward-mode Hessian c reachability)
+## A. 论文 SUT 域 in-scope 正样本(n=21,pip + conda + 源码编译核验;含 2 个 caveated:fht a 边际、forward-mode Hessian c reachability)
 
 | bug_json | 域 | MR 族 (Mode) | fix SHA | pre→post | 复现脚本 |
 |---|---|---|---|---|---|
@@ -35,8 +35,9 @@
 | bug_openmc_keff_trigger.json | reactor_physics | h L\*·conv (I) | b54de4d76 | openmc 0.15.0→0.15.3 (conda) | results/openmc_repro/repro_keff_trigger_convergence.py |
 | bug_deepxde_boundary_float32.json | pde_sciml (第三方) | f O≤·stat (I,边界) | 8a644fe | deepxde 1.8.4→1.9.0 (pip) | results/deepxde_repro/repro_deepxde_boundary_float32.py |
 | bug_deepxde_forward_hessian_symmetry.json | pde_sciml (第三方) | c T\*·sa (I,**△ reachability**) | 46e2c2e | deepxde 9d9d0b0→46e2c2e (源码编译 worktree) | results/deepxde_repro/repro_deepxde_forward_hessian_symmetry.py |
+| bug_scipy_simpson_even_order.json | pde_numerical | i L\*·acc (M) | 572a373a | scipy 1.10.1→1.11.0 (pip) | results/scipy_repro/repro_simpson_even_order.py |
 
-**族分布**:a×5(normalize,rotperiodic,periodic,d2h,fht△)、b×2(smearing,neumann)、c×3(eigh,complexsym,forward-hessian△)、d×1(ifp)、f×3(akima,cram,boundary)、h×4(lsoda,diis,resample,keff)、j×2(banded,no_reduce)。e(Trev)全负、g(𝒟\*)与 i(ℰ\*)为 gap。
+**族分布**:a×5(normalize,rotperiodic,periodic,d2h,fht△)、b×2(smearing,neumann)、c×3(eigh,complexsym,forward-hessian△)、d×1(ifp)、f×3(akima,cram,boundary)、h×4(lsoda,diis,resample,keff)、i×1(simpson)、j×2(banded,no_reduce)。e(Trev)与 g(𝒟\*)结构性负、**0 gap**。
 
 **复现命令**(以 pyscf_smearing 为例):
 ```bash
@@ -81,7 +82,7 @@ python results/pyscf_repro/repro_smearing.py
 
 - **FIRED 类型**:20 个 in-scope 中 6 个 crash-type(3 scipy lsoda/banded/eigh + 2 DeepXDE neumann/periodic + openmc keff_trigger fatal_error,follow-up 合法输入崩溃→违反 MR 关系)、11 个纯数值违反(scipy complexsym、scipy akima、scipy fht 边际、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize、openmc no_reduce、openmc ifp_adjoint beta_eff 687.4→498.7 pcm、openmc cram_clip min N=−5.8e-2、DeepXDE boundary_float32 漏判、DeepXDE forward-mode Hessian J-col 6.185)、2 个收敛/自洽(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样)、1 个 transport 失败(openmc rotperiodic 丢粒子)。
 - **稀缺元模式 / 族**:**$\mathcal T^*_{\mathrm{rev}}$(e Trev·rec)全四域结构性稀缺**(scipy 无 symplectic 积分器、openmc 无可逆动力学基底、pyscf rt-TDDFT 已 v2.0.0 移出主仓 + BOMD velocity-Verlet 构造可逆、DeepXDE 无时间步进积分器;见 `NEGATIVE_{openmc,pyscf,deepxde}_trev.md`);scipy a G·eqv 由 fht(170f9e69a/gh-21661)**边际**填补(scipy 自带 test_gh_21661,信号 edge-dominated 7.2e16 量级,干净候选仍稀缺);scipy f O≤·stat 已由 Akima 两点线性(ef7437afc)升级为 in-the-wild;pyscf c T\*·sa Fock-Hermitian 构造保证(需 int-DM 边界)、pyscf f O≤·stat 占据/密度/变分界构造保证(负结果,git 考古 8 候选全排除,见 `results/NEGATIVE_pyscf_o_le.md`);DeepXDE c T\*·sa 由 forward-mode Hessian(46e2c2e)填补但 **△ reachability**(非 public 默认路径)。
-- **实证 gap**:g(𝒟\* 形状/Sturm 振荡 overshoot)、i(ℰ\* 精度-阶退化)两族 B1 未测——须补真实缺陷或显式标注。
+- **实证缺口(已闭合,0 gap)**:i(ℰ\* 精度-阶退化)由 scipy simpson 偶点观测阶 4→3 填补(572a373a/#18209, 1.10.1→1.11.0);g(𝒟\* 形状/Sturm 振荡 overshoot)确立为构造性负结果(scipy PCHIP 构造即单调 + 无 TVD 底座 + 跨域全空,见 `results/NEGATIVE_scipy_dstar.md`)。
 - **不可达(已解决)**:OpenMC/OpenMOC 无 PyPI(需 conda+核数据,Tier-C);unreleased fix(openmc rotperiodic、scipy complexsym)经源码编译 pre/post 闭合。
-- **样本量**:n=20 论文 SUT 域(含 2 个 caveated:fht a 边际、forward-mode Hessian c reachability),underpowered for α=0.05(C6),descriptive 证据。
+- **样本量**:n=21 论文 SUT 域(含 2 个 caveated:fht a 边际、forward-mode Hessian c reachability),underpowered for α=0.05(C6),descriptive 证据。
 - **覆盖规律**:真实 bug 在数值算法库(scipy)富集,在构造保证物理库(pyscf 的 c/f、各域 Trev\*)稀缺;b G·cons 守恒/计数不变量有真实数值 bug。

@@ -59,14 +59,14 @@ $\mathcal S$: 拓扑/范数 + 加密网 $h\to0$ 的离散族 $L_h$。$\mathcal C
 | **d** T\*·dual | $T^*$ | M | $\langle\hat\Phi^{-1}s,q\rangle{=}\langle s,\widehat{(L^*)^{-1}}q\rangle$ | 伴随/重要性误算（错代/源）| 前向解全对而伴随泛函错 → 自伴谱 MR 也不报；openmc IFP β_eff 687→499，k_eff 正常 | openmc `IFP`: 伴随权 β_eff 代际/朝向不变 [767db7e6a] |
 | **e** Trev·rec | $\mathcal T^*_{\mathrm{rev}}$ | I | $\hat\Phi_t(\Theta\,\hat\Phi_t x)=\Theta x\ (\pm\varepsilon)$ | 守恒传播子注入不可逆/耗散 | 非辛格式能量近守恒且收敛却不可逆；wave+阻尼 mutant | （in-the-wild $\varnothing$）见证 block_wave mutant FIRED |
 | **f** O≤·stat | $O_{\le}$ | I | $u\le v\Rightarrow\hat\Phi u\le\hat\Phi v;\ x\ge0\Rightarrow\hat\Phi x\ge0;\ \hat E\ge E_0$ | 值的序/号违反（负密度、非单调、$E<E_0$）| 总质量守恒但局部负值 → 仅 f 报；openmc CRAM N=−5.8e-2 | scipy `Akima`: 两点保形 $I(\tfrac{x_0+x_1}2){=}\tfrac{y_0+y_1}2$ [ef7437afc] |
-| **g** O≤·dyn=𝒟\* | $O_{\le}$ 派生 | I | $Z(\hat\Phi x)\le Z(x)$（振荡/极值/overshoot 有界）| 伪振荡/Gibbs/新增极值 | 数据单调 (f✓) 且收敛 (h✓) 却 Gibbs overshoot → 仅 g 报 | **GAP（B1 未测）** |
+| **g** O≤·dyn=𝒟\* | $O_{\le}$ 派生 | I | $Z(\hat\Phi x)\le Z(x)$（振荡/极值/overshoot 有界）| 伪振荡/Gibbs/新增极值 | 数据单调 (f✓) 且收敛 (h✓) 却 Gibbs overshoot → 仅 g 报 | **✗ neg（构造性稀缺）**:scipy PCHIP 构造即单调(Fritsch-Carlson 同号割线调和平均)+无 TVD/WENO 底座,跨域全空(NEGATIVE_scipy_dstar.md) |
 | **h** L\*·conv | $\mathcal L^*$ | I | $\hat\Phi_{n+k}x{=}\hat\Phi_n x$（收敛后）/ $\|\hat\Phi_{h_2}{-}\hat\Phi_{h_1}\|\le C\omega(h_1)$ | 不收敛/不一致/自不洽 | 自洽 bug 在对称/正性/守恒 HELD 下发生；scipy LSODA 稠密插值不洽 | scipy `LSODA`: 稠密插值自洽 $\mathrm{sol}(t){=}y$ [c374ca7fd] |
-| **i** L\*·acc=ℰ\* | $\mathcal L^*$ 派生 | M | $\|\mathrm{err}(M_2)\|\le\|\mathrm{err}(M_1)\|$（精度阶偏序）| 精度阶退化（声称 4 阶实为 2 阶）| 收敛 (h✓: err→0) 但速率错 (i✗: 以 $h^p$ 退化)；与 h 正交 | **GAP（B1 未测）** |
+| **i** L\*·acc=ℰ\* | $\mathcal L^*$ 派生 | M | $\|\mathrm{err}(M_2)\|\le\|\mathrm{err}(M_1)\|$（精度阶偏序）| 精度阶退化（声称 4 阶实为 2 阶）| 收敛 (h✓: err→0) 但速率错 (i✗: 以 $h^p$ 退化)；与 h 正交 | scipy `simpson` 偶点观测阶 4→3(572a373a/#18209, 1.10.1→1.11.0;pre p=3.018 vs post p=3.987;框定为观测收敛阶非 degree-of-exactness) |
 | **j** L\*·rep | $\mathcal L^*$ 派生 | M | $\hat\Phi^{(r_1)}x=\hat\Phi^{(r_2)}x$（表示/方法精确相等）| 表示/并行分歧（存储/MPI 归约/布局改变结果）| 零容差精确相等，与收敛速率无关；openmc no_reduce 偏 1/n_ranks | openmc `no_reduce`: $\mathrm{flux}(\text{nr}){=}\mathrm{flux}(\text{rd})$ [bd76fc056]、scipy `banded`==full [cb0538877] |
 
 注：`g`=𝒟\*（动态形状）派生自 $O_{\le}$（+ 自伴 Sturm-Liouville）；`i`=ℰ\*（精度阶）、`j`（表示不变）派生自 $\mathcal L^*$。论文 $\mathcal B^*_{\mathrm{rel}}$（关系半环重写）是 `j` 在离散代数上的特例，物理 4 域为空。`j` 在论文 8 块里无干净归宿（ℰ\* 是近似序、$\mathcal B^*_{\mathrm{rel}}$ 是关系代数），是本模型显式补回的操作化族。
 
-## 4. 实证覆盖矩阵（10 族 × 4 论文 SUT 域；n=20 in-scope）
+## 4. 实证覆盖矩阵（10 族 × 4 论文 SUT 域；n=21 in-scope）
 
 | 元模式 | MR 族 | scipy (pde_num) | pyscf (qchem) | openmc (reactor) | DeepXDE (pde_sciml) |
 |---|---|---|---|---|---|
@@ -76,14 +76,14 @@ $\mathcal S$: 拓扑/范数 + 加密网 $h\to0$ 的离散族 $L_h$。$\mathcal C
 | | d T\*·dual | — | — | ✓ IFP(β_eff) | — |
 | $\mathfrak M_{\mathcal T^*_{\mathrm{rev}}}$ | e Trev·rec | ✗ neg | ✗ neg | ✗ neg | ✗ neg |
 | $\mathfrak M_{O_{\le}}$ | f O≤·stat | ✓ Akima(2点线性) | ✗ 構造(占据/变分) | ✓ CRAM(N≥0) | ✓ boundary(float32) |
-| | g O≤·dyn(𝒟\*) | **gap** | **gap** | **gap** | **gap** |
+| | g O≤·dyn(𝒟\*) | ✗ neg(PCHIP 构造即单调,无 TVD 底座) | ✗ neg | ✗ neg | ✗ neg |
 | $\mathfrak M_{\mathcal L^*}$ | h L\*·conv | ✓ LSODA | ✓ DIIS | ✓ keff-trigger | ✓ resample |
-| | i L\*·acc(ℰ\*) | **gap** | **gap** | **gap** | **gap** |
+| | i L\*·acc(ℰ\*) | ✓ simpson 偶点阶 4→3(572a373a) | — | — | — |
 | | j L\*·rep | ✓ banded(存储) | — | ✓ no_reduce(MPI) | — |
 
-**读出**：5 元模式中 4 个有 in-the-wild 正例（$G/T^*/O_{\le}/\mathcal L^*$），$\mathcal T^*_{\mathrm{rev}}$ 四域全负（仅可导出 + mutant 见证）。10 族中 **7 族有正例**（a,b,c,d,f,h,j）、**1 族结构性负**（e Trev）、**2 族 gap**（g 𝒟\* 形状、i ℰ\* 精度阶）。域内构造负：pyscf c（Fock-Hermitian）、pyscf f（占据/变分界）。
+**读出**：5 元模式中 4 个有 in-the-wild 正例（$G/T^*/O_{\le}/\mathcal L^*$），$\mathcal T^*_{\mathrm{rev}}$ 四域全负（仅可导出 + mutant 见证）。10 族中 **8 族有正例**（a,b,c,d,f,h,i,j）、**2 族结构性负**（e Trev、g 𝒟\*）、**0 gap**。域内构造负：pyscf c（Fock-Hermitian）、pyscf f（占据/变分界）；g 𝒟\* 亦构造性稀缺（scipy PCHIP 构造即单调 + 无 TVD 底座 + 跨域全空,NEGATIVE_scipy_dstar.md）。
 
-20 个 in-scope 实证缺陷→族分布：a×5(normalize,rotperiodic,periodic,D2h,fht△)、b×2(smearing,Neumann)、c×3(eigh,complexsym,Hessian△)、d×1(IFP)、f×3(Akima,CRAM,boundary)、h×4(LSODA,DIIS,resample,keff)、j×2(banded,no_reduce)。其中 2 个 caveated（fht G 信号边际、forward-Hessian T\* 非默认路径 reachability）。
+21 个 in-scope 实证缺陷→族分布：a×5(normalize,rotperiodic,periodic,D2h,fht△)、b×2(smearing,Neumann)、c×3(eigh,complexsym,Hessian△)、d×1(IFP)、f×3(Akima,CRAM,boundary)、h×4(LSODA,DIIS,resample,keff)、i×1(simpson)、j×2(banded,no_reduce)。其中 2 个 caveated（fht G 信号边际、forward-Hessian T\* 非默认路径 reachability）。
 
 ## 5. Mode-M（同一 MR 检出不同实现方法）的处理
 
@@ -99,4 +99,4 @@ $\mathcal S$: 拓扑/范数 + 加密网 $h\to0$ 的离散族 $L_h$。$\mathcal C
 4. **生成元→族 一对多且 domain-relative**：哪些族非空取决于 PUT（$\mathcal B^*_{\mathrm{rel}}$ 物理域空、查询优化器非空）。矩阵是域相对覆盖。
 5. **$\mathcal T^*_{\mathrm{rev}}$ present-by-derivation**：in-the-wild $=\varnothing$，靠"可导出 + mutant 可证伪"立足，与另 4 个 present-by-instance 不同，须诚实标注。
 6. **术语迁移**：论文现稿 "MetaPattern" 在族级（$m_{\mathrm{inv}},\dots$）；采纳本定义须全稿改名（基级=MetaPattern/生成元，族级=MR family），否则两义混淆。
-7. **实证缺口**：g（𝒟\* 形状/Sturm）、i（ℰ\* 精度阶）两族 B1 未测——须补真实缺陷或显式标 gap。
+7. **实证缺口（已闭合,0 gap）**：i（ℰ\* 精度阶）由 scipy simpson 偶点观测阶 4→3 填补(572a373a/#18209);g（𝒟\* 形状/Sturm）确立为构造性负结果(scipy PCHIP 构造即单调 + 无 TVD 底座 + 跨域全空,NEGATIVE_scipy_dstar.md)。e(Trev\*)、g(𝒟\*)为 present-by-derivation 结构性负,其余 8 族 present-by-instance。

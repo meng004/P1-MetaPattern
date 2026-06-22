@@ -4,7 +4,7 @@
 > 分类基准 = `UNIFIED_BLOCK_MODEL.md`:**5 个顶层元模式(最小代数基生成元 $G,T^*,\mathcal T^*_{\mathrm{rev}},O_{\le},\mathcal L^*$)→ 10 个派生 MR 族(a–j)**。
 > 多数 pip / conda released-to-released 复现(pre FIRED / post HELD 自跑核验);2 个 unreleased-fix(scipy complexsym、openmc rotperiodic)经源码编译 pre/post 闭合。
 
-## 1. 论文 SUT 域 in-scope 正样本(n=20,pip + conda + 源码编译核验;含 2 个 caveated:#17 fht a 边际、#20 forward-mode Hessian c reachability)
+## 1. 论文 SUT 域 in-scope 正样本(n=21,pip + conda + 源码编译核验;含 2 个 caveated:#17 fht a 边际、#20 forward-mode Hessian c reachability)
 
 | # | 域 | 库 | bug | MR 族 (Mode) | pre→post | FIRED 类型 |
 |---|---|---|---|---|---|---|
@@ -28,6 +28,7 @@
 | 18 | reactor_physics | openmc tally trigger | 收敛触发器 score 绑定 (b54de4d76/#3155) | h L\*·conv (I) | 0.15.0→0.15.3 (conda) | crash(score 名往返失败→收敛环不可建立) |
 | 19 | pde_sciml | DeepXDE DirichletBC/geometry (第三方) | float32 边界点检测 (8a644fe/#1267) | f O≤·stat (I) | 1.8.4→1.9.0 | **数值**(边界点 x≈0 漏判→丢点) |
 | 20 | pde_sciml | DeepXDE forward-mode Hessian (第三方) | 算子自伴 H[i,j]=H[j,i] (46e2c2e/#1591) | c T\*·sa (I,**△ reachability**) | 9d9d0b0→46e2c2e (源码编译) | **数值**(J-col 误差 6.185→0;forward-mode 非默认路径) |
+| 21 | pde_numerical | scipy.integrate.simpson | 偶点观测阶 4→3 退化 (572a373a/#18209) | i L\*·acc (M) | 1.10.1→1.11.0 | **数值/阶**(观测阶 pre 3.018 vs post 3.987,声称 4) |
 
 ## 2. MR 族 × 论文 SUT 域覆盖矩阵(pip / conda / 源码编译可复现)
 
@@ -39,12 +40,12 @@
 | | d T\*·dual (M) | — | — | ✓ IFP 伴随权重(767db7e6a/#3580,源码编译;beta_eff 687.4→498.7 pcm) | — |
 | $\mathfrak M_{\mathcal T^*_{\mathrm{rev}}}$ | e Trev·rec (I) | ✗ neg(无 symplectic 积分器) | ✗ neg(rt-TDDFT 已移出主仓;BOMD Verlet 构造可逆) | ✗ neg(无可逆动力学基底) | ✗ neg(无时间步进积分器) |
 | $\mathfrak M_{O_{\le}}$ | f O≤·stat (I) | ✓ Akima 两点线性(ef7437afc/#22278) | ✗ **构造保证**(占据/密度/变分界由构造钳制) | ✓ CRAM 负密度 clip(1f7ac4215,源码编译;min N=−5.8e-2→0) | ✓ float32 边界检测(8a644fe/#1267) |
-| | g O≤·dyn=𝒟\* (I) | **gap** | **gap** | **gap** | **gap** |
+| | g O≤·dyn=𝒟\* (I) | ✗ neg(PCHIP 构造即单调,无 TVD 底座) | ✗ neg | ✗ neg | ✗ neg |
 | $\mathfrak M_{\mathcal L^*}$ | h L\*·conv (I) | ✓ LSODA dense-output(c374ca7fd) | ✓ DIIS(15920e60;numpy<1.24+scipy<1.10+h5py<3.9 解依赖) | ✓ tally trigger 收敛准则(b54de4d76/#3155,conda) | ✓ train_next_batch 固定 collocation(4adcde7) |
-| | i L\*·acc=ℰ\* (M) | **gap** | **gap** | **gap** | **gap** |
+| | i L\*·acc=ℰ\* (M) | ✓ simpson 偶点观测阶 4→3(572a373a/#18209, 1.10.1→1.11.0;pre p=3.018→post p=3.987) | — | — | — |
 | | j L\*·rep (M) | ✓ banded==full 存储(cb0538877) | — | ✓ no_reduce==reduce(bd76fc056,conda+MPI) | — |
 
-**读出**:5 元模式中 4 个有 in-the-wild 正例($G/T^*/O_{\le}/\mathcal L^*$);$\mathcal T^*_{\mathrm{rev}}$ 四域全负(仅可导出 + mutant 见证)。10 族中 **7 族有正例**(a,b,c,d,f,h,j)、**1 族结构性负**(e Trev)、**2 族 gap**(g 𝒟\* 形状、i ℰ\* 精度阶)。
+**读出**:5 元模式中 4 个有 in-the-wild 正例($G/T^*/O_{\le}/\mathcal L^*$);$\mathcal T^*_{\mathrm{rev}}$ 四域全负(仅可导出 + mutant 见证)。10 族中 **8 族有正例**(a,b,c,d,f,h,i,j)、**2 族结构性负**(e Trev、g 𝒟\*,后者 scipy PCHIP 构造即单调 + 无 TVD 底座,见 NEGATIVE_scipy_dstar.md)、**0 gap**。
 
 ## 3. 诚实负结果与 caveat(同等重要)
 
@@ -58,6 +59,7 @@
 - **scipy a G·eqv 边际填补(caveated)**:fht rfft/irfft Hermitian(170f9e69a/gh-21661, 1.14.1→1.15.0)是真实上游 fix + scipy 自带回归测试 test_gh_21661——pre 未守 `if n%2==0` 无条件 `u.imag[-1]=0`,奇 n=129 破坏非 Nyquist 系数。但信号 edge-dominated:rel-err ~7.2e16,pre 7.288e16≥阈 vs post 7.225e16<阈,偶 n 控制位相同。真实但**数值边际**,标 △;scipy a 的干净 order-of-magnitude 候选仍稀缺。
 - **DeepXDE c T\*·sa reachability(caveated)**:forward-mode Hessian H[i,j]=H[j,i](46e2c2e/#1591,源码编译 9d9d0b0→46e2c2e)是真实 forward-mode Jacobian 索引 bug(返回第 0 列→Hessian 非对称,J-col 误差 6.185→0)。但 pre/post 两 commit 的 `gradients/__init__.py` 默认走 reverse-mode、forward-mode import 被注释,缺陷未进 public 默认路径 released tag(须显式 import),标 △ reachability;reverse-mode Hessian 对称由 autodiff 构造保证。
 - **scipy f O≤·stat 已升级 in-the-wild**:Akima 两点线性(ef7437afc/#22278, 1.15.2→1.16.0)是干净 pip 可复现 shape-preservation bug——2 单调点的保形插值须为线性弦,pre 因 `np.empty` 未初始化斜率返回 I(0.5)=1.25≠1.0 或非有限崩溃。区别于先前排除的 overflow 边界(9930630d6)。
+- **scipy g 𝒟·dyn 构造性稀缺(负结果,确认)**:动态形状/振荡 `Z(Φx)≤Z(x)` 在 scipy 稀缺——唯一保形插值 PCHIP **构造即单调**(Fritsch-Carlson 同号割线斜率调和平均,单调数据上不可能 overshoot/新增极值;逐字重建 b127884e7/2e60b7c8e 的 PRE/POST 公式,5 数据集 𝒟\* 不变量 PRE/POST 均 HELD,证实为精度修复非形状修复),唯一破形的 Akima 动态格已被 f(ef7437afc)占用、现代 Akima 形状修复 9930630d6 属 overflow 边界;scipy 无 TVD/WENO/flux-limiter 底座(`TVD|total-variation|shape-preserv|spurious-extrema` 全 0 命中)。跨域 openmc/deepxde/pyscf 亦全空。与 i ℰ\* 同列(present-by-derivation),见 `results/NEGATIVE_scipy_dstar.md`。
 - **pyscf a G·eqv 已填补 in-the-wild**:D2h 轴向 orbsym(4542fe9b/#3176, 2.12.1→2.13.0)是现代 pip 可复现点群 bug——乙烯 STO-3G RHF 的 MO irrep 标签随输入朝向变化(6 朝向→6 个 orbsym,1/6 对),违反"分子点群 ⟹ irrep 标签朝向不变"。2.12+ 无 numpy<2 约束。
 - **pyscf 老版本 pip 依赖**(已解决):2.2.x 与现代 numpy/scipy 冲突,Python 3.10 上 pin numpy<1.24 + scipy<1.10 + h5py<3.9 解依赖,h L\* DIIS(15920e60)已干净 pip released-to-released 复现(0/5→5/5)。
 - **reactor_physics(OpenMC)无 PyPI**:需 conda + 核数据(Tier-C);未 release 的 RotationalPeriodicBC fix(c7d7fa461)无 conda post-binary,经源码编译(parent 818fd11b1 → fix,cmake+ninja Release,multi-group XS)闭合。
@@ -80,9 +82,9 @@ e3nn/pyg(domain 字段标 cross-domain):Sₙ 置换(#6199,a 族)、adjoint 反�
 
 ## 6. FIRED 类型的诚实区分
 
-- 论文 SUT 域 20 个中,**6 个 crash-type**(3 scipy lsoda/banded/eigh + 2 DeepXDE neumann/periodic + openmc keff_trigger fatal_error,follow-up 合法输入崩溃 → 违反 MR 关系),**11 个纯数值违反**(scipy complexsym max\|X@a-I\|=9.11、scipy akima I(0.5)=1.25≠1.0、scipy fht 奇 n 7.288e16 边际、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize 符号丢失、openmc no_reduce 偏 1/n_ranks、openmc ifp_adjoint beta_eff 687.4→498.7 pcm、openmc cram_clip min N=−5.8e-2<0、DeepXDE boundary_float32 漏判、DeepXDE forward-mode Hessian J-col 6.185),**2 个收敛/自洽**(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样),**1 个 transport 失败**(openmc rotperiodic 丢粒子)。
+- 论文 SUT 域 21 个中,**6 个 crash-type**(3 scipy lsoda/banded/eigh + 2 DeepXDE neumann/periodic + openmc keff_trigger fatal_error,follow-up 合法输入崩溃 → 违反 MR 关系),**12 个纯数值违反**(scipy complexsym max\|X@a-I\|=9.11、scipy akima I(0.5)=1.25≠1.0、scipy fht 奇 n 7.288e16 边际、scipy simpson 偶点观测阶 3.018 vs 声称 4、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize 符号丢失、openmc no_reduce 偏 1/n_ranks、openmc ifp_adjoint beta_eff 687.4→498.7 pcm、openmc cram_clip min N=−5.8e-2<0、DeepXDE boundary_float32 漏判、DeepXDE forward-mode Hessian J-col 6.185),**2 个收敛/自洽**(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样),**1 个 transport 失败**(openmc rotperiodic 丢粒子)。
 - scipy 真实 bug 多为数值鲁棒性 / 边界 crash;a/c/j 族 MR 通过"合法输入下 follow-up 崩溃"检出它们。
 
 ## 7. 样本量诚实标注
 
-n=20 论文 SUT 域 in-scope(+ 3 跨域),**underpowered for α=0.05 confirmatory**(CLAUDE.md C6)。descriptive 证据:MR 族在论文 SUT 域(scipy/pyscf/openmc/DeepXDE)检出真实缺陷,**5 元模式中 4 个($G/T^*/O_{\le}/\mathcal L^*$)有 in-the-wild 正例、覆盖 7/10 族、四域**(pde_numerical/quantum_chemistry/reactor_physics/pde_sciml);2 个 caveated(scipy fht a 信号边际、DeepXDE forward-mode Hessian c 非默认路径 reachability);**1 元模式($\mathcal T^*_{\mathrm{rev}}$ / e 族)全四域结构性负**(四份 NEGATIVE_*_trev 文档);**2 族实证 gap**(g 𝒟\* 形状/Sturm、i ℰ\* 精度阶),须补真实缺陷或显式标注。
+n=21 论文 SUT 域 in-scope(+ 3 跨域),**underpowered for α=0.05 confirmatory**(CLAUDE.md C6)。descriptive 证据:MR 族在论文 SUT 域(scipy/pyscf/openmc/DeepXDE)检出真实缺陷,**5 元模式中 4 个($G/T^*/O_{\le}/\mathcal L^*$)有 in-the-wild 正例、覆盖 8/10 族、四域**(pde_numerical/quantum_chemistry/reactor_physics/pde_sciml);2 个 caveated(scipy fht a 信号边际、DeepXDE forward-mode Hessian c 非默认路径 reachability);**2 族结构性负**($\mathcal T^*_{\mathrm{rev}}$/e 全四域 + $\mathcal D^*$/g scipy 构造性稀缺,五份 NEGATIVE 文档);**0 实证 gap**(i ℰ\* 已由 scipy simpson 填补)。
