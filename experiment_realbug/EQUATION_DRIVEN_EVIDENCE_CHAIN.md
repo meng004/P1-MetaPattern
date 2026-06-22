@@ -22,9 +22,10 @@
 | L\*:稠密插值穿过求解器网格(`sol(t)==y`) | scipy c374ca7fd (LSODA dense-output) | pre 1.11.4 FIRED / post 1.12.0 HELD |
 | 守恒/表示不变:同算子不同存储同轨迹 | scipy cb0538877 (banded Jacobian) | pre 1.15.3 FIRED / post 1.16.3 (\|y_b-y_f\|=0) |
 | T\*:自伴谱 driver-invariant | scipy 178a12572 (eigh driver) | pre 1.13.0 FIRED / post 1.13.1 HELD |
+| T\*:对称结构不变 `solve/inv(A,sym)==solve/inv(A)`(A==A^T) | scipy 50951d25c (complex-symmetric, gh-24359) | pre 1.18.0.dev0+git20260120.d292d32 FIRED (max\|X@a-I\|=9.11) / post 1.18.0.dev0+git20260121.50951d2 HELD(源码编译 meson) |
 
 ### 1c. 证据链闭合
-热方程算子代数**先验**给出 T\*/O≤/L\*/守恒/G(+Trev\*=∅);scipy 实现中 **L\*/守恒/T\* 三块各有独立真实缺陷**违反对应先验 MR。**完整。**
+热方程算子代数**先验**给出 T\*/O≤/L\*/守恒/G(+Trev\*=∅);scipy 实现中 **L\*/守恒/T\* 三块各有独立真实缺陷**违反对应先验 MR(T\* 两实例:eigh driver-invariance + complex-symmetric 对称结构)。**完整。**
 
 ---
 
@@ -43,10 +44,11 @@
 | 先验 MR | 真实缺陷 | 违反证据 |
 |---|---|---|
 | 守恒:`sum(occ)=N_elec` | pyscf ebf4e676 (smearing #2290) | pre 2.6.2 FIRED (14≠13) / post 2.7.0 HELD |
+| L\*:对称自适应 SCF 不动点不受数值噪声影响(收敛 + e_tot 确定) | pyscf 15920e60 (DIIS 数值噪声 #1638) | pre 2.2.0 FIRED (0/5 收敛,e_tot 抖动 1.76e-2) / post 2.2.1 HELD (5/5 收敛,e_tot=-74.7874921601011) |
 | T\* Fock-Hermitian | 构造保证 ⟹ vanilla 真实 bug 稀缺(仅 int-DM 边界 #1114) | — (诚实负结果) |
 
 ### 2c. 证据链闭合
-RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(smearing,纯数值违反 14 vs 13)。T\* 由实现**构造保证**(印证论文:构造保证块真实 bug 稀缺)。**守恒块完整。**
+RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(smearing,纯数值违反 14 vs 13),**L\* 收敛块亦有独立真实缺陷**(对称自适应 DIIS 数值噪声,0/5→5/5)。T\* 由实现**构造保证**(印证论文:构造保证块真实 bug 稀缺)。**守恒 + L\* 块完整。**
 
 ---
 
@@ -64,10 +66,11 @@ RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(
 | 先验 MR | 真实缺陷 | 违反证据 |
 |---|---|---|
 | G:同一几何平面的等价代数表示规范一致 `normalize(kP)==normalize(P)` | openmc 3bf1486f4 (Surface.normalize #3270) | pre 0.15.0 FIRED (符号丢失) / post 0.15.3 HELD(conda) |
-| 守恒:tally 归一化一致 | openmc bd76fc056 (#3619) — fix 首入 0.15.3,**无 conda pre**(候选,未闭合) | — |
+| 守恒:tally 归一化方法不变 `flux(no_reduce)==flux(reduce)` | openmc bd76fc056 (#3619) | pre 0.15.2 FIRED (偏 1/n_ranks=0.5) / post 0.15.3 HELD(conda+MPI,rel_diff 2e-16) |
+| G(旋转):四种平面 sense 描述同一旋转周期楔形,`k_eff` 不变 | openmc c7d7fa461 (RotationalPeriodicBC gh-3692) | pre 0.15.4-dev30 FIRED (混合 sense 丢粒子) / post 0.15.4-dev31 HELD(源码编译,四 rep k=1.527569) |
 
 ### 3c. 证据链闭合
-输运先验给出 守恒/G/O≤/T\*;openmc **G 几何对称块有独立真实缺陷**(normalize 符号丢失),锚定 2-群 MG pin-cell 输运(k_eff)。**G 块完整。** 守恒块候选(bd76fc056)pre 无 conda binary,未闭合。
+输运先验给出 守恒/G/O≤/T\*;openmc **G 几何对称块有独立真实缺陷**(normalize 符号丢失 + RotationalPeriodicBC 旋转周期),锚定 2-群 MG pin-cell / 楔形输运(k_eff);**守恒块亦有独立真实缺陷**(no_reduce tally MPI 偏 1/n_ranks)。**G + 守恒块完整。**
 
 ---
 
@@ -86,14 +89,15 @@ RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(
 | 先验 MR | SUT 证据 | 检出 |
 |---|---|---|
 | 守恒/flux:Neumann `n·∇u=g`(g=0 即 `d/dt∫u=0`)⟹ 通量残差可计算 | DeepXDE NeumannBC/RobinBC (4bac5eb) | pre v1.3.0 FIRED(TypeError,通量残差不可构造)/ post v1.3.1 HELD(残差=-3.0) |
-- DeepXDE = 最流行第三方 PINN 库(lululxvi/deepxde),上游维护者 fix,pip 实测,非自建非 mutant。路径:`results/deepxde_repro/` + `results/bug_deepxde_neumann.json`。
+| G/对称:周期 BC `u(x)=u(x+L e_k)` 为离散平移对称,`periodic_point` 为轨道映射 ⟹ 对称映射可计算 | DeepXDE GeometryXTime.periodic_point (8353540) | pre v0.8.6 FIRED(TypeError,对称映射不可构造)/ post v0.9.0 HELD(P([0,0.4,0.5])=[1,0.4,0.5],对合 P(P(x))=x) |
+- DeepXDE = 最流行第三方 PINN 库(lululxvi/deepxde),上游维护者 fix,pip 实测,非自建非 mutant。路径:`results/deepxde_repro/` + `results/bug_deepxde_neumann.json` + `results/bug_deepxde_periodic.json`。
 
 **补充证据(论文 T2 受控 mutant)**:
 | 守恒:`∫u` 跨快照守恒 | 自建 diffusion2d PINN + `M_TIME_NEG` | killed=1(residual 0.326 > tol 0.023);coord/act 不误杀 |
 - 路径:`Minimum-MR-SubSet/runs/abd-witness-diffusion2d-pinn-20260608T032704Z/kill_matrix.csv`。
 
 ### 4c. 证据链闭合(第三方 in-the-wild 为主 + mutant 补)
-方程先验 **Neumann 守恒/flux MR** ← (主)DeepXDE NeumannBC 第三方真实缺陷违反(pre 崩溃 / post 修复)+ (补)自建 PINN `M_TIME_NEG` mutant killed。**守恒块闭合,升级为第三方 in-the-wild。**
+方程先验 **Neumann 守恒/flux MR** ← (主)DeepXDE NeumannBC 第三方真实缺陷违反(pre 崩溃 / post 修复)+ (补)自建 PINN `M_TIME_NEG` mutant killed。方程先验 **G/对称(周期平移)MR** ← DeepXDE periodic_point 第三方真实缺陷违反(pre 崩溃 / post 修复)。**守恒 + G 两块均闭合,升级为第三方 in-the-wild。**
 
 ---
 
@@ -101,19 +105,20 @@ RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(
 
 | SUT 域 | 方程先验 | SUT 真实缺陷证据 | 完整元模式实例 |
 |---|---|---|---|
-| pde_numerical (scipy) | ✓ 6 块 | ✓ L\*/守恒/T\* (3 真实缺陷) | **✓ 完整** |
-| quantum_chemistry (pyscf) | ✓ 5 块 | ✓ 守恒 (1) + T\* 构造保证负结果 | **✓ 守恒完整** |
-| reactor_physics (openmc) | ✓ 4 块 | ✓ G 几何对称 + 守恒 (2,conda/MPI) | **✓ G+守恒完整** |
-| pde_sciml (DeepXDE) | ✓ 3 块 | ✓ 守恒/flux (DeepXDE 第三方 in-the-wild) + 自建 PINN mutant(论文 T2 补) | **✓ 守恒完整(第三方)** |
+| pde_numerical (scipy) | ✓ 6 块 | ✓ L\*/守恒/T\*(T\* 两实例:eigh + complex-symmetric)(4 真实缺陷) | **✓ 完整** |
+| quantum_chemistry (pyscf) | ✓ 5 块 | ✓ 守恒 + L\* 收敛 (2 真实缺陷) + T\* 构造保证负结果 | **✓ 守恒+L\* 完整** |
+| reactor_physics (openmc) | ✓ 4 块 | ✓ G 几何对称(normalize + RotationalPeriodicBC)+ 守恒 (3,conda/MPI/源码编译) | **✓ G+守恒完整** |
+| pde_sciml (DeepXDE) | ✓ 3 块 | ✓ 守恒/flux + G/对称(均 DeepXDE 第三方 in-the-wild)(2)+ 自建 PINN mutant(论文 T2 补) | **✓ 守恒+G 完整(第三方)** |
 
-**4/4 域均有完整元模式实例,且全部有第三方 in-the-wild 真实库缺陷证据**(scipy/pyscf/openmc/DeepXDE);pde_sciml 额外有论文 T2 自建 PINN mutant 作为受控补充。**共 7 个论文 SUT 域 in-scope 真实缺陷**(scipy 3 + pyscf 1 + openmc 2 + DeepXDE 1),N detection 7/7。
+**4/4 域均有完整元模式实例,且全部有第三方 in-the-wild 真实库缺陷证据**(scipy/pyscf/openmc/DeepXDE);pde_sciml 额外有论文 T2 自建 PINN mutant 作为受控补充。**共 11 个论文 SUT 域 in-scope 真实缺陷**(scipy 4 + pyscf 2 + openmc 3 + DeepXDE 2),N detection 11/11。
 
 ## 证据来源分层(诚实)
 | 层 | 域 | 证据性质 |
 |---|---|---|
-| **in-the-wild 真实缺陷**(B1 本体,**全部第三方库**) | scipy / pyscf / openmc / DeepXDE | git-history fix 的 pre/post,pip/conda 实测,作者未介入缺陷生成 |
+| **in-the-wild 真实缺陷**(B1 本体,**全部第三方库**) | scipy / pyscf / openmc / DeepXDE | git-history fix 的 pre/post,pip / conda / 源码编译实测,作者未介入缺陷生成 |
 | **受控 mutant**(论文 T2,补充) | 自建 PINN diffusion2d | 注入 mutant + 守恒 MR kill,受控实验 |
 
 ## 待补缺口(下一步候选,可选)
 1. **块加密**:heat 的 O≤ 最大值原理、wave 的 Trev\* 时间反演——方程先验存在,in-the-wild 真实库证据稀缺,可用 mutant 补(同 PINN 路径)。
-2. **DeepXDE G 对称块**:候选 `8353540`(periodic_point,v0.8.6→v0.9.0)纯几何无需训练,但 v0.8.6 默认 TF1.x backend,py3.11 安装困难,未实测。
+2. **DeepXDE G 对称块(已闭合)**:`8353540`(periodic_point,v0.8.6→v0.9.0)纯几何无需训练;TF1.x backend 障碍经"纯 numpy 几何路径不触发 backend"绕开,已 pip 实测 FIRED→HELD。
+3. **scipy complex-symmetric T\* / openmc RotationalPeriodicBC G(已闭合)**:两 unreleased fix(50951d25c / c7d7fa461)经源码编译 pre/post 闭合,无需 released wheel / conda binary。
