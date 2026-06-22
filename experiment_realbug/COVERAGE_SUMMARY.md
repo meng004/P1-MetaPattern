@@ -45,7 +45,16 @@
 | | i L\*·acc=ℰ\* (M) | ✓ simpson 偶点观测阶 4→3(572a373a/#18209, 1.10.1→1.11.0;pre p=3.018→post p=3.987) | — | — | — |
 | | j L\*·rep (M) | ✓ banded==full 存储(cb0538877) | — | ✓ no_reduce==reduce(bd76fc056,conda+MPI) | — |
 
-**读出**:5 元模式中 4 个有 in-the-wild 正例($G/T^*/O_{\le}/\mathcal L^*$);$\mathcal T^*_{\mathrm{rev}}$ 四域全负(仅可导出 + mutant 见证)。10 族中 **8 族有正例**(a,b,c,d,f,h,i,j)、**2 族结构性负**(e Trev、g 𝒟\*,后者 scipy PCHIP 构造即单调 + 无 TVD 底座,见 NEGATIVE_scipy_dstar.md)、**0 gap**。
+**读出**:在 4 个论文 SUT 域内,5 元模式中 4 个有 in-the-wild 正例($G/T^*/O_{\le}/\mathcal L^*$);$\mathcal T^*_{\mathrm{rev}}$ 四域全负、10 族中 **8 族有正例**(a,b,c,d,f,h,i,j)、**e/g 在 4 SUT 域结构性负**(g: scipy PCHIP 构造即单调 + 无 TVD 底座,见 NEGATIVE_scipy_dstar.md)、**0 gap**。
+
+**扩展(e/g 升级,2026-06-22)**:在 2 个"结构存在"的额外库中,e 与 g 各得真实 in-the-wild 正例 → **5/5 元模式、10/10 族均有 in-the-wild 见证**:
+
+| 族 | 额外库(结构存在) | fix | pre→post | FIRED→HELD | 诚实 caveat |
+|---|---|---|---|---|---|
+| **e** Trev\* | diffrax(JAX 可逆 SRK 解算器) | 12efb5b | 0.7.2 → 源码(未发布) | 往返误差 ≈0.67 平(refinement 不降)→ →1e-11 | released-pre / source-post |
+| **g** 𝒟\* | Clawpack/PyClaw(双曲 FV,TVD 重构) | 1cb1e0c | v5.1.0 → v5.2.0 | 单调阶跃 Z_out=1>0 → Z_out=0(三限制器) | 源码编译 pre/post(2014 release py2 不可构建;num_ghost=2) |
+
+详见 `results/bug_diffrax_srk_backward.json`、`results/bug_clawpack_tvd2_recon_bounds.json`(均真实 SHA、自跑数字)。4 SUT 域矩阵保持 e/g 全负(结构缺失);两额外库证"结构存在则真实缺陷出现"的可证伪闭环。
 
 ## 3. 诚实负结果与 caveat(同等重要)
 
@@ -87,4 +96,4 @@ e3nn/pyg(domain 字段标 cross-domain):Sₙ 置换(#6199,a 族)、adjoint 反�
 
 ## 7. 样本量诚实标注
 
-n=21 论文 SUT 域 in-scope(+ 3 跨域),**underpowered for α=0.05 confirmatory**(CLAUDE.md C6)。descriptive 证据:MR 族在论文 SUT 域(scipy/pyscf/openmc/DeepXDE)检出真实缺陷,**5 元模式中 4 个($G/T^*/O_{\le}/\mathcal L^*$)有 in-the-wild 正例、覆盖 8/10 族、四域**(pde_numerical/quantum_chemistry/reactor_physics/pde_sciml);2 个 caveated(scipy fht a 信号边际、DeepXDE forward-mode Hessian c 非默认路径 reachability);**2 族结构性负**($\mathcal T^*_{\mathrm{rev}}$/e 全四域 + $\mathcal D^*$/g scipy 构造性稀缺,五份 NEGATIVE 文档);**0 实证 gap**(i ℰ\* 已由 scipy simpson 填补)。
+n=21 论文 SUT 域 in-scope(+ 3 跨域),**underpowered for α=0.05 confirmatory**(CLAUDE.md C6)。descriptive 证据:MR 族在论文 SUT 域(scipy/pyscf/openmc/DeepXDE)检出真实缺陷,**5 元模式中 4 个($G/T^*/O_{\le}/\mathcal L^*$)有 in-the-wild 正例、覆盖 8/10 族、四域**(pde_numerical/quantum_chemistry/reactor_physics/pde_sciml);2 个 caveated(scipy fht a 信号边际、DeepXDE forward-mode Hessian c 非默认路径 reachability);**e/g 在 4 SUT 域结构性负**($\mathcal T^*_{\mathrm{rev}}$/e 全四域 + $\mathcal D^*$/g scipy 构造性稀缺,五份 NEGATIVE 文档);**0 实证 gap**(i ℰ\* 已由 scipy simpson 填补)。**e/g 升级**:现各在 1 额外"结构存在"库得真实正例(e← diffrax fix 12efb5b,released-pre/source-post;g← Clawpack/PyClaw fix 1cb1e0c,源码编译 pre/post),故 **5/5 元模式、10/10 族均有 in-the-wild 见证**;总计 21(4 SUT 域)+ 2(额外库)= 23 个 in-the-wild,两新正例均诚实标注复现 bracket。
