@@ -69,7 +69,7 @@ python results/pyscf_repro/repro_smearing.py
 ## E. 诚实标注(贯穿)
 
 - **FIRED 类型**:15 个 in-scope 中 5 个 crash-type(3 scipy + 2 DeepXDE,follow-up 合法输入崩溃→违反 MR 关系)、7 个纯数值违反(scipy complexsym、scipy akima、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize、openmc no_reduce、openmc ifp_adjoint beta_eff 687.4→498.7 pcm)、2 个收敛/自洽(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样)、1 个 transport 失败(openmc rotperiodic 丢粒子)。
-- **稀缺块**:scipy Trev\*/O≤/G 在 pip 可复现范围稀缺;pyscf T\* Fock-Hermitian 构造保证(需 int-DM 边界)。
+- **稀缺块**:scipy Trev\*/G 在 pip 可复现范围稀缺(O≤ 已由 Akima 两点线性 ef7437afc 升级为 in-the-wild);pyscf T\* Fock-Hermitian 构造保证(需 int-DM 边界)。
 - **不可达(已解决)**:OpenMC/OpenMOC 无 PyPI(需 conda+核数据,Tier-C);unreleased fix(openmc rotperiodic、scipy complexsym)经源码编译 pre/post 闭合。
 - **样本量**:n=15 论文 SUT 域,underpowered for α=0.05(C6),descriptive 证据。
 - **覆盖规律**:NOETHER 真实 bug 数值算法库(scipy)富集,构造保证物理库(pyscf/e3nn)稀缺,守恒/计数不变量有真实数值 bug。

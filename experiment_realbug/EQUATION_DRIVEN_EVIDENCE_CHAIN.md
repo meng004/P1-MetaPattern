@@ -123,6 +123,6 @@ RHF 先验给出 T\*/守恒/L\*/O≤/G;pyscf **守恒块有独立真实缺陷**(
 | **受控 mutant**(论文 T2,补充) | 自建 PINN diffusion2d | 注入 mutant + 守恒 MR kill,受控实验 |
 
 ## 待补缺口(下一步候选,可选)
-1. **块加密**:heat 的 O≤ 最大值原理、wave 的 Trev\* 时间反演——方程先验存在,in-the-wild 真实库证据稀缺,可用 mutant 补(同 PINN 路径)。
+1. **块加密(mutant)**:heat 的 O≤ 最大值原理、wave 的 Trev\* 时间反演——以 mutant 补(scipy O≤ 块已另有 Akima 两点线性 in-the-wild;Trev\* 在 scipy 真实稀缺,无 symplectic 基底)。
 2. **DeepXDE G 对称块(已闭合)**:`8353540`(periodic_point,v0.8.6→v0.9.0)纯几何无需训练;TF1.x backend 障碍经"纯 numpy 几何路径不触发 backend"绕开,已 pip 实测 FIRED→HELD。
 3. **scipy complex-symmetric T\* / openmc RotationalPeriodicBC G(已闭合)**:两 unreleased fix(50951d25c / c7d7fa461)经源码编译 pre/post 闭合,无需 released wheel / conda binary。
