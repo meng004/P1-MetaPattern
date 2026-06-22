@@ -1,0 +1,56 @@
+{
+  "id": "pyscf_diis_symm_noise",
+  "repo": "pyscf/pyscf",
+  "domain": "paper SUT domain (quantum_chemistry: PySCF symmetry-adapted ROHF SCF)",
+  "sut_family": "scf.diis + scf.hf_symm (symmetry-adapted ROHF DIIS) -- paper SCF SUT",
+  "cat": "self-consistency / convergence (NOETHER L* block)",
+  "fix_commit": "15920e60e32ef471f639505720ab18f0ef2c7da9",
+  "fix_commit_short": "15920e60",
+  "fix_title": "DIIS instability due to numerical noises (fix issue #1524) (#1638)",
+  "pre_version": "2.2.0",
+  "post_version": "2.2.1",
+  "tolerance": 1e-07,
+  "cpu_status": "OK",
+  "sut": "O atom, spin=2 (triplet), basis=cc-pVDZ, symmetry=True, ROHF",
+  "ref_etot": -74.7874921601008,
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "L* self-consistency: a correct SCF must reach the same fixed point regardless of numerical noise in the symmetry-adapted DIIS error vector -> (i) mf.converged True within max_cycle AND (ii) e_tot deterministic == reference. Symmetry-noise that prevents convergence / makes e_tot wander run-to-run violates the relation.",
+  "fired_type": "CONVERGENCE/SELF-CONSISTENCY (pre: 0/5 converged, e_tot wanders over a 1.76e-2 spread, all far from ref; post: 5/5 converged, deterministic e_tot). NON-deterministic energy, deterministic FIRED verdict -- the bug IS numerical noise.",
+  "pre_observed": {
+    "n_repeat": 5,
+    "converged_count": 0,
+    "held_count": 0,
+    "e_tot_min": -74.7767511948219,
+    "e_tot_max": -74.7592019125652,
+    "e_tot_spread": 0.01754928225670036,
+    "verdict": "FIRED"
+  },
+  "post_observed": {
+    "n_repeat": 5,
+    "converged_count": 5,
+    "held_count": 5,
+    "e_tot": -74.7874921601011,
+    "e_tot_spread": 2.842e-14,
+    "abs_err_vs_ref": 3.268e-13,
+    "verdict": "HELD"
+  },
+  "verified": "SELF-RUN pip released-to-released: pre 2.2.0 FIRED (0/5 converged) / post 2.2.1 HELD (5/5 converged, e_tot=-74.7874921601011 == ref to 3e-13). Same compatible stack numpy 1.23.5 + scipy 1.9.3 + h5py 3.8.0, Python 3.10.20.",
+  "flaky_note": "Pre-fix energy is non-deterministic (numerical noise -> run-to-run spread 1.76e-2), but converged=False and FIRED on all 5 runs: the FIRED verdict is stable. Confirmed >= 5 repeats.",
+  "env": "uv venv --python 3.10 /tmp/venv_pyscf22 ; pyscf==2.2.0/2.2.1 + numpy<1.24 (1.23.5) + scipy<1.10 (1.9.3) + h5py<3.9 (3.8.0). Resolves the 2.2.x vs modern numpy/scipy (cho_solve/lstsq) conflict.",
+  "upstream": "gh-1524 (issue) / gh-1638 (PR)",
+  "repro_script": "results/pyscf_repro/repro_pyscf_diis.py",
+  "note": "Upgrades the previously-caveated (delta) pyscf L* DIIS entry in COVERAGE_SUMMARY.md to a clean pip released-to-released reproduction: the 2.2.x-vs-numpy dependency conflict is resolved by pinning numpy<1.24 + scipy<1.10 + h5py<3.9 on Python 3.10, NOT skipped. Gives quantum_chemistry a clean L*-convergence positive in addition to its conservation (smearing) positive. [schema fix: fired keys are MR-sets {N,M,G,L,B}; NOETHER MR is set N, cat field carries the L* block name]"
+}
