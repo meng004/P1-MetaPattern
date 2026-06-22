@@ -1,0 +1,29 @@
+================================================================
+PRE  (parent d292d3221) -- scipy source-compiled editable build
+================================================================
+scipy version: 1.18.0.dev0+git20260120.d292d32
+  is_symmetric (a==a.T)   : True
+  is_hermitian (a==a.conj().T): False
+  solve : max|x_gen@a - I|        = 9.107e+00
+  solve : max|x_sym@a - I|        = 7.229e-16
+  solve : max|x_sym - x_gen|      = 2.166e-01
+  inv   : max|inv_gen@a - I|      = 9.107e+00
+  inv   : max|inv_sym@a - I|      = 7.229e-16
+  inv   : max|inv_sym - inv_gen|  = 2.166e-01
+    >>> MR VIOLATED (FIRED): general and 'sym' paths disagree (solve dev=2.166e-01, inv dev=2.166e-01). Non-inverting path(s): solve(general) X@a-I=9.11e+00, inv(general) X@a-I=9.11e+00 -- complex-symmetric A was routed to the wrong (pos-def/Hermitian) branch.
+VERDICT: FIRED
+
+================================================================
+POST (fix 50951d25c) -- scipy source-compiled editable build
+================================================================
+scipy version: 1.18.0.dev0+git20260121.50951d2
+  is_symmetric (a==a.T)   : True
+  is_hermitian (a==a.conj().T): False
+  solve : max|x_gen@a - I|        = 7.229e-16
+  solve : max|x_sym@a - I|        = 7.229e-16
+  solve : max|x_sym - x_gen|      = 0.000e+00
+  inv   : max|inv_gen@a - I|      = 7.229e-16
+  inv   : max|inv_sym@a - I|      = 7.229e-16
+  inv   : max|inv_sym - inv_gen|  = 0.000e+00
+    MR HELD: general and assume_a='sym' agree (<= 1e-10) and both invert a (max X@a-I=7.23e-16); structure exploited without changing the correct solution.
+VERDICT: HELD

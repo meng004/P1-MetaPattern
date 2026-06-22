@@ -1,0 +1,32 @@
+{
+  "id": "scipy_complexsym",
+  "repo": "scipy/scipy",
+  "domain": "paper SUT domain (pde_numerical / E1: SciPy)",
+  "sut_family": "linalg.solve + linalg.inv -- dense direct solver underlying the paper linear-algebra SUTs",
+  "cat": "T* self-adjoint/symmetric structure (structure-invariance of solve/inv: A == A^T)",
+  "fix_commit": "50951d25c",
+  "fix_commit_full": "50951d25c8a0963d90a1da4f7dc9a120cb9b55c5",
+  "parent_commit": "d292d3221bb7f2172a67fbe377083edd81e4abfe",
+  "pre_version": "1.18.0.dev0+git20260120.d292d32",
+  "post_version": "1.18.0.dev0+git20260121.50951d2",
+  "tolerance": 1e-10,
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "solve(A,b,assume_a='sym') == solve(A,b) and inv(A,assume_a='sym') == inv(A), and both must satisfy X@A==I : symmetry (A==A^T) is a property, exploiting it must not change the unique correct solution",
+  "fired_type": "silent wrong answer -- for a complex symmetric (A==A^T) NON-hermitian, NOT pos-def matrix (gh-24359), the C++ posdef-fallback flow mis-detected structure: the auto-detect general path (solve(a)/inv(a)) routed it to the Cholesky/Hermitian branch (zpotrf does not error on non-pos-def complex symmetric) and returned a non-inverse; assume_a='sym' returned the correct inverse, so the two disagree (max|X@a-I|=9.11 on the general path, dev=2.166e-01)",
+  "verified": "SOURCE-COMPILED pre/post (scipy meson editable build, py3.12, openblas): pre d292d3221 (1.18.0.dev0+git20260120.d292d32) FIRED -- general solve/inv give max|X@a-I|=9.107e+00, disagree with assume_a='sym' by 2.166e-01; post 50951d25c (1.18.0.dev0+git20260121.50951d2) HELD -- general and 'sym' agree exactly (dev=0.000e+00), both invert a to max|X@a-I|=7.229e-16",
+  "upstream": "gh-24359 (PR #24367)"
+}
