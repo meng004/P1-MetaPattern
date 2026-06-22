@@ -1,0 +1,23 @@
+{
+  "set_G_genmorph": {
+    "status_for_n30_expansion": "BLOCKED for 34 of 36 SUTs",
+    "reason": "GenMorph (Zenodo 10067096) does not ship a portable, fixed MR catalogue. Its MRs are evolved per-SUT by a genetic-programming search whose fitness is PIT mutation kill, requiring the full GenMorph toolchain (GAssert + Randoop + pitest-wrapper-1.7.4) and a multi-minute GP budget per new SUT. Published evolved MRs exist ONLY for the two pilot SUTs (MathClass?gcd?0, MathClass?sin?0). Re-evolving Set G for the 34 new commons-math methods would require re-running GenMorph's gen mode per SUT; the S7 README documents two structural failure modes that block this at scale: (1) a race on the shared target/classes/<SUT>.class file during Major/PIT compilation, and (2) degenerate GP grammar for boolean-predicate output SUTs. We therefore do NOT fabricate Set G numbers for the new SUTs.",
+    "real_data_points_reused_from_pilot": {
+      "note": "These two are REAL GenMorph-evolved Set G results from the existing S5 pilot (PIT 1.7.4, GenMorph Randoop seed-11 input distribution). They are NOT pooled with the n30 Set N/B/M numbers because the n30 runs use PIT 1.15.3 and a different (deterministic, boundary-seeded) input distribution; pooling across tools/distributions would be invalid. Reported here as an honest, separate Set G anchor.",
+      "source_files": [
+        "supplementary/S5_genmorph_pilot/results/gcd/pilot_stats.json",
+        "supplementary/S5_genmorph_pilot/results/sin/pilot_stats.json"
+      ],
+      "MathClass_gcd_0": {"n_mutants": 25, "set_g_killed": 17, "set_g_rate": 0.68,
+                          "set_n_killed_in_pilot": 5, "set_b_killed_in_pilot": 4,
+                          "pit_version": "1.7.4"},
+      "MathClass_sin_0": {"n_mutants": 26, "set_g_killed": 2, "set_g_rate": 0.0769,
+                          "set_n_killed_in_pilot": 11, "set_b_killed_in_pilot": 0,
+                          "pit_version": "1.7.4"}
+    }
+  },
+  "set_L_llm": {
+    "status": "BLOCKED",
+    "reason": "No LLM API key is reachable in this execution environment (ANTHROPIC_API_KEY / OPENAI_API_KEY / DEEPSEEK_API_KEY / ZHIPU_API_KEY / MOONSHOT_API_KEY / GEMINI_API_KEY / DASHSCOPE_API_KEY all unset; no .env present). An LLM-prompted MR baseline (Set L) cannot be generated without a model endpoint. No Set L numbers are fabricated."
+  }
+}

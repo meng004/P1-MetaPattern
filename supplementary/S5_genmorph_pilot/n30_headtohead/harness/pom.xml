@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.noether</groupId>
+  <artifactId>n30-headtohead</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <!--
+    n>=30 commons-math3 head-to-head harness (Set N NOETHER vs baselines).
+
+    Design note on mutating the LIBRARY:
+      We unpack commons-math3-3.6.1 .class files into target/classes via the
+      maven-dependency-plugin (unpack) bound to process-classes. PIT then sees
+      the library classes as "own" classes and mutates them directly. This gives
+      real PIT mutants over the actual Apache Commons Math 3.6.1 bytecode (not a
+      re-implementation), which is the substrate the S5 pilot and S7 use.
+
+    Per-SUT PIT scoping is done from the driver (run_pit.py) by passing
+      -DtargetClasses and -DtargetTests and -DexcludedMethods on the CLI, so a
+      single pom serves all SUTs.
+  -->
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <commons.math.version>3.6.1</commons.math.version>
+    <junit.version>4.13.2</junit.version>
+    <pitest.version>1.15.3</pitest.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math3</artifactId>
+      <version>${commons.math.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Unpack the commons-math3 library classes into target/classes so PIT
+           mutates the real Apache library bytecode as project classes. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.6.1</version>
+        <executions>
+          <execution>
+            <id>unpack-commons-math</id>
+            <phase>process-classes</phase>
+            <goals><goal>unpack</goal></goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.commons</groupId>
+                  <artifactId>commons-math3</artifactId>
+                  <version>${commons.math.version}</version>
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                  <includes>org/apache/commons/math3/**/*.class</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <includes>
+            <include>**/T_*.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>${pitest.version}</version>
+        <configuration>
+          <!-- defaults; per-SUT overrides come from the CLI driver -->
+          <outputFormats>
+            <param>XML</param>
+          </outputFormats>
+          <timestampedReports>false</timestampedReports>
+          <threads>4</threads>
+          <timeoutFactor>1.5</timeoutFactor>
+          <timeoutConstInMillis>5000</timeoutConstInMillis>
+          <mutators>
+            <mutator>DEFAULTS</mutator>
+          </mutators>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

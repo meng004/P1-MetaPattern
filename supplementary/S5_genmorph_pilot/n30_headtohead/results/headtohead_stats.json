@@ -1,0 +1,1397 @@
+{
+  "n_suts": 36,
+  "n_mutants_total": 836,
+  "n_mutants_covered": 671,
+  "pre_registration": "supplementary/S8_metricplus_sun2021_subjects/protocol_path_a_headtohead.md",
+  "matched_unit": "mutant (each SUT class runs Set N + Set B + Set M on identical PIT mutant population)",
+  "pooled": {
+    "set_n": {
+      "detected": 313,
+      "n": 836,
+      "rate": 0.3744,
+      "wilson_95ci": [
+        0.3422,
+        0.4077
+      ]
+    },
+    "set_b": {
+      "detected": 154,
+      "n": 836,
+      "rate": 0.1842,
+      "wilson_95ci": [
+        0.1594,
+        0.2119
+      ]
+    },
+    "set_m": {
+      "detected": 151,
+      "n": 836,
+      "rate": 0.1806,
+      "wilson_95ci": [
+        0.156,
+        0.2081
+      ]
+    }
+  },
+  "pairwise_setN_vs_baselines": {
+    "N_vs_B": {
+      "both": 154,
+      "set_n_only": 159,
+      "set_b_only": 0,
+      "neither": 523,
+      "discordant_b_plus_c": 159,
+      "mcnemar_exact_p_two_sided": 2.737e-48,
+      "mcnemar_exact_p_statsmodels_crosscheck": 2.737e-48,
+      "bonferroni_alpha": 0.025,
+      "significant_after_bonferroni": true,
+      "risk_difference": 0.1902,
+      "rd_95ci": [
+        0.1636,
+        0.2168
+      ],
+      "odds_ratio_paired": 319.0,
+      "or_95ci": [
+        19.8656,
+        5122.4642
+      ],
+      "min_achievable_exact_p": 1.368e-48,
+      "paired_test_underpowered_at_0.05": false
+    },
+    "N_vs_M": {
+      "both": 151,
+      "set_n_only": 162,
+      "set_m_only": 0,
+      "neither": 523,
+      "discordant_b_plus_c": 162,
+      "mcnemar_exact_p_two_sided": 3.421e-49,
+      "mcnemar_exact_p_statsmodels_crosscheck": 3.421e-49,
+      "bonferroni_alpha": 0.025,
+      "significant_after_bonferroni": true,
+      "risk_difference": 0.1938,
+      "rd_95ci": [
+        0.167,
+        0.2206
+      ],
+      "odds_ratio_paired": 325.0,
+      "or_95ci": [
+        20.2409,
+        5218.3936
+      ],
+      "min_achievable_exact_p": 1.711e-49,
+      "paired_test_underpowered_at_0.05": false
+    }
+  },
+  "bonferroni": {
+    "n_pairwise_tests": 2,
+    "family_alpha": 0.05,
+    "per_test_alpha": 0.025
+  },
+  "stratified": {
+    "D1": {
+      "n_mutants": 721,
+      "set_n": {
+        "detected": 264,
+        "n": 721,
+        "rate": 0.3662,
+        "wilson_95ci": [
+          0.3318,
+          0.4019
+        ]
+      },
+      "set_b": {
+        "detected": 132,
+        "n": 721,
+        "rate": 0.1831,
+        "wilson_95ci": [
+          0.1566,
+          0.213
+        ]
+      },
+      "set_m": {
+        "detected": 125,
+        "n": 721,
+        "rate": 0.1734,
+        "wilson_95ci": [
+          0.1475,
+          0.2027
+        ]
+      },
+      "N_vs_B": {
+        "both": 132,
+        "set_n_only": 132,
+        "set_b_only": 0,
+        "neither": 457,
+        "discordant_b_plus_c": 132,
+        "mcnemar_exact_p_two_sided": 3.673e-40,
+        "mcnemar_exact_p_statsmodels_crosscheck": 3.673e-40,
+        "bonferroni_alpha": 0.025,
+        "significant_after_bonferroni": true,
+        "risk_difference": 0.1831,
+        "rd_95ci": [
+          0.1549,
+          0.2114
+        ],
+        "odds_ratio_paired": 265.0,
+        "or_95ci": [
+          16.4882,
+          4259.1011
+        ],
+        "min_achievable_exact_p": 1.837e-40,
+        "paired_test_underpowered_at_0.05": false
+      },
+      "N_vs_M": {
+        "both": 125,
+        "set_n_only": 139,
+        "set_m_only": 0,
+        "neither": 457,
+        "discordant_b_plus_c": 139,
+        "mcnemar_exact_p_two_sided": 2.87e-42,
+        "mcnemar_exact_p_statsmodels_crosscheck": 2.87e-42,
+        "bonferroni_alpha": 0.025,
+        "significant_after_bonferroni": true,
+        "risk_difference": 0.1928,
+        "rd_95ci": [
+          0.164,
+          0.2217
+        ],
+        "odds_ratio_paired": 279.0,
+        "or_95ci": [
+          17.3638,
+          4482.9357
+        ],
+        "min_achievable_exact_p": 1.435e-42,
+        "paired_test_underpowered_at_0.05": false
+      }
+    },
+    "D2": {
+      "n_mutants": 115,
+      "set_n": {
+        "detected": 49,
+        "n": 115,
+        "rate": 0.4261,
+        "wilson_95ci": [
+          0.3395,
+          0.5174
+        ]
+      },
+      "set_b": {
+        "detected": 22,
+        "n": 115,
+        "rate": 0.1913,
+        "wilson_95ci": [
+          0.1299,
+          0.2727
+        ]
+      },
+      "set_m": {
+        "detected": 26,
+        "n": 115,
+        "rate": 0.2261,
+        "wilson_95ci": [
+          0.1592,
+          0.3107
+        ]
+      },
+      "N_vs_B": {
+        "both": 22,
+        "set_n_only": 27,
+        "set_b_only": 0,
+        "neither": 66,
+        "discordant_b_plus_c": 27,
+        "mcnemar_exact_p_two_sided": 1.49e-08,
+        "mcnemar_exact_p_statsmodels_crosscheck": 1.49e-08,
+        "bonferroni_alpha": 0.025,
+        "significant_after_bonferroni": true,
+        "risk_difference": 0.2348,
+        "rd_95ci": [
+          0.1563,
+          0.3108
+        ],
+        "odds_ratio_paired": 55.0,
+        "or_95ci": [
+          3.3548,
+          901.6956
+        ],
+        "min_achievable_exact_p": 7.451e-09,
+        "paired_test_underpowered_at_0.05": false
+      },
+      "N_vs_M": {
+        "both": 26,
+        "set_n_only": 23,
+        "set_m_only": 0,
+        "neither": 66,
+        "discordant_b_plus_c": 23,
+        "mcnemar_exact_p_two_sided": 2.384e-07,
+        "mcnemar_exact_p_statsmodels_crosscheck": 2.384e-07,
+        "bonferroni_alpha": 0.025,
+        "significant_after_bonferroni": true,
+        "risk_difference": 0.2,
+        "rd_95ci": [
+          0.1261,
+          0.2718
+        ],
+        "odds_ratio_paired": 47.0,
+        "or_95ci": [
+          2.8547,
+          773.8197
+        ],
+        "min_achievable_exact_p": 1.192e-07,
+        "paired_test_underpowered_at_0.05": false
+      }
+    }
+  },
+  "per_sut": {
+    "au_addcheck_int": {
+      "n_mutants": 6,
+      "block": "G,Tstar,Istar",
+      "covered": 6,
+      "set_n": {
+        "detected": 3,
+        "n": 6,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.1876,
+          0.8124
+        ]
+      },
+      "set_b": {
+        "detected": 2,
+        "n": 6,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.0968,
+          0.7
+        ]
+      },
+      "set_m": {
+        "detected": 3,
+        "n": 6,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.1876,
+          0.8124
+        ]
+      }
+    },
+    "au_gcd_int": {
+      "n_mutants": 25,
+      "block": "G,Lstar,Ole,Istar",
+      "covered": 18,
+      "set_n": {
+        "detected": 8,
+        "n": 25,
+        "rate": 0.32,
+        "wilson_95ci": [
+          0.1721,
+          0.5159
+        ]
+      },
+      "set_b": {
+        "detected": 5,
+        "n": 25,
+        "rate": 0.2,
+        "wilson_95ci": [
+          0.0886,
+          0.3913
+        ]
+      },
+      "set_m": {
+        "detected": 6,
+        "n": 25,
+        "rate": 0.24,
+        "wilson_95ci": [
+          0.115,
+          0.4343
+        ]
+      }
+    },
+    "au_gcd_long": {
+      "n_mutants": 39,
+      "block": "G,Lstar,Ole,Istar",
+      "covered": 39,
+      "set_n": {
+        "detected": 31,
+        "n": 39,
+        "rate": 0.7949,
+        "wilson_95ci": [
+          0.6447,
+          0.8922
+        ]
+      },
+      "set_b": {
+        "detected": 24,
+        "n": 39,
+        "rate": 0.6154,
+        "wilson_95ci": [
+          0.459,
+          0.7511
+        ]
+      },
+      "set_m": {
+        "detected": 24,
+        "n": 39,
+        "rate": 0.6154,
+        "wilson_95ci": [
+          0.459,
+          0.7511
+        ]
+      }
+    },
+    "au_lcm_int": {
+      "n_mutants": 5,
+      "block": "G,Lstar,Istar",
+      "covered": 5,
+      "set_n": {
+        "detected": 3,
+        "n": 5,
+        "rate": 0.6,
+        "wilson_95ci": [
+          0.2307,
+          0.8824
+        ]
+      },
+      "set_b": {
+        "detected": 0,
+        "n": 5,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.4345
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 5,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.4345
+        ]
+      }
+    },
+    "au_mulcheck_int": {
+      "n_mutants": 6,
+      "block": "G,Lstar,Istar",
+      "covered": 6,
+      "set_n": {
+        "detected": 3,
+        "n": 6,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.1876,
+          0.8124
+        ]
+      },
+      "set_b": {
+        "detected": 2,
+        "n": 6,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.0968,
+          0.7
+        ]
+      },
+      "set_m": {
+        "detected": 2,
+        "n": 6,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.0968,
+          0.7
+        ]
+      }
+    },
+    "au_pow_int": {
+      "n_mutants": 10,
+      "block": "Lstar,Istar",
+      "covered": 7,
+      "set_n": {
+        "detected": 6,
+        "n": 10,
+        "rate": 0.6,
+        "wilson_95ci": [
+          0.3127,
+          0.8318
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 10,
+        "rate": 0.4,
+        "wilson_95ci": [
+          0.1682,
+          0.6873
+        ]
+      },
+      "set_m": {
+        "detected": 2,
+        "n": 10,
+        "rate": 0.2,
+        "wilson_95ci": [
+          0.0567,
+          0.5098
+        ]
+      }
+    },
+    "au_stirling": {
+      "n_mutants": 1,
+      "block": "Istar,Ole",
+      "covered": 1,
+      "set_n": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_b": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_m": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      }
+    },
+    "au_subcheck_int": {
+      "n_mutants": 6,
+      "block": "G,Tstar,Istar",
+      "covered": 6,
+      "set_n": {
+        "detected": 3,
+        "n": 6,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.1876,
+          0.8124
+        ]
+      },
+      "set_b": {
+        "detected": 2,
+        "n": 6,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.0968,
+          0.7
+        ]
+      },
+      "set_m": {
+        "detected": 2,
+        "n": 6,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.0968,
+          0.7
+        ]
+      }
+    },
+    "cu_binom": {
+      "n_mutants": 42,
+      "block": "G,Istar,Ole",
+      "covered": 23,
+      "set_n": {
+        "detected": 15,
+        "n": 42,
+        "rate": 0.3571,
+        "wilson_95ci": [
+          0.2299,
+          0.5083
+        ]
+      },
+      "set_b": {
+        "detected": 3,
+        "n": 42,
+        "rate": 0.0714,
+        "wilson_95ci": [
+          0.0246,
+          0.1901
+        ]
+      },
+      "set_m": {
+        "detected": 3,
+        "n": 42,
+        "rate": 0.0714,
+        "wilson_95ci": [
+          0.0246,
+          0.1901
+        ]
+      }
+    },
+    "cu_factorial": {
+      "n_mutants": 5,
+      "block": "Lstar,Istar,Ole",
+      "covered": 5,
+      "set_n": {
+        "detected": 3,
+        "n": 5,
+        "rate": 0.6,
+        "wilson_95ci": [
+          0.2307,
+          0.8824
+        ]
+      },
+      "set_b": {
+        "detected": 2,
+        "n": 5,
+        "rate": 0.4,
+        "wilson_95ci": [
+          0.1176,
+          0.7693
+        ]
+      },
+      "set_m": {
+        "detected": 2,
+        "n": 5,
+        "rate": 0.4,
+        "wilson_95ci": [
+          0.1176,
+          0.7693
+        ]
+      }
+    },
+    "fm_abs_d": {
+      "n_mutants": 2,
+      "block": "Lstar,Istar",
+      "covered": 2,
+      "set_n": {
+        "detected": 1,
+        "n": 2,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.0945,
+          0.9055
+        ]
+      },
+      "set_b": {
+        "detected": 1,
+        "n": 2,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.0945,
+          0.9055
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 2,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.6576
+        ]
+      }
+    },
+    "fm_atan": {
+      "n_mutants": 1,
+      "block": "G,Lstar,Ole",
+      "covered": 1,
+      "set_n": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      },
+      "set_b": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      }
+    },
+    "fm_cbrt": {
+      "n_mutants": 82,
+      "block": "G,Lstar,Ole",
+      "covered": 76,
+      "set_n": {
+        "detected": 51,
+        "n": 82,
+        "rate": 0.622,
+        "wilson_95ci": [
+          0.5138,
+          0.7192
+        ]
+      },
+      "set_b": {
+        "detected": 5,
+        "n": 82,
+        "rate": 0.061,
+        "wilson_95ci": [
+          0.0263,
+          0.1349
+        ]
+      },
+      "set_m": {
+        "detected": 5,
+        "n": 82,
+        "rate": 0.061,
+        "wilson_95ci": [
+          0.0263,
+          0.1349
+        ]
+      }
+    },
+    "fm_ceil": {
+      "n_mutants": 9,
+      "block": "Tstar,Istar,Ole",
+      "covered": 8,
+      "set_n": {
+        "detected": 5,
+        "n": 9,
+        "rate": 0.5556,
+        "wilson_95ci": [
+          0.2667,
+          0.8112
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 9,
+        "rate": 0.4444,
+        "wilson_95ci": [
+          0.1888,
+          0.7333
+        ]
+      },
+      "set_m": {
+        "detected": 3,
+        "n": 9,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.1206,
+          0.6458
+        ]
+      }
+    },
+    "fm_copysign": {
+      "n_mutants": 6,
+      "block": "Lstar,Istar",
+      "covered": 6,
+      "set_n": {
+        "detected": 6,
+        "n": 6,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.6097,
+          1.0
+        ]
+      },
+      "set_b": {
+        "detected": 2,
+        "n": 6,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.0968,
+          0.7
+        ]
+      },
+      "set_m": {
+        "detected": 2,
+        "n": 6,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.0968,
+          0.7
+        ]
+      }
+    },
+    "fm_cos": {
+      "n_mutants": 20,
+      "block": "G,Lstar,Ole",
+      "covered": 16,
+      "set_n": {
+        "detected": 11,
+        "n": 20,
+        "rate": 0.55,
+        "wilson_95ci": [
+          0.3421,
+          0.7418
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 20,
+        "rate": 0.2,
+        "wilson_95ci": [
+          0.0807,
+          0.416
+        ]
+      },
+      "set_m": {
+        "detected": 10,
+        "n": 20,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.2993,
+          0.7007
+        ]
+      }
+    },
+    "fm_cosh": {
+      "n_mutants": 67,
+      "block": "G,Lstar,Ole",
+      "covered": 48,
+      "set_n": {
+        "detected": 12,
+        "n": 67,
+        "rate": 0.1791,
+        "wilson_95ci": [
+          0.1055,
+          0.2875
+        ]
+      },
+      "set_b": {
+        "detected": 10,
+        "n": 67,
+        "rate": 0.1493,
+        "wilson_95ci": [
+          0.0831,
+          0.2534
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 67,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.0542
+        ]
+      }
+    },
+    "fm_exp": {
+      "n_mutants": 1,
+      "block": "Lstar,Ole",
+      "covered": 1,
+      "set_n": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_b": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      }
+    },
+    "fm_expm1": {
+      "n_mutants": 1,
+      "block": "Lstar,Ole",
+      "covered": 1,
+      "set_n": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_b": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      },
+      "set_m": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      }
+    },
+    "fm_floor": {
+      "n_mutants": 15,
+      "block": "Tstar,Istar,Ole",
+      "covered": 13,
+      "set_n": {
+        "detected": 5,
+        "n": 15,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.1518,
+          0.5829
+        ]
+      },
+      "set_b": {
+        "detected": 5,
+        "n": 15,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.1518,
+          0.5829
+        ]
+      },
+      "set_m": {
+        "detected": 5,
+        "n": 15,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.1518,
+          0.5829
+        ]
+      }
+    },
+    "fm_hypot": {
+      "n_mutants": 22,
+      "block": "G,Lstar,Istar",
+      "covered": 20,
+      "set_n": {
+        "detected": 13,
+        "n": 22,
+        "rate": 0.5909,
+        "wilson_95ci": [
+          0.3873,
+          0.7674
+        ]
+      },
+      "set_b": {
+        "detected": 11,
+        "n": 22,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.3072,
+          0.6928
+        ]
+      },
+      "set_m": {
+        "detected": 11,
+        "n": 22,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.3072,
+          0.6928
+        ]
+      }
+    },
+    "fm_log": {
+      "n_mutants": 1,
+      "block": "Lstar,Ole",
+      "covered": 1,
+      "set_n": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      },
+      "set_b": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      }
+    },
+    "fm_log10": {
+      "n_mutants": 15,
+      "block": "Lstar,Ole",
+      "covered": 14,
+      "set_n": {
+        "detected": 11,
+        "n": 15,
+        "rate": 0.7333,
+        "wilson_95ci": [
+          0.4805,
+          0.891
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 15,
+        "rate": 0.2667,
+        "wilson_95ci": [
+          0.109,
+          0.5195
+        ]
+      },
+      "set_m": {
+        "detected": 9,
+        "n": 15,
+        "rate": 0.6,
+        "wilson_95ci": [
+          0.3575,
+          0.8018
+        ]
+      }
+    },
+    "fm_log1p": {
+      "n_mutants": 27,
+      "block": "Lstar,Ole",
+      "covered": 24,
+      "set_n": {
+        "detected": 9,
+        "n": 27,
+        "rate": 0.3333,
+        "wilson_95ci": [
+          0.1864,
+          0.5218
+        ]
+      },
+      "set_b": {
+        "detected": 2,
+        "n": 27,
+        "rate": 0.0741,
+        "wilson_95ci": [
+          0.0206,
+          0.2337
+        ]
+      },
+      "set_m": {
+        "detected": 8,
+        "n": 27,
+        "rate": 0.2963,
+        "wilson_95ci": [
+          0.1585,
+          0.4848
+        ]
+      }
+    },
+    "fm_max_d": {
+      "n_mutants": 11,
+      "block": "G,Tstar,Istar",
+      "covered": 9,
+      "set_n": {
+        "detected": 5,
+        "n": 11,
+        "rate": 0.4545,
+        "wilson_95ci": [
+          0.2127,
+          0.7199
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 11,
+        "rate": 0.3636,
+        "wilson_95ci": [
+          0.1517,
+          0.6462
+        ]
+      },
+      "set_m": {
+        "detected": 5,
+        "n": 11,
+        "rate": 0.4545,
+        "wilson_95ci": [
+          0.2127,
+          0.7199
+        ]
+      }
+    },
+    "fm_min_d": {
+      "n_mutants": 11,
+      "block": "G,Tstar,Istar",
+      "covered": 9,
+      "set_n": {
+        "detected": 5,
+        "n": 11,
+        "rate": 0.4545,
+        "wilson_95ci": [
+          0.2127,
+          0.7199
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 11,
+        "rate": 0.3636,
+        "wilson_95ci": [
+          0.1517,
+          0.6462
+        ]
+      },
+      "set_m": {
+        "detected": 5,
+        "n": 11,
+        "rate": 0.4545,
+        "wilson_95ci": [
+          0.2127,
+          0.7199
+        ]
+      }
+    },
+    "fm_pow_di": {
+      "n_mutants": 1,
+      "block": "Lstar,Istar",
+      "covered": 1,
+      "set_n": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_b": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      }
+    },
+    "fm_scalb": {
+      "n_mutants": 72,
+      "block": "Lstar,Istar",
+      "covered": 8,
+      "set_n": {
+        "detected": 4,
+        "n": 72,
+        "rate": 0.0556,
+        "wilson_95ci": [
+          0.0218,
+          0.1343
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 72,
+        "rate": 0.0556,
+        "wilson_95ci": [
+          0.0218,
+          0.1343
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 72,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.0507
+        ]
+      }
+    },
+    "fm_signum_d": {
+      "n_mutants": 5,
+      "block": "G,Lstar",
+      "covered": 5,
+      "set_n": {
+        "detected": 2,
+        "n": 5,
+        "rate": 0.4,
+        "wilson_95ci": [
+          0.1176,
+          0.7693
+        ]
+      },
+      "set_b": {
+        "detected": 2,
+        "n": 5,
+        "rate": 0.4,
+        "wilson_95ci": [
+          0.1176,
+          0.7693
+        ]
+      },
+      "set_m": {
+        "detected": 2,
+        "n": 5,
+        "rate": 0.4,
+        "wilson_95ci": [
+          0.1176,
+          0.7693
+        ]
+      }
+    },
+    "fm_sin": {
+      "n_mutants": 26,
+      "block": "G,Lstar,Ole",
+      "covered": 22,
+      "set_n": {
+        "detected": 13,
+        "n": 26,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.3206,
+          0.6794
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 26,
+        "rate": 0.1538,
+        "wilson_95ci": [
+          0.0615,
+          0.3353
+        ]
+      },
+      "set_m": {
+        "detected": 13,
+        "n": 26,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.3206,
+          0.6794
+        ]
+      }
+    },
+    "fm_sinh": {
+      "n_mutants": 123,
+      "block": "G,Lstar,Ole",
+      "covered": 104,
+      "set_n": {
+        "detected": 19,
+        "n": 123,
+        "rate": 0.1545,
+        "wilson_95ci": [
+          0.1012,
+          0.2287
+        ]
+      },
+      "set_b": {
+        "detected": 4,
+        "n": 123,
+        "rate": 0.0325,
+        "wilson_95ci": [
+          0.0127,
+          0.0806
+        ]
+      },
+      "set_m": {
+        "detected": 4,
+        "n": 123,
+        "rate": 0.0325,
+        "wilson_95ci": [
+          0.0127,
+          0.0806
+        ]
+      }
+    },
+    "fm_sqrt": {
+      "n_mutants": 1,
+      "block": "Lstar,Ole",
+      "covered": 1,
+      "set_n": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_b": {
+        "detected": 1,
+        "n": 1,
+        "rate": 1.0,
+        "wilson_95ci": [
+          0.2065,
+          1.0
+        ]
+      },
+      "set_m": {
+        "detected": 0,
+        "n": 1,
+        "rate": 0.0,
+        "wilson_95ci": [
+          0.0,
+          0.7935
+        ]
+      }
+    },
+    "fm_tan": {
+      "n_mutants": 37,
+      "block": "G,Lstar,Ole",
+      "covered": 34,
+      "set_n": {
+        "detected": 14,
+        "n": 37,
+        "rate": 0.3784,
+        "wilson_95ci": [
+          0.2406,
+          0.539
+        ]
+      },
+      "set_b": {
+        "detected": 5,
+        "n": 37,
+        "rate": 0.1351,
+        "wilson_95ci": [
+          0.0591,
+          0.2798
+        ]
+      },
+      "set_m": {
+        "detected": 5,
+        "n": 37,
+        "rate": 0.1351,
+        "wilson_95ci": [
+          0.0591,
+          0.2798
+        ]
+      }
+    },
+    "fm_tanh": {
+      "n_mutants": 109,
+      "block": "G,Lstar,Ole",
+      "covered": 106,
+      "set_n": {
+        "detected": 27,
+        "n": 109,
+        "rate": 0.2477,
+        "wilson_95ci": [
+          0.1762,
+          0.3364
+        ]
+      },
+      "set_b": {
+        "detected": 11,
+        "n": 109,
+        "rate": 0.1009,
+        "wilson_95ci": [
+          0.0573,
+          0.1717
+        ]
+      },
+      "set_m": {
+        "detected": 4,
+        "n": 109,
+        "rate": 0.0367,
+        "wilson_95ci": [
+          0.0144,
+          0.0906
+        ]
+      }
+    },
+    "fm_todegrees": {
+      "n_mutants": 12,
+      "block": "Lstar,Istar",
+      "covered": 12,
+      "set_n": {
+        "detected": 10,
+        "n": 12,
+        "rate": 0.8333,
+        "wilson_95ci": [
+          0.552,
+          0.953
+        ]
+      },
+      "set_b": {
+        "detected": 10,
+        "n": 12,
+        "rate": 0.8333,
+        "wilson_95ci": [
+          0.552,
+          0.953
+        ]
+      },
+      "set_m": {
+        "detected": 7,
+        "n": 12,
+        "rate": 0.5833,
+        "wilson_95ci": [
+          0.3195,
+          0.8067
+        ]
+      }
+    },
+    "fm_toradians": {
+      "n_mutants": 14,
+      "block": "Lstar,Istar",
+      "covered": 13,
+      "set_n": {
+        "detected": 10,
+        "n": 14,
+        "rate": 0.7143,
+        "wilson_95ci": [
+          0.4535,
+          0.8828
+        ]
+      },
+      "set_b": {
+        "detected": 10,
+        "n": 14,
+        "rate": 0.7143,
+        "wilson_95ci": [
+          0.4535,
+          0.8828
+        ]
+      },
+      "set_m": {
+        "detected": 7,
+        "n": 14,
+        "rate": 0.5,
+        "wilson_95ci": [
+          0.268,
+          0.732
+        ]
+      }
+    }
+  }
+}
