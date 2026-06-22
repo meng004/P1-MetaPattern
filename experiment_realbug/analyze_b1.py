@@ -141,7 +141,7 @@ def main():
 
     def ci(s): w = perset[s]["wilson"]; return f"[{w[0]:.3f}, {w[1]:.3f}]"
     L = []
-    L.append("# B1 Real-Bug Evaluation (e3nn / PyG) — Results\n")
+    L.append("# B1 Real-Bug Evaluation (paper SUT domains; 5 MetaPatterns / 10 MR families a-j) -- Results\n")
     L.append(f"Freeze hash: {a.freeze_hash}     Prereg integrity: {a.prereg_intact}")
     L.append(f"Run id: {a.runid}                Branch: claude/b1-realbug-{a.runid}")
     L.append("CPU-only confirmed: yes        GPU used: no        LLM/API calls: none\n")

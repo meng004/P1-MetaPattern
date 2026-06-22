@@ -1,38 +1,42 @@
 # B1 真缺陷 MT 实验 — 成果索引 (2026-06-22)
 
-> in-the-wild 真缺陷佐证 NOETHER 元模式 MR 检出能力。分支 `claude/b1-realbug-2026-06-21`。
+> in-the-wild 真缺陷佐证 MR 族检出能力。分支 `claude/b1-realbug-2026-06-21`。
 > 全部 git-history 取真 SHA + pip / conda released-to-released 或源码编译复现(pre FIRED / post HELD 自跑核验)。
+> 分类基准 = `UNIFIED_BLOCK_MODEL.md`:**5 元模式(最小代数基 $G,T^*,\mathcal T^*_{\mathrm{rev}},O_{\le},\mathcal L^*$)→ 10 MR 族(a–j)**。
 
 ## 文档导航
-- `COVERAGE_SUMMARY.md` — 论文 SUT 域覆盖矩阵 + 块覆盖 + 诚实稀缺结果 + 覆盖规律
+- `UNIFIED_BLOCK_MODEL.md` — 统一模型:元模式形式化 + 10 族增强表 + Mode I/M + 覆盖矩阵 + caveat(分类基准)
+- `COVERAGE_SUMMARY.md` — 论文 SUT 域覆盖矩阵 + 族覆盖 + 诚实稀缺结果 + 覆盖规律
 - `B1_exploration_plan_2026-06-21.md` — 探索计划 + 验收标准 + 重定向记录
 - `RESULTS.md` — analyze 输出(detection / Wilson CI)
 - `B1_INDEX.md`(本文件)— 成果索引 + 复现指南
 
-## A. 论文 SUT 域 in-scope 正样本(n=20,pip + conda + 源码编译核验;含 2 个 caveated:fht G 边际、forward-mode Hessian T\* reachability)
+## A. 论文 SUT 域 in-scope 正样本(n=20,pip + conda + 源码编译核验;含 2 个 caveated:fht a 边际、forward-mode Hessian c reachability)
 
-| bug_json | 域 | NOETHER 块 | fix SHA | pre→post | 复现脚本 |
+| bug_json | 域 | MR 族 (Mode) | fix SHA | pre→post | 复现脚本 |
 |---|---|---|---|---|---|
-| bug_scipy_lsoda_densesol.json | pde_numerical | L\* 收敛 | c374ca7fd | scipy 1.11.4→1.12.0 | results/scipy_repro/repro_lsoda_event.py |
-| bug_scipy_banded_jac.json | pde_numerical | 守恒/表示不变 | cb0538877 | scipy 1.15.3→1.16.3 | results/scipy_repro/repro_banded.py |
-| bug_scipy_eigh_driver.json | pde_numerical | T\* 自伴 | 178a12572 | scipy 1.13.0→1.13.1 | results/scipy_repro/repro_eigh.py |
-| bug_scipy_complexsym.json | pde_numerical | T\* 自伴/对称结构 | 50951d25c | scipy 1.18.0.dev0+git20260120.d292d32→1.18.0.dev0+git20260121.50951d2 (源码编译 meson) | results/scipy_repro/repro_complex_sym.py |
-| bug_scipy_akima_linear2pt.json | pde_numerical | O≤ 单调/线性 | ef7437afc | scipy 1.15.2→1.16.0 | results/scipy_repro/repro_akima_linear2pt.py |
-| bug_pyscf_smearing.json | quantum_chemistry | 守恒(Noether) | ebf4e676 | pyscf 2.6.2→2.7.0 | results/pyscf_repro/repro_smearing.py |
-| bug_pyscf_diis.json | quantum_chemistry | L\* 收敛 | 15920e60 | pyscf 2.2.0→2.2.1 (numpy<1.24+scipy<1.10+h5py<3.9) | results/pyscf_repro/repro_pyscf_diis.py |
-| bug_pyscf_d2h_symm.json | quantum_chemistry | G 对称(点群) | 4542fe9b | pyscf 2.12.1→2.13.0 | results/pyscf_repro/repro_pyscf_d2h_symm.py |
-| bug_openmc_normalize.json | reactor_physics | G 对称 | 3bf1486f4 | openmc 0.15.0→0.15.3 (conda) | results/openmc_repro/noether_reactor_normalize.py |
-| bug_openmc_no_reduce.json | reactor_physics | 守恒(MPI no_reduce) | bd76fc056 | openmc 0.15.2→0.15.3 (conda+MPI) | results/openmc_repro/noether_reactor_no_reduce.py |
-| bug_openmc_rotperiodic.json | reactor_physics | G 对称(旋转周期) | c7d7fa461 | openmc 0.15.4-dev30→0.15.4-dev31 (源码编译,parent 818fd11b1) | results/openmc_repro/repro_rotational_periodic.py |
-| bug_openmc_ifp_adjoint.json | reactor_physics | T\* 自伴/伴随对偶 | 767db7e6a | openmc 66e7d863→767db7e6a (源码编译,parent 66e7d863) | results/openmc_repro/repro_ifp_adjoint.py |
-| bug_deepxde_neumann.json | pde_sciml (第三方) | 守恒/flux | 4bac5eb | deepxde 1.3.0→1.3.1 (pip) | results/deepxde_repro/repro_deepxde_neumann.py |
-| bug_deepxde_periodic.json | pde_sciml (第三方) | G 对称(周期/平移) | 8353540 | deepxde 0.8.6→0.9.0 (pip) | results/deepxde_repro/repro_deepxde_periodic.py |
-| bug_deepxde_resample.json | pde_sciml (第三方) | L\* 收敛 | 4adcde7 | deepxde 0.5.0→0.5.1 (pip) | results/deepxde_repro/repro_deepxde_resample.py |
-| bug_openmc_cram_clip.json | reactor_physics | O≤ 正性(数密度非负) | 1f7ac4215 | openmc a1df5842e→1f7ac4215 (源码编译,纯 Python depletion) | results/openmc_repro/repro_cram_clip.py |
-| bug_scipy_fht_hermitian.json | pde_numerical | G 对称(**边际**) | 170f9e69a | scipy 1.14.1→1.15.0 (pip) | results/scipy_repro/repro_fht_hermitian.py |
-| bug_openmc_keff_trigger.json | reactor_physics | L\* 收敛 | b54de4d76 | openmc 0.15.0→0.15.3 (conda) | results/openmc_repro/repro_keff_trigger_convergence.py |
-| bug_deepxde_boundary_float32.json | pde_sciml (第三方) | O≤ 边界/单调 | 8a644fe | deepxde 1.8.4→1.9.0 (pip) | results/deepxde_repro/repro_deepxde_boundary_float32.py |
-| bug_deepxde_forward_hessian_symmetry.json | pde_sciml (第三方) | T\* 自伴(**△ reachability**) | 46e2c2e | deepxde 9d9d0b0→46e2c2e (源码编译 worktree) | results/deepxde_repro/repro_deepxde_forward_hessian_symmetry.py |
+| bug_scipy_lsoda_densesol.json | pde_numerical | h L\*·conv (I) | c374ca7fd | scipy 1.11.4→1.12.0 | results/scipy_repro/repro_lsoda_event.py |
+| bug_scipy_banded_jac.json | pde_numerical | **j L\*·rep (M)** | cb0538877 | scipy 1.15.3→1.16.3 | results/scipy_repro/repro_banded.py |
+| bug_scipy_eigh_driver.json | pde_numerical | c T\*·sa (M) | 178a12572 | scipy 1.13.0→1.13.1 | results/scipy_repro/repro_eigh.py |
+| bug_scipy_complexsym.json | pde_numerical | c T\*·sa (M) | 50951d25c | scipy 1.18.0.dev0+git20260120.d292d32→1.18.0.dev0+git20260121.50951d2 (源码编译 meson) | results/scipy_repro/repro_complex_sym.py |
+| bug_scipy_akima_linear2pt.json | pde_numerical | f O≤·stat (I) | ef7437afc | scipy 1.15.2→1.16.0 | results/scipy_repro/repro_akima_linear2pt.py |
+| bug_pyscf_smearing.json | quantum_chemistry | b G·cons (I) | ebf4e676 | pyscf 2.6.2→2.7.0 | results/pyscf_repro/repro_smearing.py |
+| bug_pyscf_diis.json | quantum_chemistry | h L\*·conv (I) | 15920e60 | pyscf 2.2.0→2.2.1 (numpy<1.24+scipy<1.10+h5py<3.9) | results/pyscf_repro/repro_pyscf_diis.py |
+| bug_pyscf_d2h_symm.json | quantum_chemistry | a G·eqv (I,点群) | 4542fe9b | pyscf 2.12.1→2.13.0 | results/pyscf_repro/repro_pyscf_d2h_symm.py |
+| bug_openmc_normalize.json | reactor_physics | a G·eqv (I) | 3bf1486f4 | openmc 0.15.0→0.15.3 (conda) | results/openmc_repro/noether_reactor_normalize.py |
+| bug_openmc_no_reduce.json | reactor_physics | **j L\*·rep (M,MPI)** | bd76fc056 | openmc 0.15.2→0.15.3 (conda+MPI) | results/openmc_repro/noether_reactor_no_reduce.py |
+| bug_openmc_rotperiodic.json | reactor_physics | a G·eqv (I,旋转周期) | c7d7fa461 | openmc 0.15.4-dev30→0.15.4-dev31 (源码编译,parent 818fd11b1) | results/openmc_repro/repro_rotational_periodic.py |
+| bug_openmc_ifp_adjoint.json | reactor_physics | d T\*·dual (M) | 767db7e6a | openmc 66e7d863→767db7e6a (源码编译,parent 66e7d863) | results/openmc_repro/repro_ifp_adjoint.py |
+| bug_deepxde_neumann.json | pde_sciml (第三方) | b G·cons (I,flux) | 4bac5eb | deepxde 1.3.0→1.3.1 (pip) | results/deepxde_repro/repro_deepxde_neumann.py |
+| bug_deepxde_periodic.json | pde_sciml (第三方) | a G·eqv (I,周期/平移) | 8353540 | deepxde 0.8.6→0.9.0 (pip) | results/deepxde_repro/repro_deepxde_periodic.py |
+| bug_deepxde_resample.json | pde_sciml (第三方) | h L\*·conv (I) | 4adcde7 | deepxde 0.5.0→0.5.1 (pip) | results/deepxde_repro/repro_deepxde_resample.py |
+| bug_openmc_cram_clip.json | reactor_physics | f O≤·stat (I,正性) | 1f7ac4215 | openmc a1df5842e→1f7ac4215 (源码编译,纯 Python depletion) | results/openmc_repro/repro_cram_clip.py |
+| bug_scipy_fht_hermitian.json | pde_numerical | a G·eqv (I,**边际**) | 170f9e69a | scipy 1.14.1→1.15.0 (pip) | results/scipy_repro/repro_fht_hermitian.py |
+| bug_openmc_keff_trigger.json | reactor_physics | h L\*·conv (I) | b54de4d76 | openmc 0.15.0→0.15.3 (conda) | results/openmc_repro/repro_keff_trigger_convergence.py |
+| bug_deepxde_boundary_float32.json | pde_sciml (第三方) | f O≤·stat (I,边界) | 8a644fe | deepxde 1.8.4→1.9.0 (pip) | results/deepxde_repro/repro_deepxde_boundary_float32.py |
+| bug_deepxde_forward_hessian_symmetry.json | pde_sciml (第三方) | c T\*·sa (I,**△ reachability**) | 46e2c2e | deepxde 9d9d0b0→46e2c2e (源码编译 worktree) | results/deepxde_repro/repro_deepxde_forward_hessian_symmetry.py |
+
+**族分布**:a×5(normalize,rotperiodic,periodic,d2h,fht△)、b×2(smearing,neumann)、c×3(eigh,complexsym,forward-hessian△)、d×1(ifp)、f×3(akima,cram,boundary)、h×4(lsoda,diis,resample,keff)、j×2(banded,no_reduce)。e(Trev)全负、g(𝒟\*)与 i(ℰ\*)为 gap。
 
 **复现命令**(以 pyscf_smearing 为例):
 ```bash
@@ -45,18 +49,18 @@ python results/pyscf_repro/repro_smearing.py
 
 ## B. 跨域补充(geometric DL,非论文 SUT 域,domain 字段隔离)
 
-| bug_json | 库 | NOETHER 块 | 环境栈 |
+| bug_json | 库 | MR 族 | 环境栈 |
 |---|---|---|---|
-| bug_pyg_6199.json | pytorch_geometric | Sₙ 置换 (m^eq_inv) | env-class-B: py3.10+torch1.13+pyg2.2 |
-| bug_e3nn_reduce.json | e3nn | adjoint 反对称 (m^eq_adj) | env-class-C: py3.9+torch1.8.1+e3nn0.2.7 |
-| bug_pyg_undirected.json | pytorch_geometric | adjoint 对称化 | env-class-B |
+| bug_pyg_6199.json | pytorch_geometric | a G·eqv (Sₙ 置换) | env-class-B: py3.10+torch1.13+pyg2.2 |
+| bug_e3nn_reduce.json | e3nn | c T\*·sa (adjoint 反对称) | env-class-C: py3.9+torch1.8.1+e3nn0.2.7 |
+| bug_pyg_undirected.json | pytorch_geometric | c T\*·sa (adjoint 对称化) | env-class-B |
 
 ## C. 边界 / out / 排除(诚实记录)
 
 | bug_json | 状态 | 原因 |
 |---|---|---|
-| bug_scipy_akima_overflow.json | 边界 | O≤ 映射勉强(overflow 鲁棒性,非单调性);极端输入 1e160 |
-| bug_pyg_6037.json | out-of-decomposition | 行和守恒,不映射元模式 |
+| bug_scipy_akima_overflow.json | 边界 | f O≤ 映射勉强(overflow 鲁棒性,非单调性);极端输入 1e160 |
+| bug_pyg_6037.json | out-of-decomposition | 行和守恒,不映射任何元模式 |
 
 ## D. 环境栈(env-class,单容器)
 
@@ -75,8 +79,9 @@ python results/pyscf_repro/repro_smearing.py
 
 ## E. 诚实标注(贯穿)
 
-- **FIRED 类型**:20 个 in-scope 中 6 个 crash-type(3 scipy + 2 DeepXDE + openmc keff_trigger fatal_error,follow-up 合法输入崩溃→违反 MR 关系)、11 个纯数值违反(scipy complexsym、scipy akima、scipy fht 边际、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize、openmc no_reduce、openmc ifp_adjoint beta_eff 687.4→498.7 pcm、openmc cram_clip min N=−5.8e-2、DeepXDE boundary_float32 漏判、DeepXDE forward-mode Hessian J-col 6.185)、2 个收敛/自洽(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样)、1 个 transport 失败(openmc rotperiodic 丢粒子)。
-- **稀缺块**:**Trev\* 全四域结构性稀缺**(scipy 无 symplectic 积分器、openmc 无可逆动力学基底、pyscf rt-TDDFT 已 v2.0.0 移出主仓 + BOMD velocity-Verlet 构造可逆、DeepXDE 无时间步进积分器;见 `NEGATIVE_{openmc,pyscf,deepxde}_trev.md`);scipy G 由 fht(170f9e69a/gh-21661, 1.14.1→1.15.0)**边际**填补(scipy 自带 test_gh_21661,信号 edge-dominated 7.2e16 量级,干净候选仍稀缺);scipy O≤ 已由 Akima 两点线性(ef7437afc)升级为 in-the-wild;pyscf T\* Fock-Hermitian 构造保证(需 int-DM 边界)、pyscf O≤ 占据/密度/变分界构造保证(负结果,git 考古 8 候选全排除,见 `results/NEGATIVE_pyscf_o_le.md`);DeepXDE T\* 由 forward-mode Hessian(46e2c2e)填补但 **△ reachability**(非 public 默认路径)。
+- **FIRED 类型**:20 个 in-scope 中 6 个 crash-type(3 scipy lsoda/banded/eigh + 2 DeepXDE neumann/periodic + openmc keff_trigger fatal_error,follow-up 合法输入崩溃→违反 MR 关系)、11 个纯数值违反(scipy complexsym、scipy akima、scipy fht 边际、pyscf smearing 14 vs 13、pyscf D2h orbsym 1/6 对、openmc normalize、openmc no_reduce、openmc ifp_adjoint beta_eff 687.4→498.7 pcm、openmc cram_clip min N=−5.8e-2、DeepXDE boundary_float32 漏判、DeepXDE forward-mode Hessian J-col 6.185)、2 个收敛/自洽(pyscf DIIS 0/5→5/5、DeepXDE resample 5→0 重采样)、1 个 transport 失败(openmc rotperiodic 丢粒子)。
+- **稀缺元模式 / 族**:**$\mathcal T^*_{\mathrm{rev}}$(e Trev·rec)全四域结构性稀缺**(scipy 无 symplectic 积分器、openmc 无可逆动力学基底、pyscf rt-TDDFT 已 v2.0.0 移出主仓 + BOMD velocity-Verlet 构造可逆、DeepXDE 无时间步进积分器;见 `NEGATIVE_{openmc,pyscf,deepxde}_trev.md`);scipy a G·eqv 由 fht(170f9e69a/gh-21661)**边际**填补(scipy 自带 test_gh_21661,信号 edge-dominated 7.2e16 量级,干净候选仍稀缺);scipy f O≤·stat 已由 Akima 两点线性(ef7437afc)升级为 in-the-wild;pyscf c T\*·sa Fock-Hermitian 构造保证(需 int-DM 边界)、pyscf f O≤·stat 占据/密度/变分界构造保证(负结果,git 考古 8 候选全排除,见 `results/NEGATIVE_pyscf_o_le.md`);DeepXDE c T\*·sa 由 forward-mode Hessian(46e2c2e)填补但 **△ reachability**(非 public 默认路径)。
+- **实证 gap**:g(𝒟\* 形状/Sturm 振荡 overshoot)、i(ℰ\* 精度-阶退化)两族 B1 未测——须补真实缺陷或显式标注。
 - **不可达(已解决)**:OpenMC/OpenMOC 无 PyPI(需 conda+核数据,Tier-C);unreleased fix(openmc rotperiodic、scipy complexsym)经源码编译 pre/post 闭合。
-- **样本量**:n=20 论文 SUT 域(含 2 个 caveated:fht G 边际、forward-mode Hessian T\* reachability),underpowered for α=0.05(C6),descriptive 证据。
-- **覆盖规律**:NOETHER 真实 bug 数值算法库(scipy)富集,构造保证物理库(pyscf/e3nn)稀缺,守恒/计数不变量有真实数值 bug。
+- **样本量**:n=20 论文 SUT 域(含 2 个 caveated:fht a 边际、forward-mode Hessian c reachability),underpowered for α=0.05(C6),descriptive 证据。
+- **覆盖规律**:真实 bug 在数值算法库(scipy)富集,在构造保证物理库(pyscf 的 c/f、各域 Trev\*)稀缺;b G·cons 守恒/计数不变量有真实数值 bug。
