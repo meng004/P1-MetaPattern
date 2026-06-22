@@ -1,0 +1,31 @@
+{
+  "id": "pyscf_smearing_nelec",
+  "repo": "pyscf/pyscf",
+  "domain": "paper SUT domain (quantum_chemistry: PySCF RHF SCF)",
+  "sut_family": "scf.addons.smearing (RHF Fermi smearing) -- paper RHF SCF SUT",
+  "cat": "conservation (Noether: electron-number conservation)",
+  "fix_commit": "ebf4e676",
+  "pre_version": "2.6.2",
+  "post_version": "2.7.0",
+  "tolerance": 0.0001,
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "trace(P@S) == N_elec and sum(mo_occ) == N_elec : converged RHF density must integrate to the true electron count",
+  "fired_type": "NUMERIC (sum(mo_occ)=14 vs N_elec=13 for odd-electron N2+, off by 1) -- TRUE conservation-law violation, NOT crash-type",
+  "verified": "SELF-RUN pip: pre 2.6.2 FIRED (sum(mo_occ)=14) / post 2.7.0 HELD (=13)",
+  "upstream": "gh-2290",
+  "note": "CORRECTS earlier PySCF negative result: clean vanilla-float64 RHF conservation bug (NO int DM needed), unlike Fock-Hermitian candidates (#1114/#1537) that need integer DM. quantum_chemistry DOES have a clean conservation in-scope; T* Fock-Hermitian is constructively guaranteed (scarce), but occupation/smearing conservation is a real numeric bug."
+}
