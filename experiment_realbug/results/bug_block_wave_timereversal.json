@@ -1,0 +1,26 @@
+{
+  "id": "block_wave_timereversal",
+  "repo": "scipy/scipy (solver) + controlled mutant",
+  "domain": "paper SUT domain (pde_numerical) -- block-densification, CONTROLLED MUTANT path",
+  "sut_family": "scipy.integrate.solve_ivp (real solver); mutant injected (inject damping)",
+  "cat": "Trev* (time-reversal symmetry)",
+  "path": "controlled-mutant (NOT in-the-wild)",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "undamped wave: forward-to-T then flip-velocity-integrate returns to initial state",
+  "fired_type": "numeric (baseline |u_back-u0|=4.5e-10 HELD ; mutant |u_back-u0|=0.407 FIRED)",
+  "verified": "SELF-RUN scipy 1.18.0: baseline HELD / mutant FIRED",
+  "note": "Block-densification: this NOETHER block's in-the-wild scipy bug is scarce; the prior MR is derived from the equation algebra and shown DETECTABLE via a controlled mutant on the real scipy solver. Honestly tagged CONTROLLED-MUTANT, distinct from the 7 in-the-wild positives."
+}
