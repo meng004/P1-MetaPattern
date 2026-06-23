@@ -23,8 +23,8 @@
 |---|---|
 | `RATER_GUIDE.md`（本文件） | 使用说明 |
 | `CODEBOOK.md` | **评分手册**：10 个族（按 5 元模式分组）的通俗解释、例子、识别线索、判定规则 |
-| `rating_sheet_TEMPLATE.xlsx` | **你的答题表（推荐）**：含可读公式 + `category` 列**下拉选择**，另存为 `rater_<名>.xlsx` 填写 |
-| `items_to_rate.csv` | **36 条待评 MR**（已化简为可读公式；与 xlsx 内容一致） |
+| `rating_sheet_TEMPLATE.xlsx` | **你的答题表（推荐）**：含 `program`（方法说明）+ 可读公式 + `category` 列**下拉选择**，另存为 `rater_<名>.xlsx` 填写 |
+| `items_to_rate.csv` | **36 条待评 MR**：含 `program`（该方法计算什么）+ 可读 JIR/JOR；与 xlsx 一致 |
 | `items_to_rate.pdf` | 同样 36 条，**公式排版更清晰**，便于阅读 |
 | `rating_sheet_TEMPLATE.csv` | 答题表的 CSV 备选（无 Excel 时用） |
 

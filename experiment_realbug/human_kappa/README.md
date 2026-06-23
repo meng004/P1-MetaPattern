@@ -34,7 +34,7 @@ definitions and examples are clear enough to apply.)
 | `RATER_GUIDE.md` | rater usage guide (purpose → calibrate → rate independently) |
 | `rating_sheet_TEMPLATE.xlsx` | **recommended** answer sheet: readable formulas + a `category` **dropdown** (a–j/orphan) |
 | `rating_sheet_TEMPLATE.csv` | CSV fallback answer sheet (no Excel) |
-| `items_to_rate.csv` | the 36 MRs in **readable** form (blind; no answer key) |
+| `items_to_rate.csv` | the 36 MRs: `program` (what the method computes) + **readable** JIR/JOR (blind; no answer key) |
 | `items_to_rate.pdf` | the 36 MRs as cleanly typeset LaTeX formulas |
 | `items_raw.csv` | the original raw Java predicates (traceability) |
 | `compute_kappa.py` | family + MetaPattern κ, 95% CI, per-category, disagreements, human-vs-author; reads `.xlsx` and `.csv` |
