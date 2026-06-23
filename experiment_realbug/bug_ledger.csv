@@ -1,0 +1,8 @@
+repo,issue_url,fix_commit,pre_fix_parent_commit,cat,cpu_repro_snippet_path,notes
+# TEMPLATE — DO NOT SHIP EMPTY. Populate by the frozen mechanical rule (prereg §3.4), then commit-freeze with the prereg in the SAME commit.
+# repo: e3nn/e3nn  OR  pyg-team/pytorch_geometric
+# cat:  one of cat-i / cat-ii / cat-iii / cat-iv  (per paper's defect categories)
+# cpu_repro_snippet_path: relative path under experiment_realbug/repro_snippets/<id>.py that reproduces the buggy behaviour on TINY tensors, no train, no full forward.
+# Each row MUST have non-empty {issue_url, fix_commit, pre_fix_parent_commit} or the cloud agent marks it BLOCKED and excludes it.
+# Example row format (THIS IS A FORMAT EXAMPLE, NOT A REAL VERIFIED BUG — replace with harvested+verified entries):
+# e3nn/e3nn,https://github.com/e3nn/e3nn/issues/NNN,<40-hex-fix-sha>,<40-hex-parent-sha>,cat-i,repro_snippets/bug_01.py,wrong-sign in tensor_product reproduced on 1x1 irreps

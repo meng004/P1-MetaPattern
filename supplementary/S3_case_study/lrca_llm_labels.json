@@ -1,0 +1,1531 @@
+{
+  "_meta": {
+    "schema_version": 1,
+    "n_mrs": 36,
+    "vendors": [
+      "deepseek",
+      "chatgpt",
+      "anthropic_opus"
+    ],
+    "dry_run": false,
+    "spec": "configs/sut_grid_spec.json"
+  },
+  "labels": [
+    {
+      "subject": "ComplexSignal?add?0",
+      "mr_name": "G_swap_negate",
+      "author_label": "G",
+      "jir": "((Math.abs(((double) i_this_real_f) - ((double) i_other_real_s)) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - ((double) i_other_imag_s)) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - ((double) i_this_real_s)) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - ((double) i_this_imag_s)) < 1.0E-4))",
+      "jor": "((Math.abs(((double) o_return_real_f) - ((double) o_return_real_s)) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - ((double) o_return_imag_s)) < 1.0E-4))",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "G",
+          "reasoning": "The JIR swaps the two ComplexSignal inputs between the first and second invocation, and the JOR requires the outputs to be identical, which is exactly a symmetry/commutativity relation of the form f(sigma(x)) = f(x).",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR swaps the two ComplexSignal inputs between the first and second invocation, and the JOR requires the outputs to be identical, which is exactly a symmetry/commutativity relation of the form f(sigma(x)) = f(x).\"\n}",
+          "usage": {
+            "input": 1611,
+            "output": 69
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "G",
+          "reasoning": "The JIR swaps the two operands (this\u2194other) between the first and second invocations, and the JOR asserts the outputs are equal, encoding the commutativity symmetry f(a,b)=f(b,a) which is a group/symmetry relation with sigma=swap and tau=identity.",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR swaps the two operands (this\u2194other) between the first and second invocations, and the JOR asserts the outputs are equal, encoding the commutativity symmetry f(a,b)=f(b,a) which is a group/symmetry relation with sigma=swap and tau=identity.\"}",
+          "usage": {
+            "input": 1898,
+            "output": 75
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "JIR swaps the two complex addends (this and other) between invocations, and JOR expects identical output, which is a symmetry f(sigma(x)) = f(x) with sigma a permutation and tau identity, matching the G block.",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"JIR swaps the two complex addends (this and other) between invocations, and JOR expects identical output, which is a symmetry f(sigma(x)) = f(x) with sigma a permutation and tau identity, matching the G block.\"\n}",
+          "usage": {
+            "input": 1618,
+            "output": 810
+          }
+        }
+      ]
+    },
+    {
+      "subject": "ComplexSignal?add?0",
+      "mr_name": "L_scale",
+      "author_label": "L_star",
+      "jir": "((Math.abs(((double) i_this_real_f) - (2.0 * ((double) i_this_real_s))) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - (2.0 * ((double) i_this_imag_s))) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - (2.0 * ((double) i_other_real_s))) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - (2.0 * ((double) i_other_imag_s))) < 1.0E-4))",
+      "jor": "((Math.abs(((double) o_return_real_f) - (2.0 * ((double) o_return_real_s))) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - (2.0 * ((double) o_return_imag_s))) < 1.0E-4))",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "L_star",
+          "reasoning": "The JIR constrains all inputs of the follow-up to be exactly 2\u00d7 the corresponding inputs of the source (k=2 scaling), and the JOR asserts the output components are also 2\u00d7 the source outputs, matching f(k*x) = k*f(x) (homogeneity of degree 1), which is the L_star canonical form.",
+          "raw_text": "{\"block\":\"L_star\",\"reasoning\":\"The JIR constrains all inputs of the follow-up to be exactly 2\u00d7 the corresponding inputs of the source (k=2 scaling), and the JOR asserts the output components are also 2\u00d7 the source outputs, matching f(k*x) = k*f(x) (homogeneity of degree 1), which is the L_star canonical form.\"}",
+          "usage": {
+            "input": 1931,
+            "output": 86
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "L_star",
+          "reasoning": "The JIR states that both complex inputs in the first run are scaled by a factor of 2 relative to the second run, and the JOR requires the returned complex sum to also scale by 2, which is exactly a positive-scaling linearity relation.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR states that both complex inputs in the first run are scaled by a factor of 2 relative to the second run, and the JOR requires the returned complex sum to also scale by 2, which is exactly a positive-scaling linearity relation.\"\n}",
+          "usage": {
+            "input": 1639,
+            "output": 73
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "The JIR scales each component of both source inputs by a factor of 2, and the JOR predicts the output components also scale by 2, which is a positive-scaling homogeneity property directly matching the L* block canonical form f(k * x) = k * f(x).",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales each component of both source inputs by a factor of 2, and the JOR predicts the output components also scale by 2, which is a positive-scaling homogeneity property directly matching the L* block canonical form f(k * x) = k * f(x).\"\n}",
+          "usage": {
+            "input": 1645,
+            "output": 562
+          }
+        }
+      ]
+    },
+    {
+      "subject": "ComplexSignal?add?0",
+      "mr_name": "T_shift_re",
+      "author_label": "T_star",
+      "jir": "((Math.abs(((double) i_this_real_f) - (((double) i_this_real_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - ((double) i_this_imag_s)) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - ((double) i_other_real_s)) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - ((double) i_other_imag_s)) < 1.0E-4))",
+      "jor": "((Math.abs(((double) o_return_real_f) - (((double) o_return_real_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - ((double) o_return_imag_s)) < 1.0E-4))",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_star",
+          "reasoning": "The JIR shifts one input component (this.real) by a constant +1 while keeping all other components unchanged, and the JOR requires the result's real part to shift by the same +1 with imaginary part unchanged, matching an input/output translation relation.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR shifts one input component (this.real) by a constant +1 while keeping all other components unchanged, and the JOR requires the result's real part to shift by the same +1 with imaginary part unchanged, matching an input/output translation relation.\"\n}",
+          "usage": {
+            "input": 1622,
+            "output": 72
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_star",
+          "reasoning": "The JIR shifts the real part of 'this' by +1 while keeping all other inputs identical, and the JOR expects the output real part to shift by +1 with the imaginary part unchanged, matching the canonical translation form f(x + c) = f(x) + c.",
+          "raw_text": "{\"block\":\"T_star\",\"reasoning\":\"The JIR shifts the real part of 'this' by +1 while keeping all other inputs identical, and the JOR expects the output real part to shift by +1 with the imaginary part unchanged, matching the canonical translation form f(x + c) = f(x) + c.\"}",
+          "usage": {
+            "input": 1911,
+            "output": 71
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "T_star",
+          "reasoning": "The JIR adds a constant offset (+1.0) to the real part of the first input while keeping all other components unchanged, and the JOR predicts the same constant offset (+1.0) appears on the output real part, matching the translation form f(x + c) = f(x) + phi(c) with phi(c)=c.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR adds a constant offset (+1.0) to the real part of the first input while keeping all other components unchanged, and the JOR predicts the same constant offset (+1.0) appears on the output real part, matching the translation form f(x + c) = f(x) + phi(c) with phi(c)=c.\"\n}",
+          "usage": {
+            "input": 604,
+            "output": 448
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?clamp?0",
+      "mr_name": "G_negate_bound_swap",
+      "author_label": "G",
+      "jir": "(Math.abs(((double) i_lo_f) - (-((double) i_hi_s))) < 1.0E-4) && (Math.abs(((double) i_hi_f) - (-((double) i_lo_s))) < 1.0E-4) && (Math.abs(((double) i_x_f) - (-((double) i_x_s))) < 1.0E-4)",
+      "jor": "Math.abs(((double) o_return_f) - (-((double) o_return_s))) < 1.0E-4",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "G",
+          "reasoning": "The JIR negates all three inputs (lo_f = -hi_s, hi_f = -lo_s, x_f = -x_s) and the JOR asserts the output negates (o_return_f = -o_return_s), which is a sign-flip involution sigma with tau also being negation, matching f(sigma(x)) = tau(f(x)).",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR negates all three inputs (lo_f = -hi_s, hi_f = -lo_s, x_f = -x_s) and the JOR asserts the output negates (o_return_f = -o_return_s), which is a sign-flip involution sigma with tau also being negation, matching f(sigma(x)) = tau(f(x)).\"}",
+          "usage": {
+            "input": 1819,
+            "output": 98
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "G",
+          "reasoning": "The JIR applies a finite-order negation-plus-bound-swap symmetry to the inputs, (lo, hi, x) -> (-hi, -lo, -x), and the JOR requires the output to negate accordingly, which matches the group/symmetry form f(sigma(x)) = tau(f(x)).",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR applies a finite-order negation-plus-bound-swap symmetry to the inputs, (lo, hi, x) -> (-hi, -lo, -x), and the JOR requires the output to negate accordingly, which matches the group/symmetry form f(sigma(x)) = tau(f(x)).\"\n}",
+          "usage": {
+            "input": 1558,
+            "output": 84
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "The JIR applies a negation and swap to the inputs (sigma: lo\u2192-hi, hi\u2192-lo, x\u2192-x) and the JOR expects the negated output (tau: y\u2192-y), satisfying the canonical involution/symmetry form f(sigma(x)) = tau(f(x)).",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR applies a negation and swap to the inputs (sigma: lo\u2192-hi, hi\u2192-lo, x\u2192-x) and the JOR expects the negated output (tau: y\u2192-y), satisfying the canonical involution/symmetry form f(sigma(x)) = tau(f(x)).\"\n}",
+          "usage": {
+            "input": 537,
+            "output": 559
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?clamp?0",
+      "mr_name": "L_scale",
+      "author_label": "L_star",
+      "jir": "(Math.abs(i_lo_f - 2.0 * i_lo_s) < 1.0E-4) && (Math.abs(i_hi_f - 2.0 * i_hi_s) < 1.0E-4) && (Math.abs(i_x_f - 2.0 * i_x_s) < 1.0E-4)",
+      "jor": "(Math.abs(o_return_f - 2.0 * o_return_s) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "error": "InternalServerError: Error code: 503 - {'error': {'message': 'system cpu overloaded (current: 93.1%, threshold: 90%)', 'type': 'new_api_error', 'param': '', 'code': 'system_cpu_overloaded'}}",
+          "label": null,
+          "reasoning": "",
+          "raw_text": "",
+          "usage": {
+            "input": 0,
+            "output": 0
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "error": "InternalServerError: Error code: 503 - {'error': {'message': 'system cpu overloaded (current: 93.1%, threshold: 90%)', 'type': 'new_api_error', 'param': '', 'code': 'system_cpu_overloaded'}}",
+          "label": null,
+          "reasoning": "",
+          "raw_text": "",
+          "usage": {
+            "input": 0,
+            "output": 0
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "JIR scales all inputs by factor 2, JOR expects output scaled by 2, testing positive homogeneity degree 1 (f(k*x)=k*f(x)) characteristic of L_star.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"JIR scales all inputs by factor 2, JOR expects output scaled by 2, testing positive homogeneity degree 1 (f(k*x)=k*f(x)) characteristic of L_star.\"\n}",
+          "usage": {
+            "input": 521,
+            "output": 728
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?clamp?0",
+      "mr_name": "O_le_mono_in_x",
+      "author_label": "O_le",
+      "jir": "(Math.abs(i_lo_s - i_lo_f) < 1.0E-4) && (Math.abs(i_hi_s - i_hi_f) < 1.0E-4) && (i_x_s <= i_x_f)",
+      "jor": "o_return_s <= o_return_f",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "O_le",
+          "reasoning": "The JIR keeps lo and hi fixed while ordering only the input x as i_x_s <= i_x_f, and the JOR asserts the corresponding ordered outputs o_return_s <= o_return_f, which is exactly monotonicity in one argument.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR keeps lo and hi fixed while ordering only the input x as i_x_s <= i_x_f, and the JOR asserts the corresponding ordered outputs o_return_s <= o_return_f, which is exactly monotonicity in one argument.\"\n}",
+          "usage": {
+            "input": 1505,
+            "output": 70
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "O_le",
+          "reasoning": "The JIR holds lo and hi fixed while imposing x_s <= x_f, and the JOR asserts clamp(lo,hi,x_s) <= clamp(lo,hi,x_f), which is a monotonicity property of the SUT in the x argument.",
+          "raw_text": "{\"block\":\"O_le\",\"reasoning\":\"The JIR holds lo and hi fixed while imposing x_s <= x_f, and the JOR asserts clamp(lo,hi,x_s) <= clamp(lo,hi,x_f), which is a monotonicity property of the SUT in the x argument.\"}",
+          "usage": {
+            "input": 1762,
+            "output": 70
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "O_le",
+          "reasoning": "The MR asserts that if x_source <= x_followup with bounds approximately equal, then output_source <= output_followup, which is an order-respecting monotonicity on the x argument, fitting the O_le block.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The MR asserts that if x_source <= x_followup with bounds approximately equal, then output_source <= output_followup, which is an order-respecting monotonicity on the x argument, fitting the O_le block.\"\n}",
+          "usage": {
+            "input": 482,
+            "output": 550
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?clamp?0",
+      "mr_name": "T_shift",
+      "author_label": "T_star",
+      "jir": "((Math.abs(((double) i_lo_f) - (((double) i_lo_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_hi_f) - (((double) i_hi_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_x_f) - (((double) i_x_s) + 1.0)) < 1.0E-4))",
+      "jor": "(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_star",
+          "reasoning": "The JIR shifts all three inputs (lo, hi, and x) by the same additive constant +1, and the JOR requires the output to shift by +1 as well, matching the translation form f(x+c)=f(x)+c'.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR shifts all three inputs (lo, hi, and x) by the same additive constant +1, and the JOR requires the output to shift by +1 as well, matching the translation form f(x+c)=f(x)+c'.\"\n}",
+          "usage": {
+            "input": 1576,
+            "output": 72
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_star",
+          "reasoning": "The JIR shifts all three inputs (lo, hi, x) by a constant c=1.0 and the JOR asserts the output shifts by the same constant 1.0, matching the canonical translation form f(x+c)=f(x)+c.",
+          "raw_text": "{\"block\":\"T_star\",\"reasoning\":\"The JIR shifts all three inputs (lo, hi, x) by a constant c=1.0 and the JOR asserts the output shifts by the same constant 1.0, matching the canonical translation form f(x+c)=f(x)+c.\"}",
+          "usage": {
+            "input": 1840,
+            "output": 66
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "T_star",
+          "reasoning": "The JIR shifts all inputs (lo, hi, x) by +1.0, and the JOR asserts the output shifts by +1.0, matching the translation property f(x+c)=f(x)+c.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR shifts all inputs (lo, hi, x) by +1.0, and the JOR asserts the output shifts by +1.0, matching the translation property f(x+c)=f(x)+c.\"\n}",
+          "usage": {
+            "input": 554,
+            "output": 637
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?exactLog2?0",
+      "mr_name": "L_idem_at_one",
+      "author_label": "L_star",
+      "jir": "(i_n_f == (2 * i_n_s))",
+      "jor": "(o_return_f == (o_return_s + 1))",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_star",
+          "reasoning": "The JIR doubles the input (i_n_f = 2*i_n_s) and the JOR adds 1 to the output (o_return_f = o_return_s + 1), which matches the translation pattern for logarithms where multiplicative input change corresponds to an additive output shift.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR doubles the input (i_n_f = 2*i_n_s) and the JOR adds 1 to the output (o_return_f = o_return_s + 1), which matches the translation pattern for logarithms where multiplicative input change corresponds to an additive output shift.\"\n}",
+          "usage": {
+            "input": 1456,
+            "output": 79
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_star",
+          "reasoning": "The JIR doubles the input (i_n_f == 2 * i_n_s), which in log-space corresponds to an additive shift of +1, and the JOR confirms o_return_f == o_return_s + 1, matching the translation canonical form f(x + c) = f(x) + phi(c) where the additive shift on the exponent (input domain of log2) produces an additive shift on the output.",
+          "raw_text": "{\"block\":\"T_star\",\"reasoning\":\"The JIR doubles the input (i_n_f == 2 * i_n_s), which in log-space corresponds to an additive shift of +1, and the JOR confirms o_return_f == o_return_s + 1, matching the translation canonical form f(x + c) = f(x) + phi(c) where the additive shift on the exponent (input domain of log2) produces an additive shift on the output.\"}",
+          "usage": {
+            "input": 1704,
+            "output": 108
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "T_star",
+          "reasoning": "The MR encodes the log-doubling property: doubling the input (2*x) increments the output by 1 (f(x)+1), which corresponds to a translation in exponent space, as explicitly included in the T_star block definition.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The MR encodes the log-doubling property: doubling the input (2*x) increments the output by 1 (f(x)+1), which corresponds to a translation in exponent space, as explicitly included in the T_star block definition.\"\n}",
+          "usage": {
+            "input": 428,
+            "output": 1012
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?exactLog2?0",
+      "mr_name": "O_le_monotone",
+      "author_label": "O_le",
+      "jir": "i_n_s > 0 && (i_n_s & (i_n_s - 1)) == 0 && i_n_f > 0 && (i_n_f & (i_n_f - 1)) == 0 && i_n_s <= i_n_f",
+      "jor": "o_return_s <= o_return_f",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "O_le",
+          "reasoning": "The JIR orders two valid power-of-two inputs by i_n_s <= i_n_f, and the JOR requires the corresponding outputs to preserve that order via o_return_s <= o_return_f, which is exactly an order/monotonicity relation.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR orders two valid power-of-two inputs by i_n_s <= i_n_f, and the JOR requires the corresponding outputs to preserve that order via o_return_s <= o_return_f, which is exactly an order/monotonicity relation.\"\n}",
+          "usage": {
+            "input": 1497,
+            "output": 72
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "O_le",
+          "reasoning": "The JIR constrains two valid inputs such that i_n_s <= i_n_f (an order relation on inputs), and the JOR asserts o_return_s <= o_return_f (the corresponding order on outputs), which is exactly the monotonicity pattern x1 <= x2 -> f(x1) <= f(x2).",
+          "raw_text": "{\"block\":\"O_le\",\"reasoning\":\"The JIR constrains two valid inputs such that i_n_s <= i_n_f (an order relation on inputs), and the JOR asserts o_return_s <= o_return_f (the corresponding order on outputs), which is exactly the monotonicity pattern x1 <= x2 -> f(x1) <= f(x2).\"}",
+          "usage": {
+            "input": 1754,
+            "output": 86
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "O_le",
+          "reasoning": "The JIR enforces an order relation (i_n_s <= i_n_f) on positive powers of two, and the JOR checks the same order relation on the outputs (o_return_s <= o_return_f), matching the monotonicity structure of the O_le block.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR enforces an order relation (i_n_s <= i_n_f) on positive powers of two, and the JOR checks the same order relation on the outputs (o_return_s <= o_return_f), matching the monotonicity structure of the O_le block.\"\n}",
+          "usage": {
+            "input": 469,
+            "output": 404
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?exactLog2?0",
+      "mr_name": "T_double",
+      "author_label": "T_star",
+      "jir": "(Math.abs(((double) i_n_f) - (2.0 * ((double) i_n_s))) < 1.0E-4)",
+      "jor": "(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_star",
+          "reasoning": "The JIR doubles the input (i_n_f = 2 * i_n_s) and the JOR predicts an additive output shift by 1 (o_return_f = o_return_s + 1), which matches the translation-style law where multiplying the input by a fixed factor induces a constant additive change in the output.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR doubles the input (i_n_f = 2 * i_n_s) and the JOR predicts an additive output shift by 1 (o_return_f = o_return_s + 1), which matches the translation-style law where multiplying the input by a fixed factor induces a constant additive change in the output.\"\n}",
+          "usage": {
+            "input": 1493,
+            "output": 85
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_star",
+          "reasoning": "The JIR doubles the input (i_n_f = 2 * i_n_s), which for log2 is equivalent to adding 1 to the exponent, and the JOR confirms the output shifts by +1 (o_return_f = o_return_s + 1), matching the translation canonical form f(x + c) = f(x) + phi(c) when recast in the logarithmic domain.",
+          "raw_text": "{\"block\":\"T_star\",\"reasoning\":\"The JIR doubles the input (i_n_f = 2 * i_n_s), which for log2 is equivalent to adding 1 to the exponent, and the JOR confirms the output shifts by +1 (o_return_f = o_return_s + 1), matching the translation canonical form f(x + c) = f(x) + phi(c) when recast in the logarithmic domain.\"}",
+          "usage": {
+            "input": 1744,
+            "output": 101
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "T_star",
+          "reasoning": "The input relation scales the input by factor 2 (log-doubling), and the output relation adds 1, matching the T* block's log-doubling sub-case where multiplicative input change corresponds to additive output shift.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The input relation scales the input by factor 2 (log-doubling), and the output relation adds 1, matching the T* block's log-doubling sub-case where multiplicative input change corresponds to additive output shift.\"\n}",
+          "usage": {
+            "input": 466,
+            "output": 1481
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?gcdSig?0",
+      "mr_name": "G_swap_negate",
+      "author_label": "G",
+      "jir": "(i_a_f == i_b_s) && (i_b_f == i_a_s)",
+      "jor": "(o_return_f == o_return_s)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "G",
+          "reasoning": "The JIR swaps the two inputs between the first and second invocation, and the JOR requires the output to remain unchanged, which is exactly a symmetry/permutation relation of the form f(sigma(x)) = f(x).",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR swaps the two inputs between the first and second invocation, and the JOR requires the output to remain unchanged, which is exactly a symmetry/permutation relation of the form f(sigma(x)) = f(x).\"}",
+          "usage": {
+            "input": 1459,
+            "output": 58
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "G",
+          "reasoning": "The JIR swaps the two arguments (a_f becomes b_s and vice versa), which is a permutation (involution) on inputs, and the JOR asserts the output is unchanged, matching the canonical G-block form f(sigma(x)) = tau(f(x)) with tau = identity.",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR swaps the two arguments (a_f becomes b_s and vice versa), which is a permutation (involution) on inputs, and the JOR asserts the output is unchanged, matching the canonical G-block form f(sigma(x)) = tau(f(x)) with tau = identity.\"}",
+          "usage": {
+            "input": 1713,
+            "output": 75
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "The JIR encodes swapping the two input arguments (follow-up a = source b, follow-up b = source a) and the JOR asserts the outputs remain equal, which is the argument-swap symmetry f(sigma(x)) = f(x) with identity output transformation, directly fitting the G block.",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR encodes swapping the two input arguments (follow-up a = source b, follow-up b = source a) and the JOR asserts the outputs remain equal, which is the argument-swap symmetry f(sigma(x)) = f(x) with identity output transformation, directly fitting the G block.\"\n}",
+          "usage": {
+            "input": 432,
+            "output": 384
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?gcdSig?0",
+      "mr_name": "L_scale",
+      "author_label": "L_star",
+      "jir": "((long) i_a_f) == 2L * ((long) i_a_s) && ((long) i_b_f) == 2L * ((long) i_b_s)",
+      "jor": "((long) o_return_f) == 2L * ((long) o_return_s)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by a constant factor k=2 (i_a_f = 2*i_a_s, i_b_f = 2*i_b_s) and the JOR asserts the output scales by the same factor (o_return_f = 2*o_return_s), matching the homogeneity property f(k*x) = k*f(x) with degree 1, which is the canonical L* (linear/scale) structure.",
+          "raw_text": "{\"block\":\"L_star\",\"reasoning\":\"The JIR scales both inputs by a constant factor k=2 (i_a_f = 2*i_a_s, i_b_f = 2*i_b_s) and the JOR asserts the output scales by the same factor (o_return_f = 2*o_return_s), matching the homogeneity property f(k*x) = k*f(x) with degree 1, which is the canonical L* (linear/scale) structure.\"}",
+          "usage": {
+            "input": 1579,
+            "output": 100
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by the positive constant factor 2 and the JOR requires the output to scale by the same factor, matching the linear/scale homogeneity pattern f(kx) = phi(k)f(x).",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales both inputs by the positive constant factor 2 and the JOR requires the output to scale by the same factor, matching the linear/scale homogeneity pattern f(kx) = phi(k)f(x).\"\n}",
+          "usage": {
+            "input": 1489,
+            "output": 67
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by factor 2 and the JOR predicts the output scales by the same factor, fitting the form f(k*x) = phi(k)*f(x) with phi(k)=k, characteristic of linear/scale (L_star) properties.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales both inputs by factor 2 and the JOR predicts the output scales by the same factor, fitting the form f(k*x) = phi(k)*f(x) with phi(k)=k, characteristic of linear/scale (L_star) properties.\"\n}",
+          "usage": {
+            "input": 461,
+            "output": 621
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?hypotSig?0",
+      "mr_name": "G_swap_negate",
+      "author_label": "G",
+      "jir": "((Math.abs(((double) i_a_f) - ((double) i_b_s)) < 1.0E-4) && (Math.abs(((double) i_b_f) - ((double) i_a_s)) < 1.0E-4))",
+      "jor": "(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "G",
+          "reasoning": "The JIR swaps the two inputs (i_a_f \u2248 i_b_s and i_b_f \u2248 i_a_s), which is an argument permutation (sigma = swap), and the JOR asserts the outputs are equal (tau = identity), matching the group/symmetry canonical form f(sigma(x)) = tau(f(x)).",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR swaps the two inputs (i_a_f \u2248 i_b_s and i_b_f \u2248 i_a_s), which is an argument permutation (sigma = swap), and the JOR asserts the outputs are equal (tau = identity), matching the group/symmetry canonical form f(sigma(x)) = tau(f(x)).\"}",
+          "usage": {
+            "input": 1608,
+            "output": 76
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "G",
+          "reasoning": "The JIR swaps the two inputs between the first and second call (a_f\u2248b_s and b_f\u2248a_s), and the JOR expects the output to remain unchanged, which is exactly a symmetry/permutation relation of the form f(sigma(x)) = f(x).",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR swaps the two inputs between the first and second call (a_f\u2248b_s and b_f\u2248a_s), and the JOR expects the output to remain unchanged, which is exactly a symmetry/permutation relation of the form f(sigma(x)) = f(x).\"\n}",
+          "usage": {
+            "input": 1513,
+            "output": 77
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "The JIR encodes a swap of the two SUT arguments (a_f \u2248 b_s and b_f \u2248 a_s) and the JOR expects output equality, which is the classic symmetry f(swap(a,b)) = f(a,b) with tau = identity.",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR encodes a swap of the two SUT arguments (a_f \u2248 b_s and b_f \u2248 a_s) and the JOR expects output equality, which is the classic symmetry f(swap(a,b)) = f(a,b) with tau = identity.\"\n}",
+          "usage": {
+            "input": 487,
+            "output": 367
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?hypotSig?0",
+      "mr_name": "L_scale",
+      "author_label": "L_star",
+      "jir": "((Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4))",
+      "jor": "(Math.abs(((double) o_return_f) - (2.0 * ((double) o_return_s))) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by a factor of 2 (i_a_f = 2*i_a_s, i_b_f = 2*i_b_s) and the JOR asserts the output scales by the same factor 2 (o_return_f = 2*o_return_s), matching the canonical form f(k*x) = phi(k)*f(x) with k=2 and phi(k)=k (degree-1 homogeneity of the Euclidean norm).",
+          "raw_text": "{\"block\":\"L_star\",\"reasoning\":\"The JIR scales both inputs by a factor of 2 (i_a_f = 2*i_a_s, i_b_f = 2*i_b_s) and the JOR asserts the output scales by the same factor 2 (o_return_f = 2*o_return_s), matching the canonical form f(k*x) = phi(k)*f(x) with k=2 and phi(k)=k (degree-1 homogeneity of the Euclidean norm).\"}",
+          "usage": {
+            "input": 1622,
+            "output": 105
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by a positive constant factor 2 between the two executions, and the JOR asserts the output also scales by 2, matching the homogeneity form f(kx) = k f(x).",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales both inputs by a positive constant factor 2 between the two executions, and the JOR asserts the output also scales by 2, matching the homogeneity form f(kx) = k f(x).\"\n}",
+          "usage": {
+            "input": 1526,
+            "output": 66
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by a factor of 2, and the JOR asserts the output scales by the same factor, which is homogeneity of degree 1 and matches the L* canonical form f(k*x) = phi(k)*f(x) with phi(k) = k.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales both inputs by a factor of 2, and the JOR asserts the output scales by the same factor, which is homogeneity of degree 1 and matches the L* canonical form f(k*x) = phi(k)*f(x) with phi(k) = k.\"\n}",
+          "usage": {
+            "input": 499,
+            "output": 541
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?hypotSig?0",
+      "mr_name": "O_le_mono_in_abs",
+      "author_label": "O_le",
+      "jir": "(Math.abs(i_a_s) <= Math.abs(i_a_f)) && (Math.abs(i_b_s - i_b_f) < 1.0E-4)",
+      "jor": "o_return_s <= o_return_f",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "O_le",
+          "reasoning": "The JIR orders inputs by increasing |a| while holding b approximately fixed, and the JOR requires the output to be nondecreasing (o_return_s <= o_return_f), which is exactly a monotonicity relation.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR orders inputs by increasing |a| while holding b approximately fixed, and the JOR requires the output to be nondecreasing (o_return_s <= o_return_f), which is exactly a monotonicity relation.\"\n}",
+          "usage": {
+            "input": 1476,
+            "output": 66
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "O_le",
+          "reasoning": "The JIR establishes an order relation on inputs (|a_s| <= |a_f| with b held approximately constant) and the JOR asserts the corresponding monotone output inequality (o_return_s <= o_return_f), which is the canonical form of the O_le monotonicity block.",
+          "raw_text": "{\"block\":\"O_le\",\"reasoning\":\"The JIR establishes an order relation on inputs (|a_s| <= |a_f| with b held approximately constant) and the JOR asserts the corresponding monotone output inequality (o_return_s <= o_return_f), which is the canonical form of the O_le monotonicity block.\"}",
+          "usage": {
+            "input": 1738,
+            "output": 77
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "O_le",
+          "reasoning": "The JIR imposes a non-decreasing order on |a| while keeping b nearly constant, and the JOR asserts a corresponding non-decreasing order on the output, directly testing monotonicity.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR imposes a non-decreasing order on |a| while keeping b nearly constant, and the JOR asserts a corresponding non-decreasing order on the output, directly testing monotonicity.\"\n}",
+          "usage": {
+            "input": 449,
+            "output": 553
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?isSequence?0",
+      "mr_name": "B_rel_xor_reverse",
+      "author_label": "B_rel",
+      "jir": "Math.abs(i_a_f - i_c_s) < 1.0E-4 && Math.abs(i_b_f - i_b_s) < 1.0E-4 && Math.abs(i_c_f - i_a_s) < 1.0E-4",
+      "jor": "!(o_return_s && o_return_f)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_rev",
+          "reasoning": "The JIR reverses the input triple (a,b,c) to (c,b,a) and the JOR asserts that the original and reversed inputs cannot both satisfy the boolean predicate, matching the forward-backward exclusion canonical form f(rev(x)) \u2192 !(f(x) && f(rev(x))) for boolean SUTs.",
+          "raw_text": "{\"block\":\"T_rev\",\"reasoning\":\"The JIR reverses the input triple (a,b,c) to (c,b,a) and the JOR asserts that the original and reversed inputs cannot both satisfy the boolean predicate, matching the forward-backward exclusion canonical form f(rev(x)) \u2192 !(f(x) && f(rev(x))) for boolean SUTs.\"}",
+          "usage": {
+            "input": 1605,
+            "output": 77
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_rev",
+          "reasoning": "The JIR swaps the first and third inputs (a,b,c) -> (c,b,a), i.e. a reversal of the triple, and the JOR enforces forward-backward exclusion (!(f(rev(x)) && f(x))), which is the canonical boolean form of the reversal block.",
+          "raw_text": "{\n  \"block\": \"T_rev\",\n  \"reasoning\": \"The JIR swaps the first and third inputs (a,b,c) -> (c,b,a), i.e. a reversal of the triple, and the JOR enforces forward-backward exclusion (!(f(rev(x)) && f(x))), which is the canonical boolean form of the reversal block.\"\n}",
+          "usage": {
+            "input": 1510,
+            "output": 80
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "T_rev",
+          "reasoning": "The JIR implements an approximate input reversal (swapping a and c, keeping b) and the JOR asserts the boolean exclusion !(f(x) && f(rev(x))), which is the canonical T_rev form for boolean SUTs.",
+          "raw_text": "{\n  \"block\": \"T_rev\",\n  \"reasoning\": \"The JIR implements an approximate input reversal (swapping a and c, keeping b) and the JOR asserts the boolean exclusion !(f(x) && f(rev(x))), which is the canonical T_rev form for boolean SUTs.\"\n}",
+          "usage": {
+            "input": 484,
+            "output": 1246
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?isSequence?0",
+      "mr_name": "G_negate_reverse",
+      "author_label": "G",
+      "jir": "((Math.abs(((double) i_a_f) - (-((double) i_c_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (-((double) i_b_s))) < 1.0E-4) && (Math.abs(((double) i_c_f) - (-((double) i_a_s))) < 1.0E-4))",
+      "jor": "(o_return_f == o_return_s)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "G",
+          "reasoning": "The JIR applies a composed transformation \u03c3 = negate\u2218reverse to the input triple (a,b,c)\u2192(\u2212c,\u2212b,\u2212a), combining sign-flip and argument reversal (both involutions), and the JOR asserts the output is invariant (f(\u03c3(x))=f(x)), which is the canonical G-block symmetry form f(\u03c3(x))=\u03c4(f(x)) with \u03c4=identity.",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR applies a composed transformation \u03c3 = negate\u2218reverse to the input triple (a,b,c)\u2192(\u2212c,\u2212b,\u2212a), combining sign-flip and argument reversal (both involutions), and the JOR asserts the output is invariant (f(\u03c3(x))=f(x)), which is the canonical G-block symmetry form f(\u03c3(x))=\u03c4(f(x)) with \u03c4=identity.\"}",
+          "usage": {
+            "input": 1798,
+            "output": 105
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "G",
+          "reasoning": "The JIR maps (a,b,c) to (-c,-b,-a), a finite-order composition of reversal and sign-flip, and the JOR asserts output invariance o_return_f == o_return_s, which matches the symmetry form f(sigma(x)) = f(x).",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR maps (a,b,c) to (-c,-b,-a), a finite-order composition of reversal and sign-flip, and the JOR asserts output invariance o_return_f == o_return_s, which matches the symmetry form f(sigma(x)) = f(x).\"\n}",
+          "usage": {
+            "input": 1537,
+            "output": 78
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "The JIR encodes an input transformation (negation combined with reversal) forming an involution, and the JOR predicts output invariance (identity tau), matching the symmetry group form f(sigma(x)) = f(x) of the G block.",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR encodes an input transformation (negation combined with reversal) forming an involution, and the JOR predicts output invariance (identity tau), matching the symmetry group form f(sigma(x)) = f(x) of the G block.\"\n}",
+          "usage": {
+            "input": 512,
+            "output": 906
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?isSequence?0",
+      "mr_name": "L_scale_pos",
+      "author_label": "L_star",
+      "jir": "(Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4) && (Math.abs(((double) i_c_f) - (2.0 * ((double) i_c_s))) < 1.0E-4)",
+      "jor": "(o_return_f == o_return_s)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "L_star",
+          "reasoning": "The JIR scales each input coordinate by a positive constant factor of 2 between the two executions, and the JOR requires the boolean output to remain unchanged, matching the 0-degree scale-invariance form f(kx)=f(x) of L_star.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales each input coordinate by a positive constant factor of 2 between the two executions, and the JOR requires the boolean output to remain unchanged, matching the 0-degree scale-invariance form f(kx)=f(x) of L_star.\"\n}",
+          "usage": {
+            "input": 1547,
+            "output": 72
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "L_star",
+          "reasoning": "The JIR scales all three inputs by a positive factor k=2 (i_a_f \u2248 2*i_a_s, i_b_f \u2248 2*i_b_s, i_c_f \u2248 2*i_c_s) and the JOR asserts the boolean output is unchanged (o_return_f == o_return_s), which matches the 0-degree homogeneity sub-case f(k*x)=f(x) for k>0 in the L_star block.",
+          "raw_text": "{\"block\":\"L_star\",\"reasoning\":\"The JIR scales all three inputs by a positive factor k=2 (i_a_f \u2248 2*i_a_s, i_b_f \u2248 2*i_b_s, i_c_f \u2248 2*i_c_s) and the JOR asserts the boolean output is unchanged (o_return_f == o_return_s), which matches the 0-degree homogeneity sub-case f(k*x)=f(x) for k>0 in the L_star block.\"}",
+          "usage": {
+            "input": 1812,
+            "output": 126
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "The JIR scales all three inputs by a constant factor of 2, and the JOR expects the Boolean output to remain identical, which matches the L_star form f(k * x) = f(x) (scale-invariance, phi(k)=id for k>0).",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales all three inputs by a constant factor of 2, and the JOR expects the Boolean output to remain identical, which matches the L_star form f(k * x) = f(x) (scale-invariance, phi(k)=id for k>0).\"\n}",
+          "usage": {
+            "input": 521,
+            "output": 570
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?isSequence?0",
+      "mr_name": "O_le_transitivity",
+      "author_label": "O_le",
+      "jir": "(i_a_f <= i_a_s) && (i_b_s <= i_b_f) && (i_c_s <= i_c_f)",
+      "jor": "(!o_return_s) || o_return_f",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "O_le",
+          "reasoning": "The JIR makes the first input triple componentwise more favorable to satisfying a<b<c (a decreases or stays, b increases or stays, c increases or stays), and the JOR enforces monotonic implication from the second call to the first, which is an order/monotonicity property rather than a symmetry or pure boolean law.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR makes the first input triple componentwise more favorable to satisfying a<b<c (a decreases or stays, b increases or stays, c increases or stays), and the JOR enforces monotonic implication from the second call to the first, which is an order/monotonicity property rather than a symmetry or pure boolean law.\"\n}",
+          "usage": {
+            "input": 1481,
+            "output": 89
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "O_le",
+          "reasoning": "The JIR decreases a and increases b and c (moving inputs along monotone axes), and the JOR states that if the source returned true then the follow-up must also return true, encoding a monotonicity/order-preservation property of the boolean predicate with respect to the input ordering.",
+          "raw_text": "{\"block\":\"O_le\",\"reasoning\":\"The JIR decreases a and increases b and c (moving inputs along monotone axes), and the JOR states that if the source returned true then the follow-up must also return true, encoding a monotonicity/order-preservation property of the boolean predicate with respect to the input ordering.\"}",
+          "usage": {
+            "input": 1577,
+            "output": 72
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "O_le",
+          "reasoning": "The JIR defines a partial order on input triples (a_f <= a_s, b_s <= b_f, c_s <= c_f) and the JOR asserts monotonicity of the boolean output with respect to that order: if the source triple is a sequence (true), the follow-up must also be a sequence (true).",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR defines a partial order on input triples (a_f <= a_s, b_s <= b_f, c_s <= c_f) and the JOR asserts monotonicity of the boolean output with respect to that order: if the source triple is a sequence (true), the follow-up must also be a sequence (true).\"\n}",
+          "usage": {
+            "input": 454,
+            "output": 1770
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?isSequence?0",
+      "mr_name": "T_rev_exclusion",
+      "author_label": "T_rev",
+      "jir": "Math.abs(i_a_f - i_c_s) < 1.0E-4 && Math.abs(i_b_f - i_b_s) < 1.0E-4 && Math.abs(i_c_f - i_a_s) < 1.0E-4",
+      "jor": "!(o_return_s && o_return_f)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_rev",
+          "reasoning": "The JIR approximately reverses the input triple from (a,b,c) to (c,b,a), and the JOR asserts the characteristic reversal-exclusion for a boolean predicate: the sequence test cannot be true for both an ordering and its reverse.",
+          "raw_text": "{\"block\":\"T_rev\",\"reasoning\":\"The JIR approximately reverses the input triple from (a,b,c) to (c,b,a), and the JOR asserts the characteristic reversal-exclusion for a boolean predicate: the sequence test cannot be true for both an ordering and its reverse.\"}",
+          "usage": {
+            "input": 1509,
+            "output": 64
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_rev",
+          "reasoning": "The JIR reverses the input triple (a,b,c) to (c,b,a) and the JOR asserts that the boolean SUT cannot return true for both the original and reversed inputs, matching the T_rev forward-backward exclusion canonical form !(f(x) && f(rev(x))).",
+          "raw_text": "{\"block\":\"T_rev\",\"reasoning\":\"The JIR reverses the input triple (a,b,c) to (c,b,a) and the JOR asserts that the boolean SUT cannot return true for both the original and reversed inputs, matching the T_rev forward-backward exclusion canonical form !(f(x) && f(rev(x))).\"}",
+          "usage": {
+            "input": 1770,
+            "output": 78
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "T_rev",
+          "reasoning": "The JIR defines input reversal (a_f \u2248 c_s, c_f \u2248 a_s) and the JOR asserts mutual exclusion of true outputs (not both true), which exactly matches the T_rev forward-backward exclusion canonical form for a boolean SUT.",
+          "raw_text": "{\n  \"block\": \"T_rev\",\n  \"reasoning\": \"The JIR defines input reversal (a_f \u2248 c_s, c_f \u2248 a_s) and the JOR asserts mutual exclusion of true outputs (not both true), which exactly matches the T_rev forward-backward exclusion canonical form for a boolean SUT.\"\n}",
+          "usage": {
+            "input": 483,
+            "output": 754
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?isSequence?0",
+      "mr_name": "T_shift",
+      "author_label": "T_star",
+      "jir": "(Math.abs((i_a_f - i_a_s) - (i_b_f - i_b_s)) < 1.0E-4) && (Math.abs((i_b_f - i_b_s) - (i_c_f - i_c_s)) < 1.0E-4)",
+      "jor": "(o_return_f == o_return_s)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_star",
+          "reasoning": "The JIR enforces that all three inputs in the second test case are shifted by the same additive offset relative to the first, and the JOR asserts the boolean result is unchanged, matching translation invariance of the predicate under a common input shift.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR enforces that all three inputs in the second test case are shifted by the same additive offset relative to the first, and the JOR asserts the boolean result is unchanged, matching translation invariance of the predicate under a common input shift.\"\n}",
+          "usage": {
+            "input": 1511,
+            "output": 70
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_star",
+          "reasoning": "The JIR requires that all three inputs (a, b, c) are shifted by approximately the same constant offset (i_a_f - i_a_s \u2248 i_b_f - i_b_s \u2248 i_c_f - i_c_s), and the JOR asserts the boolean output is preserved, which is the canonical translation property f(x+c) = f(x) for an order-based predicate invariant under uniform translation.",
+          "raw_text": "{\"block\":\"T_star\",\"reasoning\":\"The JIR requires that all three inputs (a, b, c) are shifted by approximately the same constant offset (i_a_f - i_a_s \u2248 i_b_f - i_b_s \u2248 i_c_f - i_c_s), and the JOR asserts the boolean output is preserved, which is the canonical translation property f(x+c) = f(x) for an order-based predicate invariant under uniform translation.\"}",
+          "usage": {
+            "input": 1772,
+            "output": 112
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "T_star",
+          "reasoning": "The JIR requires that the two input triples differ by approximately the same constant shift (translation) on all components, and the JOR predicts equal boolean outputs, which is a translation invariance relation fitting T_star's canonical form f(x + c) = f(x) + phi(c) with phi(c) being identity.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR requires that the two input triples differ by approximately the same constant shift (translation) on all components, and the JOR predicts equal boolean outputs, which is a translation invariance relation fitting T_star's canonical form f(x + c) = f(x) + phi(c) with phi(c) being identity.\"\n}",
+          "usage": {
+            "input": 485,
+            "output": 817
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?lcmSig?0",
+      "mr_name": "G_swap_negate",
+      "author_label": "G",
+      "jir": "((i_a_f == i_b_s) && (i_b_f == i_a_s))",
+      "jor": "(o_return_f == o_return_s)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "G",
+          "reasoning": "The JIR swaps the two arguments (a_f becomes b_s and b_f becomes a_s) and the JOR asserts the output is unchanged, which is the classic argument-swap symmetry f(a,b)=f(b,a) fitting the G (group/symmetry) block with sigma=swap and tau=identity.",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR swaps the two arguments (a_f becomes b_s and b_f becomes a_s) and the JOR asserts the output is unchanged, which is the classic argument-swap symmetry f(a,b)=f(b,a) fitting the G (group/symmetry) block with sigma=swap and tau=identity.\"}",
+          "usage": {
+            "input": 1741,
+            "output": 82
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "G",
+          "reasoning": "The JIR swaps the two inputs between the first and second invocation, and the JOR requires the output to remain unchanged, which is exactly a symmetry/permutation relation of the form f(sigma(x)) = f(x).",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR swaps the two inputs between the first and second invocation, and the JOR requires the output to remain unchanged, which is exactly a symmetry/permutation relation of the form f(sigma(x)) = f(x).\"\n}",
+          "usage": {
+            "input": 1485,
+            "output": 65
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "The JIR swaps the two integer inputs (sigma: (a,b)->(b,a)) and the JOR predicts identical output (tau is identity), conforming exactly to the group block canonical form f(sigma(x)) = tau(f(x)).",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR swaps the two integer inputs (sigma: (a,b)->(b,a)) and the JOR predicts identical output (tau is identity), conforming exactly to the group block canonical form f(sigma(x)) = tau(f(x)).\"\n}",
+          "usage": {
+            "input": 460,
+            "output": 546
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?lcmSig?0",
+      "mr_name": "L_scale",
+      "author_label": "L_star",
+      "jir": "((i_a_f == 2 * i_a_s) && (i_b_f == 2 * i_b_s))",
+      "jor": "(o_return_f == 2 * o_return_s)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by a constant factor k=2 and the JOR asserts the output scales by the same factor 2, matching the homogeneity relation f(k*x) = phi(k)*f(x) with phi(2)=2, which is the canonical L_star (linear/scale) block.",
+          "raw_text": "{\"block\":\"L_star\",\"reasoning\":\"The JIR scales both inputs by a constant factor k=2 and the JOR asserts the output scales by the same factor 2, matching the homogeneity relation f(k*x) = phi(k)*f(x) with phi(2)=2, which is the canonical L_star (linear/scale) block.\"}",
+          "usage": {
+            "input": 1750,
+            "output": 79
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by the positive factor 2 and the JOR requires the output to scale by the same factor, matching the linear/scale homogeneity pattern f(kx) = phi(k)f(x).",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales both inputs by the positive factor 2 and the JOR requires the output to scale by the same factor, matching the linear/scale homogeneity pattern f(kx) = phi(k)f(x).\"\n}",
+          "usage": {
+            "input": 1492,
+            "output": 66
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "The JIR doubles both input arguments (multiplicative scaling by factor 2) and the JOR asserts the output doubles, which matches the linear scaling canonical form f(k*x) = phi(k)*f(x) with k=2 and phi(k)=k.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR doubles both input arguments (multiplicative scaling by factor 2) and the JOR asserts the output doubles, which matches the linear scaling canonical form f(k*x) = phi(k)*f(x) with k=2 and phi(k)=k.\"\n}",
+          "usage": {
+            "input": 466,
+            "output": 499
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?midpoint?0",
+      "mr_name": "G_swap_negate",
+      "author_label": "G",
+      "jir": "((Math.abs(((double) i_a_f) - ((double) i_b_s)) < 1.0E-4) && (Math.abs(((double) i_b_f) - ((double) i_a_s)) < 1.0E-4))",
+      "jor": "(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "error": "InternalServerError: Error code: 503 - {'error': {'message': 'system cpu overloaded (current: 92.3%, threshold: 90%)', 'type': 'new_api_error', 'param': '', 'code': 'system_cpu_overloaded'}}",
+          "label": null,
+          "reasoning": "",
+          "raw_text": "",
+          "usage": {
+            "input": 0,
+            "output": 0
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "error": "InternalServerError: Error code: 503 - {'error': {'message': 'system cpu overloaded (current: 92.3%, threshold: 90%)', 'type': 'new_api_error', 'param': '', 'code': 'system_cpu_overloaded'}}",
+          "label": null,
+          "reasoning": "",
+          "raw_text": "",
+          "usage": {
+            "input": 0,
+            "output": 0
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "The JIR encodes an argument swap (first call's a \u2248 second call's b and first call's b \u2248 second call's a) and the JOR requires approximate output equality (identity transform), matching the G block form f(sigma(x)) = tau(f(x)) with sigma = swap and tau = id.",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR encodes an argument swap (first call's a \u2248 second call's b and first call's b \u2248 second call's a) and the JOR requires approximate output equality (identity transform), matching the G block form f(sigma(x)) = tau(f(x)) with sigma = swap and tau = id.\"\n}",
+          "usage": {
+            "input": 486,
+            "output": 545
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?midpoint?0",
+      "mr_name": "L_scale",
+      "author_label": "L_star",
+      "jir": "((Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4))",
+      "jor": "(Math.abs(((double) o_return_f) - (2.0 * ((double) o_return_s))) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "L_star",
+          "reasoning": "The JIR relates follow-up inputs as scaled versions of source inputs (i_a_f \u2248 2*i_a_s, i_b_f \u2248 2*i_b_s) and the JOR asserts the output scales by the same factor (o_return_f \u2248 2*o_return_s), matching the canonical form f(k*x) = k*f(x) with k=2, i.e., degree-1 homogeneity.",
+          "raw_text": "{\"block\":\"L_star\",\"reasoning\":\"The JIR relates follow-up inputs as scaled versions of source inputs (i_a_f \u2248 2*i_a_s, i_b_f \u2248 2*i_b_s) and the JOR asserts the output scales by the same factor (o_return_f \u2248 2*o_return_s), matching the canonical form f(k*x) = k*f(x) with k=2, i.e., degree-1 homogeneity.\"}",
+          "usage": {
+            "input": 1614,
+            "output": 98
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by a positive factor of 2 between the two executions and the JOR requires the output midpoint to scale by the same factor, matching the linear/homogeneous form f(kx)=k f(x).",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales both inputs by a positive factor of 2 between the two executions and the JOR requires the output midpoint to scale by the same factor, matching the linear/homogeneous form f(kx)=k f(x).\"\n}",
+          "usage": {
+            "input": 1524,
+            "output": 68
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "The JIR scales both inputs by factor 2, and the JOR predicts the output scales by the same factor 2, which matches the linear/scale block L* canonical form f(k*x) = k*f(x).",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales both inputs by factor 2, and the JOR predicts the output scales by the same factor 2, which matches the linear/scale block L* canonical form f(k*x) = k*f(x).\"\n}",
+          "usage": {
+            "input": 498,
+            "output": 537
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?midpoint?0",
+      "mr_name": "O_le_mono_in_a",
+      "author_label": "O_le",
+      "jir": "i_a_s <= i_a_f && Math.abs(i_b_s - i_b_f) < 1.0E-4",
+      "jor": "o_return_s <= o_return_f",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "O_le",
+          "reasoning": "The JIR only enforces an order-preserving input perturbation (a increases, b stays approximately fixed) and the JOR checks that the midpoint output is ordered accordingly, which is a monotonicity relation.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR only enforces an order-preserving input perturbation (a increases, b stays approximately fixed) and the JOR checks that the midpoint output is ordered accordingly, which is a monotonicity relation.\"\n}",
+          "usage": {
+            "input": 1467,
+            "output": 63
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "O_le",
+          "reasoning": "The JIR establishes an ordering on input a (i_a_s <= i_a_f) while holding b approximately constant, and the JOR asserts the corresponding monotone ordering on outputs (o_return_s <= o_return_f), which is the canonical form of order/monotonicity.",
+          "raw_text": "{\"block\":\"O_le\",\"reasoning\":\"The JIR establishes an ordering on input a (i_a_s <= i_a_f) while holding b approximately constant, and the JOR asserts the corresponding monotone ordering on outputs (o_return_s <= o_return_f), which is the canonical form of order/monotonicity.\"}",
+          "usage": {
+            "input": 1719,
+            "output": 76
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "O_le",
+          "reasoning": "The JIR defines a partial order on input argument a (source <= follow-up) while b remains near-constant, and the JOR expects o_return_s <= o_return_f, which is a direct monotonicity check on the output with respect to argument a, fitting the O_le block.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR defines a partial order on input argument a (source <= follow-up) while b remains near-constant, and the JOR expects o_return_s <= o_return_f, which is a direct monotonicity check on the output with respect to argument a, fitting the O_le block.\"\n}",
+          "usage": {
+            "input": 440,
+            "output": 544
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?midpoint?0",
+      "mr_name": "T_shift",
+      "author_label": "T_star",
+      "jir": "((Math.abs(((double) i_a_f) - (((double) i_a_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_b_f) - (((double) i_b_s) + 1.0)) < 1.0E-4))",
+      "jor": "(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_star",
+          "reasoning": "The JIR shifts both inputs by +1 between the two executions, and the JOR requires the midpoint output to shift by the same +1, matching the translation form f(x+c)=f(x)+c'.",
+          "raw_text": "{\"block\":\"T_star\",\"reasoning\":\"The JIR shifts both inputs by +1 between the two executions, and the JOR requires the midpoint output to shift by the same +1, matching the translation form f(x+c)=f(x)+c'.\"}",
+          "usage": {
+            "input": 1527,
+            "output": 58
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_star",
+          "reasoning": "The JIR shifts both inputs a and b by +1.0 (i_a_f \u2248 i_a_s + 1, i_b_f \u2248 i_b_s + 1) and the JOR verifies the output shifts by +1.0 (o_return_f \u2248 o_return_s + 1), matching the translation canonical form f(x + c) = f(x) + phi(c) with c = 1 and phi(c) = 1.",
+          "raw_text": "{\"block\":\"T_star\",\"reasoning\":\"The JIR shifts both inputs a and b by +1.0 (i_a_f \u2248 i_a_s + 1, i_b_f \u2248 i_b_s + 1) and the JOR verifies the output shifts by +1.0 (o_return_f \u2248 o_return_s + 1), matching the translation canonical form f(x + c) = f(x) + phi(c) with c = 1 and phi(c) = 1.\"}",
+          "usage": {
+            "input": 1787,
+            "output": 118
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "T_star",
+          "reasoning": "The JIR adds +1.0 to both inputs (a_f \u2248 a_s+1, b_f \u2248 b_s+1) and the JOR asserts the output also shifts by +1.0, which matches the translation block form f(x+c)=f(x)+phi(c) with phi(c)=c.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR adds +1.0 to both inputs (a_f \u2248 a_s+1, b_f \u2248 b_s+1) and the JOR asserts the output also shifts by +1.0, which matches the translation block form f(x+c)=f(x)+phi(c) with phi(c)=c.\"\n}",
+          "usage": {
+            "input": 501,
+            "output": 558
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?powerSig?0",
+      "mr_name": "D_reciprocal_exp",
+      "author_label": "D_star",
+      "jir": "Math.abs(i_base_f - i_base_s) < 1.0E-4 && i_base_s != 0.0 && i_n_f == -i_n_s",
+      "jor": "Math.abs(o_return_f - (1.0 / o_return_s)) < 1.0E-4",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "D_star",
+          "reasoning": "The JIR negates the exponent (i_n_f == -i_n_s) and the JOR asserts the output is the multiplicative inverse (1.0/o_return_s), which matches the D* block's canonical form f(b, -n) = 1/f(b, n) relating exponent inversion to multiplicative inversion of the output.",
+          "raw_text": "{\"block\":\"D_star\",\"reasoning\":\"The JIR negates the exponent (i_n_f == -i_n_s) and the JOR asserts the output is the multiplicative inverse (1.0/o_return_s), which matches the D* block's canonical form f(b, -n) = 1/f(b, n) relating exponent inversion to multiplicative inversion of the output.\"}",
+          "usage": {
+            "input": 1603,
+            "output": 81
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "D_star",
+          "reasoning": "The JIR pairs inputs with approximately the same base but negated exponent (n_f = -n_s), and the JOR requires the outputs to be reciprocals (o_f = 1/o_s), which matches the D* pattern of inversion relating one invocation to another.",
+          "raw_text": "{\"block\":\"D_star\",\"reasoning\":\"The JIR pairs inputs with approximately the same base but negated exponent (n_f = -n_s), and the JOR requires the outputs to be reciprocals (o_f = 1/o_s), which matches the D* pattern of inversion relating one invocation to another.\"}",
+          "usage": {
+            "input": 1513,
+            "output": 70
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "D_star",
+          "reasoning": "The JIR negates the exponent argument (i_n_f == -i_n_s) while keeping the base equal, which is exponent-inversion, and the JOR asserts the multiplicative reciprocal (1/o_return_s) of the output, directly matching the D_star specification for compound SUTs with exponent-inversion.",
+          "raw_text": "{\n  \"block\": \"D_star\",\n  \"reasoning\": \"The JIR negates the exponent argument (i_n_f == -i_n_s) while keeping the base equal, which is exponent-inversion, and the JOR asserts the multiplicative reciprocal (1/o_return_s) of the output, directly matching the D_star specification for compound SUTs with exponent-inversion.\"\n}",
+          "usage": {
+            "input": 485,
+            "output": 1170
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?powerSig?0",
+      "mr_name": "E_power_of_power",
+      "author_label": "E_star",
+      "jir": "Math.abs(i_base_f - o_return_s) < 1.0E-4",
+      "jor": "Math.abs(o_return_f - powerSig(i_base_s, i_n_s * i_n_f)) < 1.0E-4",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "E_star",
+          "reasoning": "The JIR constrains the follow-up base to equal the source output (i.e., base_f \u2248 powerSig(base_s, n_s)), and the JOR asserts the follow-up output equals powerSig(base_s, n_s * n_f), which is the power-of-power identity f(f(b,m),n)=f(b,m*n), the canonical form of the E* block.",
+          "raw_text": "{\"block\":\"E_star\",\"reasoning\":\"The JIR constrains the follow-up base to equal the source output (i.e., base_f \u2248 powerSig(base_s, n_s)), and the JOR asserts the follow-up output equals powerSig(base_s, n_s * n_f), which is the power-of-power identity f(f(b,m),n)=f(b,m*n), the canonical form of the E* block.\"}",
+          "usage": {
+            "input": 1591,
+            "output": 89
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "E_star",
+          "reasoning": "The JIR sets the follow-up base equal to the source output (powerSig(base, n_f)), and the JOR checks powerSig(powerSig(base, n_f), n_s) \u2248 powerSig(base, n_s * n_f), which is exactly the power-of-power/iterated-composition form of E_star.",
+          "raw_text": "{\n  \"block\": \"E_star\",\n  \"reasoning\": \"The JIR sets the follow-up base equal to the source output (powerSig(base, n_f)), and the JOR checks powerSig(powerSig(base, n_f), n_s) \u2248 powerSig(base, n_s * n_f), which is exactly the power-of-power/iterated-composition form of E_star.\"\n}",
+          "usage": {
+            "input": 1498,
+            "output": 87
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "E_star",
+          "reasoning": "The JIR sets the follow-up base equal to the first output (i_base_f \u2248 powerSig(i_base_s, i_n_s)), and the JOR asserts that the second output equals powerSig(original base, n_s * n_f), which is exactly the power-of-power identity f(f(b, m), n) = f(b, m * n).",
+          "raw_text": "{\n  \"block\": \"E_star\",\n  \"reasoning\": \"The JIR sets the follow-up base equal to the first output (i_base_f \u2248 powerSig(i_base_s, i_n_s)), and the JOR asserts that the second output equals powerSig(original base, n_s * n_f), which is exactly the power-of-power identity f(f(b, m), n) = f(b, m * n).\"\n}",
+          "usage": {
+            "input": 473,
+            "output": 716
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?powerSig?0",
+      "mr_name": "G_odd_negate",
+      "author_label": "G",
+      "jir": "(i_n_f == i_n_s) && (Math.abs(((double) i_base_f) - (-((double) i_base_s))) < 1.0E-4)",
+      "jor": "((((int) i_n_s) % 2 == 0) && (Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)) || ((((int) i_n_s) % 2 != 0) && (Math.abs(((double) o_return_f) - (-((double) o_return_s))) < 1.0E-4))",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "G",
+          "reasoning": "The JIR negates the base input (base_f = -base_s) while keeping n the same, and the JOR checks that outputs are equal when n is even or negated when n is odd, which is the classic sign-flip symmetry f(\u03c3(x)) = \u03c4(f(x)) with \u03c3 being negation and \u03c4 depending on parity\u2014a group/symmetry relation.",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR negates the base input (base_f = -base_s) while keeping n the same, and the JOR checks that outputs are equal when n is even or negated when n is odd, which is the classic sign-flip symmetry f(\u03c3(x)) = \u03c4(f(x)) with \u03c3 being negation and \u03c4 depending on parity\u2014a group/symmetry relation.\"}",
+          "usage": {
+            "input": 1665,
+            "output": 87
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "G",
+          "reasoning": "The JIR negates the base while keeping the exponent fixed, and the JOR specifies the corresponding symmetry on outputs\u2014same result for even n and sign-flipped result for odd n\u2014matching a finite-order sign-flip/input-output transformation.",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR negates the base while keeping the exponent fixed, and the JOR specifies the corresponding symmetry on outputs\u2014same result for even n and sign-flipped result for odd n\u2014matching a finite-order sign-flip/input-output transformation.\"\n}",
+          "usage": {
+            "input": 1574,
+            "output": 68
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "The JIR applies a negation transformation on the base (i_base_f = -i_base_s) while keeping the exponent fixed, and the JOR predicts a corresponding output transformation that is identity for even exponents and negation for odd exponents, matching the G-block form f(sigma(x)) = tau(f(x)).",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR applies a negation transformation on the base (i_base_f = -i_base_s) while keeping the exponent fixed, and the JOR predicts a corresponding output transformation that is identity for even exponents and negation for odd exponents, matching the G-block form f(sigma(x)) = tau(f(x)).\"\n}",
+          "usage": {
+            "input": 550,
+            "output": 695
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?powerSig?0",
+      "mr_name": "L_scale_base",
+      "author_label": "L_star",
+      "jir": "(Math.abs(((double) i_base_f) - (3.0 * ((double) i_base_s))) < 1.0E-4) && (i_n_f == i_n_s)",
+      "jor": "(Math.abs(((double) o_return_f) - (powerSig(3.0, i_n_s) * ((double) o_return_s))) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "L_star",
+          "reasoning": "The JIR scales the base by a factor of 3 (i_base_f = 3 * i_base_s) with the same exponent, and the JOR asserts the output scales by 3^n (powerSig(3.0, i_n_s) * o_return_s), which matches the homogeneity relation f(k*x, n) = k^n * f(x, n), the canonical L* scaling form.",
+          "raw_text": "{\"block\":\"L_star\",\"reasoning\":\"The JIR scales the base by a factor of 3 (i_base_f = 3 * i_base_s) with the same exponent, and the JOR asserts the output scales by 3^n (powerSig(3.0, i_n_s) * o_return_s), which matches the homogeneity relation f(k*x, n) = k^n * f(x, n), the canonical L* scaling form.\"}",
+          "usage": {
+            "input": 1792,
+            "output": 107
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "L_star",
+          "reasoning": "The JIR scales the input base by a constant factor (i_base_f = 3 * i_base_s) while keeping the exponent fixed, and the JOR expects the output to scale multiplicatively by a factor depending only on that scale and the fixed exponent (powerSig(3.0, n)), matching a scaling/homogeneity relation.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales the input base by a constant factor (i_base_f = 3 * i_base_s) while keeping the exponent fixed, and the JOR expects the output to scale multiplicatively by a factor depending only on that scale and the fixed exponent (powerSig(3.0, n)), matching a scaling/homogeneity relation.\"\n}",
+          "usage": {
+            "input": 1529,
+            "output": 90
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "The JIR scales the base input by a constant factor 3.0 while keeping the exponent equal, and the JOR predicts the output scales by a factor powerSig(3.0, i_n_s) that depends on the exponent, matching the L_star pattern f(k * x) = phi(k) * f(x).",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales the base input by a constant factor 3.0 while keeping the exponent equal, and the JOR predicts the output scales by a factor powerSig(3.0, i_n_s) that depends on the exponent, matching the L_star pattern f(k * x) = phi(k) * f(x).\"\n}",
+          "usage": {
+            "input": 503,
+            "output": 775
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?powerSig?0",
+      "mr_name": "T_exp_step",
+      "author_label": "T_star",
+      "jir": "(((double) i_base_f) == ((double) i_base_s) && (i_n_f == (i_n_s + 1)))",
+      "jor": "(Math.abs(((double) o_return_f) - (((double) o_return_s) * ((double) i_base_s))) < 1.0E-4)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "T_star",
+          "reasoning": "The JIR increments the exponent input by a constant step (n_f = n_s + 1) while keeping the base fixed, and the JOR predicts the corresponding output update by multiplication with the base, matching translation along the exponent axis.",
+          "raw_text": "{\n  \"block\": \"T_star\",\n  \"reasoning\": \"The JIR increments the exponent input by a constant step (n_f = n_s + 1) while keeping the base fixed, and the JOR predicts the corresponding output update by multiplication with the base, matching translation along the exponent axis.\"\n}",
+          "usage": {
+            "input": 1512,
+            "output": 69
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "T_star",
+          "reasoning": "The JIR shifts the exponent input by +1 (n_f = n_s + 1) while keeping base the same, and the JOR asserts the output scales by the base (o_f \u2248 o_s * base), which matches the translation canonical form f(b, n+1) = f(b, n) * b, an additive shift in the exponent producing a multiplicative shift in the output.",
+          "raw_text": "{\"block\":\"T_star\",\"reasoning\":\"The JIR shifts the exponent input by +1 (n_f = n_s + 1) while keeping base the same, and the JOR asserts the output scales by the base (o_f \u2248 o_s * base), which matches the translation canonical form f(b, n+1) = f(b, n) * b, an additive shift in the exponent producing a multiplicative shift in the output.\"}",
+          "usage": {
+            "input": 1772,
+            "output": 100
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": null,
+          "reasoning": "",
+          "raw_text": "",
+          "usage": {
+            "input": 485,
+            "output": 2048
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?signum?0",
+      "mr_name": "D_reciprocal",
+      "author_label": "D_star",
+      "jir": "i_x_s != 0.0 && Math.abs(i_x_f - (1.0 / i_x_s)) < 1.0E-4",
+      "jor": "o_return_f == o_return_s",
+      "votes": [
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "D_star",
+          "reasoning": "The JIR sets the follow-up input to the reciprocal of the source input (1/x), and the JOR asserts that signum(1/x) == signum(x), which is the canonical D* form f(1/x) = psi(f(x)) with psi being identity.",
+          "raw_text": "{\"block\":\"D_star\",\"reasoning\":\"The JIR sets the follow-up input to the reciprocal of the source input (1/x), and the JOR asserts that signum(1/x) == signum(x), which is the canonical D* form f(1/x) = psi(f(x)) with psi being identity.\"}",
+          "usage": {
+            "input": 1729,
+            "output": 76
+          }
+        },
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "D_star",
+          "reasoning": "The JIR sets the follow-up input to the reciprocal of the source input (i_x_f \u2248 1.0/i_x_s, excluding zero), and the JOR asserts a fixed relation on outputs\u2014equality of signum under inversion\u2014matching the multiplicative-inverse pattern f(1/x) = psi(f(x)) with psi as identity.",
+          "raw_text": "{\n  \"block\": \"D_star\",\n  \"reasoning\": \"The JIR sets the follow-up input to the reciprocal of the source input (i_x_f \u2248 1.0/i_x_s, excluding zero), and the JOR asserts a fixed relation on outputs\u2014equality of signum under inversion\u2014matching the multiplicative-inverse pattern f(1/x) = psi(f(x)) with psi as identity.\"\n}",
+          "usage": {
+            "input": 1482,
+            "output": 93
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "D_star",
+          "reasoning": "The JIR relates the inputs as x and its reciprocal 1/x, while the JOR asserts identical outputs, conforming to the D* canonical form f(1/x) = psi(f(x)) with psi the identity.",
+          "raw_text": "{\n  \"block\": \"D_star\",\n  \"reasoning\": \"The JIR relates the inputs as x and its reciprocal 1/x, while the JOR asserts identical outputs, conforming to the D* canonical form f(1/x) = psi(f(x)) with psi the identity.\"\n}",
+          "usage": {
+            "input": 454,
+            "output": 786
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?signum?0",
+      "mr_name": "G_negate",
+      "author_label": "G",
+      "jir": "(Math.abs(((double) i_x_f) - (-((double) i_x_s))) < 1.0E-4)",
+      "jor": "(o_return_f == - o_return_s)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "G",
+          "reasoning": "The JIR sets the second input to the negation of the first (x_s = -x_f), and the JOR requires the output to negate correspondingly (signum(x_f) = -signum(x_s)), which is exactly a symmetry/negation relation of the form f(\u03c3(x)) = \u03c4(f(x)).",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR sets the second input to the negation of the first (x_s = -x_f), and the JOR requires the output to negate correspondingly (signum(x_f) = -signum(x_s)), which is exactly a symmetry/negation relation of the form f(\u03c3(x)) = \u03c4(f(x)).\"}",
+          "usage": {
+            "input": 1475,
+            "output": 81
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "G",
+          "reasoning": "The JIR encodes input negation (x_f \u2248 -x_s) and the JOR asserts the output negates correspondingly (o_return_f == -o_return_s), which is the classic odd-function symmetry f(-x) = -f(x) with sigma = tau = sign-flip, fitting the G (group/symmetry) block.",
+          "raw_text": "{\"block\":\"G\",\"reasoning\":\"The JIR encodes input negation (x_f \u2248 -x_s) and the JOR asserts the output negates correspondingly (o_return_f == -o_return_s), which is the classic odd-function symmetry f(-x) = -f(x) with sigma = tau = sign-flip, fitting the G (group/symmetry) block.\"}",
+          "usage": {
+            "input": 1570,
+            "output": 83
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "G",
+          "reasoning": "The JIR tests approximate input negation (x_s \u2248 -x_f) and the JOR asserts corresponding output negation (o_return_f == -o_return_s), matching the G-block canonical form f(sigma(x)) = tau(f(x)) with sigma and tau both being sign-flip.",
+          "raw_text": "{\n  \"block\": \"G\",\n  \"reasoning\": \"The JIR tests approximate input negation (x_s \u2248 -x_f) and the JOR asserts corresponding output negation (o_return_f == -o_return_s), matching the G-block canonical form f(sigma(x)) = tau(f(x)) with sigma and tau both being sign-flip.\"\n}",
+          "usage": {
+            "input": 449,
+            "output": 343
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?signum?0",
+      "mr_name": "L_scale_pos",
+      "author_label": "L_star",
+      "jir": "(Math.abs(((double) i_x_f) - (3.0 * ((double) i_x_s))) < 1.0E-4)",
+      "jor": "(o_return_f == o_return_s)",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "L_star",
+          "reasoning": "The JIR relates the follow-up input to the source by positive scaling (x_f \u2248 3\u00b7x_s), and the JOR requires the output to remain unchanged, matching the 0-degree homogeneity form f(kx)=f(x) for k>0.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR relates the follow-up input to the source by positive scaling (x_f \u2248 3\u00b7x_s), and the JOR requires the output to remain unchanged, matching the 0-degree homogeneity form f(kx)=f(x) for k>0.\"\n}",
+          "usage": {
+            "input": 1478,
+            "output": 76
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "L_star",
+          "reasoning": "The JIR relates a follow-up input x_f to a scaled source input (x_f \u2248 3*x_s, i.e., multiplication by positive constant k=3), and the JOR asserts signum(3*x) == signum(x), which is the 0-degree homogeneity property f(k*x) = f(x) for k > 0, the canonical L* form.",
+          "raw_text": "{\"block\":\"L_star\",\"reasoning\":\"The JIR relates a follow-up input x_f to a scaled source input (x_f \u2248 3*x_s, i.e., multiplication by positive constant k=3), and the JOR asserts signum(3*x) == signum(x), which is the 0-degree homogeneity property f(k*x) = f(x) for k > 0, the canonical L* form.\"}",
+          "usage": {
+            "input": 1728,
+            "output": 101
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "L_star",
+          "reasoning": "The JIR scales the input by a positive factor (\u22483) and the JOR asserts the output is unchanged, which matches the 0-degree homogeneity case f(k*x)=f(x) for k>0 in L_star.",
+          "raw_text": "{\n  \"block\": \"L_star\",\n  \"reasoning\": \"The JIR scales the input by a positive factor (\u22483) and the JOR asserts the output is unchanged, which matches the 0-degree homogeneity case f(k*x)=f(x) for k>0 in L_star.\"\n}",
+          "usage": {
+            "input": 452,
+            "output": 512
+          }
+        }
+      ]
+    },
+    {
+      "subject": "MathSignalClass?signum?0",
+      "mr_name": "O_le_monotone",
+      "author_label": "O_le",
+      "jir": "i_x_s <= i_x_f",
+      "jor": "o_return_s <= o_return_f",
+      "votes": [
+        {
+          "vendor": "chatgpt",
+          "model": "gpt-5.4",
+          "label": "O_le",
+          "reasoning": "The JIR orders two inputs by i_x_s <= i_x_f and the JOR requires the corresponding outputs to preserve that order via o_return_s <= o_return_f, which is exactly a monotonicity relation.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The JIR orders two inputs by i_x_s <= i_x_f and the JOR requires the corresponding outputs to preserve that order via o_return_s <= o_return_f, which is exactly a monotonicity relation.\"\n}",
+          "usage": {
+            "input": 1457,
+            "output": 64
+          }
+        },
+        {
+          "vendor": "anthropic_opus",
+          "model": "claude-opus-4-6",
+          "label": "O_le",
+          "reasoning": "The JIR states i_x_s <= i_x_f and the JOR states o_return_s <= o_return_f, which directly encodes monotonicity: if x1 <= x2 then signum(x1) <= signum(x2).",
+          "raw_text": "{\"block\":\"O_le\",\"reasoning\":\"The JIR states i_x_s <= i_x_f and the JOR states o_return_s <= o_return_f, which directly encodes monotonicity: if x1 <= x2 then signum(x1) <= signum(x2).\"}",
+          "usage": {
+            "input": 1699,
+            "output": 69
+          }
+        },
+        {
+          "vendor": "deepseek",
+          "model": "deepseek-v4-pro[1m]",
+          "label": "O_le",
+          "reasoning": "The MR asserts that x_s <= x_f implies f(x_s) <= f(x_f), which is exactly the order-preserving monotonicity canonical form of the O_le block.",
+          "raw_text": "{\n  \"block\": \"O_le\",\n  \"reasoning\": \"The MR asserts that x_s <= x_f implies f(x_s) <= f(x_f), which is exactly the order-preserving monotonicity canonical form of the O_le block.\"\n}",
+          "usage": {
+            "input": 430,
+            "output": 426
+          }
+        }
+      ]
+    }
+  ]
+}

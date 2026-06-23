@@ -1,0 +1,106 @@
+{
+  "overall_recommendation": "Major Revision",
+  "submission_maturity_0to100": 58,
+  "acceptance_probability_pct": 22,
+  "reviewer_confidence_1to5": 4,
+  "dimension_scores_0to100": {
+    "originality": 68,
+    "methodology_rigor": 55,
+    "evidence_sufficiency": 48,
+    "argument_coherence": 72,
+    "writing_presentation": 65
+  },
+  "persona_verdicts": {
+    "EIC": {
+      "recommendation": "Major Revision",
+      "headline": "Scope-fit is marginal for TOSEM; the algebraic framework is elegant but the empirical leg is pilot-scale and self-referential. Net contribution over meta-pattern literature is real but overstated. Requires substantial tightening of claims, expanded external validation, and length reduction before it can be sent for full review."
+    },
+    "R1_methodology_theory": {
+      "recommendation": "Major Revision",
+      "headline": "Theorem 1 is a by-construction well-formedness lemma, not headline completeness. Theorem 2's \"polynomial-time\" claim is output-polynomial at best when |G| is exponential; the paper acknowledges this but still markets the result too strongly. The negative PWR result (Section 3.5, Appendix C.6) is the strongest theoretical contribution yet is relegated to a secondary negative instantiation. Statistical reporting on the case study (McNemar, Wilson CIs) is present but omits multiplicity correction and power analysis; HARKing risk on the L*-blindness prediction is low but the mutation set for the case study was explicitly constructed to match the blocks (construct-validity threat acknowledged yet not mitigated). Gap between theoretical closure and empirical evidence remains publication-blocking."
+    },
+    "R2_domain_mt_mr": {
+      "recommendation": "Major Revision",
+      "headline": "Literature engagement with recent MT meta-pattern work is incomplete: Gotlieb (2003/2006), Segura 2016/2019, Zhou 2020, Khritankov-Iakusheva 2024, Patel-Hierons 2018, Saha-Kanewala 2019, MemoRIA 2024, Ying et al. 2025 family-tree formalism, and LiTOSEM2025 survey are cited but the sharp contrast paragraphs treat them as inductive baselines rather than engaging their category-enumeration or mining machinery head-to-head. The claim that NOETHER \"derives\" rather than repackages symmetry intuitions is not substantiated beyond the PWR internal re-classification; the external reactor corpus audit (S11) and the METRIC+ mapping (Section 4.5) are promising but still author-vs-author or author-reimplemented. Self-evaluation (EQ1/EQ3) remains largely self-referential. Novelty delta must be tightened to \"constructive operator-block layer + closure proof\" rather than a new foundational theory of MetaPatterns."
+    },
+    "R3_perspective_equivariance_safety": {
+      "recommendation": "Major Revision",
+      "headline": "IBT (Section 3.4, Theorem 4) is the strongest cross-disciplinary result but is stated only for linear operator-implementation faults under exact arithmetic; floating-point tightness and extension beyond {G,T*} are left as limitations. Equivariant-ML and reactor witness legs (Sections 3.6–3.7) are still largely self-derived; the LOCUST industrial witness for ρ_MTC-bor is valuable but does not constitute independent V&V. GenMorph head-to-head loss on detection rate is acknowledged, yet auditability/maintainability/reuse advantages are asserted without measurable evidence beyond qualitative tables. Generalization from the three algebras to claimed safety-critical domains (nuclear I&C, autonomous systems) is not yet demonstrated at the scale required for TOSEM."
+    },
+    "devils_advocate": {
+      "critical_found": true,
+      "strongest_counterargument": "The core claim ('operator algebras constructively identify MR meta-patterns with completeness boundaries') rests on a circular foundation. The eight-block decomposition (Hypothesis 1, Section 3.1) was curated by inspecting the very reactor-physics MR corpus later used to 'validate' it (Section 3.5, subsec:reactor-mapping explicitly notes provenance from the authors' prior PWR catalogue). The 'prediction' of m_adj and m_rev is therefore not a non-circular discovery but a re-projection of structures already latent in the inductive catalogue that motivated the blocks. The negative PWR result (Section 3.8, Appendix C.6) that falsifies the stronger Theorem 1' is presented as a virtue, yet it simultaneously reveals that the Translate operator deliberately excludes standard engineering MRs (non-additivity, mixed second derivatives) that every production PWR simulator must test—precisely the oracles the framework claims to systematise. This is selection-on-the-response: the algebra is chosen so that the derivable MR space matches the authors' prior inductive patterns, the negative cases are relegated to an 'out-of-scope' appendix, and self-disclosure of limitations is used as a shield rather than a call for new experiments. The empirical legs (case study, DeepCrime pilot, METRIC+ mapping) all use mutation sets or subjects either hand-constructed to match the blocks or re-implemented by the same team. The Invariance-Blindness Theorem is mathematically clean for linear faults but its empirical witness (S10) uses the same self-derived oracles. The paper therefore demonstrates a well-engineered re-packaging of existing symmetry and monotonicity intuitions into an operator-algebra vocabulary, accompanied by closure and complexity results that are by-construction within a deliberately circumscribed space. It does not yet constitute a constructive foundational theory that replaces inductive meta-pattern catalogues. CRITICAL: the circularity between block curation and validation corpus, combined with the scope-engineering that excludes the very MRs the target domain cares about, is a fatal flaw for a TOSEM methodology paper. New experiments on truly independent industrial corpora (PARCS V&V suite, IAEA-TECDOC catalogues, external equivariant-ML test suites) and an independent human inter-rater κ on block labelling are required before the contribution can be reassessed."
+    }
+  },
+  "publication_blockers": [
+    {
+      "id": "B1",
+      "section": "3.5, 3.8, Appendix C.6",
+      "issue": "Circularity between block curation and validation corpus; negative PWR result shows Translate deliberately excludes standard PWR safety MRs",
+      "why_fatal": "Undermines the central claim of a non-inductive, constructive theory; self-disclosure does not convert circularity into evidence. Requires new experiments on independent corpora.",
+      "fixable_by": "experiment"
+    },
+    {
+      "id": "B2",
+      "section": "4.2–4.4, Table 4, Section 4.6",
+      "issue": "Case-study mutation set explicitly constructed to match one defect category per non-empty block; LLM ensemble and literature baselines are weak comparators",
+      "why_fatal": "Construct-validity threat acknowledged but not mitigated; H2 is not an independent test of superiority. The head-to-head against GenMorph shows aggregate dominance by the GP baseline on D1 while the paper markets algebraic coverage.",
+      "fixable_by": "experiment"
+    },
+    {
+      "id": "B3",
+      "section": "1, 3.1, Remark 3, Section 5",
+      "issue": "Over-claiming of foundational status and transferability; literature engagement with Ying 2025 family-tree, MemoRIA 2024, Khritankov 2024, and LiTOSEM2025 is present but not sharp enough on meta-pattern granularity",
+      "why_fatal": "The delta must be narrowed to 'constructive operator-block layer + closure proof' rather than a new theory of MetaPatterns. Current framing triggers desk-reject risk on originality at TOSEM.",
+      "fixable_by": "writing"
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "3.4, Theorem 4, Remark 5",
+      "issue": "IBT stated only for linear operator faults under exact arithmetic; floating-point regime and extension beyond {G,T*} left open; empirical witness (S10) uses self-derived oracles",
+      "suggested_fix": "Explicitly delimit IBT as linear-exact result; add floating-point kernel analysis or commit independent V&V on nuclear I&C codes. New experiments required for safety-critical claim.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "3.8, Appendix C.6, Table 5",
+      "issue": "Five pairwise-independent obstructions in Translate's signature identified, yet no Composite-Translate repair is offered and the open problem is left for follow-up",
+      "suggested_fix": "Either provide a candidate Composite-Translate that preserves closure and poly-time, or reframe the negative result as the primary theoretical contribution rather than a secondary negative instantiation. Requires new theoretical work.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "4.5, para:metricplus-sorting, Path A results",
+      "issue": "METRIC+ comparison is qualitative-plus-quantitative on author-reimplemented subjects; full PIT-based head-to-head committed as S4 but not delivered",
+      "suggested_fix": "Deliver the pre-registered Path-A PIT/Major cross-tool replication with independent re-implementations or use publicly available METRIC+ artefacts. New experiments required.",
+      "fixable_by": "experiment"
+    }
+  ],
+  "minor_issues": [
+    "Length: current LaTeX source substantially exceeds TOSEM soft limit (~11k words); many appendices have been migrated to supplementary but the main text still contains redundant restatements of the boundary box and repeated scope disclaimers.",
+    "Citation incompleteness: three peer-review-raised pattern catalogues (Hu 2019, Mariani 2018, Liu 2020) could not be located; the paper notes this but still leaves the gap visible.",
+    "Statistical reporting: McNemar and Fisher tests are used but multiplicity correction (Bonferroni/Holm) is applied inconsistently across the case study, pooled head-to-head, and LLM-audit κ; power analysis is absent.",
+    "Figures and tables: Figure 1 (architecture) is clear but the per-block complexity table (Table 1) and the PIT-block matrix (Table 5) would benefit from explicit 'output-polynomial' clarification for infinite groups.",
+    "Writing: occasional self-referential phrasing ('our prior PWR catalogue') and repeated use of the boundary tcolorbox at the end of multiple sections dilutes focus."
+  ],
+  "highest_roi_fixes": [
+    {
+      "action": "Replace self-referential reactor corpus with independent external reactor-physics V&V suites (PARCS, IAEA-TECDOC, or third-party LOCUST/SACOS audit by non-authors) and run a human inter-rater κ study on block labelling; deliver the pre-registered full Path-A PIT/Major head-to-head on METRIC+ with independent re-implementations.",
+      "expected_gain_pp": 18,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Narrow all claims from 'foundational theory of MetaPatterns' / 'eliminates induction' to 'constructive operator-block layer with closure and complexity results within explicit Translate scope'; move the five obstructions and Composite-Translate open problem to the main theoretical contribution rather than an appendix.",
+      "expected_gain_pp": 12,
+      "effort": "medium",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Cut redundant boundary boxes, merge repeated scope disclaimers, shorten the empirical section by moving detailed per-SUT tables and LLM-audit raw labels to supplementary only; target <11k words.",
+      "expected_gain_pp": 8,
+      "effort": "low",
+      "fixable_by": "writing"
+    }
+  ],
+  "summary": "The manuscript presents an elegant operator-algebraic framework for MR identification that makes origin and boundary explicit and demonstrates non-trivial transfer across three structurally distinct domains. The theoretical closure result (Theorem 1) and the negative PWR instantiation that falsifies the stronger completeness claim are genuine contributions. However, the work is not yet at TOSEM standard. The block taxonomy is curated from the very corpus later used for validation, the empirical legs rely on author-constructed mutations or author-reimplemented subjects, and the head-to-head against GenMorph shows aggregate dominance by the GP baseline while the paper markets algebraic coverage. The five Translate obstructions are important but left as future work. Publication blockers are circularity, insufficient independent validation, and over-claiming of foundational status. With substantial new experiments on external industrial corpora, a tightened contribution statement, and length reduction, the paper could become a solid TOSEM contribution on constructive MR identification. Current maturity is insufficient for acceptance."
+}

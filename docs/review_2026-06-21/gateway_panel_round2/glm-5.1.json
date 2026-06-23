@@ -1,0 +1,132 @@
+{
+  "overall_recommendation": "Major Revision",
+  "submission_maturity_0to100": 56,
+  "acceptance_probability_pct": 30,
+  "reviewer_confidence_1to5": 4,
+  "dimension_scores_0to100": {
+    "originality": 68,
+    "methodology_rigor": 50,
+    "evidence_sufficiency": 45,
+    "argument_coherence": 60,
+    "writing_presentation": 55
+  },
+  "persona_verdicts": {
+    "EIC": {
+      "recommendation": "Major Revision",
+      "headline": "Novel algebraic framing of MR identification with serious scope/self-referentiality concerns and extreme length"
+    },
+    "R1_methodology_theory": {
+      "recommendation": "Major Revision",
+      "headline": "Theorem 1 is by-construction tautologous; Theorem 2 'polynomial-time' is output-polynomial not input-polynomial; statistics underpowered with uncorrected multiple comparisons"
+    },
+    "R2_domain_mt_mr": {
+      "recommendation": "Major Revision",
+      "headline": "Constructive derivation contribution is real but partially circular (blocks curated from reactor physics then 'predict' reactor physics MRs); EQ1/EQ3 self-referential"
+    },
+    "R3_perspective_equivariance_safety": {
+      "recommendation": "Major Revision",
+      "headline": "IBT is the strongest theoretical result but restricted to linear faults and exact arithmetic; industrial witness (SACOS/SPARK/LOCUST) is order-block-only, not independent multi-block validation"
+    },
+    "devils_advocate": {
+      "critical_found": false,
+      "strongest_counterargument": "The paper's central 'closure' theorem (Theorem 1) is a well-formedness statement that every element of a set defined as the Translate-image of a domain belongs to the partition of that image—it is true by construction and cannot fail, making it unfalsifiable as an empirical claim. The real scientific content is whether the algebra-induced MR space MR(𝒜_P) captures the MRs practitioners actually need, and the paper's own negative instantiation (§5.5) shows it does not on 𝒜_PWR for two regulatory-essential MRs. The eight blocks were curated by inspecting program families including reactor physics, then the Boltzmann instantiation 'predicts' m_adj and m_rev from those same blocks—this is re-projection, not prediction, as the authors honestly concede (§4.3 caveat). The LLM-panel κ=0.857 and LRCA κ=0.931 are agreement among models sharing training data, not independent verification. The head-to-head is dominated by Set G (McNemar p=0.0043), and the only quantitative falsifiable prediction (ℒ*-blindness) is a deductive consequence of PIT's mutator semantics, not a test of NOETHER's MR-identification claim. The contribution is a notational and organisational advance, not yet a method that produces MRs with demonstrated practical advantage."
+    }
+  },
+  "publication_blockers": [
+    {
+      "id": "PB1",
+      "section": "§3.3 Theorem 1 / §3.4 Theorem 2",
+      "issue": "Theorem 1 is by-construction well-formedness (every Translate-image element lands in the Translate-image partition). Its 'closure' label overstates what is proved. Theorem 2's 'polynomial-time' claim is output-polynomial (|G| can be exponential in the input description), not input-polynomial, which the text mentions in a remark but the theorem statement does not qualify.",
+      "why_fatal": "Headline theoretical claims that are near-tautological or misleadingly stated undermine the paper's formal-methods credibility at TOSEM's bar.",
+      "fixable_by": "writing"
+    },
+    {
+      "id": "PB2",
+      "section": "§4.3 / §6 Table 4",
+      "issue": "The equivariant-ML case study (n=20 mutations, 1 model, construct-validity-controlled design) and the PIT head-to-head (n=62, dominated by Set G) provide insufficient statistical power for any inferential claim about MR-identification superiority or even non-inferiority. The McNemar p=0.016 for N-vs-B on 20 mutations is a single comparison on a constructed mutation set; the head-to-head p=0.0043 is dominated by out-of-scope D2 stratum contribution.",
+      "why_fatal": "The empirical section does not provide adequately powered evidence for the framework's practical value as an MR-identification method. Without at least one adequately powered experiment (n≥30 per stratum, independent mutation source, pre-registered analysis), the paper's empirical contribution rests on a confirmed deductive prediction (ℒ*-blindness) and descriptive case studies.",
+      "fixable_by": "experiment"
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "§4.2 / §4.3",
+      "issue": "Blocks T* and 𝒯*_rev were curated partly from reactor-physics structures, then m_adj and m_rev are 'predicted' for the Boltzmann instantiation. The authors concede the circularity but the paper's framing (Table 3 column 'Predicted') still overclaims novelty.",
+      "suggested_fix": "Relabel 'Predicted' as 'Re-projected' or 'Structurally separated' in Table 3; add a non-physics domain where T* and 𝒯*_rev produce genuinely novel MRs before the paper's own curation.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "§5.2 / §6 Table 4 / §6.1",
+      "issue": "EQ1 and EQ3 evidence is largely author-vs-author: the expert MR sets are the authors' own PWR catalogue; the industrial corpora (SACOS/SPARK/LOCUST) cover only the O_≤ block; the LLM-panel κ is computed among models sharing training data; the cross-domain traces (Table 7) map blocks to published identities rather than testing new MRs against new programs.",
+      "suggested_fix": "Add at least one external MR corpus from an independent team (e.g., PARCS V&V suite, Segura et al. IMDb MR set) evaluated by independent human raters. Replace or supplement LLM-panel κ with human inter-rater κ.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "§5.4 IBT",
+      "issue": "IBT is restricted to the linear operator-implementation fault class and exact arithmetic. The paper's empirical subjects (EGNN, Java methods) do not operate in this regime. The IBT empirical validation (E1–E3) uses N=8 linear-algebraic fault classes, not real software faults.",
+      "suggested_fix": "Either (a) restrict IBT's claims explicitly to linear-algebraic programs and remove the IBT-corroboration language for non-linear subjects, or (b) add an empirical test of IBT's predictions on a non-linear PDE solver with real faults.",
+      "fixable_by": "either"
+    },
+    {
+      "section": "§6.3–6.5",
+      "issue": "Multiple comparisons across per-SUT, per-block, and per-stratum analyses are reported without consistent family-wise error control. The McNemar p=0.016 for N-vs-B is one of 3 pairwise tests; the Holm-adjusted p=0.047 barely passes 0.05.",
+      "suggested_fix": "Adopt a single pre-registered primary comparison (e.g., D1 stratum Set N vs Set G) and report all others as descriptive/exploratory. Ensure all p-values are Holm-Bonferroni corrected for the number of tests actually performed.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "Entire manuscript",
+      "issue": "The paper is extremely long (estimated >25,000 words including appendices and inline supplementary references). TOSEM's soft limit is ~11,000 words. The excessive length includes 16 committed future-work items, multiple tcolorbox restatements of contribution boundaries, and extensive supplementary cross-references that belong in an artifact appendix.",
+      "suggested_fix": "Cut the manuscript to ≤15,000 words by: (1) removing all inline future-work commitments to a separate document; (2) merging the three 'Boundary of contribution' tcolorboxes into one; (3) moving the head-to-head per-block decomposition details to an appendix; (4) eliminating the METRIC+ Path A subsection and replacing with a brief summary.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "§2 Related Work",
+      "issue": "Three references (Hu et al. 2019; Mariani 2018; Liu et al. 2020) could not be located. Missing key references: Gotlieb 2003/2006 treated only briefly; no engagement with Khritankov-Iakusheva 2024's six transformation families as potential blocks; Saha-Kanewala 2019's low detection rate (14.8%) not discussed as a potential scope limitation.",
+      "suggested_fix": "Locate or remove the three missing references. Add explicit comparison of the eight blocks with Khritankov-Iakusheva's six families. Discuss whether Saha-Kanewala's 14.8% detection rate on supervised classifiers reflects a scope limitation for NOETHER (most classifier MRs may be outside the eight-block frame).",
+      "fixable_by": "writing"
+    }
+  ],
+  "minor_issues": [
+    "Definition 1: The equivalence relation ~_F is defined but never formally used in a proof; its role could be clarified or removed.",
+    "Table 2: The 'Conservation' row in EQ1 coverage is a G-block sub-instance, not an independent block; this is noted in prose but the table structure invites misreading.",
+    "Eq. (5): ρ_rot uses ‖·‖_∞ with τ=10⁻⁴; no false-positive rate is reported for this tolerance on a non-equivariant baseline.",
+    "§5.5: The PWR negative instantiation is strong but the 'five pairwise-independent obstructions' claim in Table 12 should note that independence is proved only on 𝒜_PWR; the 𝒜_equi and 𝒜_rel extensions are 'asserted by inspection'.",
+    "Appendix C.6 proofs: The exhaustive block-by-block exclusion for ρ_nonadd is correct but could be compressed; the proof for ρ_MTC-bor is largely redundant with the ρ_nonadd proof and should reference shared obstructions.",
+    "§6.4: The 'cross-pipeline rediscovery' witness on midpoint (3 MRs converging) is anecdotal (1 SUT); framing as 'direct corroboration' is too strong.",
+    "Set L ensemble (§6.5): The 43.5% block-template match rate is informative but the remaining 56.5% may contain useful out-of-block MRs; the analysis does not evaluate these.",
+    "§7: The 16-item committed future-work list is unusually detailed for a paper submission and signals that much of the empirical programme is incomplete."
+  ],
+  "highest_roi_fixes": [
+    {
+      "action": "Restate Theorem 1 as a well-formedness/closure lemma (not a 'closure invariant') and Theorem 2 as 'output-polynomial constructibility'; add explicit scope qualifications to both theorem statements.",
+      "expected_gain_pp": 8,
+      "effort": "low",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Add one adequately powered experiment (n≥30 mutants, independent mutation source e.g. DeepCrime full taxonomy, ≥2 architectures) for a pre-registered primary comparison on the D1 stratum.",
+      "expected_gain_pp": 12,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Relabel 'Predicted' in Table 3 as 'Structurally separated' and add a genuinely external MR corpus (not author's own PWR catalogue) for EQ1/EQ3 validation.",
+      "expected_gain_pp": 7,
+      "effort": "medium",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Cut manuscript to ≤15,000 words by removing inline future-work, merging boundary boxes, and moving detailed per-block head-to-head to appendix.",
+      "expected_gain_pp": 5,
+      "effort": "medium",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Add Khritankov-Iakusheva 2024's six transformation families as an explicit comparison point for the eight blocks, and discuss whether they map onto or extend the current decomposition.",
+      "expected_gain_pp": 4,
+      "effort": "low",
+      "fixable_by": "writing"
+    }
+  ],
+  "summary": "NOETHER proposes an operator-algebraic framework for deriving metamorphic relation classes from program-family governing equations, with a by-construction closure result, an output-polynomial constructibility theorem, an Invariance-Blindness characterization for linear faults, and three domain instantiations plus a negative instantiation on PWR. The algebraic framing is genuinely novel for the MT/MR literature and the negative instantiation is a methodological strength. However, the paper has three fundamental problems. (1) The headline 'closure' theorem is by-construction well-formedness that cannot fail, while the genuinely substantive theoretical result (IBT) is restricted to linear faults and exact arithmetic—neither theorem's scope matches the empirical subjects. (2) The empirical evidence is underpowered and largely self-referential: the expert MR sets are the authors' own, the industrial corpora cover only one block, the LLM-panel agreement is among models sharing training data, and the head-to-head is dominated by GenMorph. The only falsifiable quantitative prediction (ℒ*-blindness) is a deductive consequence of PIT's mutator semantics, not an independent test of the framework. (3) The paper is far too long for TOSEM, with excessive boundary-restatement boxes and 16 committed future-work items that signal an incomplete empirical programme. A major revision that restates the theorems honestly, adds at least one adequately powered independent experiment, and cuts the manuscript length could reach TOSEM's bar; the current version does not."
+}

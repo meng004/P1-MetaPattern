@@ -1,0 +1,63 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 4,
+  "scores_1to5": {
+    "soundness": 3,
+    "novelty": 4,
+    "significance": 3,
+    "presentation": 2,
+    "reproducibility": 3
+  },
+  "summary": "NOETHER proposes deriving metamorphic relations from operator-algebraic structure of program families via an eight-block decomposition and a mechanical CONSTRUCT-MP procedure. The strongest contributions are the Invariance-Blindness Theorem (characterizing detection kernels for G and T* blocks), the falsification of absolute completeness on the PWR algebra, and the confirmed L*-blindness prediction. However, the main closure theorem is near-tautological by construction, the empirical evaluation is underpowered with construct-validity threats, and the paper is excessively long with repetitive self-qualification that obscures genuine contributions.",
+  "strengths": [
+    "The Invariance-Blindness Theorem (Theorem 3) is a substantive, non-trivial result: it precisely characterizes the detection kernel for the G and T* blocks as structure-preserving faults under linearity and faithfulness, and its corollaries (single-block incompleteness, differential-oracle complementarity) are practically meaningful",
+    "The falsification of Theorem 1' on A_PWR via two concrete, regulatory-essential MRs (non-additivity of rod-bank worth, mixed T_mod/C_B dependence) with five pairwise-independent obstructions is a valuable negative result that honestly delimits the framework's reach",
+    "The L*-blindness prediction is genuinely falsifiable, ex-ante derivable from public information, and confirmed on 5/6 SUTs—the strongest piece of empirical evidence in the paper",
+    "The relational-equivalence block (B*_rel) instantiation on query optimisers tests transferability beyond the Lie-group/self-adjoint/time-reversal core, which is a structurally meaningful cross-domain test",
+    "The cross-pipeline rediscovery witness (GenMorph's GP independently evolving MRs matching NOETHER's algebraic blocks on midpoint) provides independent corroboration of the operative-mechanism reading"
+  ],
+  "publication_blockers": [],
+  "major_weaknesses": [
+    {
+      "section": "§3.2 Theorem 1 and Definition 6",
+      "issue": "The closure theorem is near-tautological: MR(A_P) is defined as the Translate-image of block invariants, and CONSTRUCT-MP is defined to enumerate all such images. Closure then holds by construction. The authors acknowledge this ('by-construction status'), but the theorem is presented as a central contribution (C2a) and consumes significant space. Its substantive content—canonical-block assignment uniqueness—is a straightforward consequence of a strict total order on a finite set (Lemma C.1).",
+      "suggested_fix": "Demote Theorem 1 to a proposition or remark. Redirect the freed space to strengthening the IBT's scope (extending beyond G and T* to at least one more block) or to a partial positive result for Composite-Translate. Elevate the IBT and the negative PWR result as the paper's primary theoretical contributions."
+    },
+    {
+      "section": "§4.2 (Table 4 case study) and §4.2.1 (DeepCrime pilot)",
+      "issue": "The equivariant-ML case study has n=20 mutations on a single 5K-parameter EGNN, with mutations construct-validity-controlled (one category per block, cat-iv selected to target T*). The 5/5 unique detection is therefore by design, not empirical discovery. The DeepCrime pilot at n=5 yields McNemar p=0.500—purely descriptive. The head-to-head against GenMorph shows Set N is dominated on D1 (p=0.019). While the authors are transparent about this, the aggregate empirical evidence does not support claims of practical MR-identification utility.",
+      "suggested_fix": "Drop or heavily condense the n=5 pilot (it adds no inferential value). Replace the construct-validity-controlled mutation set with at least one independent mutation source (e.g., DeepCrime operators on a second architecture). Report at least one head-to-head comparison where Set N is not dominated. If this is not achievable within scope, explicitly frame the paper as a conceptual/theoretical contribution and remove comparative detection claims entirely."
+    },
+    {
+      "section": "§4.2.1 and §5.1 (inter-rater reliability)",
+      "issue": "Inter-rater agreement (κ=0.857 on the 18-MR audit, κ=1.000 on the Set N audit) is computed using panels of LLMs (DeepSeek, ChatGPT, Claude) that share substantial pre-training corpora. These κ values are presented as corroboration of breadth or correctness but cannot be interpreted as independent verification. The four METRIC+ Java subjects are re-implementations by the framework's own author, creating a construct-validity confound between framework design knowledge and subject fidelity.",
+      "suggested_fix": "Replace at least one LLM rater with an independent human domain expert for the 18-MR audit. For the METRIC+ comparison, have an independent contributor (not the framework designer) implement at least one subject, or use the original Sun 2021 Java sources if available. Report human κ separately from LLM κ."
+    },
+    {
+      "section": "Overall (manuscript length and structure)",
+      "issue": "The paper is excessively long with at least four 'Boundary of contribution' boxes, extensive inline self-qualification, multiple restatements of scope limitations, and large blocks of secondary evidence (e.g., the full METRIC+ mapping tables, the 16-item future-work list, the commons-math pilot) that dilute the core contributions. The genuinely novel results (IBT, negative PWR falsification, L*-blindness) are difficult to locate amid the caveats.",
+      "suggested_fix": "Reduce by approximately 40%. Consolidate all scope/boundary statements into a single section. Move the METRIC+ worked example, the PMCM worked example, and the engineering-guidance subsection to supplementary material. Lead the empirical section with the L*-blindness result and reduce the case-study material to a brief executability check. Impose a strict page limit on self-qualification prose."
+    },
+    {
+      "section": "§3.1 Hypothesis 1 and §3.4.6",
+      "issue": "The eight-block decomposition is explicitly an empirical curation ('by-inspection enumeration'), yet the paper's transferability claim depends entirely on it. The three instantiation domains (Boltzmann, equivariant ML, relational) were used to curate the blocks and then used to validate them—this is circular. The held-out transferability evidence (SACOS/SPARK/LOCUST) exercises only the O_≤ block, and the numpy.linalg/numpy.fft evidence is at the derivation-trace level without fault-detection validation.",
+      "suggested_fix": "Apply the frozen eight-block decomposition to at least one program family that was NOT inspected during curation, at the same depth as the Boltzmann instantiation (full CONSTRUCT-MP run with executable MRs and at least a sanity-check mutation analysis). The numpy.linalg/numpy.fft material should be elevated from supplementary to the main text with executable MR examples."
+    }
+  ],
+  "minor_issues": [
+    "The Set L ensemble's kill vector being a strict subset of Set N's (34/34 overlap) is by construction of the template-matching translator—this makes the comparison uninformative about LLM capability vs. NOETHER",
+    "The Wilson 95% CI [0.12, 0.77] for the DeepCrime pilot (n=5) is too wide to support any directional claim; reporting it adds noise",
+    "The paper claims 'polynomial-time decidability' but Theorem 2's proof uses union-find with O(α(n)) then relaxes to O(log n) without justifying why the tighter bound isn't reported",
+    "Definition 4 (block invariant) allows arbitrary arity k≥1 but all per-block Translate templates in Table 9 use k≤2, creating an unstated gap between the definition's generality and the actual construction",
+    "The 'Conservation' row in Table 1 appears as a block but is not among the eight blocks of the decomposition—it is unclear whether this is a ninth block or a re-labeling of G",
+    "The paper cites three works (Hu et al. 2019; Mariani 2018; Liu et al. 2020) as unrecoverable—this is unusual for a TOSEM submission and suggests incomplete literature search",
+    "The notation switches between MR(A_P) and MR(A_P) without clear distinction in some passages",
+    "The IBT's faithfulness condition (Definition 12) requires rank equality J_test = J_full, but the proof of Lemma 1 picks witnesses whose functionals span V_full—this requires V_full to be finitely generated, which holds for finite-dimensional Θ but the finite witness selection is not constructive (no algorithm given)"
+  ],
+  "questions_to_authors": [
+    "Can you state, in one sentence, what a practitioner gains from NOETHER that they cannot get from METRIC+ plus domain expertise? The METRIC+ Java/PIT comparison (p=0.625, 92.6% both-kill) suggests approximate parity at comparable cardinality.",
+    "What is the smallest extension of Translate that would absorb even one of the five PWR obstructions while preserving Theorem 1's closure? You identify this as the principal open problem but do not attempt even a partial solution.",
+    "Given that the EGNN case study uses an explicitly added symmetrised QK probe (not native EGNN architecture), does the T*-block instantiation for equivariant ML have any architectural validity beyond the probe you inserted?",
+    "The L*-blindness prediction is confirmed on 5/6 SUTs. What is the predicted kill rate for each of the other seven blocks on PIT's default mutators, and can you confirm those predictions on the same substrate?"
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "overall_recommendation": "Reject",
+  "submission_maturity_0to100": 49,
+  "acceptance_probability_pct": 12,
+  "reviewer_confidence_1to5": 4,
+  "dimension_scores_0to100": {
+    "originality": 72,
+    "methodology_rigor": 45,
+    "evidence_sufficiency": 42,
+    "argument_coherence": 48,
+    "writing_presentation": 40
+  },
+  "persona_verdicts": {
+    "EIC": {
+      "recommendation": "Reject",
+      "headline": "Strong scope fit and a potentially interesting algebraic framing, but the manuscript is far beyond TOSEM length/discipline and mixes theorem, manifesto, protocols, pilots, appendices, and future-work claims into an unreviewable submission."
+    },
+    "R1_methodology_theory": {
+      "recommendation": "Reject",
+      "headline": "The main closure theorem is largely definitional, the complexity theorem is output/description-polynomial under assumed termination, and the empirical/statistical evidence is dominated by underpowered pilots, constructed denominators, post-hoc caveats, and non-independent labelling."
+    },
+    "R2_domain_mt_mr": {
+      "recommendation": "Reject",
+      "headline": "NOETHER's delta over existing MT/MR pattern, symmetry, METRIC/METRIC+, and automated MR-identification work remains over-claimed; much evaluation reclassifies the authors' own MR catalogues or author-derived MRs."
+    },
+    "R3_perspective_equivariance_safety": {
+      "recommendation": "Major Revision",
+      "headline": "The invariance-blindness idea and safety-critical reactor counterexamples are interesting, but the ML and industrial evidence do not yet provide independent validation of the claimed cross-domain transfer or practical payoff."
+    },
+    "devils_advocate": {
+      "critical_found": true,
+      "strongest_counterargument": "The central claim is that operator algebra constructively identifies MR MetaPatterns and exposes completeness boundaries. But the framework largely moves the hard identification step into the manually curated operator algebra and block decomposition, then proves closure over the image of its own Translate operator. Theorem 1 is therefore not a discovery theorem; it is a well-formedness lemma over a self-defined set. The claimed empirical support is similarly circular: reactor patterns are compared against the authors' own prior catalogue, NOETHER MRs are author-derived, coverage_N is 1.00 by construction, construct-trace mutants are deliberately targeted at Set N MRs, LLM raters are used as pseudo-independent validators, and several stronger comparative arms are protocols, follow-up, or adapted estimates rather than executed independent baselines. When a fully executable head-to-head is reported, GenMorph dominates Set N in the aggregate D1 stratum, and the manuscript reframes this as per-block complementarity and cost-axis value. The PWR negative examples honestly delimit Translate, but they also show that important safety MRs lie outside the claimed construction. Thus the paper has an interesting algebraic vocabulary, but the submitted version has not demonstrated that NOETHER independently discovers useful MR patterns beyond expert domain modelling and author-curated examples."
+    }
+  },
+  "publication_blockers": [
+    {
+      "id": "B1",
+      "section": "Whole manuscript; Introduction; Data and Artifact Availability; Appendices",
+      "issue": "Severe length and structural noncompliance: the manuscript reads as multiple papers plus supplementary material, with many protocols, future-work items, repeated boundary boxes, and large appendices embedded in the main submission.",
+      "why_fatal": "At TOSEM's bar this is likely return-without-review or reject-on-form. The central contribution cannot be evaluated reliably because claims, evidence, limitations, protocols, and appendices are interleaved across an excessive manuscript.",
+      "fixable_by": "writing"
+    },
+    {
+      "id": "B2",
+      "section": "Sections 3.2, 3.4, 4.1, 4.2, 4.3; Tables 3-15; Threats to Validity",
+      "issue": "Evidence base is insufficiently independent and often circular: author-derived Set N, authors' prior PWR catalogue, author re-implementations of METRIC+ subjects, LLM-only labelling, construct-targeted mutants, and coverage metrics that equal 1.00 by construction.",
+      "why_fatal": "The submission's main maturity claim is empirical-methodological, but the load-bearing evaluations do not establish independent MR-identification benefit or practical payoff. This cannot be repaired by prose alone.",
+      "fixable_by": "experiment"
+    },
+    {
+      "id": "B3",
+      "section": "Theorem 1; Definition 6-8; Section 3.2; Appendix C.4-C.6",
+      "issue": "The main theoretical contribution is over-positioned relative to its content: closure is by construction over MR(A_P) defined as Translate's image; absolute completeness is falsified; major useful PWR MRs lie outside Translate.",
+      "why_fatal": "A TOSEM theory-method paper must make clear what non-tautological theorem is established. The current manuscript repeatedly uses modest disclaimers, but still frames the theory as a foundational answer to origin-closure-transferability beyond what is proved.",
+      "fixable_by": "either"
+    },
+    {
+      "id": "B4",
+      "section": "Sections 4.2-4.3; Tables 7-15; Section 5",
+      "issue": "Comparative evaluation does not support the implied practical advantage over SOTA. GenMorph dominates on the aggregate D1 head-to-head; MR-Scout is not rerun; METRIC+ comparison uses re-implemented subjects and reduced enumerations; LLM comparison is template-matched to Set N.",
+      "why_fatal": "The paper asks readers to prefer NOETHER as an MR-identification framework, but the executed comparisons either favor the baseline, are not independent, or measure structural coverage rather than user-visible value.",
+      "fixable_by": "experiment"
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Introduction; Contributions C1-C5",
+      "issue": "Contribution list is too broad and internally inconsistent: it simultaneously claims constructive identification, closure, negative completeness, invariance-blindness, industrial witness, cross-domain transfer, cost advantage, and empirical falsifiability.",
+      "suggested_fix": "Reduce to one paper: either a theory paper on Translate/IBT plus negative PWR boundaries, or an empirical MR-identification paper with independent corpora and baselines. Remove claims not directly supported.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "Hypothesis 1; Remarks 4-8",
+      "issue": "The eight-block decomposition is empirical curation but is treated throughout as if it has broad structural authority.",
+      "suggested_fix": "Provide a pre-registered, independently labelled corpus of program families and candidate operators; report precision/recall of the block taxonomy and human inter-rater agreement.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Theorem 2; Table 1",
+      "issue": "The complexity claim is weak and potentially misleading: per-generator invariant extraction is assumed to terminate; finite groups can be exponential in description; query equivalence is undecidable outside fixed-rule fragments.",
+      "suggested_fix": "Rename as an output-polynomial construction bound under explicit oracle assumptions; remove any implication of input-polynomial decidability.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "Section 3.4 Invariance-Blindness Theorem",
+      "issue": "IBT is interesting but narrowly scoped to linear exact-arithmetic faults for G and T*; empirical support is in supplementary material and not integrated as a primary, clean evaluation.",
+      "suggested_fix": "Make IBT the paper's main theorem, give a formal statement with assumptions in the main text, and provide one concise, reproducible experiment focused on faithfulness and kernel complementarity.",
+      "fixable_by": "either"
+    },
+    {
+      "section": "Section 3.5 Reactor instantiation; Table 2; Section 4.1 Table 3",
+      "issue": "Reactor evidence is heavily self-referential: the prior catalogue is by the same authors, industrial relations mostly show O_le monotonicity, and additional blocks are often latent rather than executable.",
+      "suggested_fix": "Use an independently authored reactor V&V MR corpus or production test suite; require independent domain experts to classify whether NOETHER-derived MRs are valid and executable.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Section 3.6 Equivariant ML; Sections rho_adj and rho_train-rev",
+      "issue": "Several ML MRs are debug-time or architecture-instrumented rather than natural user-level metamorphic relations; the EGNN stand-in does not instantiate the full attention/self-adjoint claims.",
+      "suggested_fix": "Evaluate on actual SE(3)-Transformer/e3nn/NequIP/MACE systems with native hooks and real defects; separate CI-executable MRs from debug probes.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Section 4.2; Table 6",
+      "issue": "The 20-mutation case study is construct-validity controlled by design, and the unique 5/5 detection cell targets an MR only Set N contains.",
+      "suggested_fix": "Replace with a larger real-fault or independently generated mutant set; pre-register categories without aligning each category to Set N's blocks.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Section 4.3; Tables 11-14",
+      "issue": "Head-to-head interpretation is over-elaborate and defensive. The aggregate result favors GenMorph, but the paper diffuses this through per-block, D2, and cost narratives.",
+      "suggested_fix": "State plainly that NOETHER is not competitive on aggregate mutation detection in this substrate, then claim only complementarity/cost where measured.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "Threats to Validity",
+      "issue": "LLM-based Fleiss/Cohen kappa is repeatedly used as reliability evidence despite shared pretraining and lack of domain-expert independence.",
+      "suggested_fix": "Remove reliability claims based on LLM-only raters or downgrade them to debugging checks; obtain independent human expert labels.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Data and Artifact Availability",
+      "issue": "Artifact claims are inconsistent: many sections cite S7-S12 and Zenodo DOI, but the review-stage archive list only includes S1-S4; no repository access is assumed in this review.",
+      "suggested_fix": "Provide a single manifest, stable anonymized archive, exact hashes, and mapping from every table/claim to a script and raw data file.",
+      "fixable_by": "writing"
+    }
+  ],
+  "minor_issues": [
+    "The manuscript is not anonymized despite saying it is: author names, emails, funding, Zenodo DOI, arXiv DOI, and institution information are present.",
+    "The title alternates between 'discovery' in comments and 'identification' in the manuscript; settle the terminology.",
+    "The block count is inconsistent rhetorically: 'seven blocks', 'eight blocks', conservation as not a block, and candidate ninth blocks appear in multiple places.",
+    "Some table labels and references contain spaces or unusual names, e.g., Table 'obstruction set', which is poor LaTeX practice.",
+    "Several claims cite supplementary files rather than presenting enough information in the main text to review them cold.",
+    "Repeated tcolorbox 'Boundary of contribution' summaries clutter the narrative.",
+    "The paper sometimes uses 'prediction' for reclassification of textbook-known phenomena; this invites overclaiming.",
+    "The Data Availability section duplicates a later Data Availability Statement with different supplementary inventories.",
+    "The abstract is more precise than the body; the body should follow the abstract's narrower MR-identification framing.",
+    "Multiple future-work commitments are written as if they are evidence; they should be removed or clearly separated."
+  ],
+  "highest_roi_fixes": [
+    {
+      "action": "Split the manuscript and submit only one coherent paper: preferably the NOETHER theory plus PWR negative boundary plus one clean independent evaluation, under 11k-13k words.",
+      "expected_gain_pp": 15,
+      "effort": "high",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Obtain an independent MR corpus and independent human expert labelling for at least two domains, replacing author-vs-author and LLM-only kappa evidence.",
+      "expected_gain_pp": 12,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Reframe Theorem 1 as a well-formedness lemma and make IBT or the PWR Translate-boundary result the main non-tautological theoretical contribution.",
+      "expected_gain_pp": 8,
+      "effort": "medium",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Run one fair, fully executed baseline comparison against GenMorph, METRIC+/manual categories, MR-Scout where applicable, and LLMs on the same subjects, with pre-registered metrics and independent equivalent-mutant adjudication.",
+      "expected_gain_pp": 10,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Replace constructed mutation categories with real defects or independently generated mutants, and report clustered/paired analyses without treating structural coverage as empirical success.",
+      "expected_gain_pp": 7,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Create a single artifact manifest mapping every table and statistic to scripts/data, and remove all unsupported supplementary references from the main text.",
+      "expected_gain_pp": 4,
+      "effort": "medium",
+      "fixable_by": "writing"
+    }
+  ],
+  "summary": "The manuscript contains a potentially publishable idea—using operator-algebraic structure to organize MR MetaPatterns and to state explicit boundaries—but the submitted version is not TOSEM-ready. It is far too long, theoretically over-positioned, empirically self-referential, and comparative evidence is either weak, constructed, future-work, or unfavorable in aggregate. A major redesign with independent evidence and a much narrower claim is required."
+}

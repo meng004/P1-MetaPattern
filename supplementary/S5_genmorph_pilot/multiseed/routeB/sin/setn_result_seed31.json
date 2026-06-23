@@ -1,0 +1,36 @@
+{
+  "subject": "MathClass?sin?0",
+  "seed": "31",
+  "n_mutants": 0,
+  "setN_valid_MRs": [],
+  "setN_invalid_MRs": [
+    "bound",
+    "complement",
+    "oddsym",
+    "period"
+  ],
+  "per_mr": {
+    "bound": {
+      "test_class": "TestSuite_setN_MathClass_sin_0_rho_bound",
+      "fp": 1,
+      "killed": null
+    },
+    "complement": {
+      "test_class": "TestSuite_setN_MathClass_sin_0_rho_complement",
+      "fp": 9,
+      "killed": null
+    },
+    "oddsym": {
+      "test_class": "TestSuite_setN_MathClass_sin_0_rho_oddsym",
+      "fp": 1,
+      "killed": null
+    },
+    "period": {
+      "test_class": "TestSuite_setN_MathClass_sin_0_rho_period",
+      "fp": 4,
+      "killed": null
+    }
+  },
+  "setN_union_killed": 0,
+  "setN_union_vector": []
+}

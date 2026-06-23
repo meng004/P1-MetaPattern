@@ -1,0 +1,97 @@
+{
+  "overall_recommendation": "Reject",
+  "reviewer_confidence_1to5": 5,
+  "scores_1to5": {
+    "soundness": 1,
+    "novelty": 2,
+    "significance": 2,
+    "presentation": 1,
+    "reproducibility": 1
+  },
+  "summary": "The paper proposes NOETHER, a framework for deriving metamorphic-relation classes from an empirically curated operator-block decomposition of a program family's governing equations. It defines a Translate-based algebra-induced MR space, proves closure and decidability results over that space, and reports several theoretical instantiations and empirical sanity checks across reactor physics, equivariant ML, relational query optimizers, and Java/ML mutation studies.",
+  "strengths": [
+    "The paper correctly distinguishes MR identification from MR fault-detection effectiveness in several places and explicitly states that many empirical results are secondary sanity checks rather than average-effectiveness evidence.",
+    "The negative PWR discussion usefully recognizes that single-block Translate-style derivations miss important compositional or higher-order engineering MRs, which is a valuable limitation to surface.",
+    "The paper attempts to connect MR patterns to explicit mathematical structures rather than treating pattern taxonomies as purely empirical catalogues.",
+    "Some sections make unusually explicit boundary statements about scope, out-of-scope program families, and candidate ninth blocks."
+  ],
+  "publication_blockers": [
+    {
+      "section": "Sections 3.2, Appendix C.2, Theorem 1",
+      "issue": "The central closure theorem is essentially definitional and does not establish a substantive completeness or adequacy result.",
+      "why_fatal": "Definition 3 defines MR(A_P) as exactly the image of Translate from single-block invariants, and Theorem 1 then proves that every element of this image is assigned to a MetaPattern by CONSTRUCT-MP. This is a tautological well-formedness property, not a theory of MR identification at TOSEM level. The paper repeatedly uses this result rhetorically as structural adequacy or closure evidence, but it follows by construction and has no demonstrated connection to the practically relevant MR space."
+    },
+    {
+      "section": "Section 3.2.4, Table 1, Theorem 2",
+      "issue": "The decidability and polynomial-time complexity theorem is unsupported and technically false at the stated level of generality.",
+      "why_fatal": "The paper assumes invariant extraction costs t_i and then concludes O(n max t_i log n), but the hard problem is exactly computing I_s and deciding equivalence of invariants/templates. For several blocks this is undecidable or not polynomial in the given representation: query equivalence under SQL/bag semantics, group invariant discovery, monotonicity of programs, convergence-rate recognition, and qualitative-dynamics extraction. The proof is an accounting exercise over assumed oracle costs rather than a complexity result."
+    },
+    {
+      "section": "Sections 3.1, 3.2, Hypothesis 1, Definitions 1-4",
+      "issue": "Core formal objects are underspecified and inconsistent with the claims built on them.",
+      "why_fatal": "The 'program-induced operator algebra' is not an algebra in the usual sense, the operator set may act on inputs, outputs, methods, expressions, or trajectories, and the equivalence relation is defined semantically over all programs in a family without an effective representation. Block invariants quantify over canonical orders and pi-relations that are not formally specified. Several examples violate the stated framework, e.g., SQL bag semantics is treated through an idempotent semiring, although bags are not idempotent; 'conservation' appears in empirical tables although it is not one of the eight blocks; and limit/scaling/linearity are conflated under L*. The formal layer is therefore not sound enough to support the stated theorems."
+    },
+    {
+      "section": "Sections 4-5, especially 5.2-5.4 and 5.7",
+      "issue": "The empirical evaluation is not a valid test of the central claims and is affected by severe selection, construction, and circularity biases.",
+      "why_fatal": "Key results are based on hand-constructed mutants designed to target NOETHER blocks, single-model pilots, single-author MR derivation, LLM-only 'independent' raters, reimplemented comparator subjects by the framework author, post-hoc equivalent-mutant filtering via LLM votes, and extensive future-work protocols reported alongside completed results. The paper itself admits many results are construct-validity demonstrations, not independent effectiveness evidence. These data cannot support claims about broader MR design-space coverage, transferability, or comparison with GenMorph/METRIC+/LLM/MR-Scout at TOSEM's empirical standard."
+    },
+    {
+      "section": "Whole paper, especially Introduction, Related Work, Sections 3-5, Conclusion",
+      "issue": "The manuscript is internally inconsistent, overlong, and mixes theory, protocols, pilots, completed studies, future work, and supplementary claims in a way that prevents reliable assessment.",
+      "why_fatal": "There are contradictory statements about whether Theorem 1' is open or falsified, whether H1 is a hypothesis or tautology, whether comparison results are primary or secondary, and whether generated blocks are seven, eight, or include additional 'conservation'/'idempotence' blocks. Many claims are deferred to supplementary artifacts, future work, or non-existent appendices while still being used in argumentation. This prevents a reader from reconstructing a coherent contribution or validating the evidence chain."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Section 3.3 Invariance-Blindness Theorem",
+      "issue": "The theorem is mathematically narrow and partly circular: the detection kernel is defined as the set satisfying the same structural equations, and faithfulness is defined as equality to the compatible set.",
+      "suggested_fix": "Recast the result as a precise linear-algebra lemma for explicitly represented finite-dimensional operators; separate assumptions, prove existence and construction of faithful witnesses for concrete representations, and stop generalizing beyond G and T*."
+    },
+    {
+      "section": "Section 3.4 reactor and equivariant-ML instantiations",
+      "issue": "Several claimed MR derivations are not clearly valid executable MRs. For example, training-trajectory time reversal for SGD is a debug harness property under strong assumptions, not a program-family MR for equivariant classifiers; the attention-adjoint MR is introduced via instrumentation/probes not necessarily exposed by the SUT.",
+      "suggested_fix": "For each MR, state the exact SUT interface contract, preconditions, executable inputs, observations, tolerance, and why the relation must hold for all conforming implementations."
+    },
+    {
+      "section": "Section 3.5 relational query optimizers",
+      "issue": "The relational algebra treatment is technically inaccurate: bag semantics and SQL NULLs do not fit the stated idempotent semiring assumptions, and several listed rewrite identities are conditional or false under bag/NULL semantics.",
+      "suggested_fix": "Restrict to a formally specified set-semantics relational algebra fragment, or provide a correct bag-semantics algebra and prove each rewrite under its side conditions."
+    },
+    {
+      "section": "Section 5.1 primary MR-identification evidence",
+      "issue": "Tables 6-8 are too coarse to be probative: binary block coverage with small, heterogeneous corpora does not demonstrate broader design-space coverage or external transfer.",
+      "suggested_fix": "Use independently curated MR corpora, predefine the block mapping protocol, obtain human domain-expert labels, report disagreements, and compare against concrete baselines under the same units of analysis."
+    },
+    {
+      "section": "Section 5.3 empirical vs SOTA",
+      "issue": "The GenMorph comparison is not a fair or interpretable SOTA comparison. The subject selection is narrow, the MR sets are hand-derived, the D1/D2 stratification is author-defined, and Set G is sometimes absent due to tooling issues rather than method limitations.",
+      "suggested_fix": "Run a clean benchmark with pre-registered subjects, multiple random seeds, tool versions fixed, no LLM equivalent-mutant adjudication unless validated, and present the comparison as exploratory unless powered."
+    },
+    {
+      "section": "Data and Artifact Availability",
+      "issue": "Reproducibility is not established by naming a Zenodo DOI. Many decisive claims depend on supplementary files not present in the manuscript, unpublished future-work items, or artifacts whose anonymization and content hash are not actually specified.",
+      "suggested_fix": "Provide a minimal, executable replication package for one coherent study; include exact commands, expected outputs, version hashes, and raw data needed to regenerate every table used as evidence."
+    }
+  ],
+  "minor_issues": [
+    "The manuscript is far beyond a reasonable TOSEM article length and should be radically shortened before any resubmission.",
+    "The title and Noether analogy are rhetorically heavy relative to the actual formal content.",
+    "The paper is not anonymized despite claiming review anonymity: author names, affiliations, emails, funding, and artifact DOI are included.",
+    "Several references appear unverifiable or future-dated, and the paper cites a 2026 arXiv DOI in ACM metadata.",
+    "The notation is unstable: A_P, A_F, blocks, MetaPatterns, MR sets, and coverage denominators change across sections.",
+    "Table numbering and references are likely broken; several tables and appendices are referred to as supplementary, future, or migrated while still carrying claims in the main text.",
+    "Using LLM panels as independent raters should not be described with standard inter-rater reliability language without strong caveats and validation against human experts.",
+    "The paper repeatedly states that certain work is 'committed as follow-up'; future commitments are not evidence."
+  ],
+  "questions_to_authors": [
+    "What exactly is the effective input to CONSTRUCT-MP: source code, mathematical equations, an operator list supplied by experts, or a manually written block decomposition?",
+    "Can you provide a non-tautological completeness or adequacy statement over a pre-existing MR universe not defined as the image of Translate?",
+    "How is invariant extraction implemented for each block, and what is the representation of invariants and pi-relations used to decide equivalence?",
+    "Why is SQL bag semantics modeled through an idempotent semiring, and under what exact semantics are the relational MRs valid?",
+    "Which empirical tables are claimed as completed experiments, which are protocols, and which are future work?",
+    "How many MR/block labels were assigned by independent human domain experts rather than by the authors or LLMs?",
+    "Can you reproduce the main empirical claims without LLM equivalent-mutant adjudication and without subjects reimplemented by the framework author?",
+    "What claim remains if Theorem 1 is explicitly labeled as a definitional well-formedness lemma rather than a closure or adequacy theorem?"
+  ]
+}

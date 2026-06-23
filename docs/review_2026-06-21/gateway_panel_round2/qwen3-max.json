@@ -1,0 +1,97 @@
+{
+  "overall_recommendation": "Major Revision",
+  "submission_maturity_0to100": 68,
+  "acceptance_probability_pct": 45,
+  "reviewer_confidence_1to5": 4,
+  "dimension_scores_0to100": {
+    "originality": 85,
+    "methodology_rigor": 70,
+    "evidence_sufficiency": 65,
+    "argument_coherence": 80,
+    "writing_presentation": 85
+  },
+  "persona_verdicts": {
+    "EIC": {
+      "recommendation": "Major Revision",
+      "headline": "Scope fits TOSEM; contribution is a novel theory-guided MR identification framework, but empirical validation has critical gaps."
+    },
+    "R1_methodology_theory": {
+      "recommendation": "Major Revision",
+      "headline": "Theorems are by-construction within narrow scope; statistical design underpowered and lacks correction for multiple comparisons."
+    },
+    "R2_domain_mt_mr": {
+      "recommendation": "Major Revision",
+      "headline": "Novelty over prior MT meta-pattern work is real but overstated; evaluation is self-referential with limited external validation."
+    },
+    "R3_perspective_equivariance_safety": {
+      "recommendation": "Major Revision",
+      "headline": "Cross-domain transfer is demonstrated structurally but not validated on real safety-critical faults; industrial witness is weak."
+    },
+    "devils_advocate": {
+      "critical_found": false,
+      "strongest_counterargument": "The core claim of 'constructive identification' is circular: the eight operator blocks were curated from domains that include reactor physics, then used to 'derive' patterns already known in those domains. The negative result on PWR shows the framework's systematic incompleteness, yet the paper presents this as a strength (boundary identification) rather than a fundamental limitation. The empirical case studies use hand-constructed mutations designed to validate specific MRs, creating selection-on-the-response bias. Self-disclosure of limitations (e.g., upstream distillation remains human) is used rhetorically to deflect criticism rather than as evidence of rigor."
+    }
+  },
+  "publication_blockers": [
+    {
+      "id": "blocker-1",
+      "section": "Section 4.2",
+      "issue": "Statistical analysis in case study lacks correction for multiple comparisons (McNemar/Fisher tests across 3 sets without adjustment), inflating Type I error.",
+      "why_fatal": "Invalidates the claimed unique detection advantage of Set N; without correction, the p=0.016 finding is likely spurious.",
+      "fixable_by": "writing"
+    },
+    {
+      "id": "blocker-2",
+      "section": "Section 5.1",
+      "issue": "Head-to-head comparison against GenMorph uses a single seed (seed=11) without justification; results may be seed-specific.",
+      "why_fatal": "Threatens internal validity of the main comparative claim; a single seed cannot support general conclusions about method performance.",
+      "fixable_by": "experiment"
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Section 3.4",
+      "issue": "Theorem 2's 'polynomial-time' claim is misleading: runtime is polynomial in the size of the generating set, which can be exponential in the natural problem description (e.g., |G| for symmetry groups).",
+      "suggested_fix": "Reframe Theorem 2 as output-polynomial or parameterized complexity, and discuss practical implications honestly.",
+      "fixable_by": "writing"
+    },
+    {
+      "section": "Section 4.1",
+      "issue": "Expert MR coverage comparison uses the authors' own prior catalogue, creating self-reference bias; no independent expert corpus is evaluated.",
+      "suggested_fix": "Include an evaluation against an MR set authored by an independent team (e.g., IAEA TECDOC-class catalogue) to demonstrate external validity.",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "Section 4.3",
+      "issue": "The DeepCrime pilot (n=5) is severely underpowered; confidence intervals are extremely wide, making any inference meaningless.",
+      "suggested_fix": "Either remove the pilot or expand it to a properly powered study (n≥20) to provide actionable evidence for the candidate ninth block.",
+      "fixable_by": "experiment"
+    }
+  ],
+  "minor_issues": [
+    "Overuse of tcolorbox and remarks clutters the narrative; integrate key limitations into main text.",
+    "Inconsistent notation: sometimes uses \\mathcal{A}_P, sometimes \\mathcal{A}_{\\mathrm{Boltz}}; standardize.",
+    "The term 'MetaPattern' is overloaded; distinguish clearly between equivalence classes and block-derived templates."
+  ],
+  "highest_roi_fixes": [
+    {
+      "action": "Add Holm-Bonferroni correction to all pairwise statistical tests in Section 4.2 and 5.1.",
+      "expected_gain_pp": 8,
+      "effort": "low",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Run GenMorph head-to-head with multiple seeds (e.g., 10) and report aggregated results.",
+      "expected_gain_pp": 12,
+      "effort": "medium",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Clarify Theorem 2's complexity claim to avoid misinterpretation as input-polynomial.",
+      "expected_gain_pp": 5,
+      "effort": "low",
+      "fixable_by": "writing"
+    }
+  ],
+  "summary": "NOETHER presents a theoretically grounded framework for deriving metamorphic relations from operator algebras, addressing a genuine gap in MR identification. The core contributions—algebraic derivation of MetaPatterns, closure theorem, and cross-domain instantiation—are novel and well-motivated. However, the empirical validation suffers from critical methodological flaws: underpowered studies, lack of multiple-comparison correction, and self-referential evaluation. The negative result on PWR core simulators, while honest, exposes a fundamental incompleteness that undermines the framework's generality. With major revisions to the experimental design and statistical analysis, this could be a strong TOSEM paper. As-is, the evidence does not sufficiently support the claims of structural superiority over existing methods."
+}

@@ -1,5 +1,15 @@
 # S5: NOETHER vs GenMorph comparative pilot — Java bridge architecture (R1)
 
+> **[2026-06-20 correction — superseded numbers]** The Set N / Set G kill counts
+> in this pilot (`results/{gcd,sin}/pilot_stats.json`: gcd Set N 5 / Set G 17;
+> sin Set N 11 / Set G 2) come from an early Python re-implementation of the MRs
+> and do **not** match GenMorph's published values nor the authentic PIT
+> mechanism; they are **deprecated**. The authentic-mechanism results (GenMorph
+> `PITestGenerator` + PIT 1.7.4 + published Set G, 12 seeds) live in
+> `multiseed/routeB/`: at seed 11 gcd is Set N 13 / Set G 11 and sin is
+> Set N 14 / Set G 16, and pooled across 12 seeds Set G significantly dominates
+> Set N (gcd McNemar p=2.97e-11, sin p=0.012). Cite `routeB`, not these pilot numbers.
+
 This pilot compares NOETHER-derived MRs (Set N) against GenMorph's published
 evolved MRs (Set G) on a real Java subject (`MathClass.gcd`) from the
 GenMorph 23-Java benchmark. Apples-to-apples: both MR sets execute against

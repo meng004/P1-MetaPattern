@@ -1,0 +1,113 @@
+{
+  "overall_recommendation": "Major Revision",
+  "submission_maturity_0to100": 57,
+  "acceptance_probability_pct": 32,
+  "reviewer_confidence_1to5": 4,
+  "dimension_scores_0to100": {
+    "originality": 64,
+    "methodology_rigor": 52,
+    "evidence_sufficiency": 43,
+    "argument_coherence": 68,
+    "writing_presentation": 55
+  },
+  "persona_verdicts": {
+    "EIC": {
+      "recommendation": "Major Revision",
+      "headline": "Scope fits TOSEM with stretch on SE methodology but length triggers LEN-01 risk; originality in algebraic grounding for MetaPatterns is adequate but significance for 'why readers must use NOETHER' is undermined by de-emphasized effectiveness evidence and self-referential evaluations (see §1, §5.2, Table 4, §6.2)."
+    },
+    "R1_methodology_theory": {
+      "recommendation": "Major Revision",
+      "headline": "Theorem 1 (closure, §3.3) is by-construction within narrow Translate scope (Def. 5, Rem. 2, App. C); Theorem 2 (decidability, §3.4) overstates 'polynomial-time' as output- not input-polynomial (|G| exponential, Table 1, Rem. 4); IBT (Thm. 3, §3.5) rigorous for linear faults/exact arith but scope-limited (Rem. 6); stats in case study (§4.2, Table 4) underpowered (n=20 mutants/1 model), no power analysis, McNemar/Fisher without full multiple-comparison correction, construct-validity caveat on cat-(iv) not converted to leniency."
+    },
+    "R2_domain_mt_mr": {
+      "recommendation": "Major Revision",
+      "headline": "Lit coverage strong on Segura 2016, Zhou 2020, GenMorph 2024, MRScout 2024, LiTOSEM2025, Gotlieb 2003/2006, Patel-Hierons 2018, Saha-Kanewala 2019 (§2), but novelty delta is incremental re-projection of known symmetries (reactor-physics provenance circularity admitted §3.6.2); EQ1/EQ3 self-vs-self (author PWR catalogue §3.6, self-implemented Set N §4.2, LLM κ audit §5.1 not human); 'construction+proof over operator-block layer' not fully realized as effectiveness evidence is secondary (§1, §4.1, §4.3)."
+    },
+    "R3_perspective_equivariance_safety": {
+      "recommendation": "Major Revision",
+      "headline": "IBT linear-exact vs floating-point addressed (Rem. 6, E3 §4.4) but τ>0 regime weakens safety-critical V&V claim; equivariant-ML instances use EGNN stand-in with added probes not native (§3.7); reactor witnesses (SACOS/SPARK/LOCUST §4.1, S11) independent but domain-concentrated; GenMorph head-to-head loss on D1 aggregate (Table 7, p=0.019 §4.3.7) with asymmetric complementarity and no measured auditability/maintainability payoff; generalization to claimed domains overreaches current evidence (§1, §5.2, §6.3)."
+    },
+    "devils_advocate": {
+      "critical_found": true,
+      "strongest_counterargument": "The core claim ('constructive framework deriving MR meta-patterns from operator algebras with completeness boundary and transferability') is circular and tautological. Blocks in Hypothesis 1 (§3.2) were partly curated from reactor-physics structures that later 'predict' adjoint/time-reversal patterns known in physics textbooks (Bell & Glasstone §6.3, §3.6.2 explicit caveat); Theorem 1 closure (by-construction within Def. 5 Translate-image, Rem. 3, App. C) is near-tautological and explicitly modest (C2a); negative result (§3.9, App. C.6) shows Translate's narrow signature excludes standard PWR MRs (non-additivity, MTC-boron mixed derivative), identifying 5 obstructions (O1-O5) but not repairing them—Theorem 1' falsified on own primary domain. Empirical legs are self-referential (author PWR catalogue, self-Set N vs self-GenMorph/LLM, construct-validity-controlled mutations in §4.2 cat-iv 5/5, small n=20/5, underpowered McNemar p-values), secondary executability only (explicitly de-emphasized), and no measured maintainability/auditability/reuse/cost advantage despite 'so what' claim. Selection-on-response (focus on structural coverage, de-emphasize effectiveness), self-disclosure of limitations (tcolorbox repetitions §1, §3, §5) does not convert weaknesses into evidence. Over-generalization from 3 algebras + PWR negative to 'broader explainable MR class' for SE readers. At TOSEM bar this is rhetoric dressed as theory+evidence; fatal CRITICAL flaw in evidence sufficiency and argument coherence for a methodology paper. Cannot be Accept."
+    }
+  },
+  "publication_blockers": [
+    {
+      "id": "B1",
+      "section": "whole manuscript (est. >15k words)",
+      "issue": "Violates TOSEM LEN-01 soft ~11k-word limit; repetitive Boundary tcolorboxes (§1, §3, §4.3.7, §7), migrated appendices in supp, dense notation bury main line",
+      "why_fatal": "EIC desk-reject trigger; obscures significance for TOSEM readers",
+      "fixable_by": "writing"
+    },
+    {
+      "id": "B2",
+      "section": "§4.2 Table 4, §4.3.7 Table 7, §5.1",
+      "issue": "Evidence sufficiency gap: mutation/head-to-head secondary and weak (n=20/5, 1 model, construct-validity controlled cat-iv, no power analysis, underpowered for α=0.05 on real faults, self-authored Set N/catalogue, LLM κ not human inter-rater)",
+      "why_fatal": "Core claim is 'MR-identification method'; structural coverage alone insufficient at TOSEM bar without independent effectiveness/maintainability payoff on real bugs across domains",
+      "fixable_by": "experiment"
+    },
+    {
+      "id": "B3",
+      "section": "§3.6.2, §3.9, Rem. 5, App. C.6",
+      "issue": "Circularity in 'prediction' of m_adj/m_rev (blocks curated from reactor physics) and narrow Translate scope (Def. 5, negative PWR MRs outside MR(A_PWR) despite being standard safety MRs)",
+      "why_fatal": "Undermines origin/closure claims; Devil's CRITICAL on tautology and over-generalization",
+      "fixable_by": "writing"
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "§1, §3.3 Thm 1, Rem. 3, §3.5 IBT",
+      "issue": "Theorems modest/by-construction (closure over Translate-image only, IBT linear/exact-arith/τ→0 only); negative result shows framework misses standard PWR MRs (non-additivity, MTC-boron) identifying 5 independent obstructions (O1-O5 in App. C.6) without repair",
+      "suggested_fix": "Rewrite claims to match modest scope (no absolute completeness); add Composite-Translate sketch or explicit open-problem framing; new theoretical work on obstructions or larger empirical validation that IBT blind spots align with real faults in safety-critical V&V",
+      "fixable_by": "either"
+    },
+    {
+      "section": "§4.1 Table 2, §4.2, §4.3.7 Table 7, §5.1",
+      "issue": "Self-referential evaluations (author PWR corpus, self-Set N vs self-baselines, LLM-audited κ=0.857/0.93 not human, DeepCrime pilot n=5 underpowered); no measured maintainability/auditability/reuse despite 'so what' payoff claim",
+      "suggested_fix": "Replace with independent external corpus (non-author reactor V&V or equiv-ML real bugs), human inter-rater κ, larger powered studies (n≥30 real faults), explicit metrics for auditability/maintainability (e.g. MR refactoring effort)",
+      "fixable_by": "experiment"
+    },
+    {
+      "section": "§2.4, §4.3.4, Table 5, §5.2",
+      "issue": "Complementarity to SOTA (GenMorph, METRIC+, LLM, MR-Scout) acknowledged but baselines asymmetric (30-min GP budget, no public METRIC+ auto-pipeline, MR-Scout corpus-absent on algebra-rich substrate); aggregate D1 dominance by Set G (p=0.019) not offset by per-block reading",
+      "suggested_fix": "Full 3-SOTA-category protocol with matched baselines (METRIC+ re-implementation, MR-Scout re-execution, multi-vendor LLM ensemble + third-vendor Claude), report per-block + cost-axis cleanly without directional-only per-SUT claims",
+      "fixable_by": "experiment"
+    }
+  ],
+  "minor_issues": [
+    "Repetitive Boundary tcolorboxes (§1, §3, §4.3.7, §7) and self-disclosures do not earn leniency (TOSEM bar)",
+    "Theorem 2 phrasing risks overstating poly-time (§3.4, Table 1; output- vs input-poly)",
+    "EQ1/EQ3 coverage binary but expert sets industrial-only (§4.1 Table 2; held-out cross-domain in S12)",
+    "Floating-point/τ regime for IBT acknowledged (Rem. 6, E3 §4.4) but safety-critical claim needs stronger discretisation analysis",
+    "Zenodo DOI promised but review-stage hash/manifest needed for artifact badge",
+    "Length forces appendices to supp; TOSEM readers may miss migrated A/B/D/E material"
+  ],
+  "highest_roi_fixes": [
+    {
+      "action": "Trim manuscript to ~11k words: remove/reduce repetitive Boundary boxes, consolidate tcolorboxes into one Scope statement (§1), move non-load-bearing worked examples to supp only, tighten theory prose around modest claims",
+      "expected_gain_pp": 12,
+      "effort": "medium",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Replace case-study (§4.2) and pilot (§4.2.1) with larger independent real-bug study (e3nn/PyG or nuclear V&V bugs, n≥30, human inter-rater κ, powered McNemar/Fisher with correction, measured maintainability/auditability metrics)",
+      "expected_gain_pp": 18,
+      "effort": "high",
+      "fixable_by": "experiment"
+    },
+    {
+      "action": "Clarify circularity (§3.6.2 caveat), reframe claims to exactly match modest scope (no absolute completeness, Translate-image only), add explicit Composite-Translate sketch or open-problem section on 5 obstructions (App. C.6)",
+      "expected_gain_pp": 8,
+      "effort": "low",
+      "fixable_by": "writing"
+    },
+    {
+      "action": "Strengthen per-block head-to-head (§4.3.7 Table 7) with full matched 3-SOTA baselines (METRIC+ re-impl, MR-Scout re-exec, 3-vendor LLM), report cost-axis (Table 8) as primary alongside complementarity; add power analysis",
+      "expected_gain_pp": 7,
+      "effort": "high",
+      "fixable_by": "experiment"
+    }
+  ],
+  "summary": "TOSEM-calibrated maturity 57 (weighted). Strong theoretical framing for MR identification origin/boundary/transfer (operator algebras, modest closure/IBT/negative result) but fatally undermined at current bar by excessive length (LEN-01 risk), by-construction modesty of core theorems, circular curation of blocks from primary domain, self-referential/weak/underpowered empirical evidence (structural coverage primary, effectiveness secondary and construct-validity controlled), and insufficient payoff demonstration for 'why use NOETHER' on auditability/maintainability/reuse in safety-critical or equiv-ML V&V. Devil's CRITICAL on tautology + evidence gap precludes Accept. Major Revision possible if length cut, circularity clarified, and new independent real-bug/human-validated experiments close sufficiency gap (ROI prioritizes writing trim + real-fault study). Acceptance probability after normal R&R ~32% at current bar; confidence 4 (cold read, no repo)."
+}

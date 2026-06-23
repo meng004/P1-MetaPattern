@@ -74,7 +74,7 @@
 }
 
 %% ---- Title and metadata ----
-\title{NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras}
+\title{NOETHER: Constructive Metamorphic Pattern Identification from Operator Algebras and a Falsifiable Invariance-Blindness Theorem}
 
 %% Shared three-affiliation macro
 \newcommand{\threeaffil}{%
@@ -125,11 +125,11 @@
 
 \textbf{Objective.} This paper studies MR identification rather than MR fault-revealing effectiveness. We ask whether a structured, operator-algebraic method can derive a broader and more explainable MR class / MetaPattern design space than expert MR sets and search-based MR generation, by making the algebraic origin and applicability boundary of MRs explicit from program-family governing equations.
 
-\textbf{Method.} We introduce \textbf{NOETHER}, a two-level framework for equation-governed program families. The upstream layer curates a program-family operator algebra and decomposes it into recurrent operator blocks, including symmetry, order, self-adjointness, time reversal, limits, qualitative dynamics, method comparison, and relational equivalence. The downstream layer, \texttt{CONSTRUCT-MP}, derives MR classes / MetaPatterns from those blocks and then checks whether a specific program interface exposes the inputs and observations needed to instantiate an executable MR.
+\textbf{Method.} We introduce \textbf{NOETHER}, a two-level framework for equation-governed program families. The upstream layer curates a program-family operator algebra and decomposes it into recurrent operator blocks, including symmetry, order, self-adjointness, time reversal, limits, qualitative dynamics, method comparison, and relational equivalence. The downstream layer, \texttt{CONSTRUCT-MP}, derives MR classes / MetaPatterns from those blocks and then checks whether a specific program interface exposes the inputs and observations needed to instantiate an executable MR. The downstream derivation is provable: \texttt{CONSTRUCT-MP} is closed under the derivation operator, a well-formedness guarantee, and for the symmetry and self-adjoint blocks an \emph{Invariance-Blindness Theorem} characterises exactly which implementation faults an algebra-derived MR can and cannot detect, converting that closure into a falsifiable, non-tautological prediction.
 
 \textbf{Evidence.} We evaluate NOETHER as an MR-identification method along three axes. First, we compare expert MR sets and NOETHER using binary operator-block coverage. Second, we compare NOETHER with search-based MR generation on origin explanation, boundary explanation, redundancy, readability, and maintenance. Third, we trace cross-domain derivations showing that the same operator block can explain MR classes across different program families and solvers. Mutation and head-to-head results are retained only as secondary executability and sanity-check evidence.
 
-\textbf{Conclusion.} NOETHER contributes a theory-guided MR-identification framework: it derives MR classes from governing-equation operator algebra, makes their origin and boundary auditable, and exposes structural MR design-space coverage that is not explicit in expert MR sets or search-generated candidates alone.
+\textbf{Conclusion.} NOETHER contributes a theory-guided MR-identification framework: it derives MR classes from governing-equation operator algebra, makes their origin and boundary auditable, and exposes structural MR design-space coverage that is not explicit in expert MR sets or search-generated candidates alone. A held-out evaluation confirms the Invariance-Blindness prediction, and a negative instance on a reactor-physics algebra bounds the method's completeness and localises where the derivation must be extended.
 \end{abstract}
 
 %% CCS Concepts
@@ -169,7 +169,7 @@ Noether's first theorem replaced an empirically curated catalogue of conservatio
 
 Software testing faces a related problem. Metamorphic Testing (MT), introduced by Chen et~al.\ in 1998~\cite{Chen1998}, was admitted into the IEEE/ISO/IEC software-testing standards in 2022~\cite{ISO29119} and has been increasingly endorsed as a technique for testing AI and machine-learning systems~\cite{Segura2016, LiTOSEM2025}. Its central artefact is the \emph{metamorphic relation} (MR): a property that constrains how a program's outputs must covary across multiple executions, thereby substituting for an explicit oracle in domains where one cannot exist. Despite MT's maturity, MR identification, the task of deciding \emph{which} properties hold for a program under test, remains its binding constraint. Practitioners report three recurring difficulties: high dependence on tester domain knowledge, mutually incompatible MR formulations for the same program, and low reuse of MR sets across teams or projects~\cite{Segura2016, LiTOSEM2025}. Recent work has responded at the application layer, by mining MRs for particular domains, and at the integration layer, by automating search through evolutionary, mining-based, or LLM-assisted pipelines~\cite{MRScout2024, GenMorph2024, Shin2024}. The foundational layer has not advanced at the same pace.
 
-The principal artefact at that foundational layer is the \emph{MetaPattern} (MP): an equivalence class over MRs that captures a recurrent structural strategy a tester invokes when reasoning about program properties. MetaPatterns organise the otherwise unbounded MR design space into a small, interpretable scaffold; methods that exploit them, including the structured MR identification approaches METRIC~\cite{ChenMETRIC2016} and METRIC+~\cite{SunMETRICplus2021}, and the recent wave of LLM-prompted MR generators, depend on the scaffold's quality. Yet across the literature, MetaPattern catalogues continue to be assembled in the same way conservation laws were assembled before 1918: by induction over observed examples. A typical proposal lists $k$ patterns drawn from cluster analysis or expert codification, demonstrates that the patterns ``cover'' some corpus of MRs to a target threshold, and stops. None of the existing MP proposals, including the authors' own prior work on five reactor-physics patterns, answers the three questions that any foundational theory of MetaPatterns should answer:
+The principal artefact at that foundational layer is the \emph{MetaPattern} (MP): an equivalence class over MRs that captures a recurrent structural strategy a tester invokes when reasoning about program properties. MetaPatterns organise the otherwise unbounded MR design space into a small, interpretable scaffold; methods that exploit them, including the structured MR identification approaches METRIC~\cite{ChenMETRIC2016} and METRIC+~\cite{SunMETRICplus2021}, and the recent wave of LLM-prompted MR generators, depend on the scaffold's quality. Yet across the literature, MetaPattern catalogues continue to be assembled in the same way conservation laws were assembled before 1918: by induction over observed examples. A typical proposal lists $k$ patterns drawn from cluster analysis or expert codification, demonstrates that the patterns ``cover'' some corpus of MRs to a target threshold, and stops. None of the existing MP proposals, including the authors' own prior work on five reactor-physics patterns, answers the three questions that any structural account of MetaPatterns should answer:
 
 \begin{enumerate}
   \item \textbf{Origin.} \emph{Why} exactly these MetaPatterns and not others? What is the structural source of an MP, as distinct from an empirical regularity in the corpus on which it was induced?
@@ -238,7 +238,7 @@ hypothesis (Hypothesis~\ref{hyp:seven-blocks}). The \emph{downstream
 layer} mechanically derives the MetaPattern set
 $\mathbb{M}(\mathcal{A}_P)$ via \texttt{CONSTRUCT-MP}, with closure
 under \texttt{Translate} over $\mathrm{MR}(\mathcal{A}_P)$
-(Theorem~\ref{thm:closure}) and polynomial-time decidability under a
+(Theorem~\ref{thm:closure}) and polynomial-time constructibility under a
 finite generating set (Theorem~\ref{thm:decidable}). The framework
 is instantiated on three structurally distinct domains
 (\S\ref{sec:reactor}, \S\ref{sec:cross-domain}, \S\ref{subsec:third-domain})
@@ -250,14 +250,14 @@ links the result to three domain instantiations.}
 \label{fig:noether-arch}
 \end{figure}
 
-We make five MR-identification contributions.
+We make five MR-identification contributions. The load-bearing theoretical result is an Invariance-Blindness Theorem: a falsifiable characterisation of which implementation faults an algebra-derived MR can and cannot detect, distinct from the intentionally modest by-construction closure guarantee.
 
 \begin{itemize}
   \item \textbf{C1.} We introduce NOETHER, a \emph{layered} framework for MR-class / MetaPattern identification that combines an empirically curated structural decomposition (Hypothesis~\ref{hyp:seven-blocks}; upstream layer, itself partly distilled from the present authors' prior PWR MR catalogue, see \S\ref{subsec:reactor-mapping} for provenance) with a constructive algorithm for deriving MetaPatterns from a program-induced operator algebra (downstream layer).
-  \item \textbf{C2a (positive theory).} Given the structural decomposition, Theorem~1 proves a \emph{no-drop closure invariant}: every MR that is reachable by the framework's \texttt{Translate} operator over the algebra-induced MR space $\mathrm{MR}(\mathcal{A}_{P})$ is assigned to a canonical operator block and MetaPattern class. This result is intentionally modest. It is a well-formedness guarantee for the downstream construction, not evidence that the upstream block list is complete and not evidence of fault-detection superiority. Section~\ref{subsec:completeness} states the explicit scope of Definition~\ref{def:alg-induced}, and Remark~\ref{rem:scope} documents the MR classes outside that scope. Polynomial-time decidability of CONSTRUCT-MP holds when the algebra admits a finite generating set (Theorem~2).
+  \item \textbf{C2a (positive theory).} Given the structural decomposition, Theorem~1 proves a \emph{no-drop closure invariant}: every MR that is reachable by the framework's \texttt{Translate} operator over the algebra-induced MR space $\mathrm{MR}(\mathcal{A}_{P})$ is assigned to a canonical operator block and MetaPattern class. This result is intentionally modest. It is a well-formedness guarantee for the downstream construction, not evidence that the upstream block list is complete and not evidence of fault-detection superiority. Section~\ref{subsec:completeness} states the explicit scope of Definition~\ref{def:alg-induced}, and Remark~\ref{rem:scope} documents the MR classes outside that scope. Polynomial-time constructibility of CONSTRUCT-MP holds when the algebra admits a finite generating set (Theorem~2).
   \item \textbf{C2b (negative theory).} The strictly stronger absolute-completeness conjecture (Theorem~$1'$ / Conjecture~\ref{conj:absolute}), over arbitrary properties expressible in $\mathcal{A}_P$, is \emph{false} on $\mathcal{A}_{\mathrm{PWR}}$: two MRs from the standard PWR safety-analysis literature (non-additivity of rod-bank reactivity worth; second-order mixed dependence of $k_{\mathrm{eff}}$ on moderator temperature and boron concentration) are formulable over $\mathcal{A}_{\mathrm{PWR}}$ but not in $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$ (\S\ref{subsec:negative-pwr}, Appendix~\ref{app:negative-proofs}). The two MRs identify five structural obstructions in \texttt{Translate}'s signature, with pairwise independence established by per-block exhaustion. Companion surveys on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}) identify five further candidate dimensions (two on $\mathcal{A}_{\mathrm{equi}}$ specialising PWR-side dimensions; three net on $\mathcal{A}_{\mathrm{rel}}$), yielding five \texttt{Translate}-extension dimensions proved pairwise-independent on $\mathcal{A}_{\mathrm{PWR}}$ plus five candidate dimensions on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ whose pairwise independence is asserted by inspection; formal per-dimension exhaustion on those algebras is committed as follow-up. Scope statements are in Section~\ref{subsec:completeness}.
   \item \textbf{C2c (limiting theory).} We prove the \emph{Invariance-Blindness Theorem} (\S\ref{subsec:ibt}): for the symmetry ($G$) and self-adjoint ($T^{*}$) blocks, an algebra-derived MR's detection kernel equals \emph{exactly} the structure-preserving faults, within the linear operator-implementation fault class and under a faithfulness condition that a finite test attains. Corollaries: a single-block battery is structurally incomplete; completeness requires oracle families with trivial joint kernel; a neutral cross-implementation differential oracle is the complementary (common-mode) oracle. This converts the by-construction closure of C2a into a falsifiable, non-tautological characterization of the derivation's blind spots; tightness beyond $\{G, T^{*}\}$ and beyond the linear fault class is delimited in \S\ref{subsec:ibt}.
-  \item \textbf{C3.} We instantiate NOETHER on a real-world program family and show how it \emph{systematises and re-classifies} previously catalogued patterns. The framework re-classifies the prior inductive catalogue under a uniform algebraic structure: it reproduces three prior MetaPatterns, refines two on a sounder algebraic basis, and de-duplicates two equivalence classes ($m_{\mathrm{adj}}$, $m_{\mathrm{rev}}$) that the inductive catalogue had not isolated as structurally distinct. These are not de novo discoveries; NOETHER's contribution is the algebraic warrant for treating them as separate MetaPattern slots within a canonical block ordering, and the deflationary direction (revealing over-counting on some sub-families) constitutes a further non-circular form of re-classification. The deflationary direction is non-circular relative to the prediction caveat of \S\ref{subsec:reactor-mapping}: \S\ref{subsec:pmcm-worked} demonstrates it on three independent test cases (a sorting library; Murphy et al.\ 2008's categorisation of MRs for ML into six classes~\cite{Murphy2008} re-decoded against a feedforward classifier algebra; the prior reactor-physics catalogue itself), without invoking $T^{*}$ or $\mathcal{T}^{*}$ structure that was curated from reactor physics.
+  \item \textbf{C3.} We instantiate NOETHER on a real-world program family and show how it \emph{systematises and re-classifies} previously catalogued patterns. The framework re-classifies the prior inductive catalogue under a uniform algebraic structure: it reproduces three prior MetaPatterns, refines two on a sounder algebraic basis, and de-duplicates two equivalence classes ($m_{\mathrm{adj}}$, $m_{\mathrm{rev}}$) that the inductive catalogue had not isolated as structurally distinct. These are not de novo discoveries; NOETHER's contribution is the algebraic warrant for treating them as separate MetaPattern slots within a canonical block ordering, and the deflationary direction (revealing over-counting on some sub-families) constitutes a further non-circular form of re-classification. The deflationary direction is non-circular relative to the prediction caveat of \S\ref{subsec:reactor-mapping}: \S\ref{subsec:pmcm-worked} demonstrates it on three independent test cases (a sorting library; Murphy et al.\ 2008's categorisation of MRs for ML into six classes~\cite{Murphy2008} re-decoded against a feedforward classifier algebra; the prior reactor-physics catalogue itself), without invoking $T^{*}$ or $\mathcal{T}^{*}_{\mathrm{rev}}$ structure that was curated from reactor physics.
   \item \textbf{C4.} We demonstrate \emph{structural} transferability at the algebra-skeleton level (not cross-domain empirical superiority), within the framework's scope precondition, by instantiating NOETHER on three structurally distinct operator-algebraic domains at differentiated evaluation depths: Boltzmann reactor-physics transport (Section~\ref{sec:reactor}), equivariant ML (Section~\ref{sec:cross-domain}), and relational query optimisers (Section~\ref{subsec:third-domain}); the last exercises the relational-equivalence block, whose algebraic skeleton differs from the Lie-group / self-adjoint / time-reversal core.
   \item \textbf{C5.} We define an evidence protocol for MR identification: binary expert-vs-NOETHER operator-block coverage, search-vs-NOETHER origin/boundary comparison, and compact cross-domain derivation traces. Existing mutation, GenMorph, and DeepCrime-style results are treated as secondary executability checks, not as evidence of average fault-detection superiority.
 \end{itemize}
@@ -268,14 +268,14 @@ We make five MR-identification contributions.
 This paper establishes:
 \begin{enumerate}[leftmargin=*,nosep]
   \item A no-drop closure invariant for the downstream construction: given a block decomposition, $\mathbb{M}(\mathcal{A}_P)$ is closed under \texttt{Translate} over the algebra-induced MR space $\mathrm{MR}(\mathcal{A}_P)$ for the stated operator algebras (Theorem~\ref{thm:closure}; by-construction within the explicit scope of Definition~\ref{def:alg-induced}, see Remark~\ref{rem:scope}). Closure over the strictly larger space of arbitrary properties expressible in $\mathcal{A}_P$ is Theorem~$1'$, falsified on $\mathcal{A}_{\mathrm{PWR}}$ (see item (a) below);
-  \item Polynomial-time decidability of CONSTRUCT-MP under explicit complexity assumptions (Theorem~\ref{thm:decidable});
+  \item Polynomial-time constructibility of CONSTRUCT-MP under explicit complexity assumptions (Theorem~\ref{thm:decidable});
   \item Three non-vacuous instantiations: Boltzmann reactor physics (\S\ref{sec:reactor}), equivariant ML (\S\ref{sec:cross-domain}), and relational query optimisers (\S\ref{subsec:third-domain}); the relational-equivalence block $\mathcal{B}^{*}_{\mathrm{rel}}$ extends the framework beyond the Lie-group / self-adjoint / time-reversal mathematical core;
   \item The Invariance-Blindness Theorem for the $G$ and $T^{*}$ blocks (Theorem~\ref{thm:ibt}): the symmetry / self-adjoint MR detection kernel equals the structure-preserving faults (faithfulness-tight), within the linear operator-implementation fault class.
 \end{enumerate}
 
 It does \emph{not} establish:
 \begin{enumerate}[leftmargin=*,nosep]
-  \item[(a)] Absolute completeness over arbitrary properties expressible in $\mathcal{A}_P$. This is Theorem~1$'$ (Conjecture~\ref{conj:absolute}, Appendix~\ref{app:proofs}); \S\ref{subsec:negative-pwr} establishes that it is false on the PWR core diffusion algebra $\mathcal{A}_{\mathrm{PWR}}$ via two independent counterexamples (non-additivity of rod-bank reactivity worth, and second-order mixed dependence of $k_{\mathrm{eff}}$ on moderator temperature and boron concentration), identifying five structural obstructions in \texttt{Translate}'s signature whose pairwise independence is proved by per-block exhaustion (Appendix~\ref{app:negative-proofs}). Companion surveys on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}, companion artefacts in \texttt{theory/}) identify five further candidate dimensions on those algebras (so the falsification is not PWR-specific). Pairwise independence on the candidate five is asserted by inspection rather than by formal exhaustion proof; full per-dimension exhaustion proofs on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ are committed as follow-up. The question of whether a Composite-\texttt{Translate} extension absorbs the ten \texttt{Translate}-extension dimensions identified across the three algebras while preserving Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time decidability remains open.
+  \item[(a)] Absolute completeness over arbitrary properties expressible in $\mathcal{A}_P$. This is Theorem~1$'$ (Conjecture~\ref{conj:absolute}, Appendix~\ref{app:proofs}); \S\ref{subsec:negative-pwr} establishes that it is false on the PWR core diffusion algebra $\mathcal{A}_{\mathrm{PWR}}$ via two independent counterexamples (non-additivity of rod-bank reactivity worth, and second-order mixed dependence of $k_{\mathrm{eff}}$ on moderator temperature and boron concentration), identifying five structural obstructions in \texttt{Translate}'s signature whose pairwise independence is proved by per-block exhaustion (Appendix~\ref{app:negative-proofs}). Companion surveys on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}, companion artefacts in \texttt{theory/}) identify five further candidate dimensions on those algebras (so the falsification is not PWR-specific). Pairwise independence on the candidate five is asserted by inspection rather than by formal exhaustion proof; full per-dimension exhaustion proofs on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ are committed as follow-up. The question of whether a Composite-\texttt{Translate} extension absorbs the ten \texttt{Translate}-extension dimensions identified across the three algebras while preserving Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time constructibility remains open.
   \item[(b)] Sufficiency of the structural list. Hypothesis~\ref{hyp:seven-blocks} is an empirical hypothesis with six enumerated out-of-scope program-family classes (Remark~\ref{rem:counterex}); each such class is a candidate ninth block.
   \item[(c)] Superiority over existing automated MR-identification pipelines on average. The comparative material in \S\ref{subsec:case-study} is retained as secondary executability and sanity-check evidence; it does not characterise the framework's behaviour on arbitrary defect distributions.
   \item[(d)] Elimination of induction from MetaPattern discovery. Induction is \emph{relocated} from MR-instance level to algebra-block level, not eliminated.
@@ -311,6 +311,8 @@ Automated MR identification attacks the bottleneck by searching for executable r
 A second strand uses program-structure, specification, documentation, or model features rather than test-case mining. Kanewala et al.~\cite{Kanewala2016GraphKernel} predict MRs of scientific software via graph-kernel learning over control-flow and data-dependency graphs, an early demonstration that program structure carries enough signal for automated MR discovery. MeMo extracts equivalence MRs from Javadoc comments~\cite{Blasi2021MeMo}. Nolasco et al.'s MemoRIA~\cite{Nolasco2024MemoRIA} infers MRs by deriving an object-protocol abstraction and validating candidates through fuzzing plus SAT-based reduction, then evaluates on 22 Java subjects. Clark et al.\ generate MRs from causal graphs, making model misspecification an explicit boundary of the method~\cite{Clark2023CausalMT}. Tao et al.'s Mettoc~\cite{Tao2010Mettoc} applied MT to compiler testing using equivalence-preservation as the canonical relation. Ying et al.~\cite{Ying2025MRPatterns} formalise relationships between metamorphic-relation patterns into family trees, and Altamimi et al.~\cite{Altamimi2022MRSLR} provide a recent systematic literature review of MR-automation work that catalogues the structural-vs-empirical-search divide our framework targets. Earlier LLM-assisted attempts include Zhang et al.~\cite{ZhangChatGPTMR2023} on ChatGPT-driven MR generation.
 
 Each of these methods advances automation on a different axis, but all treat the MR space as an empirical, artefact-derived, or model-supplied search space. MR-Scout's recall is bounded by the relations already latent in existing tests. Search-based and evolutionary methods can discover useful numerical or executable MRs, but the reported cleansing and redundancy-reduction steps are consequences of the search representation rather than explanations of the mathematical origin of the surviving relations. GenMorph's evolutionary search is shaped by the fitness landscape induced by mutation killing. LLM-prompted approaches are sensitive to prompt phrasing when no structural prior constrains the generation. Documentation-, protocol-, and causal-model-based methods are more interpretable, but their boundary is the supplied artefact or model rather than a program-family operator algebra. None of these methods can state, before search begins, which MR types lie outside its reach, because none has an algebraic account of the space being searched.
+
+The intuition that symmetries furnish partial oracles predates this work. Gotlieb's symmetric testing treats input permutations whose outputs must agree as a checkable oracle~\cite{Gotlieb2003Symmetries}, and a follow-up study models its test quality on Java Card APIs~\cite{GotliebBernard2006}. Patel and Hierons survey such oracle strategies for non-testable systems~\cite{PatelHierons2018}, while Khritankov and Iakusheva systematically review metamorphic-relation derivation and group the recurring input transformations into six families~\cite{KhritankovIakusheva2024}. In machine learning, related symmetry notions are studied empirically: Gruver et al.\ measure how much equivariance a trained network actually acquires~\cite{Gruver2023LieDerivative}, and Kaba et al.\ attain equivariance by learning canonicalization functions rather than constraining the architecture~\cite{Kaba2023Canonicalization}. These lines name and exploit the symmetry-oracle intuition, yet each identifies relations per program, surveys them descriptively, or approximates symmetry inside a model. None derive metamorphic patterns algorithmically from the governing equations of a program family. NOETHER does not invent the symmetry layer; its contribution is a constructive derivation over the operator-block layer, together with closure and complexity results and a domain-transferable skeleton, turning the symmetry oracle from a per-program insight into a provable construction.
 
 \subsection{MetaPattern catalogues and empirical adequacy}
 
@@ -388,7 +390,7 @@ This section presents NOETHER as an MR-identification method. The method takes a
 \paragraph{Counting rule used throughout the paper.}
 Expert coverage is binary: an expert MR set covers an operator block if at least one expert MR belongs to that block. NOETHER coverage is also binary: NOETHER covers a block if the method explicitly derives at least one MR class from the program-family operator algebra in that block. Equation structure alone is not counted as coverage unless a corresponding MR class is written down. This rule is used before any empirical result is interpreted.
 
-Operator-algebraic preliminaries and the structural decomposition appear in \S\ref{sec:prelim}; the algebra-induced metamorphic relation space, the CONSTRUCT-MP construction, the algebraic closure theorem (Theorem~\ref{thm:closure}), and the polynomial-time decidability theorem (Theorem~\ref{thm:decidable}) in \S\ref{sec:framework}. The framework is then instantiated on three structurally distinct operator algebras: Boltzmann reactor physics in \S\ref{sec:reactor}, equivariant machine learning in \S\ref{sec:cross-domain}, and relational query optimisers in \S\ref{subsec:third-domain}. The section concludes by falsifying the strictly stronger absolute-completeness conjecture, Theorem~$1'$, on a fourth program family (PWR core diffusion) via two pairwise-independent counterexamples (\S\ref{subsec:negative-pwr}).
+Operator-algebraic preliminaries and the structural decomposition appear in \S\ref{sec:prelim}; the algebra-induced metamorphic relation space, the CONSTRUCT-MP construction, the algebraic closure theorem (Theorem~\ref{thm:closure}), and the polynomial-time constructibility theorem (Theorem~\ref{thm:decidable}) in \S\ref{sec:framework}. The framework is then instantiated on three structurally distinct operator algebras: Boltzmann reactor physics in \S\ref{sec:reactor}, equivariant machine learning in \S\ref{sec:cross-domain}, and relational query optimisers in \S\ref{subsec:third-domain}. The section concludes by falsifying the strictly stronger absolute-completeness conjecture, Theorem~$1'$, on a fourth program family (PWR core diffusion) via two pairwise-independent counterexamples (\S\ref{subsec:negative-pwr}).
 
 \subsection{Operator-algebraic preliminaries}
 \label{sec:prelim}
@@ -462,9 +464,39 @@ A \emph{method-comparison operator} $\mathcal{E}$ encodes a partial order $\prec
 \subsubsection{Decomposition of an operator algebra}
 \label{subsec:decomposition}
 
-Given $\mathcal{A}_P = (\mathcal{O}, \circ, \sim_{\mathcal{F}})$, we decompose $\mathcal{O}$ along the eight building blocks introduced above:
-$$\mathcal{D}(\mathcal{A}_P) = \bigl(\,G,\; O_{\le},\; T^{*},\; \mathcal{T}^{*},\; \mathcal{L}^{*},\; \mathcal{D}^{*},\; \mathcal{E}^{*},\; \mathcal{B}^{*}_{\mathrm{rel}}\,\bigr),$$
-where $G$ collects symmetry subgroups, $O_{\le}$ monotone and linear operators, $T^{*}$ self-adjoint operators, $\mathcal{T}^{*}$ time-reversal operators, $\mathcal{L}^{*}$ limit operators, $\mathcal{D}^{*}$ qualitative-dynamics operators, $\mathcal{E}^{*}$ method-comparison operators, and $\mathcal{B}^{*}_{\mathrm{rel}}$ relational-equivalence operators.
+Given $\mathcal{A}_P = (\mathcal{O}, \circ, \sim_{\mathcal{F}})$, we decompose $\mathcal{O}$ along the eight building blocks introduced above (summarised in Figure~\ref{fig:blocks}):
+$$\mathcal{D}(\mathcal{A}_P) = \bigl(\,G,\; O_{\le},\; T^{*},\; \mathcal{T}^{*}_{\mathrm{rev}},\; \mathcal{L}^{*},\; \mathcal{D}^{*},\; \mathcal{E}^{*},\; \mathcal{B}^{*}_{\mathrm{rel}}\,\bigr),$$
+where $G$ collects symmetry subgroups, $O_{\le}$ monotone and linear operators, $T^{*}$ self-adjoint operators, $\mathcal{T}^{*}_{\mathrm{rev}}$ time-reversal operators, $\mathcal{L}^{*}$ limit operators, $\mathcal{D}^{*}$ qualitative-dynamics operators, $\mathcal{E}^{*}$ method-comparison operators, and $\mathcal{B}^{*}_{\mathrm{rel}}$ relational-equivalence operators.
+
+\begin{figure}[h]
+\centering
+\adjustbox{max width=\textwidth}{%
+\begin{tikzpicture}[font=\footnotesize, node distance=3mm and 5mm,
+  blk/.style={draw, rounded corners=2pt, align=left, inner sep=4pt, text width=52mm, minimum height=12mm, fill=gray!4}]
+\node[blk] (g) {\textbf{$G$ -- symmetry group}\\equivariance $P(g\cdot x)=\rho(g)\,P(x)$};
+\node[blk, right=of g] (o) {\textbf{$O_{\le}$ -- order}\\monotonicity / linearity};
+\node[blk, below=of g] (t) {\textbf{$T^{*}$ -- self-adjoint}\\reciprocity $\langle Lx,y\rangle=\langle x,Ly\rangle$};
+\node[blk, right=of t] (tr) {\textbf{$\mathcal{T}^{*}_{\mathrm{rev}}$ -- time reversal}\\$P(\mathcal{T}x)$ fixed by $P(x)$};
+\node[blk, below=of t] (l) {\textbf{$\mathcal{L}^{*}$ -- limit}\\convergence $\mathcal{L}_{\theta}\to\mathcal{L}_{*}$};
+\node[blk, right=of l] (d) {\textbf{$\mathcal{D}^{*}$ -- qualitative dynamics}\\shape invariants (extrema, overshoot)};
+\node[blk, below=of l] (e) {\textbf{$\mathcal{E}^{*}$ -- method comparison}\\accuracy order $M_1\preceq M_2$};
+\node[blk, right=of e] (b) {\textbf{$\mathcal{B}^{*}_{\mathrm{rel}}$ -- relational equivalence}\\rewrite-equivalence $E\equiv E'$};
+\end{tikzpicture}%
+}
+\caption{The eight operator blocks of the decomposition $\mathcal{D}(\mathcal{A}_P)$,
+each shown with the structural invariant that gives rise to its MR class. The
+symmetry ($G$), self-adjoint ($T^{*}$), and time-reversal
+($\mathcal{T}^{*}_{\mathrm{rev}}$) blocks form the Lie-group / self-adjoint /
+time-reversal mathematical core; the Invariance-Blindness Theorem
+(Theorem~\ref{thm:ibt}) characterises the detection boundary of the $G$ and
+$T^{*}$ blocks, and $\mathcal{B}^{*}_{\mathrm{rel}}$ extends the framework beyond
+the core. Blocks are populated per program family and may be empty (for example
+$\mathcal{T}^{*}_{\mathrm{rev}}$ for dissipative dynamics, $\mathcal{B}^{*}_{\mathrm{rel}}$
+for families without idempotent-semiring rewriting structure).}
+\label{fig:blocks}
+\end{figure}
+
+Conservation laws are not a ninth block: by the Noether-style correspondence between symmetries and conserved quantities, a conservation/invariance relation is the $G$-block MetaPattern $m_{\mathrm{inv}}$ (Table~\ref{tab:refinement}), so where the EQ1 and EQ3 coverage tables and the held-out transferability paragraph track a separate ``conservation invariant'' entry it denotes this conserved-quantity instance of the $G$ block rather than a distinct operator block.
 
 \begin{definition}[Relational-equivalence block]
 \label{def:b-rel}
@@ -476,7 +508,7 @@ A \emph{relational-equivalence operator} is a binary relation $\equiv_{\mathcal{
 \begin{hypothesis}[Decomposition sufficiency]
 \label{hyp:seven-blocks}
 Let $P$ be a program belonging to a program family $\mathcal{F}$ whose semantics admit an operator-algebraic representation $\mathcal{A}_P$ over (i) finite or finite-dimensional symmetry groups, (ii) partial orders with monotone or linear operators, (iii) self-adjoint operators with respect to a fixed inner product, (iv) anti-unitary involutions of a time coordinate, (v) limit operations of analytical (mesh-refinement, parameter-perturbation, or asymptotic) type, (vi) qualitative-dynamics attractors of an underlying ODE/PDE, (vii) inter-method comparison partial orders, and (viii) identity-preserving rewriting rule sets on an idempotent semiring. For such families the structural decomposition
-$$\mathcal{D}(\mathcal{A}_P) = G \,\dot\cup\, O_{\le} \,\dot\cup\, T^{*} \,\dot\cup\, \mathcal{T}^{*} \,\dot\cup\, \mathcal{L}^{*} \,\dot\cup\, \mathcal{D}^{*} \,\dot\cup\, \mathcal{E}^{*} \,\dot\cup\, \mathcal{B}^{*}_{\mathrm{rel}}$$
+$$\mathcal{D}(\mathcal{A}_P) = G \,\dot\cup\, O_{\le} \,\dot\cup\, T^{*} \,\dot\cup\, \mathcal{T}^{*}_{\mathrm{rev}} \,\dot\cup\, \mathcal{L}^{*} \,\dot\cup\, \mathcal{D}^{*} \,\dot\cup\, \mathcal{E}^{*} \,\dot\cup\, \mathcal{B}^{*}_{\mathrm{rel}}$$
 is sufficient: every operator in $\mathcal{A}_P$ relevant to MR derivation is assigned to at least one block. Hypothesis~\ref{hyp:seven-blocks} is an empirical hypothesis open to refutation.
 \end{hypothesis}
 
@@ -576,7 +608,7 @@ Each MetaPattern $m_{s,[\iota]}$ corresponds to a single $\sim_s$-equivalence cl
 \begin{definition}[Canonical-block ordering]
 \label{def:canonical-order}
 We adopt the strict total order on blocks
-$$G > O_{\le} > T^{*} > \mathcal{T}^{*} > \mathcal{L}^{*} > \mathcal{D}^{*} > \mathcal{E}^{*} > \mathcal{B}^{*}_{\mathrm{rel}}.$$
+$$G > O_{\le} > T^{*} > \mathcal{T}^{*}_{\mathrm{rev}} > \mathcal{L}^{*} > \mathcal{D}^{*} > \mathcal{E}^{*} > \mathcal{B}^{*}_{\mathrm{rel}}.$$
 An MR derivable through multiple blocks is assigned to the highest-priority block in this order. The placement of $\mathcal{B}^{*}_{\mathrm{rel}}$ at the bottom reflects its semiring-rewriting nature, which sits algebraically downstream of the seven physical-mathematical blocks: rewriting equivalences typically depend on the program family's input-perturbation, order, and method-comparison structure rather than the converse.
 \end{definition}
 
@@ -593,24 +625,24 @@ Theorem~\ref{thm:closure} is a closure statement, not a completeness claim over 
     \item \emph{Input-distribution MRs} not expressible over $\mathcal{A}_P$ operators: e.g.\ adversarial-perturbation MRs ``$\| \delta\|_p \le \epsilon \Rightarrow f(\mathbf{x}+\delta) = f(\mathbf{x})$'' whose perturbation set is not a group action on $\mathcal{X}$.
     \item \emph{Compositional MRs spanning multiple blocks under non-\texttt{Translate} derivations}: MRs requiring simultaneous use of two block invariants in a way that is not the canonical-block-ordering reduction of Definition~\ref{def:canonical-order}.
 \end{enumerate}
-The strictly stronger statement that every MR formulable as a property over $\mathcal{A}_P$'s operators (without restricting to \texttt{Translate}-reachable derivations) is contained in some $m \in \mathbb{M}(\mathcal{A}_P)$ is identified as Theorem~1$'$ in Appendix~\ref{app:proofs}. Section~\ref{subsec:negative-pwr} and Appendix~\ref{app:negative-proofs} establish that this stronger statement is false on the PWR core diffusion algebra $\mathcal{A}_{\mathrm{PWR}}$, by exhibiting two concrete counterexamples ($\rho_{\mathrm{nonadd}}, \rho_{\mathrm{MTC\text{-}bor}}$) whose obstructions identify five structurally independent extensions of \texttt{Translate}'s signature. The combined open problem (whether such an extended \texttt{Translate} preserves Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time decidability) is the principal open question for follow-up work.
+The strictly stronger statement that every MR formulable as a property over $\mathcal{A}_P$'s operators (without restricting to \texttt{Translate}-reachable derivations) is contained in some $m \in \mathbb{M}(\mathcal{A}_P)$ is identified as Theorem~1$'$ in Appendix~\ref{app:proofs}. Section~\ref{subsec:negative-pwr} and Appendix~\ref{app:negative-proofs} establish that this stronger statement is false on the PWR core diffusion algebra $\mathcal{A}_{\mathrm{PWR}}$, by exhibiting two concrete counterexamples ($\rho_{\mathrm{nonadd}}, \rho_{\mathrm{MTC\text{-}bor}}$) whose obstructions identify five structurally independent extensions of \texttt{Translate}'s signature. The combined open problem (whether such an extended \texttt{Translate} preserves Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time constructibility) is the principal open question for follow-up work.
 \end{remark}
 
 A sceptical reading might object that the by-construction status of Theorem~\ref{thm:closure} makes it near-tautological. We acknowledge that the closure result is by-construction within the explicit scope of Definition~\ref{def:alg-induced} (which fixes $\mathrm{MR}(\mathcal{A}_P)$ as the \texttt{Translate}-image of $\mathcal{A}_P$). The substantive value lies in what the theorem then enables: Theorem~\ref{thm:closure} converts an empirical-adequacy claim (``our pattern grid covers $X\%$ of observed MRs'') into a structural-adequacy claim (``our pattern grid is exhaustive of the algebra-induced MR space, modulo the explicit out-of-scope classes of Remark~\ref{rem:scope}''). Empirical adequacy frameworks built on inductive pattern grids do not guarantee algebraic closure even in this bounded sense; NOETHER guarantees it, and the obligation imposed on any user of the framework is then to verify that no \texttt{Translate}-reachable MR is dropped by CONSTRUCT-MP, a verification that is mechanical once the algebraic input has been fixed.
 
-The theorem still imposes a checkable obligation on the framework. If an MR is induced by an invariant in $\mathcal{D}(\mathcal{A}_P)$ but cannot be assigned by CONSTRUCT-MP, then at least one component (invariant extraction, $\mathrm{Translate}$, structural equivalence, or the canonical ordering) is underspecified. Thus the result is not an empirical coverage claim; it is a well-formedness and closure guarantee for the downstream construction once the algebraic input has been fixed. The framework's additional theoretical results complement Theorem~\ref{thm:closure}: Theorem~\ref{thm:decidable} bounds the construction's polynomial-time decidability under a finite generating set; Theorem~$1'$ (Conjecture~\ref{conj:absolute}), which makes the stronger claim of absolute completeness over arbitrary properties expressible in $\mathcal{A}_P$, is falsified on $\mathcal{A}_{\mathrm{PWR}}$ (\S\ref{subsec:negative-pwr}); the falsification identifies five structural obstructions in \texttt{Translate}'s signature (Appendix~\ref{app:negative-proofs}), with five further candidate dimensions surveyed on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}).
+The theorem still imposes a checkable obligation on the framework. If an MR is induced by an invariant in $\mathcal{D}(\mathcal{A}_P)$ but cannot be assigned by CONSTRUCT-MP, then at least one component (invariant extraction, $\mathrm{Translate}$, structural equivalence, or the canonical ordering) is underspecified. Thus the result is not an empirical coverage claim; it is a well-formedness and closure guarantee for the downstream construction once the algebraic input has been fixed. The framework's additional theoretical results complement Theorem~\ref{thm:closure}: Theorem~\ref{thm:decidable} bounds the construction's polynomial-time complexity under a finite generating set; Theorem~$1'$ (Conjecture~\ref{conj:absolute}), which makes the stronger claim of absolute completeness over arbitrary properties expressible in $\mathcal{A}_P$, is falsified on $\mathcal{A}_{\mathrm{PWR}}$ (\S\ref{subsec:negative-pwr}); the falsification identifies five structural obstructions in \texttt{Translate}'s signature (Appendix~\ref{app:negative-proofs}), with five further candidate dimensions surveyed on $\mathcal{A}_{\mathrm{equi}}$ and $\mathcal{A}_{\mathrm{rel}}$ (\S\ref{subsec:third-domain}).
 
 \begin{remark}[Scope of Theorem~\ref{thm:closure} for the $\mathcal{B}^{*}_{\mathrm{rel}}$ block]
 \label{rem:closure-brel}
 The closure result extends to $\mathcal{B}^{*}_{\mathrm{rel}}$ provided the rewriting rule set $\mathcal{R}_{\mathrm{rel}}$ is finite. For the relational-algebra fragment of TPC-H-class queries the rule set is finite by the standard heuristic-rewrite normal forms (selection-pushdown, projection-pushdown, join-reordering, distinct-elimination)~\cite{Wang2024QED, Zhou2022SPES}, and Theorem~\ref{thm:closure} therefore covers algebra-induced MRs of this fragment. Query languages with unbounded recursive rewriting (e.g.\ Datalog with non-terminating rule sets) lie outside this scope and are catalogued as out-of-scope under Remark~\ref{rem:counterex}.
 \end{remark}
 
-\subsubsection{Decidability and complexity}
+\subsubsection{Complexity and decidability}
 \label{subsec:decidability}
 
-\begin{theorem}[Decidability]
+\begin{theorem}[Complexity of CONSTRUCT-MP under a finite generating set]
 \label{thm:decidable}
-Suppose $\mathcal{A}_P$ admits a finite generating set $\mathrm{gen}(\mathcal{A}_P)$ of cardinality $n$, with each generator's invariant computation taking time $t_i$. Then $\mathbb{M}(\mathcal{A}_P)$ is computable in time $O\!\bigl(\,n \cdot \max_i t_i \cdot \log n\,\bigr)$.
+Suppose $\mathcal{A}_P$ admits a finite generating set $\mathrm{gen}(\mathcal{A}_P)$ of cardinality $n$, with each generator's invariant computation \emph{assumed to terminate} in time $t_i$. Then $\mathbb{M}(\mathcal{A}_P)$ is computable in time $O\!\bigl(\,n \cdot \max_i t_i \cdot \log n\,\bigr)$. This is a complexity bound on the construction rather than a decidability result: termination of per-block invariant extraction is assumed within $t_i$, and for the relational block $\mathcal{B}^{*}_{\mathrm{rel}}$ general query equivalence is undecidable, so only the fixed-rule-set fragment is covered (Remark~\ref{rem:decidable-brel}). The factors $t_i$ absorb the realised per-generator invariant cost: for a finite symmetry group the relevant $t_i$ can scale with the group order $|G|$, which may itself grow exponentially in the number of generators (for example $(\mathbb{Z}_2)^{k}$ has $|G| = 2^{k}$), so the bound is polynomial in $n$ and the realised generator costs (output-sensitive) rather than necessarily polynomial in a compact group presentation.
 \end{theorem}
 
 \begin{remark}[Scope of Theorem~\ref{thm:decidable} for the $\mathcal{B}^{*}_{\mathrm{rel}}$ block]
@@ -635,7 +667,7 @@ The polynomial-time bound holds for $\mathcal{B}^{*}_{\mathrm{rel}}$ when the re
 \midrule
 $O_{\le}$ (order) & --- & $O(n^2)$ (poset comparison) \\
 $T^{*}$ (self-adjoint) & --- & $O(d)$ (inner-product symmetry check) \\
-$\mathcal{T}^{*}$ (time-reversal) & --- & $O(1)$ \\
+$\mathcal{T}^{*}_{\mathrm{rev}}$ (time-reversal) & --- & $O(1)$ \\
 $\mathcal{L}^{*}$ (limit) & --- & $O(\log\!\frac{1}{\epsilon})$ \\
 $\mathcal{D}^{*}$ (qualitative-dynamics) & --- & $O(d)$ \\
 $\mathcal{E}^{*}$ (method-comparison) & --- & $O(K^2)$ (over $K$ methods) \\
@@ -653,9 +685,7 @@ For the Boltzmann instantiation the relevant generators are finite ($n \le 14$, 
 
 NOETHER replaces inductive grounding with algebraic grounding \emph{downstream of $\mathcal{A}_P$}. Upstream, the distillation of $\mathcal{A}_P$ from a program family remains a human task. This limitation is central to the framework's scope: NOETHER does not automate domain modelling, but it turns the step after domain modelling into a well-defined construction. A second limitation, made explicit in \S\ref{subsec:negative-pwr} and Appendix~\ref{app:negative-proofs}, is that even when $\mathcal{A}_P$ is fully specified, \texttt{Translate}'s present signature (single-block, first-order $\pi$-template, single partial-order direction, operating on $P(x)$ tuples rather than on operator-spectrum quantities) systematically excludes a class of MRs that engineering practice treats as standard: non-additivity of operator-composition functionals and higher-order mixed parametric dependences. The principal limitation is therefore twofold: the upstream distillation of $\mathcal{A}_P$, and the present signature of \texttt{Translate}.
 
-\begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Boundary of contribution (Section~\ref{sec:framework} restatement),fonttitle=\small\bfseries]
-The downstream layer is mechanical: Theorem~\ref{thm:closure} (algebraic closure under \texttt{Translate}) and Theorem~\ref{thm:decidable} (polynomial-time decidability) operate on a given block decomposition. The upstream layer remains empirical: the structural decomposition is Hypothesis~\ref{hyp:seven-blocks}, an open empirical hypothesis with six documented out-of-scope program-family classes (Remark~\ref{rem:counterex}). Theorem~1$'$ (absolute completeness) is open. Sections~\ref{sec:reactor}, \ref{sec:cross-domain}, and \ref{subsec:third-domain} instantiate NOETHER on three structurally distinct program families.
-\end{tcolorbox}
+The downstream layer is mechanical: Theorem~\ref{thm:closure} (algebraic closure under \texttt{Translate}) and Theorem~\ref{thm:decidable} (polynomial-time constructibility) operate on a given block decomposition. The upstream layer remains empirical: the structural decomposition is Hypothesis~\ref{hyp:seven-blocks}, an open empirical hypothesis with six documented out-of-scope program-family classes (Remark~\ref{rem:counterex}). Theorem~1$'$ (absolute completeness) is open. Sections~\ref{sec:reactor}, \ref{sec:cross-domain}, and \ref{subsec:third-domain} instantiate NOETHER on three structurally distinct program families.
 
 %% =========================================================
 \input{theory/ibt_section_3_4}
@@ -713,7 +743,7 @@ This is not the structure of a re-coding. NOETHER's output structurally \emph{re
 
 \paragraph{A note on prediction (and an interpretive caveat).} We do not claim that $m_{\mathrm{adj}}$ (adjoint reciprocity) and $m_{\mathrm{rev}}$ (collisionless time-reversal compatibility) are de novo physical discoveries. Adjoint-flux reciprocity is standard textbook material in transport theory~\cite{BellGlasstone1970, LewisMiller1993}, and time-reversal MRs in collisionless transport have been understood in physics for decades. The MT-community-level absence of these MetaPatterns from the prior inductive catalogue reflects which phenomena happened to be canonically encoded in the PWR-MR corpus, not the absence of the underlying physics from the literature.
 
-We must also acknowledge an interpretive caveat about what this ``prediction'' is and is not. The blocks $T^{*}$ (self-adjoint) and $\mathcal{T}^{*}$ (time-reversal) of Section~\ref{subsec:decomposition} were themselves curated by inspection of program families that include reactor physics; the operators $\mathcal{T}_{\mathrm{geom}}$ and $\mathcal{T}$ in $\mathcal{A}_{\mathrm{Boltz}}$ were the leading examples motivating the inclusion of those blocks. There is therefore a circularity in the strong reading of ``prediction'': $T^{*}$ and $\mathcal{T}^{*}$ were partly induced from reactor-physics structures, and $m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$ are then derived from those blocks. The framework does not discover these MetaPatterns de novo. What it does is closer to a uniform \emph{re-projection}: given the structural decomposition (whatever its empirical provenance), CONSTRUCT-MP places adjoint-reciprocity and time-reversal phenomena into structurally distinct equivalence classes that the inductive PWR-MR catalogue had not isolated as such, even though their underlying physics had been individually known to domain experts. The substantive contribution is the \emph{re-classification under a uniform algebraic structure}, which gives a future testing toolchain a principled reason to enumerate $m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$ alongside $m_{\mathrm{inv}}$, $m_{\mathrm{mono}}$, $m_{\mathrm{conv}}$, $m_{\mathrm{dyn}}$, and $m_{\mathrm{cmp}}$ rather than treating them as ad-hoc additions. Where NOETHER's predictive power is genuine and non-circular is in the deflationary direction (Section~\ref{subsec:pmcm-worked}): the framework can also reveal that an existing inductive catalogue \emph{over-counts} structurally distinct patterns. Both directions, re-classification and de-duplication, are systematisation, not discovery.
+We must also acknowledge an interpretive caveat about what this ``prediction'' is and is not. The blocks $T^{*}$ (self-adjoint) and $\mathcal{T}^{*}_{\mathrm{rev}}$ (time-reversal) of Section~\ref{subsec:decomposition} were themselves curated by inspection of program families that include reactor physics; the operators $\mathcal{T}_{\mathrm{geom}}$ and $\mathcal{T}$ in $\mathcal{A}_{\mathrm{Boltz}}$ were the leading examples motivating the inclusion of those blocks. There is therefore a circularity in the strong reading of ``prediction'': $T^{*}$ and $\mathcal{T}^{*}_{\mathrm{rev}}$ were partly induced from reactor-physics structures, and $m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$ are then derived from those blocks. The framework does not discover these MetaPatterns de novo. What it does is closer to a uniform \emph{re-projection}: given the structural decomposition (whatever its empirical provenance), CONSTRUCT-MP places adjoint-reciprocity and time-reversal phenomena into structurally distinct equivalence classes that the inductive PWR-MR catalogue had not isolated as such, even though their underlying physics had been individually known to domain experts. The substantive contribution is the \emph{re-classification under a uniform algebraic structure}, which gives a future testing toolchain a principled reason to enumerate $m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$ alongside $m_{\mathrm{inv}}$, $m_{\mathrm{mono}}$, $m_{\mathrm{conv}}$, $m_{\mathrm{dyn}}$, and $m_{\mathrm{cmp}}$ rather than treating them as ad-hoc additions. Where NOETHER's predictive power is genuine and non-circular is in the deflationary direction (Section~\ref{subsec:pmcm-worked}): the framework can also reveal that an existing inductive catalogue \emph{over-counts} structurally distinct patterns. Both directions, re-classification and de-duplication, are systematisation, not discovery.
 
 \paragraph{Element-wise correspondence.} Table~\ref{tab:elementwise} traces seven representative MRs distilled from the standard reactor-physics literature~\cite{BellGlasstone1970, LewisMiller1993} to their NOETHER placement: one per non-empty block ($G$, $O_{\le}$, $\mathcal{L}^{*}$, $\mathcal{D}^{*}$, $\mathcal{E}^{*}$, selected as the most canonical literature form within each block) plus the two predicted MetaPatterns $m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$ for which no MR was previously catalogued in this form. The full enumeration of 12 MRs with sub-category coverage (geometric vs.\ energy-group symmetry within $G$, etc.), source equations, and \texttt{Translate} templates is in supplementary~S2 (\texttt{elementwise\_12.md}). A larger PWR-MR corpus underlying the selection protocol is provided as supplementary material S2.
 
@@ -734,7 +764,7 @@ Dif-Alg-01 & Diamond-difference $h^2$ convergence & P3 & $\mathcal{L}^{*}$ & $m_
 Bur-Phy-08 & Iodine pit qualitative shape & P4 & $\mathcal{D}^{*}$ & $m_{\mathrm{dyn}}$ \\
 Bur-Alg-04 & CRAM no-worse-than TTA & P5 & $\mathcal{E}^{*}$ & $m_{\mathrm{cmp}}$ \\
 \textit{(predicted)} & Adjoint reciprocity & --- & $T^{*}$ & $m_{\mathrm{adj}}$ \\
-\textit{(predicted)} & Collisionless reversibility & --- & $\mathcal{T}^{*}$ & $m_{\mathrm{rev}}$ \\
+\textit{(predicted)} & Collisionless reversibility & --- & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $m_{\mathrm{rev}}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -772,7 +802,7 @@ NOETHER, applied to $\mathcal{A}_{\mathrm{Boltz}}$, deductively produces a seven
 
 \subsubsection{The equivariant-ML program family and its operator algebra}
 
-Equivariant neural networks impose by architectural construction that certain symmetries of the input induce predictable transformations of the output~\cite{CohenWelling2016, ThomasSmidt2018, KondorTrivedi2018, Bronstein2021GDL}. The program family $\mathcal{F}_{\mathrm{equi}}$ comprises classifiers satisfying $f(g\cdot \mathbf{x}) = \rho(g)\cdot f(\mathbf{x})$ for $g \in G = \mathrm{SO}(3) \times \mathfrak{S}_n$. Decomposed along the eight blocks: $G = \{G_{\mathrm{equi}}\}$, $O_{\le} = \{O_{\le}^{\mathrm{train}}\}$, $T^{*} = \{T^{*}_{\mathrm{att}}\}$, $\mathcal{T}^{*} = \{\mathcal{T}_{\mathrm{seq}}\}$, $\mathcal{L}^{*} = \{\mathcal{L}_{\mathrm{train}},\, \mathcal{L}_{\mathrm{depth}},\, \mathcal{L}_{\mathrm{dim}}\}$, $\mathcal{D}^{*} = \emptyset$ (for feedforward classifiers), $\mathcal{E}^{*} = \emptyset$ within a single architecture, $\mathcal{B}^{*}_{\mathrm{rel}} = \emptyset$ (no idempotent-semiring rewriting on equivariant-classifier outputs).
+Equivariant neural networks impose by architectural construction that certain symmetries of the input induce predictable transformations of the output~\cite{CohenWelling2016, ThomasSmidt2018, KondorTrivedi2018, Bronstein2021GDL}. The program family $\mathcal{F}_{\mathrm{equi}}$ comprises classifiers satisfying $f(g\cdot \mathbf{x}) = \rho(g)\cdot f(\mathbf{x})$ for $g \in G = \mathrm{SO}(3) \times \mathfrak{S}_n$. Decomposed along the eight blocks: $G = \{G_{\mathrm{equi}}\}$, $O_{\le} = \{O_{\le}^{\mathrm{train}}\}$, $T^{*} = \{T^{*}_{\mathrm{att}}\}$, $\mathcal{T}^{*}_{\mathrm{rev}} = \{\mathcal{T}_{\mathrm{seq}}\}$, $\mathcal{L}^{*} = \{\mathcal{L}_{\mathrm{train}},\, \mathcal{L}_{\mathrm{depth}},\, \mathcal{L}_{\mathrm{dim}}\}$, $\mathcal{D}^{*} = \emptyset$ (for feedforward classifiers), $\mathcal{E}^{*} = \emptyset$ within a single architecture, $\mathcal{B}^{*}_{\mathrm{rel}} = \emptyset$ (no idempotent-semiring rewriting on equivariant-classifier outputs).
 
 \subsubsection{Running CONSTRUCT-MP on \texorpdfstring{$\mathcal{A}_{\mathrm{equi}}$}{A\_equi}}
 
@@ -824,7 +854,7 @@ def test_rotation_invariance(model, point_cloud, num_samples=100, tau=1e-4):
 \paragraph{Step 5b. A Noether-style reading of $\rho_{\mathrm{rot}}$.}
 The same methodological move that produced $m_{\mathrm{adj}}$ in \S\ref{subsec:noether-mAdj} produces $\rho_{\mathrm{rot}}$ here in non-rhetorical form. The classifier $f$ is, in equivariant-network architectures by construction, invariant under the action of $G = \mathrm{SO}(3)$ on its input: $f(R \cdot \mathbf{x}) = f(\mathbf{x})$ for all $R \in G$. The Lie algebra $\mathfrak{g} = \mathfrak{so}(3) = \mathrm{span}\{L_x, L_y, L_z\}$ is the infinitesimal generator of this symmetry. The associated Noether-style invariant is the constancy of the classifier output along orbits of $G$: $\frac{d}{d\theta} f(\exp(\theta L_a) \cdot \mathbf{x}) = 0$ for each generator $L_a$, $a \in \{x,y,z\}$, which is the Lie-algebraic statement that the directional derivative of $f$ along every orbit-tangent direction vanishes. CONSTRUCT-MP's Step~1 extracts this invariant from the $G$ block of $\mathcal{A}_{\mathrm{equi}}$; \texttt{Translate} converts it into the executable MR of equation~(\ref{eq:rho-rot}) above. The MR is therefore not an arbitrary catalogue entry: it is the Noether-style consequence of the SO(3) symmetry that the architecture imposes by construction.
 
-\paragraph{Step 6. Pattern coverage status.} The MR $\rho_{\mathrm{rot}}$ above, together with $\rho_{\mathrm{perm}}$ and $\rho_{\mathrm{train}}$ derived in supplementary~S9 (Appendix~D), populates three of the five non-empty MetaPatterns of $\mathbb{M}(\mathcal{A}_{\mathrm{equi}})$. We refrain from reporting a percentage coverage figure: with so few non-empty blocks and a denominator subject to the structural sufficiency hypothesis (Hypothesis~\ref{hyp:seven-blocks}), a percentage is more rhetorical than informative. We instead derive in the following two subsections two MRs from the remaining non-empty blocks, $T^{*}$ (self-adjoint) and $\mathcal{T}^{*}$ (time-reversal), chosen specifically because they are not standard practice in equivariant-ML testing and therefore probe whether NOETHER's transfer claim extends beyond well-known invariances such as $\rho_{\mathrm{rot}}$.
+\paragraph{Step 6. Pattern coverage status.} The MR $\rho_{\mathrm{rot}}$ above, together with $\rho_{\mathrm{perm}}$ and $\rho_{\mathrm{train}}$ derived in supplementary~S9 (Appendix~D), populates three of the five non-empty MetaPatterns of $\mathbb{M}(\mathcal{A}_{\mathrm{equi}})$. We refrain from reporting a percentage coverage figure: with so few non-empty blocks and a denominator subject to the structural sufficiency hypothesis (Hypothesis~\ref{hyp:seven-blocks}), a percentage is more rhetorical than informative. We instead derive in the following two subsections two MRs from the remaining non-empty blocks, $T^{*}$ (self-adjoint) and $\mathcal{T}^{*}_{\mathrm{rev}}$ (time-reversal), chosen specifically because they are not standard practice in equivariant-ML testing and therefore probe whether NOETHER's transfer claim extends beyond well-known invariances such as $\rho_{\mathrm{rot}}$.
 
 \subsubsection{An adjoint-attention duality MR (\texorpdfstring{$\rho_{\mathrm{adj}}$}{rho\_adj})}
 \label{subsec:rho-adj}
@@ -848,23 +878,23 @@ which equals $A^{\dagger}$'s trace by the cyclic property of trace and the Hermi
 \subsubsection{A training-trajectory time-reversal MR (\texorpdfstring{$\rho_{\mathrm{train\text{-}rev}}$}{rho\_train-rev})}
 \label{subsec:rho-rev}
 
-The time-reversal block $\mathcal{T}^{*}$ in $\mathcal{A}_{\mathrm{equi}}$ is non-empty for SGD trajectories under the Hamiltonian-Monte-Carlo / continuous-time-flow view of stochastic optimisation~\cite{Chen2014SGHMC}. The discretised SGD update $\theta_{t+1} = \theta_t - \eta\,\nabla\mathcal{L}(\theta_t; \xi_t)$ is, to leading order in the learning rate $\eta$ and in the absence of momentum or noise, time-reversible: applying the inverse update $\theta_{t+1} \mapsto \theta_{t+1} + \eta\,\nabla\mathcal{L}(\theta_{t+1}; \xi_t)$ recovers $\theta_t$ up to $O(\eta^2)$. The operator $\mathcal{T}_{\mathrm{seq}} \in \mathcal{T}^{*}$ encodes this involution.
+The time-reversal block $\mathcal{T}^{*}_{\mathrm{rev}}$ in $\mathcal{A}_{\mathrm{equi}}$ is non-empty for SGD trajectories under the Hamiltonian-Monte-Carlo / continuous-time-flow view of stochastic optimisation~\cite{Chen2014SGHMC}. The discretised SGD update $\theta_{t+1} = \theta_t - \eta\,\nabla\mathcal{L}(\theta_t; \xi_t)$ is, to leading order in the learning rate $\eta$ and in the absence of momentum or noise, time-reversible: applying the inverse update $\theta_{t+1} \mapsto \theta_{t+1} + \eta\,\nabla\mathcal{L}(\theta_{t+1}; \xi_t)$ recovers $\theta_t$ up to $O(\eta^2)$. The operator $\mathcal{T}_{\mathrm{seq}} \in \mathcal{T}^{*}_{\mathrm{rev}}$ encodes this involution.
 
 \paragraph{Invariant.} The relevant invariant is the round-trip identity:
 $$\iota_{\mathrm{rev}}: \quad \big(\mathcal{T}_{\mathrm{seq}} \circ U_{\eta} \circ \mathcal{T}_{\mathrm{seq}}^{-1} \circ U_{\eta}\big)(\theta) = \theta + O(\eta^2),$$
 where $U_{\eta}$ denotes one SGD step.
 
-\textbf{Debug-time MR (not CI).} We label $\rho_{\mathrm{train\text{-}rev}}$ explicitly as a debug-time MR: it requires parameter rollback, mini-batch reordering, and a deliberately constructed vanilla-SGD fixture. Production equivariant pipelines (Allegro, NequIP, MACE, e3nn examples) almost universally use Adam or AdamW, whose update is not in $\mathcal{T}^{*}$ in the strict sense; the MR \emph{fails by construction} on those optimisers, which is the framework's correct prediction. $\rho_{\mathrm{train\text{-}rev}}$ should be invoked once per training-script change at debug time, on a vanilla-SGD fixture, not as part of CI for production pipelines. The debug-time reading aligns with the wider reversible-network literature~\cite{Gomez2017Reversible} where exact-or-approximate inversion is a deliberate test scaffold. \texttt{Translate} carries the invariant into:
+\textbf{Debug-time MR (not CI).} We label $\rho_{\mathrm{train\text{-}rev}}$ explicitly as a debug-time MR: it requires parameter rollback, mini-batch reordering, and a deliberately constructed vanilla-SGD fixture. Production equivariant pipelines (Allegro, NequIP, MACE, e3nn examples) almost universally use Adam or AdamW, whose update is not in $\mathcal{T}^{*}_{\mathrm{rev}}$ in the strict sense; the MR \emph{fails by construction} on those optimisers, which is the framework's correct prediction. $\rho_{\mathrm{train\text{-}rev}}$ should be invoked once per training-script change at debug time, on a vanilla-SGD fixture, not as part of CI for production pipelines. The debug-time reading aligns with the wider reversible-network literature~\cite{Gomez2017Reversible} where exact-or-approximate inversion is a deliberate test scaffold. \texttt{Translate} carries the invariant into:
 
 \begin{equation}
 \rho_{\mathrm{train\text{-}rev}}: \quad \big\| \theta_T - \tilde\theta_T^{\mathrm{(round-trip)}} \big\|_2 \le c\,\eta^{2}\,T,
 \end{equation}
 
-\noindent where $\theta_T$ is the parameter vector after $T$ vanilla SGD steps starting from $\theta_0$, and $\tilde\theta_T^{\mathrm{(round-trip)}}$ is the vector obtained by applying $T$ vanilla SGD steps from $\theta_0$ followed by $T$ inverse-SGD steps using the same mini-batch sequence in reversed order, then $T$ forward steps again. The constant $c$ depends on the loss landscape's local Lipschitz structure and is determined empirically per model. This MR \emph{fails by construction} for momentum-based optimisers (Adam, Lion, etc.) whose update is not in $\mathcal{T}^{*}$; that is, the framework correctly predicts which architecture-optimiser pairs admit the MR and which do not. The MR is non-trivial in the sense that detecting an implementation defect in the gradient-reversal direction (e.g.\ wrong sign on a custom loss term) is exactly what $\rho_{\mathrm{train\text{-}rev}}$ surfaces. To our knowledge it has not been catalogued as an MR for training-pipeline testing.
+\noindent where $\theta_T$ is the parameter vector after $T$ vanilla SGD steps starting from $\theta_0$, and $\tilde\theta_T^{\mathrm{(round-trip)}}$ is the vector obtained by applying $T$ vanilla SGD steps from $\theta_0$ followed by $T$ inverse-SGD steps using the same mini-batch sequence in reversed order, then $T$ forward steps again. The constant $c$ depends on the loss landscape's local Lipschitz structure and is determined empirically per model. This MR \emph{fails by construction} for momentum-based optimisers (Adam, Lion, etc.) whose update is not in $\mathcal{T}^{*}_{\mathrm{rev}}$; that is, the framework correctly predicts which architecture-optimiser pairs admit the MR and which do not. The MR is non-trivial in the sense that detecting an implementation defect in the gradient-reversal direction (e.g.\ wrong sign on a custom loss term) is exactly what $\rho_{\mathrm{train\text{-}rev}}$ surfaces. To our knowledge it has not been catalogued as an MR for training-pipeline testing.
 
 \paragraph{Coverage status, revised.} The full Set~N consists of five MRs, one per non-empty MetaPattern of $\mathbb{M}(\mathcal{A}_{\mathrm{equi}})$:
 $$
-\mathrm{Set\ N} = \bigl\{\,\rho_{\mathrm{rot}}\;(G),\; \rho_{\mathrm{mono}}\;(O_{\le}),\; \rho_{\mathrm{train}}\;(\mathcal{L}^*),\; \rho_{\mathrm{adj}}\;(T^*),\; \rho_{\mathrm{train\text{-}rev}}\;(\mathcal{T}^*)\,\bigr\}.
+\mathrm{Set\ N} = \bigl\{\,\rho_{\mathrm{rot}}\;(G),\; \rho_{\mathrm{mono}}\;(O_{\le}),\; \rho_{\mathrm{train}}\;(\mathcal{L}^*),\; \rho_{\mathrm{adj}}\;(T^*),\; \rho_{\mathrm{train\text{-}rev}}\;(\mathcal{T}^{*}_{\mathrm{rev}})\,\bigr\}.
 $$
 $\rho_{\mathrm{rot}}$ is the rotation-invariance MR of Section~\ref{subsec:end-to-end}; $\rho_{\mathrm{adj}}$ and $\rho_{\mathrm{train\text{-}rev}}$ are the non-trivial MRs of Sections~\ref{subsec:rho-adj}--\ref{subsec:rho-rev}; $\rho_{\mathrm{mono}}$ is the point-density-monotonicity MR for the $O_{\le}$ block (top-1 stability under removal of a small fraction of redundant input points), derived from the $O_{\le}^{\mathrm{train}}$ operator restricted to inference-time input perturbations; $\rho_{\mathrm{train}}$ is the inference-idempotency MR for the $\mathcal{L}^*$ block. With all five blocks populated, $\mathrm{coverage}_{\mathrm{NOETHER}}(\mathrm{Set\ N}) = 1.0$ by construction, this is what Theorem~\ref{thm:closure} predicts for a $\mathcal{A}_{\mathrm{equi}}$-derived MR set. The permutation-invariance MR $\rho_{\mathrm{perm}}$ (supplementary~S9 (Appendix~D)) is an auxiliary $G$-block MR retained as a redundant probe and is excluded from Set~N to keep the comparison budget $|N| = |L| = |B| = 5$.
 
@@ -876,7 +906,7 @@ The non-trivial nature of $\rho_{\mathrm{adj}}$ and $\rho_{\mathrm{train\text{-}
 Both the Boltzmann (\S\ref{sec:reactor}) and the equivariant-ML (\S\ref{sec:cross-domain}) instantiations share a common mathematical core: Lie-group symmetry, self-adjoint duality, and time-reversal involution. This is precisely the core that motivated the curation of Hypothesis~\ref{hyp:seven-blocks} in the first place. To test transferability beyond this core, this subsection instantiates NOETHER on a domain whose algebraic skeleton is structurally distinct: the relational query optimiser. Relational algebra is built from operators (selection $\sigma$, projection $\pi$, join $\bowtie$, union $\cup$, set/bag-difference) whose equivalence classes are governed by an idempotent semiring with a partial order under containment, not by a Lie group. There is no obvious self-adjoint operator and no time-reversal involution. The third instantiation therefore tests whether the framework yields useful MetaPatterns outside its training image.
 
 \paragraph{The query-optimiser program family and $\mathcal{A}_{\mathrm{rel}}$.}
-Let $\mathcal{F}_{\mathrm{rel}}$ be the family of programs that take a SQL query $q$ and a database state $D$ and return a relation $\mathrm{eval}(q, D)$; two queries are equivalent if $\forall D.\,\mathrm{eval}(q, D) = \mathrm{eval}(q', D)$. The operator algebra $\mathcal{A}_{\mathrm{rel}}$ activates $G$ (join / union permutation), $O_{\le}$ (selection-strengthening + projection-coarsening monotonicity), $\mathcal{E}^{*}$ (hash- / merge- / nested-loop plan equivalence under stated cost models~\cite{Wang2024QED, Markl2022LearnedQO}), and $\mathcal{B}^{*}_{\mathrm{rel}}$ (Definition~\ref{def:b-rel}: selection-pushdown $\sigma_p(R \bowtie S) = \sigma_p(R) \bowtie S$ when $\mathrm{attr}(p) \subseteq \mathrm{attr}(R)$; idempotent $\sigma_p \circ \sigma_p = \sigma_p$; constant-folding $\sigma_{1=1}(R) = R$, $R \bowtie \emptyset = \emptyset$). Blocks $T^{*}, \mathcal{T}^{*}, \mathcal{D}^{*}, \mathcal{L}^{*}$ are empty under $\mathcal{A}_{\mathrm{rel}}$ in their canonical forms (no inner-product self-adjointness; no time-reversal involution; no qualitative dynamics; no $\epsilon$-limit operator on exact-relational semantics). The full per-block enumeration of $\mathcal{A}_{\mathrm{rel}}$ operators is in supplementary~S6 \texttt{query\_optimiser/algebra\_breakdown.md}.
+Let $\mathcal{F}_{\mathrm{rel}}$ be the family of programs that take a SQL query $q$ and a database state $D$ and return a relation $\mathrm{eval}(q, D)$; two queries are equivalent if $\forall D.\,\mathrm{eval}(q, D) = \mathrm{eval}(q', D)$. The operator algebra $\mathcal{A}_{\mathrm{rel}}$ activates $G$ (join / union permutation), $O_{\le}$ (selection-strengthening + projection-coarsening monotonicity), $\mathcal{E}^{*}$ (hash- / merge- / nested-loop plan equivalence under stated cost models~\cite{Wang2024QED, Markl2022LearnedQO}), and $\mathcal{B}^{*}_{\mathrm{rel}}$ (Definition~\ref{def:b-rel}: selection-pushdown $\sigma_p(R \bowtie S) = \sigma_p(R) \bowtie S$ when $\mathrm{attr}(p) \subseteq \mathrm{attr}(R)$; idempotent $\sigma_p \circ \sigma_p = \sigma_p$; constant-folding $\sigma_{1=1}(R) = R$, $R \bowtie \emptyset = \emptyset$). Blocks $T^{*}, \mathcal{T}^{*}_{\mathrm{rev}}, \mathcal{D}^{*}, \mathcal{L}^{*}$ are empty under $\mathcal{A}_{\mathrm{rel}}$ in their canonical forms (no inner-product self-adjointness; no time-reversal involution; no qualitative dynamics; no $\epsilon$-limit operator on exact-relational semantics). The full per-block enumeration of $\mathcal{A}_{\mathrm{rel}}$ operators is in supplementary~S6 \texttt{query\_optimiser/algebra\_breakdown.md}.
 
 \paragraph{Running CONSTRUCT-MP on $\mathcal{A}_{\mathrm{rel}}$.}
 Steps 1--4 yield three MetaPatterns from the block subset: $m^{\mathrm{rel}}_{\mathrm{inv}}$ (input-permutation invariance under set semantics), $m^{\mathrm{rel}}_{\mathrm{mono}}$ (selection-strengthening monotonicity), and $m^{\mathrm{rel}}_{\mathrm{cmp}}$ (plan-equivalence under cost-model bounds). The relational query optimiser is the \emph{canonical} instantiation in which $\mathcal{B}^{*}_{\mathrm{rel}}$ is non-empty: it activates the eighth block that neither Boltzmann reactor physics nor equivariant ML exercises.
@@ -923,7 +953,7 @@ Decomposed along the structural decomposition of Section~\ref{subsec:decompositi
   \item $G \supseteq \{\mathcal{O}_{\mathrm{rod}}\}$ (treated tentatively as a commutative semigroup; the assignment will be shown below to fail);
   \item $O_{\le} \supseteq \{\mathcal{M}_{C_{B}},\,\mathcal{M}_{T_{\mathrm{mod}}}\}$ (parameter-monotonicity operators);
   \item $T^{*} \supseteq \{-\nabla \cdot D \nabla + \Sigma_{a}\}$ (the self-adjoint diffusion operator under isotropic scattering; Bell \& Glasstone~\cite{BellGlasstone1970} \S6.1, Lewis \& Miller~\cite{LewisMiller1993} \S4.2);
-  \item $\mathcal{T}_{\mathrm{rev}}^{*} = \emptyset$ (PWR diffusion is dissipative);
+  \item $\mathcal{T}^{*}_{\mathrm{rev}} = \emptyset$ (PWR diffusion is dissipative);
   \item $\mathcal{L}^{*}, \mathcal{D}^{*}, \mathcal{E}^{*}$ as in $\mathcal{A}_{\mathrm{Boltz}}$ with appropriate restrictions to the diffusion regime;
   \item $\mathcal{B}_{\mathrm{rel}}^{*} = \emptyset$ (no idempotent-semiring structure on PWR core states).
 \end{itemize}
@@ -1021,6 +1051,9 @@ The proof, by reducing the obstruction to the high-order-mixed-difference struct
 \paragraph{Engineering significance.}
 The \emph{MTC vs.\ boron concentration curve} is computed for every PWR cycle reload as part of the safety-analysis report submitted to regulators. The curve underlies the moderator temperature coefficient surveillance requirement at hot-full-power, all-rods-out conditions, under which MTC must satisfy a stated upper limit ($\le 0$~pcm/\textdegree{}F per 10~CFR~50 Appendix~A General Design Criterion~11~\cite{NRC10CFR50AppA}; specific numerical limits are given in plant-specific Technical Specifications). The slope $\partial \alpha_{\mathrm{MTC}}/\partial C_{B}$ is the key sensitivity parameter for projecting MTC behaviour across the cycle from a small number of measurement points (typically four-to-six points per cycle, measured at quarter-cycle intervals): it is computed by each cycle-reload core simulator run and reported to the operator. Measurement uncertainties and prediction protocols are documented in ANS~19.6.1~\cite{ANS196_1}. A core simulator that cannot reproduce the slope to within the tolerance of $\tau_{\mathrm{MTC\text{-}bor}}$ would fail the cycle-reload qualification process. The MR is therefore not a textbook curiosity; it is a routine and regulatory-essential output of every PWR core simulator.
 
+\paragraph{Independent industrial corroboration.}
+This relation is not only documented in the safety-analysis literature; it appears explicitly in the metamorphic-relation set of an independently developed production core simulator. LOCUST, the PWR assembly-transport module of the BAMBOO-C system (built by a third-party developer and industrially confirmed against domestic commercial-PWR operating data), carries the MTC-versus-boron dependence as a two-input guard-conditioned MR: across a critical-boron threshold the sign of $k_{\mathrm{eff}}$'s response to moderator temperature reverses (below the threshold, $T_{\mathrm{mod}} \uparrow \Rightarrow k_{\mathrm{eff}} \downarrow$; above it, $T_{\mathrm{mod}} \uparrow \Rightarrow k_{\mathrm{eff}} \uparrow$), which is precisely the boron-mediated cancellation of mechanism~(b) above expressed as a guarded relation. This independent industrial instance corroborates both that $\rho_{\mathrm{MTC\text{-}bor}}$ is a routinely exercised relation of production PWR simulators rather than a constructed counterexample, and that production MR sets do contain relations outside \texttt{Translate}'s present reach exactly as Proposition~\ref{prop:mtcbor} establishes. We cite this program as an independent witness to the obstruction, not as a NOETHER-derived relation; the relation and its source are recorded in supplementary~\texttt{S11\_n5\_industrial}.
+
 \paragraph{Five independent structural obstructions.}
 \label{subsubsec:obstruction set}
 
@@ -1057,7 +1090,7 @@ The two MRs $\rho_{\mathrm{nonadd}}$ and $\rho_{\mathrm{MTC\text{-}bor}}$ are al
 
 \emph{Not established.} That Theorem~\ref{thm:closure} itself fails. Theorem~\ref{thm:closure}'s closure result is over $\mathrm{MR}(\mathcal{A}_{\mathrm{PWR}})$ as defined by Definition~\ref{def:alg-induced}; the two MRs of this subsection lie \emph{outside} that set, so they are out-of-scope for Theorem~\ref{thm:closure} and consistent with it. The proper characterisation is that Theorem~\ref{thm:closure} is a substantially weaker statement than Theorem~$1'$ pretended to be, and the gap is now exhibited concretely with two independent witness MRs.
 
-\emph{Not established.} That a Composite-\texttt{Translate} extension of NOETHER would absorb these two MRs while preserving Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time decidability. This is the principal open problem the negative instantiation leaves to follow-up work. The five obstructions of Table~\ref{tab:obstruction set} are pairwise independent, so any candidate extension must address them jointly rather than sequentially.
+\emph{Not established.} That a Composite-\texttt{Translate} extension of NOETHER would absorb these two MRs while preserving Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time constructibility. This is the principal open problem the negative instantiation leaves to follow-up work. The five obstructions of Table~\ref{tab:obstruction set} are pairwise independent, so any candidate extension must address them jointly rather than sequentially.
 
 %% =========================================================
 
@@ -1132,7 +1165,7 @@ identify additional monotone/order MR classes in the same production-code
 families. The table does \emph{not} count latent structures for which no
 executable interface is available. S12 supplies the complementary evidence:
 when the program interface exposes the relevant operations, the same derivation
-protocol covers six operator blocks on held-out numerical libraries.
+protocol covers five operator blocks on held-out numerical libraries (the conservation invariant being a second $G$-block MR class, not a distinct block).
 
 \begin{table}[h]
 \centering
@@ -1261,7 +1294,7 @@ Table~\ref{tab:case-study} reports the case-study numbers. The full row-level ou
 & Set N (NOETHER) & Set L (LLM) & Set B (Lit.) \\
 \midrule
 Detection rate & 7/20 & 2/20 & 0/20 \\
-Structural coverage ($\mathrm{coverage}_{\mathrm{NOETHER}}$) & 1.00 & 0.40 & 0.20 \\
+Structural coverage ($\mathrm{coverage}_{\mathrm{NOETHER}}$) & 1.00 & 0.20 & 0.20 \\
 Unique detections & 5 & 0 & 0 \\
 Detected cat.~(i) wrong-sign loss & 0/5 & 0/5 & 0/5 \\
 Detected cat.~(ii) equivariance break & 2/5 & 2/5 & 0/5 \\
@@ -1272,12 +1305,12 @@ Detected cat.~(iv) gradient-reversal sign & 5/5 & 0/5 & 0/5 \\
 \end{table}
 
 \paragraph{Hypothesis verdicts.}
-H1 is \textbf{retained as a structural sanity check rather than as a falsifiable hypothesis test}. By the framework's construction, $\mathrm{coverage}_{\mathrm{NOETHER}}(N) = 1.00$ holds before any experiment is run; H1's failure can occur only if one of the derivations in Sections~\ref{subsec:end-to-end}--\ref{subsec:rho-rev} is itself in error. We accordingly use the $\mathrm{coverage}_{\mathrm{NOETHER}}$ values, $1.00$ for Set N, $0.40$ for Set L (the $G$ and $\mathcal{L}^*$ blocks are reached by an LLM-prompted MR), and $0.20$ for Set B (only $\mathcal{L}^*$ via Shin et al.'s idempotency MR; the other four literature MRs are out-of-scope under $\mathcal{A}_{\mathrm{equi}}$), as a \emph{structural-prior diagnostic}, not as a fault-detection metric: the gap quantifies what the algebraic prior contributes that prompt-based and literature-derived MR sets lack on this particular algebra. The load-bearing comparative result of the case study is H2.
+H1 is \textbf{retained as a structural sanity check rather than as a falsifiable hypothesis test}. By the framework's construction, $\mathrm{coverage}_{\mathrm{NOETHER}}(N) = 1.00$ holds before any experiment is run; H1's failure can occur only if one of the derivations in Sections~\ref{subsec:end-to-end}--\ref{subsec:rho-rev} is itself in error. We accordingly use the $\mathrm{coverage}_{\mathrm{NOETHER}}$ values, $1.00$ for Set N, $0.20$ for Set L (the $G$ block is reached by an LLM-prompted MR), and $0.20$ for Set B (only $\mathcal{L}^*$ via Shin et al.'s idempotency MR; the other four literature MRs are out-of-scope under $\mathcal{A}_{\mathrm{equi}}$), as a \emph{structural-prior diagnostic}, not as a fault-detection metric: the gap quantifies what the algebraic prior contributes that prompt-based and literature-derived MR sets lack on this particular algebra. The load-bearing comparative result of the case study is H2.
 
-H2 is \textbf{consistent with the data, but its verdict is construct-validity-controlled}: Set N uniquely detects all five category-(iv) mutations, and in every case the detector is $\rho_{\mathrm{train\text{-}rev}}$. Sets L and B detect zero cat-(iv) mutations: neither corpus contains an MR exercising the SGD-trajectory time-reversal property, which is exactly what NOETHER's $\mathcal{T}^{*}$ block predicts they would miss without an algebraic warrant. \emph{This contrast exhibits construct validity of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe, not NOETHER's superiority on a defect distribution sampled neutrally from real-world bug reports} (the mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$, so cat-(iv)'s category was selected because $\rho_{\mathrm{train\text{-}rev}}$ alone covers it). The unique-detection asymmetry between Set N and Set B is statistically significant at $\alpha = 0.05$ on the case study's mutation set (paired McNemar exact two-sided $p = 0.016$; unpaired Fisher exact $p = 0.008$); between Set N and Set L it is borderline ($p_\mathrm{McNemar} = 0.063$, $p_\mathrm{Fisher} = 0.13$) given Set L's overlap with Set N on two cat-(ii) mutations. Wilson 95\% confidence intervals on detection rates are $[0.18, 0.57]$ for Set N, $[0.03, 0.30]$ for Set L, and $[0.00, 0.16]$ for Set B; the intervals N vs B are non-overlapping. The full pairwise comparison matrix (McNemar $b/c$ counts, Fisher 2$\times$2 tables, Wilson CIs) is in supplementary material S3 (\texttt{table4.json::pairwise\_stats}).
+H2 is \textbf{consistent with the data, but its verdict is construct-validity-controlled}: Set N uniquely detects all five category-(iv) mutations, and in every case the detector is $\rho_{\mathrm{train\text{-}rev}}$. Sets L and B detect zero cat-(iv) mutations: neither corpus contains an MR exercising the SGD-trajectory time-reversal property, which is exactly what NOETHER's $\mathcal{T}^{*}_{\mathrm{rev}}$ block predicts they would miss without an algebraic warrant. \emph{This contrast exhibits construct validity of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe, not NOETHER's superiority on a defect distribution sampled neutrally from real-world bug reports} (the mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$, so cat-(iv)'s category was selected because $\rho_{\mathrm{train\text{-}rev}}$ alone covers it). The unique-detection asymmetry between Set N and Set B remains statistically significant after Holm--Bonferroni correction over the three case-study pairwise tests (\{N\,vs\,L, N\,vs\,B, L\,vs\,B\}; paired McNemar exact two-sided $p = 0.016$, Holm-adjusted $p = 0.047 < 0.05$; unpaired Fisher exact $p = 0.008$, Holm-adjusted $p = 0.025$); between Set N and Set L it does not reach significance ($p_\mathrm{McNemar} = 0.063$, $p_\mathrm{Fisher} = 0.13$) given Set L's overlap with Set N on two cat-(ii) mutations. Wilson 95\% confidence intervals on detection rates are $[0.18, 0.57]$ for Set N, $[0.03, 0.30]$ for Set L, and $[0.00, 0.16]$ for Set B; the intervals N vs B are non-overlapping. The full pairwise comparison matrix (McNemar $b/c$ counts, Fisher 2$\times$2 tables, Wilson CIs) is in supplementary material S3 (\texttt{table4.json::pairwise\_stats}).
 
 \paragraph{Construct-validity caveat for H2.}
-The mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$; in particular, cat-(iv) was selected because it targets the $\mathcal{T}^*$ block that $\rho_{\mathrm{train\text{-}rev}}$ alone covers. The 5/5 unique-detection result therefore exhibits \emph{construct validity} of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe rather than NOETHER's superiority on a defect distribution sampled neutrally from real-world bug reports. That weaker reading is still informative: it shows that the framework's $\mathcal{T}^*$-derived MR is non-redundant relative to LLM-prompted and literature-derived MRs.
+The mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$; in particular, cat-(iv) was selected because it targets the $\mathcal{T}^{*}_{\mathrm{rev}}$ block that $\rho_{\mathrm{train\text{-}rev}}$ alone covers. The 5/5 unique-detection result therefore exhibits \emph{construct validity} of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe rather than NOETHER's superiority on a defect distribution sampled neutrally from real-world bug reports. That weaker reading is still informative: it shows that the framework's $\mathcal{T}^{*}_{\mathrm{rev}}$-derived MR is non-redundant relative to LLM-prompted and literature-derived MRs.
 
 \paragraph{What is and is not detected: a framework boundary, not an edge case.}
 The result that no MR set detects category-(i) wrong-sign mutations is the most informative cell of Table~\ref{tab:case-study} and we choose to foreground it as a \emph{framework boundary} rather than an edge case. A sign-flipped classification head still satisfies SO(3)-rotation invariance and permutation invariance (the equivariance contract is intact), still passes inference idempotency, satisfies the symmetrised adjoint identity, and is monotone under point-density sub-sampling. The eight blocks of Hypothesis~\ref{hyp:seven-blocks} contain no \emph{label-consistency} block, and the wrong-sign-loss fault class is precisely the kind a label-consistency MR would catch. This is the label-consistency out-of-scope class enumerated in Remark~\ref{rem:counterex}: ML program families that ship with labelled training data are a candidate ninth block. We do not absorb this case into ``out-of-scope for MR testing'' in some over-broad sense; the original motivation for MR testing is precisely the absence of an oracle, so framing label-consistency MRs as fundamentally out-of-scope would over-claim the framework's boundary.
@@ -1298,48 +1331,7 @@ We commit in advance to the following readings of the eventual numerical outcome
 
 To begin closing the gap between protocol and result, we executed a $n=5$ pilot extension of the case study with five mutation operators systematically derived from the DeepCrime taxonomy~\cite{Humbatova2021DeepCrime} (which extracts 35 mutation operators from real DL fault studies). The pilot operators are post-training mutations on the trained EGNN checkpoint and address category labels analogous to DeepCrime's: cat-v-01 \emph{loss-reduction-like} (head-weight scaled by $1/N_{\text{classes}}$), cat-v-02 \emph{activation change} (tanh saturation), cat-v-03 \emph{layer removal} (head zeroed), cat-v-04 \emph{bias removal}, cat-v-05 \emph{weight re-init} (Glorot). The pilot was run with \texttt{runner\_pilot.py} against the same N/L/B MR sets, the same test set of eight clouds, and the same tolerance as the main case study. Results are deterministic given the seeds in supplementary S3.
 
-\begin{table}[h]
-\centering
-\caption{DeepCrime-style real-fault pilot, $n=5$ mutations on the trained EGNN checkpoint. Wilson 95\% CIs are given for context; pairwise Fisher-exact $p$-values are reported in supplementary S3 (\texttt{deepcrime\_pilot\_stats.json}).}
-\label{tab:pilot}
-\small
-\begin{tabular}{lcc}
-\toprule
-\textbf{Set} & \textbf{Detected / 5} & \textbf{Wilson 95\% CI} \\
-\midrule
-N (NOETHER) & 2/5 (cat-v-01, cat-v-03 via $\rho_{\mathrm{train}}$) & $[0.12, 0.77]$ \\
-L (LLM)     & 0/5                                           & $[0.00, 0.43]$ \\
-B (Lit.)    & 0/5                                           & $[0.00, 0.43]$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[h]
-\centering
-\caption{Paired contingency for Set~N vs Set~L on the $n=5$ DeepCrime
-pilot. The Set~N vs Set~B contingency is identical because Set~B also
-detected $0/5$. The appropriate paired-binary test is McNemar's exact
-test on the $(b, c) = (2, 0)$ discordant counts: two-sided exact
-$p = 0.500$ (binomial $X = 0$ in $n = 2$ trials with $p_0 = 0.5$ under
-$H_0$ of equal Set N / Set L performance); equivalently, an unpaired
-Fisher exact $2\times 2$ on rows = Sets, columns = (detected, missed)
-yields two-sided $p = 0.444$. Both numbers fail to reject $H_0$ at
-$\alpha = 0.05$ because $n = 5$ is below the threshold at which a
-$2 / 5$ vs $0 / 5$ contrast is inferentially decisive; per-pair
-statistics in supplementary~S3 \texttt{deepcrime\_pilot\_stats.json}.}
-\label{tab:deepcrime-contingency}
-\small
-\begin{tabular}{l c c c}
-\toprule
-                  & Set~L detected & Set~L missed & Total \\
-\midrule
-Set~N detected    & 0              & 2            & 2 \\
-Set~N missed      & 0              & 3            & 3 \\
-\midrule
-Total             & 0              & 5            & 5 \\
-\bottomrule
-\end{tabular}
-\end{table}
+The full pilot table (per-set detection $2/5$, $0/5$, $0/5$ with Wilson 95\% CIs $[0.12,0.77]$, $[0.00,0.43]$, $[0.00,0.43]$) is provided in supplementary~S3 (\texttt{deepcrime\_pilot\_stats.json}).
 
 \paragraph{Reading the pilot (inferential verdict).}
 At $n=5$ the appropriate paired-binary test is McNemar's exact on the discordant counts $(b, c) = (2, 0)$ for both Set N vs Set L and Set N vs Set B: two-sided exact $p = 0.500$ (and the unpaired-Fisher analogue yields two-sided $p = 0.444$ on the same contingency); the pilot is therefore underpowered for an inferential conclusion at $\alpha = 0.05$. The 2/5 vs 0/5 vs 0/5 detection contrast is reported as descriptive evidence consistent with the direction of the framework's $\mathcal{L}^{*}$-block prediction, not as a hypothesis confirmation. The pilot's load-bearing claim is that the comparative-evaluation infrastructure runs end-to-end against real-fault-style mutations on the trained checkpoint; non-vacuousness of the $\mathcal{L}^{*}$-block prediction and the parameter-distribution candidate-ninth-block reading are candidate evidence requiring a larger $n$.
@@ -1350,11 +1342,11 @@ For descriptive context only, the detection mechanism on the two events: $\rho_{
 The pilot is the first empirical handhold beyond the constructed mutation set; the larger comparative-evaluation protocol below remains as committed work for follow-up. The three undetected mutations (cat-v-02 activation change, cat-v-04 bias removal, cat-v-05 weight re-init) are \emph{consistent with, but do not establish}, the parameter-distribution candidate ninth block of Remark~\ref{rem:counterex} item~(vi); a panel of $n \ge 20$ mutations on more than one architecture is required to establish the block-extension claim. The pilot's role here is to motivate the candidate, not to confirm it; we report it alongside the metric-stability candidate of Remark~\ref{rem:metric-stability-block} as the two most actionable extension targets.
 
 \paragraph{Threats specific to this case study.}
-The most material threats are: (a) \textbf{MR-budget asymmetry}: GPT-4 might generate more than five MR candidates given a different prompt and a larger budget; (b) \textbf{baseline selection}: the literature MR set is restricted by the rule ``applicable to point-cloud classifiers'', which may exclude relevant MRs; (c) the mutation set is \textbf{hand-constructed} rather than mined from real defect logs, and importantly, \emph{constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$}, with cat-(iv) selected because it targets the $\mathcal{T}^*$-block MR $\rho_{\mathrm{train\text{-}rev}}$. The 5/5 unique-detection result for cat-(iv) therefore exhibits \emph{construct validity} of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe, not NOETHER's superiority on a defect distribution sampled neutrally from real-world bug reports; (d) the case study uses a compact EGNN stand-in for a full SE(3)-Transformer, so architecture-specific empirical numbers do not generalise; and (e) Set L is a single GPT-4 sample at temperature 0 with a fixed seed (the prompt and raw output are recorded in supplementary S3 \texttt{prompt\_log.md}); a different LLM, prompt, or temperature would yield different MRs and the case study does not characterise that variability. Section~\ref{subsec:case-study} does not generalise beyond this case-study scope; the comparative evaluation and real-bug protocols below describe the empirical extensions that address threats (a)--(c) directly.
+The most material threats are: (a) \textbf{MR-budget asymmetry}: GPT-4 might generate more than five MR candidates given a different prompt and a larger budget; (b) \textbf{baseline selection}: the literature MR set is restricted by the rule ``applicable to point-cloud classifiers'', which may exclude relevant MRs; (c) the mutation set is \textbf{hand-constructed} rather than mined from real defect logs, and importantly, \emph{constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$}, with cat-(iv) selected because it targets the $\mathcal{T}^{*}_{\mathrm{rev}}$-block MR $\rho_{\mathrm{train\text{-}rev}}$. The 5/5 unique-detection result for cat-(iv) therefore exhibits \emph{construct validity} of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe, not NOETHER's superiority on a defect distribution sampled neutrally from real-world bug reports; (d) the case study uses a compact EGNN stand-in for a full SE(3)-Transformer, so architecture-specific empirical numbers do not generalise; and (e) Set L is a single GPT-4 sample at temperature 0 with a fixed seed (the prompt and raw output are recorded in supplementary S3 \texttt{prompt\_log.md}); a different LLM, prompt, or temperature would yield different MRs and the case study does not characterise that variability. Section~\ref{subsec:case-study} does not generalise beyond this case-study scope; the comparative evaluation and real-bug protocols below describe the empirical extensions that address threats (a)--(c) directly.
 
 \paragraph{Comparative evaluation against published baselines (protocol).}
 \label{para:comp-eval-protocol}
-The single hand-constructed mutation set above is supplemented by a comparative protocol that runs Set N alongside two independent automated pipelines on a shared subject set. The protocol fixes the following measurable quantities, leaving only the result population to subsequent revisions of this paper.
+The single hand-constructed mutation set above is supplemented by a comparative protocol that runs Set N alongside two independent automated pipelines on a shared subject set. The protocol fixes the following measurable quantities in advance, leaving only the result population to be determined at execution time.
 
 \begin{description}
   \item[Subjects.] (i) GenMorph's published 23 Java-method benchmark~\cite{GenMorph2024} restricted to subjects whose induced operator algebra is non-trivial under the structural decomposition (we expect $\approx 14$ subjects after filtering on whether $\mathcal{A}_P$ has at least one non-empty block beyond $G$); (ii) two ML benchmarks built on DeepCrime real-fault mutation operators~\cite{Humbatova2021DeepCrime}: an MNIST classifier and a CIFAR-10 classifier under DeepCrime's 24 mutation operators systematically extracted from real DL fault taxonomies. Replacing the hand-constructed 20 mutations with DeepCrime's published real-fault operators directly addresses the construction-bias threat (c) above.
@@ -1378,7 +1370,7 @@ The single hand-constructed mutation set above is supplemented by a comparative 
       is the operational test.
     \item[H3a.3 (Cost-axis).] Set~N's MR-generation cost is
       asymptotically lower than Set~G's
-      (Theorem~\ref{thm:decidable} polynomial-time decidability
+      (Theorem~\ref{thm:decidable} polynomial-time constructibility
       versus Set~G's $\approx 30$-min stochastic GP search per SUT,
       detailed in Table~\ref{tab:gen-cost}). The cost-axis claim is
       independent of the detection-axis claims and is read on the
@@ -1547,34 +1539,6 @@ typically blind to the mutant; ``$\times$'' = breaks the block
 invariant, the block's MR can typically detect the mutant; ``$\sim$''
 = case-dependent on the SUT-specific block instantiation).
 
-\begin{table}[h]
-\centering
-\caption{Typical-case compatibility of PIT default mutator categories
-with the eight NOETHER blocks. Cells reflect the dominant case for
-mutators in the category as applied to a generic algebra-rich SUT;
-SUT-specific exceptions are catalogued in
-supplementary~S7 (\texttt{d4j/}). The cells $\langle$MATH, $\mathcal{L}^{*}\rangle$
-and $\langle$RETURN\_VALS, $\mathcal{L}^{*}\rangle$ are both
-``$\circ$'' (homogeneity-preserving), and the
-$\mathcal{L}^{*}$-blindness result of \S\ref{subsec:l-blindness-confirmed}
-is the empirical specialisation of these two cells.}
-\label{tab:pit-block}
-\small
-\begin{tabular}{lcccccccc}
-\toprule
-PIT mutator category & $G$ & $O_{\le}$ & $T^{*}$ & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $\mathcal{L}^{*}$ & $\mathcal{D}^{*}$ & $\mathcal{E}^{*}$ & $\mathcal{B}^{*}_{\mathrm{rel}}$ \\
-\midrule
-CONDITIONALS\_BOUNDARY & $\circ$ & $\times$ & $\circ$ & $\circ$ & $\circ$ & $\sim$ & $\circ$ & $\circ$ \\
-INCREMENTS             & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\sim$ & $\circ$ & $\circ$ \\
-INVERT\_NEGS           & $\sim$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\sim$ & $\circ$ & $\circ$ \\
-MATH (op swap)         & $\times$ & $\sim$ & $\times$ & $\times$ & $\circ$ & $\times$ & $\sim$ & $\circ$ \\
-NEGATE\_CONDITIONALS   & $\times$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\times$ \\
-RETURN\_VALS (zero/one) & $\circ$ & $\circ$ & $\times$ & $\times$ & $\circ$ & $\circ$ & $\sim$ & $\circ$ \\
-VOID\_METHOD\_CALLS    & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\times$ & $\sim$ & $\circ$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 The matrix stratifies mutants binary: \emph{algebra-disrupting} (D1, at least one $\times$ in a populated column) vs \emph{algebra-preserving} (D2, all $\circ$ in populated columns; $\sim$ resolved by SUT-specific overrides). The framework predicts Set~N's D2 kill rate is near zero by construction: a mutant that preserves all invariants is structurally invisible to algebraic MRs. D1 is therefore Set~N's appropriate fault-detection denominator; D2 is the territory of complementary techniques (random / GP / LLM-prompted MRs). The $\mathcal{L}^{*}$-blindness result of \S\ref{subsec:l-blindness-confirmed} is the corresponding D2-cell specialisation on the wider SUT substrate.
 
 \paragraph{Kill-set overlap on the head-to-head substrate.}
@@ -1663,40 +1627,6 @@ The $L_{\mathrm{scale}}$ MR's per-SUT kill rate on PIT mutants of the
 six $\mathcal{L}^{*}$-admitting SUTs is reported in
 Table~\ref{tab:l-blindness}. The total denominator is 44 mutants. The
 total kill count is 2.
-
-\begin{table}[h]
-\centering
-\caption{Per-SUT kill rate of the $L_{\mathrm{scale}}$ MR on PIT
-mutants of the six SUTs admitting an $\mathcal{L}^{*}$-block scaling
-MR. The prediction of \S\ref{subsec:l-blindness-derivation} is that
-the kill rate is near-zero by composition of the
-homogeneity-preserving property of PIT's default mutators with the
-scaling structure of $L_{\mathrm{scale}}$. Pooled across the six SUTs:
-$2/44 \approx 4.5\%$, well below the $1/3$ falsification threshold on
-each SUT and below it on $5/6$ SUTs (\texttt{hypotSig} alone reaches
-$2/4 = 50\%$, explained in the text).}
-\label{tab:l-blindness}
-\small
-\begin{tabular}{lcc}
-\toprule
-SUT & $L_{\mathrm{scale}}$ kill / mutants & \emph{Verdict} \\
-\midrule
-\texttt{midpoint}  &  0 / 3   & Confirmed \\
-\texttt{clamp}     &  0 / 7   & Confirmed \\
-\texttt{signum}    &  0 / 6\,$^{\dagger}$ & Confirmed (no $L_{\mathrm{scale}}$ kill) \\
-\texttt{gcdSig}    &  0 / 9   & Confirmed \\
-\texttt{lcmSig}    &  0 / 11  & Confirmed \\
-\texttt{hypotSig}  &  2 / 4   & Outlier; explained below \\
-\midrule
-pooled (all six)   &  2 / 44   & 4.5\% \\
-\bottomrule
-\end{tabular}\\[0.4em]
-{\footnotesize $^{\dagger}$\,For \texttt{signum} the $\mathcal{L}^{*}$-block MR
-is positive-scalar invariance ($\mathrm{signum}(\lambda x) = \mathrm{signum}(x)$
-for $\lambda > 0$) rather than degree-$1$ homogeneity; the prediction
-applies to this MR shape \emph{a fortiori} since the right-hand side
-does not depend on $\lambda$.}
-\end{table}
 
 \paragraph{Reading.}
 On 5 of 6 SUTs the prediction is confirmed at the strongest reading
@@ -1825,23 +1755,6 @@ structure as input. The two pipelines converge on the same algebraic
 primitives. Convergence under independent epistemic processes is
 direct corroboration of the operative-generator reading.
 
-\begin{table}[h]
-\centering
-\caption{Cross-pipeline rediscovery on \texttt{midpoint}: GP-evolved
-MRs (Set~G) and their algebra-derived counterparts (Set~N).}
-\label{tab:rediscovery}
-\small
-\begin{tabular}{lll}
-\toprule
-GP-evolved MR (Set G) & Set N counterpart & Block \\
-\midrule
-\texttt{SwitchParams??1@2}                & \texttt{G\_swap} (commutativity)         & $G$ \\
-\texttt{NumericAddition?1.000000?1}       & \texttt{T\_shift} (translation by $1$)   & $G_{\mathrm{tr}}$ \\
-\texttt{NumericMultiplication?0.500000?2} & \texttt{L\_scale} (scaling, approx.)     & $\mathcal{L}^{*}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 \paragraph{Witness 2: structural coverage extension.}
 GenMorph's GP pipeline fails on two of the ten SUTs for plumbing reasons: \texttt{ComplexSignal.add} (instance method) hits an XStream \texttt{NullPointerException} on receiver deserialisation; \texttt{isSequence} (boolean predicate) yields ungrammatical JOR strings. Both SUTs admit Set~N MRs derived directly from the SUT signature (commutativity for \texttt{ComplexSignal.add}; monotonic-window translation for \texttt{isSequence}) and run to completion, covering 8 of 70 PIT mutants on which only Set~N is defined. Set~N's algebraic-derivation route operates on the SUT signature, independent of the SUT-deserialisation and JOR-grammar infrastructure GenMorph depends on; the structural-coverage extension is an architectural property of the derivation, not an empirical accident.
 
@@ -1850,7 +1763,7 @@ GenMorph's GP pipeline fails on two of the ten SUTs for plumbing reasons: \textt
 
 This subsection decomposes an aggregate Set~G dominance per algebraic block, with cost-axis and D2-stratum framework prediction layered alongside.
 
-\begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Boundary of contribution (head-to-head restatement),fonttitle=\small\bfseries]
+\begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Scope of the head-to-head comparison,fonttitle=\small\bfseries]
 \textit{What this subsection claims, and what it does not.} (1)~\textbf{Aggregate verdict}: Set~N is dominated by Set~G on the D1 stratum (McNemar $p = 0.0043$ pooled, $p = 0.019$ on D1 only). (2)~\textbf{Per-block reading}: the gap concentrates on the $G$ block (Set~G $7/7$ vs Set~N $0/7$ on commutativity-targeting mutants); on the $G_{\mathrm{tr}}$ translation sub-class Set~N dominates ($10/17$ vs Set~G's $G_{\mathrm{tr}}$ kills). (3)~\textbf{Cost-axis}: independently of detection-rate, Set~N is derivable in polynomial time from $\mathcal{A}_P$ (Theorem~\ref{thm:decidable}) while Set~G requires a $\approx 30$-min stochastic GP search per SUT. (4)~\textbf{D2-stratum framework prediction}: Set~N's $\le 10\%$ D2 kill-rate prediction (operative invariant preserved under structurally-non-disrupting mutants) is an ex-ante framework signal that no inductive baseline can derive; pre-registered cap holds at $2/29 = 6.9\%$ on the cross-codebase Commons-Math substrate. The head-to-head is not the framework's load-bearing claim: per-block algebraic derivability, structural coverage extension (two SUTs only Set~N reaches), and the D2 prediction are.
 \end{tcolorbox}
 
@@ -1880,87 +1793,8 @@ control of an uncorrected $\alpha = 0.05$ (Holm--Bonferroni-adjusted
 threshold $\alpha/16 \approx 0.003$; no per-SUT contrast meets this
 threshold).
 
-\begin{table}[h]
-\centering
-\caption{Per-SUT PIT mutation kill counts, Set~N versus
-GenMorph-evolved Set~G at GenMorph's published 30-min GAssert budget
-(primary) and at a 1-min GAssert sensitivity rerun, on the 10
-algebra-rich Java SUTs of \S\ref{subsec:test-design}. Set~G is
-structurally absent on \texttt{ComplexSignal.add} (instance-method
-deserialisation) and \texttt{isSequence} (boolean-predicate JOR
-grammar) under both budgets (\S\ref{subsec:convergent-witnesses}).
-Set~N's kill vector is held fixed across budgets. Pooled across the
-8 head-to-head SUTs ($n = 62$ mutants), 30-min budget primary: Set~N
-$= 26$, Set~G $= 40$, McNemar exact two-sided $p = 0.0043$. The
-$\Delta$ (30-min) column reports Set~N $-$ Set~G at the 30-min budget;
-note labels are directional descriptors only and do not assert
-per-SUT statistical significance (see prose). \textbf{$n = 62$ is
-underpowered for a paired hypothesis test at $\alpha = 0.05$ in
-two-sided form.}}
-\label{tab:algebra-rich-pooled}
-\small
-\adjustbox{max width=\textwidth}{%
-\begin{tabular}{lcccccl}
-\toprule
-SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & note \\
-\midrule
-\texttt{ComplexSignal.add} &  3 & 2 & N/A & N/A &      & instance method (Set~G N/A) \\
-\texttt{midpoint}          &  3 & 3 & 3   & 3   & $0$  & tie \\
-\texttt{exactLog2}         & 10 & 4 & 0   & 0   & $+4$ & directional only \\
-\texttt{isSequence}        &  5 & 0 & N/A & N/A &      & boolean predicate (Set~G N/A) \\
-\texttt{clamp}             &  7 & 5 & 5   & 5   & $0$  & tie \\
-\texttt{signum}            &  6 & 4 & 4   & 4   & $0$  & tie \\
-\texttt{gcdSig}            &  9 & 1 & 6   & 5   & $-5$ & directional only \\
-\texttt{hypotSig}          &  4 & 2 & 4   & 4   & $-2$ & directional only \\
-\texttt{lcmSig}            & 11 & 0 & 8   & 8   & $-8$ & directional only \\
-\texttt{powerSig}          & 12 & 7 & 10  & 10  & $-3$ & directional only ($2$ Set~N MRs ineligible, see footnote) \\
-\midrule
-\textbf{pooled (head-to-head, n=62)}     &    & \textbf{26} & \textbf{40} & \textbf{39} & $-14$ & McNemar two-sided $p = 0.0043$ (30-min) \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
-
 \paragraph{Per-block head-to-head and complementarity (Primary, PIT arm).}
 Each Set~N MR derives from exactly one NOETHER block, so the natural head-to-head denominator is per-block rather than the operative-block union. Across the eight head-to-head SUTs, PIT's stock mutator catalogue exercises three operative (sub-)blocks: $G$ (finite-group symmetry: swap / negate), $\mathcal{L}^{*}$ (scale / homogeneity), and $G_{\mathrm{tr}}$, the translation sub-class of the symmetry block $G$ (grid shift / period). For each block~$b$, $n_{b}$ counts mutants whose (SUT, mutator) entry in \texttt{configs/sut\_block\_overrides.json} marks block~$b$ as broken (``$\times$''). Per-block kill counts and the complementarity partition (both / $N$-only / $G$-only / neither) appear in Table~\ref{tab:per-block-headtohead}.
-
-\begin{table}[h]
-\centering
-\caption{Per-block head-to-head on the three operative blocks
-exercised by PIT 1.7.4 across the eight in-scope SUTs of
-\S\ref{subsec:test-design}. Each row's denominator $n_{b}$ counts
-mutants violating block~$b$'s invariant; complementarity cells
-``both'' / ``$N$-only'' / ``$G$-only'' / ``neither'' partition $n_{b}$.
-Wilson 95\% intervals are reported alongside point rates. The five
-operative blocks PIT~1.7.4 does not exercise
-($O_{\le}, \mathcal{T}^{*}_{\mathrm{rev}}, \mathcal{D}^{*},
-\mathcal{E}^{*}, \mathcal{B}^{*}_{\mathrm{rel}}$) are addressed by
-the construct-trace consistency check on hand-crafted
-block-targeted mutants (now in supplementary~S9, item
-``D\_E\_implementation\_consistency''); those results are
-design-implied and not used as independent fault-detection
-evidence. Auxiliary rows report the D1 aggregate and the unmapped
-bucket (PIT mutants from cells without an override entry,
-principally \texttt{RETURN\_VALS} and \texttt{MATH} on SUTs where
-the Table 5 reconstruction fallback assigns D1 but does not specify
-broken blocks; lower-bound caveat, not a participating row).}
-\label{tab:per-block-headtohead}
-\small
-\adjustbox{max width=\textwidth}{%
-\begin{tabular}{lrrlrlrrrr}
-\toprule
-Block & $n_{b}$ & Set~N kills & rate (95\% CI) & Set~G kills & rate (95\% CI) & both & $N$-only & $G$-only & neither \\
-\midrule
-$G$ (sym.)       & 11 &  2 & $0.182$ $[0.051,\,0.477]$ &  9 & $0.818$ $[0.523,\,0.949]$ & 2 & 0 & 7 & 2 \\
-$\mathcal{L}^{*}$ & 24 & 10 & $0.417$ $[0.245,\,0.612]$ & 16 & $0.667$ $[0.467,\,0.820]$ & 8 & 2 & 8 & 6 \\
-$G_{\mathrm{tr}}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\,0.690]$ & 7 & 3 & 1 & 6 \\
-\midrule
-\textit{D1 aggregate, PIT-covered blocks (secondary)}            & 52 & 26 & $0.500$ $[0.369,\,0.631]$ & 37 & $0.712$ $[0.577,\,0.817]$ & 22 & 4 & 15 & 11 \\
-\textit{unmapped (lower-bound caveat)}                           & 25 & --- & --- & --- & --- & --- & --- & --- & --- \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
 
 The unmapped auxiliary row counts $25$ PIT mutants from cells whose D1/D2 override table does not specify broken blocks; it is a lower-bound caveat on per-block denominators (each unmapped mutant is D1-classified but its block membership is unknown), not an additional denominator added to the $G + \mathcal{L}^{*} + G_{\mathrm{tr}}$ union. The D1 pool is $n = 52$ pre and post equivalent-mutant exclusion (Table~\ref{tab:two-stratum} row~1).
 
@@ -2259,7 +2093,7 @@ Table~\ref{tab:gen-cost}; the matrix-driven D1/D2 mutant
 stratification (Table~\ref{tab:pit-block}) operationalises the
 detection-axis claim that NOETHER is appropriate to algebra-disrupting
 mutants and out-of-scope by design on algebra-preserving mutants.
-Per-SUT delta entries in Table~\ref{tab:algebra-rich-pooled} are
+Per-SUT delta entries in the per-SUT table (supplementary~S9) are
 \emph{directional descriptors only}; under Holm-Bonferroni
 correction for the $8 \times 2 = 16$ paired comparisons across the
 two budgets, the per-SUT family-wise threshold is $\alpha/16 \approx
@@ -2280,7 +2114,7 @@ $p$ values now differ.
 The $\mathcal{L}^{*}$-blindness prediction of \S\ref{subsec:l-blindness-derivation} is derivable from public information without consulting data, and is committed to git in supplementary~S7 (\texttt{d4j/}) alongside the SUT-selection criterion before the per-MR kill-count files; a reader who distrusts the timestamp chain can re-derive the prediction independently from \S\ref{sec:framework} and~\cite{Coles2016PIT}.
 
 \paragraph{(b) Set G budget asymmetry.}
-GenMorph's published 30-min GAssert configuration is reported alongside a 1-min sensitivity rerun (Table~\ref{tab:algebra-rich-pooled}) that handicaps Set~G conservatively; the 30-min budget leaves the $\mathcal{L}^{*}$-blindness result and the structural-extension finding unchanged.
+GenMorph's published 30-min GAssert configuration is reported alongside a 1-min sensitivity rerun (the per-SUT table, supplementary~S9) that handicaps Set~G conservatively; the 30-min budget leaves the $\mathcal{L}^{*}$-blindness result and the structural-extension finding unchanged.
 
 \paragraph{(c) Sample size.}
 $n = 70$ across 10 SUTs is underpowered for a paired head-to-head verdict at $\alpha = 0.05$; the \S\ref{subsec:pooled-headtohead} reading is the honest disclosure that Set~N is dominated by Set~G in the aggregate D1 stratum (McNemar $p = 0.019$ on D1; $p = 0.0043$ pooled), with the framework's contribution read at the per-block, cost-axis, and D2-prediction layers rather than aggregate fault-detection superiority. The $\mathcal{L}^{*}$-blindness test on $n = 44$ across 6 SUTs is per-SUT (one third or more on more than one SUT), not pooled.
@@ -2292,7 +2126,10 @@ The two N/A SUTs of \S\ref{subsec:convergent-witnesses} reflect the state of Gen
 The evaluation restricts itself to programs with explicit mathematical-physics equations, by NOETHER's scope declaration (Definition~\ref{def:alg-induced}); the kill-rate gain over the utility-method reference is reported as scope-discriminance evidence (claim~D), not as a generalisable performance improvement on every Java SUT.
 
 \paragraph{(f) Three SOTA-category coverage with explicit baseline-strength caveats.}
-The protocol of \S\ref{para:comp-eval-protocol} commits Set~N against one representative per SOTA category: a GP-evolved baseline (GenMorph~\cite{GenMorph2024}), an LLM-assisted baseline (subsuming the single-sample probes of~\cite{Shin2024,ZhangChatGPTMR2023,GPTMR2025,AutoMT2025}), and a mining-based baseline (MR-Scout~\cite{MRScout2024}). Baseline-strength asymmetry: (i)~GP-evolved arm delivered in full at GenMorph's published 30-min budget on a single seed; multi-seed replication committed as follow-up~(a.budget-replication). (ii)~LLM-assisted arm delivered as a $2$-vendor (DeepSeek-V3, ChatGPT-4o-mini) $\times$ $5$-temperature ensemble ($100$ samples); the third commercial closed-vendor frontier (Anthropic Claude) is committed as post-acceptance follow-up~(d.set-l-claude), and the current Set~L results are reported as a $2$-vendor proxy rather than the SOTA-strongest configuration. (iii)~Mining-based arm reported through an adapted estimate of MR-Scout's reach derived from its published artifact figures; full re-execution committed as follow-up~(d). METRIC+~\cite{SunMETRICplus2021} is not run head-to-head because no automated identification pipeline is publicly available; the qualitative-plus-quantitative coverage contrast appears in \S\ref{subsec:case-study} (sorting worked example) and \S\ref{subsec:test-design} (per-block coverage diagnostic). The cost-component breakdown of all four methods is in Table~\ref{tab:gen-cost}.
+The protocol of \S\ref{para:comp-eval-protocol} commits Set~N against one representative per SOTA category: a GP-evolved baseline (GenMorph~\cite{GenMorph2024}), an LLM-assisted baseline (subsuming the single-sample probes of~\cite{Shin2024,ZhangChatGPTMR2023,GPTMR2025,AutoMT2025}), and a mining-based baseline (MR-Scout~\cite{MRScout2024}). Baseline-strength asymmetry: (i)~GP-evolved arm delivered in full at GenMorph's published 30-min budget on a single seed (seed~$=11$); the single-seed and author-designed-substrate concerns are addressed by an additional paired multi-seed check on GenMorph's \emph{own} published 23-method benchmark (the \texttt{gcd}/\texttt{sin} subset, all 12 published GP seeds; supplementary~\texttt{routeB}). Under this neutral substrate Set~G's dominance is seed-robust (pooled McNemar exact $p = 2.97\times10^{-11}$ on \texttt{gcd} and $p = 0.012$ on \texttt{sin}; Set~N $\geq$ Set~G on only $4/12$ \texttt{gcd} seeds), and seed~$=11$ is among the most Set~N-favourable seeds (Set~N's highest count, $13$, against one of Set~G's lowest, $11$), so the single-seed head-to-head does not overstate Set~G's advantage. (ii)~LLM-assisted arm delivered as a $2$-vendor (DeepSeek-V3, ChatGPT-4o-mini) $\times$ $5$-temperature ensemble ($100$ samples); the third commercial closed-vendor frontier (Anthropic Claude) is committed as post-acceptance follow-up~(d.set-l-claude), and the current Set~L results are reported as a $2$-vendor proxy rather than the SOTA-strongest configuration. (iii)~Mining-based arm reported through an adapted estimate of MR-Scout's reach derived from its published artifact figures; full re-execution committed as follow-up~(d). METRIC+~\cite{SunMETRICplus2021} is not run head-to-head because no automated identification pipeline is publicly available; the qualitative-plus-quantitative coverage contrast appears in \S\ref{subsec:case-study} (sorting worked example) and \S\ref{subsec:test-design} (per-block coverage diagnostic). The cost-component breakdown of all four methods is in Table~\ref{tab:gen-cost}.
+
+\paragraph{(f.ms) Full-benchmark pre-registered multi-seed confirmatory.}
+Extending the \texttt{gcd}/\texttt{sin} check of~(f) to GenMorph's entire published 23-method benchmark, a pre-registered confirmatory experiment (hypotheses, pinned definitions, and falsifiers frozen by a git commit before execution, so the test is HARKing-free) re-runs the neutral substrate (JDK8 / Randoop / PIT~1.7.4 with GenMorph's own mutant set and upstream kill definition; only the MR set varies) at two held-out Randoop seeds, seed~$=12$ as the primary endpoint and seed~$=13$ as replication, with Set~G taken from GenMorph's published per-seed data. Each rate carries a per-mutant Wilson interval alongside a subject-level cluster-bootstrap 95\% interval (10{,}000 subject resamples) and a paired Wilcoxon signed-rank test; McNemar is one-sided on the directional strata and two-sided on the null stratum. The aggregate loss is confirmed out-of-sample: pooled across 23 subjects, Set~N's union kill-rate is below Set~G's single-seed baseline at both seeds (seed~12 $0.310$ vs $0.392$, exact $p = 0.0018$; seed~13 $0.319$ vs $0.384$, $p = 0.0007$), driven by the Math stratum where Set~N is robustly suppressed (one-sided $p \approx 0$ at both seeds, cluster-bootstrap interval entirely negative). On Guava the direction favours Set~N at both seeds (seed~12 $0.716$ vs $0.469$, one-sided $p = 0.0002$; seed~13 $0.704$ vs $0.593$), though the subject-level cluster-bootstrap interval marginally includes zero at seed~12 and the seed~13 contrast is underpowered (discordant $b+c = 19 < 25$); the Lang stratum is underpowered and inconclusive at both seeds ($b+c = 13$ and $20$). Set~N's per-stratum kill-rate moves by at most $0.038$ across seeds~11/12/13 (deterministic MR set, variation only from Randoop inputs). This confirms the \S\ref{subsec:pooled-headtohead} aggregate reading on a neutral benchmark under a pre-registered HARKing-free design, consistent with the identification-not-effectiveness scope: it strengthens the rigor of the sufficiency evidence without asserting fault-detection superiority. Set~N's generation stays bounded by the $10^{-4}$ absolute-tolerance encoding on \texttt{acos} and \texttt{pow}, where it yields no false-positive-free MR, so the determinism advantage is reported as ``the same MR set every run, validity bounded by the encoding artefact'' rather than universal validity.
 
 \subsubsection{MR-generation cost}
 \label{subsec:gen-cost}
@@ -2320,7 +2157,7 @@ Cold-start capable           & yes                                              
 }
 \end{table}
 
-The table operationalises three structural advantages of NOETHER as distinct cost-axis arguments rather than as a single ``best'' verdict: (i) vs.\ GP, polynomial-time deterministic construction (Theorem~\ref{thm:decidable}) replaces a 30-min stochastic per-SUT search, with one-time human cost amortising across same-algebra SUTs; (ii) vs.\ LLM-assisted, the $\mathrm{coverage}_{\mathrm{NOETHER}}$ diagnostic on \S\ref{subsec:case-study} (1.00 vs.\ 0.40) operationalises the algebraic-prior gap that prompt-based generation does not close, at zero token cost; (iii) vs.\ mining-based, NOETHER is operative at cold start (no seed test suite required), the regime in which most algebra-rich scientific-computing programs arrive on a tester's desk. These are cost-profile and coverage-profile claims that hold within the framework's scope precondition, not fault-detection-superiority claims.
+The table operationalises three structural advantages of NOETHER as distinct cost-axis arguments rather than as a single ``best'' verdict: (i) vs.\ GP, polynomial-time deterministic construction (Theorem~\ref{thm:decidable}) replaces a 30-min stochastic per-SUT search, with one-time human cost amortising across same-algebra SUTs; (ii) vs.\ LLM-assisted, the $\mathrm{coverage}_{\mathrm{NOETHER}}$ diagnostic on \S\ref{subsec:case-study} (1.00 vs.\ 0.20) operationalises the algebraic-prior gap that prompt-based generation does not close, at zero token cost; (iii) vs.\ mining-based, NOETHER is operative at cold start (no seed test suite required), the regime in which most algebra-rich scientific-computing programs arrive on a tester's desk. These are cost-profile and coverage-profile claims that hold within the framework's scope precondition, not fault-detection-superiority claims.
 
 \paragraph{Approximate-parity-at-lower-cost reading (H3a.3 verdict).}
 \label{para:cost-axis-h3a}
@@ -2328,7 +2165,7 @@ H3a.3's cost-axis claim holds when detection is read on the per-block primary (T
 
 \paragraph{Committed future work (16 items).}
 \label{para:future-work}
-The full committed-future-work table (16 entries) is in supplementary~S4 (\texttt{future\_work.md}); key items completed: (i)~METRIC$+$ head-to-head on Sun~2021's 4 subjects with PIT~1.7.4 + Major cross-tool replication (pooled McNemar $p = 0.625$ / $0.211$ both NS, $92.6\%$ both-kill on the PIT substrate; details in supplementary~S8); (b.cm)~Commons-Math pilot (pooled Set~N $10/77 = 13.0\%$, D2 prediction passes $2/29 = 6.9\%$); (d.set-l)~$2$-of-$3$-vendor LLM-ensemble harvest ($487$ MRs, $212$ executable, ensemble matches Set~N on the matchable subset $34/34$); (e), (e.2), (e.4), (g)~the D1/D2 labelling pipeline, equivalent-mutant exclusion, $G$-block Euclidean-SUT documentation, and construct-trace consistency check. The remaining 8 pending items (multi-seed GP replication; full $38$-D4J extension; MR-Scout re-execution; Anthropic third-vendor; generic-mutation independent test on the 5 PIT-unexercised blocks; external-transfer reactor-physics corpus; two narrow grid-MR predicate tightenings) are the principal post-publication work programme.
+The full committed-future-work table (16 entries) is in supplementary~S4 (\texttt{future\_work.md}); key items completed: (i)~METRIC$+$ head-to-head on Sun~2021's 4 subjects with PIT~1.7.4 + Major cross-tool replication (pooled McNemar $p = 0.625$ / $0.211$ both NS, $92.6\%$ both-kill on the PIT substrate; details in supplementary~S8); (b.cm)~Commons-Math pilot (pooled Set~N $10/77 = 13.0\%$, D2 prediction passes $2/29 = 6.9\%$); (d.set-l)~$2$-of-$3$-vendor LLM-ensemble harvest ($487$ MRs, $212$ executable, ensemble matches Set~N on the matchable subset $34/34$); (e), (e.2), (e.4), (g)~the D1/D2 labelling pipeline, equivalent-mutant exclusion, $G$-block Euclidean-SUT documentation, and construct-trace consistency check; (f.ms)~the full-benchmark pre-registered multi-seed confirmatory at seeds~12/13 of \S\ref{subsec:empirical-threats}. The remaining 7 pending items (full $38$-D4J extension; MR-Scout re-execution; Anthropic third-vendor; generic-mutation independent test on the 5 PIT-unexercised blocks; external-transfer reactor-physics corpus; two narrow grid-MR predicate tightenings) are the principal post-publication work programme.
 
 \subsubsection{Summary of evidence}
 \label{subsec:empirical-summary}
@@ -2395,36 +2232,8 @@ METRIC and METRIC+ pioneered the categorical scaffolding that any structural the
 
 \paragraph{Worked example: METRIC$+$ categories for a sorting library, mapped onto NOETHER blocks.}
 \label{para:metricplus-sorting}
-For a numerical comparison-sort library, METRIC$+$'s eleven input-domain $\times$ output-relation category pairs (the $9$-category METRIC base extended by $2$ output-domain pairs in METRIC$+$, per~\cite{SunMETRICplus2021} Table~II) collapse onto two NOETHER blocks: $G$ (comparator-permutation symmetry $\mathfrak{S}_n$) and $O_{\le}$ (partial order). Table~\ref{tab:metricplus-sorting} records the mapping cell by cell: $9$ of $11$ category pairs map to $G$ or $O_{\le}$; the remaining $2$ ($D_5$ additive shifts, $R_4$ multiplicative scaling) are out-of-scope by construction for a comparison sort whose semantics ignore order-preserving univariate input transformations. The $11 \to 2$-block compression operationalises NOETHER's deflationary direction: a NOETHER-aware METRIC$+$ user can prune the $9$ category-pair enumerations to two algebraically distinct MetaPatterns ($m_{\mathrm{inv}}$ via $G$, $m_{\mathrm{mono}}$ via $O_{\le}$) without loss of MR coverage. This is a qualitative-plus-quantitative coverage contrast, not a head-to-head fault-detection comparison: METRIC$+$ is a category-enumeration scaffold without an automated identification pipeline, so kill-rate head-to-head requires re-implementing METRIC$+$ from prose (committed as follow-up~(i) of supplementary~S4).
+For a numerical comparison-sort library, METRIC$+$'s eleven input-domain $\times$ output-relation category pairs (the $9$-category METRIC base extended by $2$ output-domain pairs in METRIC$+$, per~\cite{SunMETRICplus2021} Table~II) collapse onto two NOETHER blocks: $G$ (comparator-permutation symmetry $\mathfrak{S}_n$) and $O_{\le}$ (partial order). the cell-by-cell mapping (supplementary~S8) records $9$ of $11$ category pairs mapping to $G$ or $O_{\le}$; the remaining $2$ ($D_5$ additive shifts, $R_4$ multiplicative scaling) are out-of-scope by construction for a comparison sort whose semantics ignore order-preserving univariate input transformations. The $11 \to 2$-block compression operationalises NOETHER's deflationary direction: a NOETHER-aware METRIC$+$ user can prune the $9$ category-pair enumerations to two algebraically distinct MetaPatterns ($m_{\mathrm{inv}}$ via $G$, $m_{\mathrm{mono}}$ via $O_{\le}$) without loss of MR coverage. This is a qualitative-plus-quantitative coverage contrast, not a head-to-head fault-detection comparison: METRIC$+$ is a category-enumeration scaffold without an automated identification pipeline, so kill-rate head-to-head requires re-implementing METRIC$+$ from prose (committed as follow-up~(i) of supplementary~S4).
 
-\begin{table}[h]
-\centering
-\caption{Mapping of $11$ input-domain ($D$) $\times$ output-relation ($R$) METRIC$+$ category pairs~\cite{ChenMETRIC2016, SunMETRICplus2021} onto NOETHER blocks for a deterministic comparison-sort library under $\mathcal{A}_{\mathrm{sort}}$. The sort-specific specialisation is operationalised here; $9$ pairs collapse onto two non-empty blocks ($G$, $O_{\le}$); $2$ pairs ($D_5$, $R_4$) are out-of-scope.}
-\label{tab:metricplus-sorting}
-\small
-\adjustbox{max width=\textwidth}{%
-\small
-\begin{tabular}{lll}
-\toprule
-METRIC$+$ category pair & NOETHER block & Comment \\
-\midrule
-$D_1$ (permutation of input list) & $G$ ($\mathfrak{S}_n$) & $m_{\mathrm{inv}}$: sort output invariant \\
-$D_2$ (append element to input) & $O_{\le}$ & $m_{\mathrm{mono}}$: sort respects added element \\
-$D_3$ (remove element from input) & $O_{\le}$ & $m_{\mathrm{mono}}$: inverse of $D_2$ \\
-$D_4$ (replace element with permuted copy) & $G$ ($\mathfrak{S}_n$) & $m_{\mathrm{inv}}$: variant of $D_1$ \\
-$D_5$ (add constant to all inputs) & out-of-scope & no MR (sort semantics ignore additive shifts) \\
-$D_6$ (concatenate two sorted lists) & $G$ ($\mathfrak{S}_n$) & $m_{\mathrm{inv}}$: merge property \\
-$R_1$ (output element-wise equality) & $G$ & identity oracle (degenerate MR) \\
-$R_2$ (output permutation equality) & $G$ ($\mathfrak{S}_n$) & $m_{\mathrm{inv}}$ \\
-$R_3$ (output prefix equality) & $O_{\le}$ & $m_{\mathrm{mono}}$ on prefixes \\
-$R_4$ (multiplicative scaling of input) & out-of-scope & no MR (sort semantics ignore multiplicative scaling) \\
-$R_5$ (subset relation on output) & $O_{\le}$ & $m_{\mathrm{mono}}$ on subsets \\
-\midrule
-\textit{Coverage summary} & $9 \to G \cup O_{\le}$, $2$ out-of-scope & NOETHER block compression: $11 \to 2$ non-empty MetaPatterns \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
 
 \paragraph{Small-scale manual METRIC$+$ derivation on three \S\ref{subsec:test-design} SUTs.}
 \label{para:metricplus-headtohead-small}
@@ -2437,66 +2246,14 @@ and \texttt{powerSig} (bivariate non-linear, multiplicative). For each
 SUT we enumerate which METRIC$+$ category pairs yield a non-vacuous
 Set-MP MR; classify the algebra-block of each non-vacuous Set-MP MR
 under $\mathcal{D}(\mathcal{A}_P)$; and identify which Set-N MR (if any)
-covers the same algebraic content. Table~\ref{tab:metricplus-headtohead-small}
-records the analysis. The full PIT-based head-to-head kill-rate
+covers the same algebraic content. The per-cell analysis (supplementary~S8) records, across the three SUTs, $6$, $5$, and $3$ non-vacuous Set-MP MRs respectively, each mapping to a NOETHER block also covered by Set-N's $5$ algebra-derived MRs, while three Set-N MRs ($m_{\mathrm{adj}}$, $m_{\mathrm{train\text{-}rev}}$, $m_{\mathrm{conv}}$) have no METRIC$+$ D$\times$R counterpart. The full PIT-based head-to-head kill-rate
 comparison is committed as supplementary~S4 item~(i); the
 present manual analysis is the algebra-block mapping component of
 that follow-up and is reported here to make the framework-vs-METRIC$+$
 coverage relationship concrete on the head-to-head substrate.
 
-\begin{table}[h]
-\centering
-\caption{Manual METRIC$+$ D$\times$R framework applied to three SUTs of
-the \S\ref{subsec:test-design} substrate (bivariate input arity). For
-each (SUT, METRIC$+$ pair) cell: ``--'' if vacuous on that SUT's
-algebra; ``$\to$ block'' identifies the NOETHER block of the
-non-vacuous Set-MP MR; the second column lists the Set-N MR (if any)
-covering the same algebraic content. \textbf{Across the three SUTs,
-METRIC$+$ yields $6$, $5$, and $3$ non-vacuous Set-MP MRs respectively
-(the remaining $5$, $6$, and $8$ D$\times$R pairs are vacuous because
-the SUT's arity is fixed, the output is scalar, or the
-input-transformation is structurally out-of-scope for the SUT's
-algebra); each non-vacuous Set-MP MR maps to a NOETHER block also
-covered by Set-N's $5$ algebra-derived MRs. Conversely, three Set-N
-MRs ($m_{\mathrm{adj}}$, $m_{\mathrm{train\text{-}rev}}$,
-$m_{\mathrm{conv}}$) have no METRIC$+$ D$\times$R counterpart.} The structural reading: NOETHER's $G$/$O_{\le}$
-block coverage subsumes METRIC$+$'s $D_1$--$D_6$/$R_1$--$R_5$
-output on bivariate-input SUTs in this substrate, while NOETHER's
-$T^{*}$/$\mathcal{T}^{*}$/$\mathcal{L}^{*}$ blocks add MR templates
-the D$\times$R framework does not enumerate. The kill-rate
-projection in the rightmost column anticipates that on these three
-SUTs Set-MP's reach would be bounded above by Set-N's $G$/$O_{\le}$
-contribution; a full PIT execution to confirm this is committed as
-follow-up~(i).}
-\label{tab:metricplus-headtohead-small}
-\footnotesize
-\adjustbox{max width=\textwidth}{%
-\begin{tabular}{l l l l}
-\toprule
-METRIC$+$ pair & \texttt{midpoint} & \texttt{hypotSig} & \texttt{powerSig} \\
-\midrule
-$D_1$ (input swap)            & $\to G$ ($\rho_{\mathrm{swap}}$ via $m_{\mathrm{inv}}$) & $\to G$ ($\rho_{\mathrm{swap}}$) & -- (non-symmetric) \\
-$D_2$ (append element)        & -- (fixed arity) & -- (fixed arity) & -- (fixed arity) \\
-$D_3$ (remove element)        & -- (fixed arity) & -- (fixed arity) & -- (fixed arity) \\
-$D_4$ (replace with permuted) & $\to G$ (variant of $D_1$) & $\to G$ & -- \\
-$D_5$ (add constant to inputs)& $\to O_{\le}$ ($\rho_{\mathrm{trans}}$ via $m_{\mathrm{mono}}$) & out-of-scope (non-linear) & out-of-scope \\
-$D_6$ (scale inputs)          & $\to O_{\le}$ ($\rho_{\mathrm{scale}}$ via $m_{\mathrm{mono}}$) & $\to \mathcal{L}^{*}$ ($\rho_{\mathrm{scale}}$ via $m_{\mathrm{conv}}$/$L_{\mathrm{scale}}$) & $\to \mathcal{L}^{*}$ \\
-$R_1$ (output element equality)& $\to G$ (identity oracle) & $\to G$ & $\to G$ \\
-$R_2$ (output permutation eq.) & -- (scalar output) & -- (scalar) & -- (scalar) \\
-$R_3$ (output prefix equality) & -- (scalar) & -- (scalar) & -- (scalar) \\
-$R_4$ (output multiplicative)  & $\to O_{\le}$ & $\to \mathcal{L}^{*}$ & $\to \mathcal{L}^{*}$ \\
-$R_5$ (output subset)          & -- (scalar) & -- (scalar) & -- (scalar) \\
-\midrule
-\textit{Set-MP non-vacuous} & 6 / 11 & 5 / 11 & 3 / 11 \\
-\textit{Set-MP $\to$ blocks} & $\{G, O_{\le}\}$ & $\{G, \mathcal{L}^{*}\}$ & $\{G, \mathcal{L}^{*}\}$ \\
-\textit{Set-N coverage of those blocks} & yes ($m_{\mathrm{inv}}$, $m_{\mathrm{mono}}$) & yes ($m_{\mathrm{inv}}$, $L_{\mathrm{scale}}$) & yes ($m_{\mathrm{inv}}$, $L_{\mathrm{scale}}$) \\
-\textit{Set-N MRs without Set-MP counterpart} & $m_{\mathrm{adj}}$, $m_{\mathrm{train\text{-}rev}}$, $m_{\mathrm{conv}}$ (at limits) & same three blocks & same three blocks \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
 
-The structural finding from Table~\ref{tab:metricplus-headtohead-small} is
+The structural finding is
 that METRIC$+$'s D$\times$R framework, \emph{within Sun et~al.\ 2021's
 published input--output category catalogue of 11 pairs~\cite{SunMETRICplus2021}
 as instantiated on these three SUTs}, produces a strict subset of NOETHER's
@@ -2505,7 +2262,7 @@ substrate: every non-vacuous Set-MP MR maps to a NOETHER block already
 covered by Set-N's algebra-derived MRs, and three Set-N blocks
 ($T^{*}$, $\mathcal{T}^{*}_{\mathrm{rev}}$, $\mathcal{L}^{*}$ at limits)
 have no METRIC$+$ counterpart \emph{at this category-pair granularity}. The implication for fault detection on
-these three SUTs is that Set-MP's expected kill rate on $\mathcal{T}^{*}$
+these three SUTs is that Set-MP's expected kill rate on $\mathcal{T}^{*}_{\mathrm{rev}}$
 or $\mathcal{T}^{*}_{\mathrm{rev}}$-violating mutants is zero by
 construction, whereas Set-N's $\rho_{\mathrm{adj}}$ and
 $\rho_{\mathrm{train\text{-}rev}}$ MRs are by-construction sensitive
@@ -2528,46 +2285,8 @@ meal-ordering service, 150 LOC). All four are business-rule billing
 programs whose semantics are categorical+numeric rather than
 mathematical/physical. Applying NOETHER's structural test to each
 subject's category-choice specifications yields the per-block
-non-emptiness verdicts in Table~\ref{tab:metricplus-sun2021-scope}.
+non-emptiness verdicts summarised in supplementary~S8: all four subjects are in scope via a non-empty order ($O_{\le}$) block (with partial $G$/$\mathcal{L}^{*}$ regimes), at NOETHER MetaPattern cardinality $2$--$3$ per subject against METRIC$+$ instance-MR cardinality $142$--$3152$ (Sun et~al.\ 2021 Table~17), a $2$--$3$ orders-of-magnitude compression that the analysis below reads as complementary rather than competitive.
 
-\begin{table}[h]
-\centering
-\caption{NOETHER structural scope analysis on Sun et al.~2021 METRIC$+$
-benchmark subjects~\cite{SunMETRICplus2021}. Per-block entries: \textbf{Y}
-non-empty (\cmark), \textbf{P} partial (\tildemark, block applies on a
-restricted regime such as linear-pricing tier or within-class
-permutation), \xmark{} empty. Source-code-level instance MR cardinality
-(last column) is
-reported by Sun et~al.\ 2021 Table~17; NOETHER's MetaPattern cardinality
-(second-to-last column) is the equivalence-class summary at the
-algebra-block level. The two cardinalities differ by 2--3 orders of
-magnitude because METRIC$+$'s output scales combinatorially with
-category-choice products while NOETHER's output is an equivalence-class
-summary; the analysis below interprets this contrast as
-\emph{complementary} rather than \emph{competitive}.}
-\label{tab:metricplus-sun2021-scope}
-\footnotesize
-\begin{tabular}{l c c c c c c c c c c}
-\toprule
-Subject & $G$ & $O_{\le}$ & $T^{*}$ & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $\mathcal{L}^{*}$ & $\mathcal{D}^{*}$ & $\mathcal{E}^{*}$ & $\mathcal{B}^{*}_{\mathrm{rel}}$ & NOETHER MPs & METRIC$+$ MRs \\
-\midrule
-\texttt{SPHONE}    & \xmark   & \cmark   & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 2 & 142 \\
-\texttt{SBAGGAGE}  & \tildemark & \cmark & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 3 & 735 \\
-\texttt{SEXPENSE}  & \xmark   & \cmark   & \xmark & \xmark & \tildemark & \xmark & \xmark & \xmark & 2 & 1130 \\
-\texttt{SMEAL}     & \tildemark & \cmark & \xmark & \xmark & \cmark   & \xmark & \xmark & \xmark & 3 & 3152 \\
-\bottomrule
-\end{tabular}
-
-\smallskip
-\footnotesize
-\textit{Legend:} \textbf{Y} = non-empty block; \textbf{P} = partial
-(restricted regime); \xmark{} = empty. ``NOETHER MPs'' = Set N
-MetaPattern cardinality; ``METRIC$+$ MRs'' = instance-level MR
-cardinality reported by Sun et~al.~2021 (Table~17), comparable
-only after either expanding NOETHER MetaPatterns to instance MRs
-(via the category-choice enumeration) or contracting METRIC$+$ MRs
-to algebra-block equivalence classes.
-\end{table}
 
 The analysis establishes three findings. First, NOETHER is
 \emph{in-scope} on all four METRIC$+$ subjects, contradicting the
@@ -2694,18 +2413,18 @@ mutation tools confirm.
 \subsection{Reassessing PMCM coverage claims: a worked example}
 \label{subsec:pmcm-worked}
 
-NOETHER does not replace PMCM; it re-grounds it. Under inductive grounding, PMCM's pattern grid is itself an empirical artefact: its rows are the inductive MetaPatterns of a particular catalogue, and ``100\% coverage'' attests only that every row has at least one instance. Under NOETHER's grounding, the grid becomes $\mathbb{M}(\mathcal{A}_P)$, algebraically constructed and closed under the operator algebra in the sense of Theorem~\ref{thm:closure}, and the coverage figure becomes a structural rather than nominal claim. This subsection works through the implication on two concrete cases. The deflationary direction is, in our view, NOETHER's most concrete contribution to testing practice and the most resistant to the circularity caveat of Section~\ref{subsec:reactor-mapping}: revealing that an inductive catalogue \emph{over-counts} structurally distinct patterns does not require $T^{*}$ or $\mathcal{T}^{*}$ to have been derived independently from physics, since the over-counting is exposed by the canonical-block ordering itself.
+NOETHER does not replace PMCM; it re-grounds it. Under inductive grounding, PMCM's pattern grid is itself an empirical artefact: its rows are the inductive MetaPatterns of a particular catalogue, and ``100\% coverage'' attests only that every row has at least one instance. Under NOETHER's grounding, the grid becomes $\mathbb{M}(\mathcal{A}_P)$, algebraically constructed and closed under the operator algebra in the sense of Theorem~\ref{thm:closure}, and the coverage figure becomes a structural rather than nominal claim. This subsection works through the implication on two concrete cases. The deflationary direction is, in our view, NOETHER's most concrete contribution to testing practice and the most resistant to the circularity caveat of Section~\ref{subsec:reactor-mapping}: revealing that an inductive catalogue \emph{over-counts} structurally distinct patterns does not require $T^{*}$ or $\mathcal{T}^{*}_{\mathrm{rev}}$ to have been derived independently from physics, since the over-counting is exposed by the canonical-block ordering itself.
 
 \paragraph{Case A: A comparison-sort library.}
 Consider a numerical sorting library, and assume an inductive Pattern--Matrix Coverage catalogue with rows $\{$P1 conservation/invariance, P2 monotonicity, P3 convergence, P4 trajectory, P5 partial-order/bounding$\}$ inherited from the reactor-physics MetaPattern taxonomy of \S\ref{subsec:reactor-mapping}. A user reports ``100\% coverage of the grid with five rows'' on a particular MR set.
 
-\noindent \emph{NOETHER re-decomposition.} The operator algebra $\mathcal{A}_{\mathrm{sort}}$ for a deterministic comparison sort has: a permutation-symmetry block $G \ni \mathfrak{S}_n$ (the input--output relation is permutation-equivariant in the comparator-permutation sense), a partial-order block $O_{\le}$ (sorting respects the input order on already-sorted sub-arrays), an empty self-adjoint block $T^{*}$ (no reciprocity structure), an empty time-reversal block $\mathcal{T}^{*}$ (irreversible), an empty limit block $\mathcal{L}^{*}$ (sort is exact, not asymptotic), an empty qualitative-dynamics block $\mathcal{D}^{*}$, and an empty method-comparison block $\mathcal{E}^{*}$ \emph{within a single algorithm} (and non-empty if the user is comparing multiple sorting algorithms). Therefore $\mathbb{M}(\mathcal{A}_{\mathrm{sort}}) = \{\,m_{\mathrm{inv}},\, m_{\mathrm{mono}}\,\}$, of size 2.
+\noindent \emph{NOETHER re-decomposition.} The operator algebra $\mathcal{A}_{\mathrm{sort}}$ for a deterministic comparison sort has: a permutation-symmetry block $G \ni \mathfrak{S}_n$ (the input--output relation is permutation-equivariant in the comparator-permutation sense), a partial-order block $O_{\le}$ (sorting respects the input order on already-sorted sub-arrays), an empty self-adjoint block $T^{*}$ (no reciprocity structure), an empty time-reversal block $\mathcal{T}^{*}_{\mathrm{rev}}$ (irreversible), an empty limit block $\mathcal{L}^{*}$ (sort is exact, not asymptotic), an empty qualitative-dynamics block $\mathcal{D}^{*}$, and an empty method-comparison block $\mathcal{E}^{*}$ \emph{within a single algorithm} (and non-empty if the user is comparing multiple sorting algorithms). Therefore $\mathbb{M}(\mathcal{A}_{\mathrm{sort}}) = \{\,m_{\mathrm{inv}},\, m_{\mathrm{mono}}\,\}$, of size 2.
 
 \noindent \emph{Coverage correction.} The PMCM grid with five rows carries three structurally empty rows under $\mathcal{A}_{\mathrm{sort}}$: P3 (convergence) is vacuous because there is no $\mathcal{L}^{*}$ generator; P4 (trajectory) is vacuous because there is no $\mathcal{D}^{*}$ generator; P5 (partial-order/bounding) is vacuous because there is no $\mathcal{E}^{*}$ generator within a single-algorithm scope. The denominator should be 2, not 5. ``100\% coverage of the grid with five rows'' is therefore not a claim about the user's MR set; it is a claim about the inductive catalogue's row count. The structurally meaningful coverage is ``$k/2$ of the algebraically required MetaPatterns covered'', where $k$ depends on the user's actual MR set.
 
 \paragraph{Case A-bis: An external ML category set (Murphy et al.\ 2008) decoded against a feedforward classifier.}
 \label{para:case-a-bis}
-To rule out the self-selection concern, we apply the same decoding to Murphy et al.'s categorisation of MRs for ML applications into six classes~\cite{Murphy2008, Xie2011, Saha2019SupervisedMR}, an independently published taxonomy (additive, multiplicative, permutative, invertive, inclusive, exclusive). For a generic feedforward image classifier $f: \mathbb{R}^{n} \to \{1, \dots, K\}$ with no inherent input symmetry, the induced algebra $\mathcal{A}_{\mathrm{FFN}}$ has only a single non-trivial generator under small additive noise (in $O_{\le}$ or $\mathcal{L}^{*}$), so $\mathbb{M}(\mathcal{A}_{\mathrm{FFN}}) \subseteq \{m_{\mathrm{stab}}\}$. Three of Murphy's classes (multiplicative, permutative, invertive) are \emph{structurally vacuous} on a vector image classifier without input symmetries; the remaining three (additive, inclusive, exclusive) collapse to the same $m_{\mathrm{stab}}$ MetaPattern. The structurally meaningful denominator for ``coverage of Murphy's six classes'' on a generic vector image classifier is therefore 1, not 6; full per-class decoding (including the antipodal $\mathbb{Z}/2$ exception, point-cloud / bag-of-features cases, and the bilinearity caveat) is in supplementary~S9 (\texttt{pmcm\_case\_abis\_full.md}). Murphy et al.\ explicitly intended their six classes as a checklist for selecting MRs, not as a coverage denominator; the target of this correction is subsequent papers that report Murphy-grid coverage figures on tasks lacking the relevant input symmetries~\cite{Saha2019SupervisedMR}. The deflationary direction here is independent of $T^{*}$ and $\mathcal{T}^{*}$, so does not inherit the prediction-circularity caveat of \S\ref{subsec:reactor-mapping}.
+To rule out the self-selection concern, we apply the same decoding to Murphy et al.'s categorisation of MRs for ML applications into six classes~\cite{Murphy2008, Xie2011, Saha2019SupervisedMR}, an independently published taxonomy (additive, multiplicative, permutative, invertive, inclusive, exclusive). For a generic feedforward image classifier $f: \mathbb{R}^{n} \to \{1, \dots, K\}$ with no inherent input symmetry, the induced algebra $\mathcal{A}_{\mathrm{FFN}}$ has only a single non-trivial generator under small additive noise (in $O_{\le}$ or $\mathcal{L}^{*}$), so $\mathbb{M}(\mathcal{A}_{\mathrm{FFN}}) \subseteq \{m_{\mathrm{stab}}\}$. Three of Murphy's classes (multiplicative, permutative, invertive) are \emph{structurally vacuous} on a vector image classifier without input symmetries; the remaining three (additive, inclusive, exclusive) collapse to the same $m_{\mathrm{stab}}$ MetaPattern. The structurally meaningful denominator for ``coverage of Murphy's six classes'' on a generic vector image classifier is therefore 1, not 6; full per-class decoding (including the antipodal $\mathbb{Z}/2$ exception, point-cloud / bag-of-features cases, and the bilinearity caveat) is in supplementary~S9 (\texttt{pmcm\_case\_abis\_full.md}). Murphy et al.\ explicitly intended their six classes as a checklist for selecting MRs, not as a coverage denominator; the target of this correction is subsequent papers that report Murphy-grid coverage figures on tasks lacking the relevant input symmetries~\cite{Saha2019SupervisedMR}. The deflationary direction here is independent of $T^{*}$ and $\mathcal{T}^{*}_{\mathrm{rev}}$, so does not inherit the prediction-circularity caveat of \S\ref{subsec:reactor-mapping}.
 
 \paragraph{Case B: A reactor-physics solver.}
 The reactor-physics MetaPattern catalogue discussed in Section~\ref{subsec:reactor-mapping} provides a less obvious case. The catalogue has 5 rows (P1--P5). Under NOETHER's re-grounding into $\mathbb{M}(\mathcal{A}_{\mathrm{Boltz}}) = \{m_{\mathrm{inv}}, m_{\mathrm{mono}}, m_{\mathrm{adj}}, m_{\mathrm{rev}}, m_{\mathrm{conv}}, m_{\mathrm{dyn}}, m_{\mathrm{cmp}}\}$, the catalogue is in fact \emph{under-counted} by two rows ($m_{\mathrm{adj}}$ and $m_{\mathrm{rev}}$ are absent), even though for the Bateman-only sub-family it would be over-counted (P4 trajectory and P5 partial-order/bounding are absorbed differently into $\mathcal{D}^{*}$ and $\mathcal{E}^{*}$). The deflationary direction is thus not uniformly toward smaller grids; it is toward \emph{the algebraically determined grid for the algebra in question}, which may be larger or smaller than the inductive grid.
@@ -2764,13 +2483,13 @@ We organise threats following Wohlin et al.'s validity framework~\cite{Wohlin201
 
 \paragraph{Internal validity.} Theorem~\ref{thm:closure}'s uniqueness depends on the canonical-block ordering of Definition~\ref{def:canonical-order}. The proof in Appendix~\ref{app:proofs} catalogues every block-block interaction for the algebras instantiated. The closure result is over algebra-induced MRs in the sense of Definition~\ref{def:alg-induced}; out-of-scope MRs that fall outside Definition~\ref{def:alg-induced} are catalogued in Appendix~\ref{app:out-of-scope}, and two concrete counterexamples on the PWR core diffusion algebra are proved out-of-scope in Appendix~\ref{app:negative-proofs} (corresponding to the negative instantiation of \S\ref{subsec:negative-pwr}). The latter two jointly establish that Theorem~1$'$ (Conjecture~\ref{conj:absolute}, absolute completeness) is false on $\mathcal{A}_{\mathrm{PWR}}$, and identify five independent extensions of \texttt{Translate}'s signature as the locus of follow-up theoretical work.
 
-\paragraph{Construct validity.} The reactor-physics mapping (\S\ref{subsec:reactor-mapping}) provides preliminary evidence; non-physics-domain evidence remains future work. The case study (\S\ref{subsec:case-study}) reports cat-(iv) detection $5/5$ for Set~N because the mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$; this exhibits construct validity of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe rather than averaged superiority, with the DeepCrime~\cite{Humbatova2021DeepCrime} real-fault protocol committed as comparative addition. \emph{Set~N's 30 MRs were derived by a single author following CONSTRUCT-MP's four-step procedure}; an LRCA multi-LLM second-rater protocol (DeepSeek + ChatGPT + Anthropic Claude Opus) yields Fleiss' $\kappa = 1.000$ across three LLMs on $n = 33$ items in the almost-perfect Landis--Koch band, with full per-rater Cohen's $\kappa$ in supplementary~S3 (\texttt{lrca\_audit.md}). A human-pair $\kappa$ replication is committed for follow-up work. Two residual construct-validity threats are disclosed here. First, the inter-rater agreement figures ($\kappa = 0.857$ on the supplementary-MR audit and $\kappa = 1.000$ on the LRCA Set~N audit) are drawn from rater panels composed entirely of large language models (DeepSeek, ChatGPT, Anthropic Claude Opus); because these models share substantial pre-training corpora, the agreement should be read as consistency among similarly-trained but non-coordinated raters rather than as independent human-level verification; the $\kappa$ values cannot be interpreted as equivalent to inter-rater reliability from independent human domain experts, and a human inter-rater $\kappa$ study is committed as follow-up rather than claimed in this paper. Second, the four Java subjects (\texttt{SPHONE}, \texttt{SBAGGAGE}, \texttt{SEXPENSE}, \texttt{SMEAL}) used in the Path~A head-to-head (\S\ref{para:path-a-results}) are re-implementations written from Sun 2021's prose specification by the same author who designed the NOETHER framework and CONSTRUCT-MP procedure; this confounds framework-design knowledge with subject-implementation fidelity and constitutes a construct-validity threat that an independent re-implementation would resolve.
+\paragraph{Construct validity.} The reactor-physics mapping (\S\ref{subsec:reactor-mapping}) provides preliminary evidence; non-physics-domain evidence remains future work. The case study (\S\ref{subsec:case-study}) reports cat-(iv) detection $5/5$ for Set~N because the mutation set was constructed to cover one defect category per non-empty block of $\mathcal{A}_{\mathrm{equi}}$; this exhibits construct validity of $\rho_{\mathrm{train\text{-}rev}}$ as a gradient-reversal probe rather than averaged superiority, with the DeepCrime~\cite{Humbatova2021DeepCrime} real-fault protocol committed as comparative addition. \emph{Set~N's 30 MRs were derived by a single author following CONSTRUCT-MP's four-step procedure}; an LRCA multi-LLM second-rater protocol (DeepSeek + ChatGPT + Anthropic Claude Opus) validates the author's Set~N block labels: the LLM-majority label agrees with the author at Cohen's $\kappa = 0.931$ ($n = 36$, $34/36$ agreements), with per-rater agreement against the author at Cohen's $\kappa = 0.927/0.927/0.929$ (Opus/ChatGPT/DeepSeek, $n = 34/34/35$), all in the almost-perfect Landis--Koch band; the two disagreements are \texttt{L\_idem\_at\_one} (author $\mathcal{L}^{*}$, majority $T^{*}$) and \texttt{B\_rel\_xor\_reverse} (author $\mathcal{B}^{*}_{\mathrm{rel}}$, majority $\mathcal{T}^{*}_{\mathrm{rev}}$). Per-rater labels and the majority tabulation are in supplementary~S3 (\texttt{lrca\_audit.md}). A human-pair $\kappa$ replication is committed for follow-up work. Two residual construct-validity threats are disclosed here. First, the inter-rater agreement figures ($\kappa = 0.857$ on the supplementary-MR audit and, for the LRCA Set~N audit, $\kappa = 0.931$ for the LLM-majority against the author) are drawn from rater panels composed entirely of large language models (DeepSeek, ChatGPT, Anthropic Claude Opus); because these models share substantial pre-training corpora, the agreement should be read as consistency among similarly-trained but non-coordinated raters rather than as independent human-level verification; the $\kappa$ values cannot be interpreted as equivalent to inter-rater reliability from independent human domain experts, and a human inter-rater $\kappa$ study is committed as follow-up rather than claimed in this paper. Second, the four Java subjects (\texttt{SPHONE}, \texttt{SBAGGAGE}, \texttt{SEXPENSE}, \texttt{SMEAL}) used in the Path~A head-to-head (\S\ref{para:path-a-results}) are re-implementations written from Sun 2021's prose specification by the same author who designed the NOETHER framework and CONSTRUCT-MP procedure; this confounds framework-design knowledge with subject-implementation fidelity and constitutes a construct-validity threat that an independent re-implementation would resolve. For the held-out industrial corpus this subject-side confound is instead absent: the SACOS, SPARK, and LOCUST codes were developed by reactor-physics engineering teams distinct from the present authors, who acted as an independent third-party verification-and-validation party rather than as the codes' developers, so for these subjects implementation fidelity is not entangled with framework-design knowledge. The residual threat there is narrower and shared with the case study, namely that the relations were still identified and block-labelled by the framework's authors and the codes are concentrated in the reactor-physics domain; the committed independent human inter-rater $\kappa$ study is designed to control the labelling component, and cross-domain breadth is addressed separately under external validity below.
 
 \paragraph{External validity.} Two distinct external-validity questions are in scope: (i) whether the framework's \emph{algebraic} reach (Hypothesis~\ref{hyp:seven-blocks}) covers all program families admitting an operator algebra, and (ii) whether the \S\ref{subsec:test-design} \emph{empirical} substrate generalises across codebases within the framework's scope precondition. On (i), Hypothesis~\ref{hyp:seven-blocks} covers a wide swathe of mathematical structure but is not exhaustive; Remark~\ref{rem:counterex} catalogues six candidate ninth-block program-family classes (symplectic, sheaf-theoretic, probabilistic / martingale, topological, label-consistency, empirical-parameter-distribution), of which two have explicit \texttt{Translate}-template designs already proposed (metric-stability $M_{\mathrm{lip}}$ at Remark~\ref{rem:metric-stability-block}, and empirical-parameter-distribution divergence motivated by the \S\ref{subsec:deepcrime-pilot} pilot's three undetected mutations) as the most actionable extension targets. On (ii), the 10 SUTs of \S\ref{subsec:test-design} are concentrated on a single codebase (\texttt{MathSignalClass} + \texttt{ComplexSignal}) selected by the pre-registered scope criterion; they satisfy the framework's scope precondition (each admits at least one non-empty NOETHER block beyond $G$), so the substrate confirms applicability within scope rather than tests the framework outside its design intent. A cross-codebase pilot on Apache Commons Math 3.6.1 (3 SUTs, 5 Set~N MRs, 77 PIT 1.7.4 mutants) corroborates the within-scope generalisation direction: pooled Set~N $10/77 = 13.0\%$ Wilson 95\% CI $[7.2\%, 22.3\%]$; $G$-block $6/21 = 28.6\%$; the framework's D2 stratum prediction passes at $2/29 = 6.9\%$. The $n$ is underpowered for $\alpha = 0.05$ hypothesis testing; full numbers, per-mutant kill matrix, and the $\mathcal{L}^{*}$-orthogonality analysis on bilinear SUTs are in supplementary~S4 (\texttt{future\_work.md} item (b.cm)). Full $38$-D4J extension, SciPy Python-bridge solver suite, and Maven-resolved GenMorph head-to-head are committed as follow-up~(b). The replication tests scope-internal generalisation, not whether the framework should apply to programs lacking explicit operator-algebraic structure (such programs are out of scope by construction).
 
-\paragraph{Out-of-construction transferability (held-out).} To test transferability beyond the domains used to curate the block decomposition, the frozen blocks were applied without re-fitting to program families outside the construction set. (i) \emph{Industrial reactor codes.} The 110 expert-approved metamorphic relations of three production codes, BAMBOO-C's SPARK (core depletion) and LOCUST (lattice), and the SACOS sub-channel thermal-hydraulics code, are subsumed without exception by the order ($O_{\le}$) block (Wilson 95\% interval on subsumption $[0.966, 1.000]$), with no orphan requiring a ninth block and a further 18 valid relations beyond the initial expert sets falling in the same block. This is a code-level held-out confirmation, but it exercises a single block and so corroborates transferability of $O_{\le}$ rather than of the full decomposition. (ii) \emph{Non-physics libraries.} On dense numerical linear algebra (tested on \texttt{numpy.linalg}) and digital signal processing (tested on \texttt{numpy.fft}), both outside the curation set, the algebra-derived relations populate six blocks each ($G$, $T^{*}$, $O_{\le}$, $\mathcal{L}^{*}$, $\mathcal{E}^{*}$, and a conservation invariant), every relation confirmed executably on the independent library, and the two FA-rank-tight blocks behave as Theorem~\ref{thm:closure}'s companion Invariance-Blindness result predicts (the permutation/orthogonal $G$ block and the self-adjoint $T^{*}$ block attain the tight kernel under a finite generating set). The two legs are complementary: the industrial corpus supplies expert-validated breadth on a single block in domain, while the library instantiations exercise the multi-block structure and the tight blocks out of domain. Corpora, derivations, and executable checks are in supplementary material \texttt{S11\_n5\_industrial} and \texttt{S12\_n5\_crossdomain}.
+\paragraph{Out-of-construction transferability (held-out).} To test transferability beyond the domains used to curate the block decomposition, the frozen blocks were applied without re-fitting to program families outside the construction set. (i) \emph{Industrial reactor codes.} The 110 expert-approved metamorphic relations of three production codes, BAMBOO-C's SPARK (core depletion) and LOCUST (lattice), and the SACOS sub-channel thermal-hydraulics code, are subsumed, with few exceptions, by the order ($O_{\le}$) block (Wilson 95\% interval on subsumption $[0.966, 1.000]$), with no orphan requiring a ninth block and a further 18 valid relations beyond the initial expert sets falling in the same block. This is a code-level held-out confirmation: the order block accounts for the overwhelming majority and corroborates transferability of $O_{\le}$ rather than of the full decomposition. LOCUST additionally contains a small number of relations whose structure falls outside the order block, including the guard-conditioned MTC-versus-boron relation that instantiates the $\rho_{\mathrm{MTC\text{-}bor}}$ obstruction of \S\ref{subsec:negative-pwr}. (ii) \emph{Non-physics libraries.} On dense numerical linear algebra (tested on \texttt{numpy.linalg}) and digital signal processing (tested on \texttt{numpy.fft}), both outside the curation set, the algebra-derived relations populate five blocks each ($G$, $T^{*}$, $O_{\le}$, $\mathcal{L}^{*}$, $\mathcal{E}^{*}$, with the conservation invariant a second $G$-block MR class rather than a distinct block), every relation confirmed executably on the independent library, and the two FA-rank-tight blocks behave as Theorem~\ref{thm:closure}'s companion Invariance-Blindness result predicts (the permutation/orthogonal $G$ block and the self-adjoint $T^{*}$ block attain the tight kernel under a finite generating set). The two legs are complementary: the industrial corpus supplies expert-validated breadth predominantly on the order block in domain, while the library instantiations exercise the multi-block structure and the tight blocks out of domain. Corpora, derivations, and executable checks are in supplementary material \texttt{S11\_n5\_industrial} and \texttt{S12\_n5\_crossdomain}.
 
-\paragraph{Expert monotonicity bias and the coverage argument.} A regularity across the three production codes is that all 110 expert-approved relations are order-block (monotone sensitivity) relations: increasing one input moves an output in a fixed direction. This is consistent with how MR identification proceeds in practice, from parameter-sensitivity intuition, which is exactly the order block; the symmetry, self-adjoint, conservation, limit, and method-comparison blocks require explicit operator-algebraic recognition and are systematically under-sampled. Yet the governing equations of these codes~\cite{LamarshBaratta2001, Stacey2007} contain precisely those structures: SACOS solves two-fluid mass, momentum, and energy conservation; LOCUST defines its homogenisation by reaction-rate conservation and its lattice by a geometric symmetry group; SPARK is a $k$-eigenvalue neutron balance with a critical-boron fixed point. NOETHER derives the corresponding conservation, reciprocity, and symmetry relations directly from those equations, without expert input (supplementary \texttt{S11}). This paragraph supports the coverage claim only: it does not claim that the additional blocks are, on average, more fault-revealing than expert MRs.
+\paragraph{Expert monotonicity bias and the coverage argument.} A regularity across the three production codes is that the large majority of the 110 expert-approved relations are order-block (monotone sensitivity) relations: increasing one input moves an output in a fixed direction. The principal exceptions are in LOCUST, whose guard-conditioned MTC-versus-boron relations (\S\ref{subsec:negative-pwr}) and burnup-sensitivity relations fall outside the order block. This is consistent with how MR identification proceeds in practice, from parameter-sensitivity intuition, which is exactly the order block; the symmetry, self-adjoint, conservation, limit, and method-comparison blocks require explicit operator-algebraic recognition and are systematically under-sampled. Yet the governing equations of these codes~\cite{LamarshBaratta2001, Stacey2007} contain precisely those structures: SACOS solves two-fluid mass, momentum, and energy conservation; LOCUST defines its homogenisation by reaction-rate conservation and its lattice by a geometric symmetry group; SPARK is a $k$-eigenvalue neutron balance with a critical-boron fixed point. NOETHER derives the corresponding conservation, reciprocity, and symmetry relations directly from those equations, without expert input (supplementary \texttt{S11}). This paragraph supports the coverage claim only: it does not claim that the additional blocks are, on average, more fault-revealing than expert MRs.
 
 \paragraph{Conclusion validity.} The case study's statistical inferences (\S\ref{subsec:case-study}) rest on a factorial cross-product of 20 mutations and 3 MR sets on a single architecture. Wilson 95\% confidence intervals on detection rates ($[0.18,0.57]$ for Set~N, $[0.03,0.30]$ for Set~L, $[0.00,0.16]$ for Set~B) are reported; pairwise McNemar exact and Fisher exact tests are reported in supplementary S3 (\texttt{table4.json::pairwise\_stats}). The denominator (20 mutations on one EGNN model) is sufficient to detect the observed Set-N-vs-Set-B contrast at $\alpha = 0.05$ (Fisher $p = 0.008$) but is not sufficient to characterise the framework's performance distribution across architectures or defect distributions. The expanded comparative-evaluation protocol in \S\ref{subsec:case-study} (MR-Scout~\cite{MRScout2024}, GenMorph~\cite{GenMorph2024}, DeepCrime~\cite{Humbatova2021DeepCrime} subjects) raises the denominator and broadens the model coverage, addressing this threat directly.
 
@@ -2842,10 +2561,10 @@ This grounding reframes several long-standing questions. Empirical adequacy fram
 
 We have not solved the upstream problem of distilling $\mathcal{A}_P$ from program semantics, nor have we eliminated induction from MetaPattern discovery. The structural decomposition that drives the construction is itself an empirical curation of mathematical structures recurrent across program families, stated as Hypothesis~\ref{hyp:seven-blocks}. The most important follow-up work is therefore upstream: combining LLM-assisted symbolic extraction, formal-methods-based static analysis, and empirical-symmetry detection into a partially automated $\mathcal{A}_P$-distillation pipeline, and testing the structural decomposition on algebras outside its present image (Remark~\ref{rem:counterex} catalogues six program-family classes likely to require additional blocks). For the downstream layer, from $\mathcal{A}_P$ to $\mathbb{M}(\mathcal{A}_P)$, the contribution is narrower and firmer: the construction is mechanical, algebraic closure under \texttt{Translate} is provable within the algebra-induced MR space (Theorem~\ref{thm:closure}), and the construction transfers across domains once the algebra has been specified.
 
-\begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Boundary of contribution (Conclusion restatement),fonttitle=\small\bfseries]
+\begin{tcolorbox}[breakable,colback=gray!5,colframe=black!50,arc=2pt,boxrule=0.5pt,fontupper=\small,title=Established and open,fonttitle=\small\bfseries]
 \textbf{Established.} (i)~A no-drop closure invariant under \texttt{Translate}
 given a block decomposition (Theorem~\ref{thm:closure}); (ii)~polynomial-time
-decidability under finite generating-set assumption (Theorem~\ref{thm:decidable});
+constructibility under finite generating-set assumption (Theorem~\ref{thm:decidable});
 (iii)~three non-vacuous instantiations across structurally distinct algebraic
 skeletons; (iv)~a negative instantiation on the PWR core diffusion algebra
 $\mathcal{A}_{\mathrm{PWR}}$ (\S\ref{subsec:negative-pwr},
@@ -2857,7 +2576,7 @@ Theorem~1$'$ (Conjecture~\ref{conj:absolute}) on a structurally significant
 operator algebra and identifying five pairwise-independent extensions of
 \texttt{Translate}'s signature as the locus of repair.
 
-\textbf{Open.} (a)~Whether a Composite-\texttt{Translate} extension covering the five obstructions of \S\ref{subsec:negative-pwr} and Appendix~\ref{app:negative-proofs} preserves Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time decidability; (b)~sufficiency of Hypothesis~\ref{hyp:seven-blocks}'s structural list (Remark~\ref{rem:counterex}'s six out-of-scope classes are candidate ninth blocks); (c)~superiority over existing automated MR-identification pipelines on average defect distributions (the comparative-evaluation protocol in \S\ref{subsec:case-study} establishes effects, not averages); (d)~elimination of induction (relocated, not eliminated); (e)~automation of upstream $\mathcal{A}_P$ distillation (the framework treats $\mathcal{A}_P$ as a given input from a domain expert; mechanising the extraction of operator algebras from program semantics remains an upstream task that NOETHER does not address; \S\ref{subsec:remaining-human-role} sketches three partial-automation directions but commits to none). Both Hypothesis~\ref{hyp:seven-blocks} (block sufficiency) and \texttt{Translate}'s signature (\texttt{Translate} sufficiency) are the loci where future induction-eliminating and completeness-establishing work should target.
+\textbf{Open.} (a)~Whether a Composite-\texttt{Translate} extension covering the five obstructions of \S\ref{subsec:negative-pwr} and Appendix~\ref{app:negative-proofs} preserves Theorem~\ref{thm:closure}'s closure and Theorem~\ref{thm:decidable}'s polynomial-time constructibility; (b)~sufficiency of Hypothesis~\ref{hyp:seven-blocks}'s structural list (Remark~\ref{rem:counterex}'s six out-of-scope classes are candidate ninth blocks); (c)~superiority over existing automated MR-identification pipelines on average defect distributions (the comparative-evaluation protocol in \S\ref{subsec:case-study} establishes effects, not averages); (d)~elimination of induction (relocated, not eliminated); (e)~automation of upstream $\mathcal{A}_P$ distillation (the framework treats $\mathcal{A}_P$ as a given input from a domain expert; mechanising the extraction of operator algebras from program semantics remains an upstream task that NOETHER does not address; \S\ref{subsec:remaining-human-role} sketches three partial-automation directions but commits to none). Both Hypothesis~\ref{hyp:seven-blocks} (block sufficiency) and \texttt{Translate}'s signature (\texttt{Translate} sufficiency) are the loci where future induction-eliminating and completeness-establishing work should target.
 \end{tcolorbox}
 
 \section{Data and Artifact Availability}
@@ -2893,6 +2612,127 @@ artefact-evaluation badges.
 \label{app:moved-A-B}
 Material running CONSTRUCT-MP on the heat / continuity / momentum / slowing-down reactor equations (Appendix~A), per-MR source provenance for the representative MRs of Table~\ref{tab:elementwise} (Appendix~B), and worked examples for multi-block-derivable MRs (originally introductory to Appendix~C) is provided in supplementary~\texttt{S9\_migrated\_appendices/A\_B\_C\_worked.tex}; the body text's claims do not depend on this material beyond the cross-references made in \S\ref{sec:reactor} and \S\ref{subsec:reactor-mapping}.
 
+\section{Detailed empirical tables}
+\label{app:detailed-tables}
+This appendix collects detailed empirical tables relocated from the main body for length conformance: the PIT-mutator/block compatibility map, the $\mathcal{L}^{*}$-blindness per-SUT kill rates, the cross-pipeline rediscovery on \texttt{midpoint}, and the per-block head-to-head complementarity discussed in \S\ref{subsec:pooled-headtohead}; the per-SUT kill-count table is in supplementary~S9 (\texttt{detailed\_tables}).
+
+\begin{table}[h]
+\centering
+\caption{Typical-case compatibility of PIT default mutator categories
+with the eight NOETHER blocks. Cells reflect the dominant case for
+mutators in the category as applied to a generic algebra-rich SUT;
+SUT-specific exceptions are catalogued in
+supplementary~S7 (\texttt{d4j/}). The cells $\langle$MATH, $\mathcal{L}^{*}\rangle$
+and $\langle$RETURN\_VALS, $\mathcal{L}^{*}\rangle$ are both
+``$\circ$'' (homogeneity-preserving), and the
+$\mathcal{L}^{*}$-blindness result of \S\ref{subsec:l-blindness-confirmed}
+is the empirical specialisation of these two cells.}
+\label{tab:pit-block}
+\small
+\begin{tabular}{lcccccccc}
+\toprule
+PIT mutator category & $G$ & $O_{\le}$ & $T^{*}$ & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $\mathcal{L}^{*}$ & $\mathcal{D}^{*}$ & $\mathcal{E}^{*}$ & $\mathcal{B}^{*}_{\mathrm{rel}}$ \\
+\midrule
+CONDITIONALS\_BOUNDARY & $\circ$ & $\times$ & $\circ$ & $\circ$ & $\circ$ & $\sim$ & $\circ$ & $\circ$ \\
+INCREMENTS             & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\sim$ & $\circ$ & $\circ$ \\
+INVERT\_NEGS           & $\sim$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\sim$ & $\circ$ & $\circ$ \\
+MATH (op swap)         & $\times$ & $\sim$ & $\times$ & $\times$ & $\circ$ & $\times$ & $\sim$ & $\circ$ \\
+NEGATE\_CONDITIONALS   & $\times$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\times$ & $\sim$ & $\times$ \\
+RETURN\_VALS (zero/one) & $\circ$ & $\circ$ & $\times$ & $\times$ & $\circ$ & $\circ$ & $\sim$ & $\circ$ \\
+VOID\_METHOD\_CALLS    & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\circ$ & $\times$ & $\sim$ & $\circ$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Per-SUT kill rate of the $L_{\mathrm{scale}}$ MR on PIT
+mutants of the six SUTs admitting an $\mathcal{L}^{*}$-block scaling
+MR. The prediction of \S\ref{subsec:l-blindness-derivation} is that
+the kill rate is near-zero by composition of the
+homogeneity-preserving property of PIT's default mutators with the
+scaling structure of $L_{\mathrm{scale}}$. Pooled across the six SUTs:
+$2/44 \approx 4.5\%$, well below the $1/3$ falsification threshold on
+each SUT and below it on $5/6$ SUTs (\texttt{hypotSig} alone reaches
+$2/4 = 50\%$, explained in the text).}
+\label{tab:l-blindness}
+\small
+\begin{tabular}{lcc}
+\toprule
+SUT & $L_{\mathrm{scale}}$ kill / mutants & \emph{Verdict} \\
+\midrule
+\texttt{midpoint}  &  0 / 3   & Confirmed \\
+\texttt{clamp}     &  0 / 7   & Confirmed \\
+\texttt{signum}    &  0 / 6\,$^{\dagger}$ & Confirmed (no $L_{\mathrm{scale}}$ kill) \\
+\texttt{gcdSig}    &  0 / 9   & Confirmed \\
+\texttt{lcmSig}    &  0 / 11  & Confirmed \\
+\texttt{hypotSig}  &  2 / 4   & Outlier; explained below \\
+\midrule
+pooled (all six)   &  2 / 44   & 4.5\% \\
+\bottomrule
+\end{tabular}\\[0.4em]
+{\footnotesize $^{\dagger}$\,For \texttt{signum} the $\mathcal{L}^{*}$-block MR
+is positive-scalar invariance ($\mathrm{signum}(\lambda x) = \mathrm{signum}(x)$
+for $\lambda > 0$) rather than degree-$1$ homogeneity; the prediction
+applies to this MR shape \emph{a fortiori} since the right-hand side
+does not depend on $\lambda$.}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Cross-pipeline rediscovery on \texttt{midpoint}: GP-evolved
+MRs (Set~G) and their algebra-derived counterparts (Set~N).}
+\label{tab:rediscovery}
+\small
+\begin{tabular}{lll}
+\toprule
+GP-evolved MR (Set G) & Set N counterpart & Block \\
+\midrule
+\texttt{SwitchParams??1@2}                & \texttt{G\_swap} (commutativity)         & $G$ \\
+\texttt{NumericAddition?1.000000?1}       & \texttt{T\_shift} (translation by $1$)   & $G_{\mathrm{tr}}$ \\
+\texttt{NumericMultiplication?0.500000?2} & \texttt{L\_scale} (scaling, approx.)     & $\mathcal{L}^{*}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Per-block head-to-head on the three operative blocks
+exercised by PIT 1.7.4 across the eight in-scope SUTs of
+\S\ref{subsec:test-design}. Each row's denominator $n_{b}$ counts
+mutants violating block~$b$'s invariant; complementarity cells
+``both'' / ``$N$-only'' / ``$G$-only'' / ``neither'' partition $n_{b}$.
+Wilson 95\% intervals are reported alongside point rates. The five
+operative blocks PIT~1.7.4 does not exercise
+($O_{\le}, \mathcal{T}^{*}_{\mathrm{rev}}, \mathcal{D}^{*},
+\mathcal{E}^{*}, \mathcal{B}^{*}_{\mathrm{rel}}$) are addressed by
+the construct-trace consistency check on hand-crafted
+block-targeted mutants (now in supplementary~S9, item
+``D\_E\_implementation\_consistency''); those results are
+design-implied and not used as independent fault-detection
+evidence. Auxiliary rows report the D1 aggregate and the unmapped
+bucket (PIT mutants from cells without an override entry,
+principally \texttt{RETURN\_VALS} and \texttt{MATH} on SUTs where
+the Table 5 reconstruction fallback assigns D1 but does not specify
+broken blocks; lower-bound caveat, not a participating row).}
+\label{tab:per-block-headtohead}
+\small
+\adjustbox{max width=\textwidth}{%
+\begin{tabular}{lrrlrlrrrr}
+\toprule
+Block & $n_{b}$ & Set~N kills & rate (95\% CI) & Set~G kills & rate (95\% CI) & both & $N$-only & $G$-only & neither \\
+\midrule
+$G$ (sym.)       & 11 &  2 & $0.182$ $[0.051,\,0.477]$ &  9 & $0.818$ $[0.523,\,0.949]$ & 2 & 0 & 7 & 2 \\
+$\mathcal{L}^{*}$ & 24 & 10 & $0.417$ $[0.245,\,0.612]$ & 16 & $0.667$ $[0.467,\,0.820]$ & 8 & 2 & 8 & 6 \\
+$G_{\mathrm{tr}}$ & 17 & 10 & $0.588$ $[0.360,\,0.784]$ &  8 & $0.471$ $[0.262,\,0.690]$ & 7 & 3 & 1 & 6 \\
+\midrule
+\textit{D1 aggregate, PIT-covered blocks (secondary)}            & 52 & 26 & $0.500$ $[0.369,\,0.631]$ & 37 & $0.712$ $[0.577,\,0.817]$ & 22 & 4 & 15 & 11 \\
+\textit{unmapped (lower-bound caveat)}                           & 25 & --- & --- & --- & --- & --- & --- & --- & --- \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
 \section{Proofs}
 \label{app:proofs}
 
@@ -2924,7 +2764,7 @@ Definition~\ref{def:translate} fixes the signature of \texttt{Translate} but def
 $G$ & $(x_i)_{i=0}^{|G|-1} = (g_i \cdot x_0)$ over group orbit & $\forall x_0,\, \forall g \in G:\ P(g\cdot x_0) = \rho(g)\cdot P(x_0)$ \\
 $O_{\le}$ & $(x_1, x_2)$ with $x_1 \le_{\theta} x_2$ in the partial order & $x_1 \le_\theta x_2 \Rightarrow P(x_1) \le_{\mathcal{Y}} P(x_2)$ \\
 $T^{*}$ & paired tuple $((x_1, P(x_1)), (x_2, P(x_2)))$ in the inner product & $\langle L\,P(x_1), P(x_2)\rangle = \langle P(x_1), L\,P(x_2)\rangle$ \\
-$\mathcal{T}^{*}$ & $(x, \mathcal{T} x)$ with $\mathcal{T}$ the time-reversal involution & $P(\mathcal{T} x) = \mathcal{T}\,P(x)$ on the reversibility sub-domain \\
+$\mathcal{T}^{*}_{\mathrm{rev}}$ & $(x, \mathcal{T} x)$ with $\mathcal{T}$ the time-reversal involution & $P(\mathcal{T} x) = \mathcal{T}\,P(x)$ on the reversibility sub-domain \\
 $\mathcal{L}^{*}$ & sequence $(x_\theta)$ with $\theta \to \theta_*$ & $\|P_{\theta} - P_{\theta_*}\|_{*} = O(f(\theta))$ at the prescribed rate \\
 $\mathcal{D}^{*}$ & solution trajectory $(\xi(t))_{t \ge 0}$ extracted by $\mathcal{D}$ & qualitative-feature relation (extremum, monotonicity, S-curve) preserved on $(\xi(t))$ \\
 $\mathcal{E}^{*}$ & method pair $(M_1, M_2)$ in the partial order $\preceq_{\mathcal{E}}$ & $\mathrm{err}(M_1) \le \mathrm{err}(M_2)$ on the prescribed benchmark family \\
@@ -2943,7 +2783,7 @@ The per-block rule together with the $\sim_s$ equivalence relation of Definition
 \emph{Uniqueness.} Suppose $\rho$ admits derivations through multiple blocks: $\rho = \mathrm{Translate}(\iota_1, s_1) = \mathrm{Translate}(\iota_2, s_2)$ with $s_1 \neq s_2$. Definition~\ref{def:canonical-order}'s canonical-block ordering selects $s^{*} = \max_{>}\{s_1, s_2\}$. By Lemma~C.1, $s^{*}$ is unique; the canonical assignment $\rho \mapsto m_{s^{*}}$ is unique.
 \end{proof}
 
-\subsection*{Theorem 2 (Decidability), full proof}
+\subsection*{Theorem 2 (Complexity), full proof}
 
 \begin{proof}
 \emph{Step 1 cost.} For each generator $g_i$, compute $g_i$'s contribution to each $\mathcal{I}_s$. Cost: $O(t_i)$ per generator, $O(n \cdot \max_i t_i)$ aggregated.
@@ -2980,7 +2820,7 @@ Consider the MR ``the Shannon entropy $H(f(\mathbf{x}))$ of a classifier's outpu
 The MR ``$\| \delta\|_p \le \epsilon \Rightarrow f(\mathbf{x} + \delta) = f(\mathbf{x})$'' (adversarial robustness in $\ell_p$ ball) constrains $f$'s behaviour on a set defined by a norm constraint, not by a group action. The set $\{ \delta : \|\delta\|_p \le \epsilon\}$ does not in general carry a closed group structure on $\mathcal{X}$, and the MR is not derivable as $\mathrm{Translate}(\iota, s)$ for any $s$ in $\mathcal{D}(\mathcal{A}_P)$ as currently defined. Any treatment of this MR within NOETHER's scope would require an eighth block (e.g.\ a metric-ball block with bounded Lipschitz operators), or a relaxation of \texttt{Translate} to non-group input neighbourhoods. A concrete candidate for the eighth block alluded to above is a metric-stability block $M_{\mathrm{lip}} = (\mathcal{X}, d_{\mathcal{X}}) \to (\mathcal{Y}, d_{\mathcal{Y}})$ whose operators are $K$-Lipschitz maps and whose induced MetaPattern $m_{\mathrm{lip}}$ is the equivalence class of pointwise stability inequalities $d_{\mathcal{Y}}(P(x'), P(x)) \le K \cdot d_{\mathcal{X}}(x', x)$. The corresponding \texttt{Translate} template constructs a follow-up input by metric perturbation $x' = x + \varepsilon u$ (norm $\|u\|=1$, $|\varepsilon| < \delta$) and predicates a $K$-Lipschitz output bound; canonical-block ordering would place $M_{\mathrm{lip}}$ after $\mathcal{B}^{*}_{\mathrm{rel}}$ since metric structure is independent of the seven existing block invariants (no group action on the perturbation set, no partial order on inputs, no self-adjoint operator, and no parametric refinement family). Theorem~\ref{thm:closure}'s closure proof transfers without modification because $m_{\mathrm{lip}}$ is single-block algebraically derived. We do not commit to $M_{\mathrm{lip}}$ as part of the canonical decomposition in this paper, but we record it as the most concrete sub-instance of Remark~(iv) (topological invariants) that admits an immediate \texttt{Translate} template.
 
 \paragraph{C.5.3 Compositional MRs across multiple blocks under non-canonical derivations.}
-The MR ``rotating a point cloud by $R$ \emph{and} simultaneously taking the training-size limit $n \to \infty$ should give an output that converges to $f(\mathbf{x})$ at rate $O(1/\sqrt{n})$'' invokes both $G$ (rotation) and $\mathcal{L}^*$ (training-size limit) within a single MR. Definition~\ref{def:canonical-order}'s canonical-block ordering assigns this to $G$, but the resulting MR ``$f(R\cdot\mathbf{x}) = f(\mathbf{x})$'' loses the convergence-rate content. The compositional content is in $\mathbb{M}(\mathcal{A}_P)$ if and only if it can be split into separate single-block invariants (one in $G$, one in $\mathcal{L}^*$); MRs whose semantic content is irreducibly compositional (in the sense that splitting destroys the property's truth value) lie outside Theorem~\ref{thm:closure}'s scope. This is the case Theorem~1$'$ option~(b) is targeted at: an extended \texttt{Translate} that operates on tuples of block invariants. We have not constructed such an extension that preserves Theorem~\ref{thm:closure}'s polynomial-time decidability (Theorem~2), and we leave this as the most concrete sub-problem under Theorem~1$'$.
+The MR ``rotating a point cloud by $R$ \emph{and} simultaneously taking the training-size limit $n \to \infty$ should give an output that converges to $f(\mathbf{x})$ at rate $O(1/\sqrt{n})$'' invokes both $G$ (rotation) and $\mathcal{L}^*$ (training-size limit) within a single MR. Definition~\ref{def:canonical-order}'s canonical-block ordering assigns this to $G$, but the resulting MR ``$f(R\cdot\mathbf{x}) = f(\mathbf{x})$'' loses the convergence-rate content. The compositional content is in $\mathbb{M}(\mathcal{A}_P)$ if and only if it can be split into separate single-block invariants (one in $G$, one in $\mathcal{L}^*$); MRs whose semantic content is irreducibly compositional (in the sense that splitting destroys the property's truth value) lie outside Theorem~\ref{thm:closure}'s scope. This is the case Theorem~1$'$ option~(b) is targeted at: an extended \texttt{Translate} that operates on tuples of block invariants. We have not constructed such an extension that preserves Theorem~\ref{thm:closure}'s polynomial-time constructibility (Theorem~2), and we leave this as the most concrete sub-problem under Theorem~1$'$.
 
 The three classes of \S C.5.1--\S C.5.3 are \emph{abstract} characterisations of MRs outside Theorem~\ref{thm:closure}'s scope. Appendix~\ref{app:negative-proofs} supplements them with two \emph{concrete instances} drawn from the PWR core diffusion algebra $\mathcal{A}_{\mathrm{PWR}}$, each of which is empirically realised on every conforming PWR core simulator and documented in the standard reactor-physics literature. Together with \S\ref{subsec:negative-pwr}, Appendix~\ref{app:negative-proofs} establishes that Theorem~1$'$ (Conjecture~\ref{conj:absolute}) is false on $\mathcal{A}_{\mathrm{PWR}}$, and identifies five structural obstructions in \texttt{Translate}'s signature (operator-spectrum output, homomorphism-failure $\pi$-template, configuration-indexed adjoint structure, higher-order mixed-difference templates, bidirectional joint parametric dependence) that any positive resolution would have to repair.
 
@@ -3028,7 +2868,7 @@ $\rho_{\mathrm{nonadd}}$ is a \emph{quaternary relation} on the four configurati
 \end{enumerate}
 The $T^{*}$ template's structure (single $L$, fixed inner product, asserting $\langle L x_{1}, x_{2}\rangle = \langle x_{1}, L x_{2}\rangle$) has no place to express ``the weighting function $\phi^{\dagger}$ entering the inner product is itself the principal eigenfunction of a configuration-indexed adjoint operator and changes when configuration changes''. This is a configuration-dependent adjoint structure, not a self-adjointness identity on a single operator. No $\iota \in \mathcal{I}_{T^{*}}$ yields $\rho_{\mathrm{nonadd}}$.
 
-\textbf{Case $s = \mathcal{T}_{\mathrm{rev}}^{*}$.} The PWR diffusion operator $-\nabla \cdot D \nabla + \Sigma_{a}$ is irreversible: it is parabolic (transient form) or elliptic (steady-state form), neither of which admits a time-reversal involution on the relevant solution sub-family. Hence $\mathcal{T}_{\mathrm{rev}}^{*}$ is empty for $\mathcal{A}_{\mathrm{PWR}}$, and vacuously no $\iota \in \mathcal{I}_{\mathcal{T}_{\mathrm{rev}}^{*}}$.
+\textbf{Case $s = \mathcal{T}^{*}_{\mathrm{rev}}$.} The PWR diffusion operator $-\nabla \cdot D \nabla + \Sigma_{a}$ is irreversible: it is parabolic (transient form) or elliptic (steady-state form), neither of which admits a time-reversal involution on the relevant solution sub-family. Hence $\mathcal{T}^{*}_{\mathrm{rev}}$ is empty for $\mathcal{A}_{\mathrm{PWR}}$, and vacuously no $\iota \in \mathcal{I}_{\mathcal{T}^{*}_{\mathrm{rev}}}$.
 
 \textbf{Case $s = \mathcal{L}^{*}$.} By Table~\ref{tab:translate}, the $\mathcal{L}^{*}$ template is a convergence statement $\|P_{\theta} - P_{\theta_{*}}\|_{*} = O(f(\theta))$ at a parametric limit. $\rho_{\mathrm{nonadd}}$ contains no limit operation: it is a strict inequality at finite, fixed configurations $(\emptyset, A, B, A \cup B, x_{0})$. No $\iota \in \mathcal{I}_{\mathcal{L}^{*}}$.
 
@@ -3080,7 +2920,7 @@ Furthermore, $\rho_{\mathrm{MTC\text{-}bor}}$'s output is again $k_{\mathrm{eff}
 \begin{itemize}[leftmargin=*,nosep]
   \item \emph{Case $s = G$.} No group action in $\mathcal{A}_{\mathrm{PWR}}$ relates $(T_{\mathrm{mod}}, C_{B})$ pairs at different parameter values to each other through equivariance: $T_{\mathrm{mod}}$ and $C_{B}$ are continuous parameters acting on the cross-section library, not group-action coordinates. Even if a charitable embedding in $G$ were attempted, the same operator-spectrum-output obstruction (Proposition~\ref{prop:nonadd} Case $G$~(a)) applies: $k_{\mathrm{eff}}$ is not in $\mathcal{Y}$.
   \item \emph{Case $s = T^{*}$.} The MTC operator $\partial/\partial T_{\mathrm{mod}}$ is not self-adjoint in any natural inner product on the diffusion-solution space (the parameter $T_{\mathrm{mod}}$ enters the cross-section coefficients of $H$ rather than $H$'s acting space, so $\partial H/\partial T_{\mathrm{mod}}$ has no self-adjointness structure analogous to $H$ itself). No $\iota \in \mathcal{I}_{T^{*}}$.
-  \item \emph{Case $s = \mathcal{T}_{\mathrm{rev}}^{*}$.} Empty for PWR diffusion. No $\iota \in \mathcal{I}_{\mathcal{T}_{\mathrm{rev}}^{*}}$.
+  \item \emph{Case $s = \mathcal{T}^{*}_{\mathrm{rev}}$.} Empty for PWR diffusion. No $\iota \in \mathcal{I}_{\mathcal{T}^{*}_{\mathrm{rev}}}$.
   \item \emph{Case $s = \mathcal{L}^{*}$.} $\rho_{\mathrm{MTC\text{-}bor}}$ does not assert convergence at a parametric limit; it asserts a non-zero finite value of a mixed second derivative at a \emph{finite} parameter point in the operating envelope. The mixed-derivative limit $\Delta T, \Delta C \to 0$ is the \emph{definition} of the derivative, not the MR's claim; the MR's claim is that the resulting derivative exceeds $\tau_{\mathrm{MTC\text{-}bor}}$, which is a non-vanishing condition at a finite parameter value, not a convergence rate. No $\iota \in \mathcal{I}_{\mathcal{L}^{*}}$.
   \item \emph{Case $s = \mathcal{D}^{*}$.} $\rho_{\mathrm{MTC\text{-}bor}}$ concerns $k_{\mathrm{eff}}$ as a function of two parameters at steady state; it does not involve a solution trajectory of an underlying ODE/PDE. No $\iota \in \mathcal{I}_{\mathcal{D}^{*}}$.
   \item \emph{Case $s = \mathcal{E}^{*}$.} The comparison is between two parameter regimes $(T_{0}, C_{0})$ and $(T_{0}+\Delta T, C_{0}+\Delta C)$ of a single fixed method (the same PWR core simulator $P$ in all four eigenvalues), not between two methods. No $\iota \in \mathcal{I}_{\mathcal{E}^{*}}$.
@@ -3105,7 +2945,7 @@ The MRs $\rho_{\mathrm{nonadd}}, \rho_{\mathrm{MTC\text{-}bor}}$ are each formul
 
 \begin{remark}[Open: Composite \texttt{Translate}]
 \label{rem:composite-translate}
-A natural follow-up is to define a \emph{Composite \texttt{Translate}} $\widetilde{\mathrm{Translate}}: \mathcal{I}_{s_{1}} \times \cdots \times \mathcal{I}_{s_{k}} \to \mathrm{MR}(P)$ that combines invariants from multiple blocks under a generalised $\pi$ template admitting (i) operator-spectrum output, (ii) homomorphism-failure relations, (iii) configuration-indexed adjoint structure, (iv) higher-order mixed differences, and (v) bidirectional joint parametric dependence. Whether such an extension preserves Theorem~\ref{thm:closure}'s closure (now over $\widetilde{\mathrm{MR}}(\mathcal{A}_{P})$) and Theorem~\ref{thm:decidable}'s polynomial-time decidability is the principal open problem this subsection leaves to future work. Five independent extensions are needed; a single uniform Composite \texttt{Translate} covering all of them would be a substantive theoretical contribution.
+A natural follow-up is to define a \emph{Composite \texttt{Translate}} $\widetilde{\mathrm{Translate}}: \mathcal{I}_{s_{1}} \times \cdots \times \mathcal{I}_{s_{k}} \to \mathrm{MR}(P)$ that combines invariants from multiple blocks under a generalised $\pi$ template admitting (i) operator-spectrum output, (ii) homomorphism-failure relations, (iii) configuration-indexed adjoint structure, (iv) higher-order mixed differences, and (v) bidirectional joint parametric dependence. Whether such an extension preserves Theorem~\ref{thm:closure}'s closure (now over $\widetilde{\mathrm{MR}}(\mathcal{A}_{P})$) and Theorem~\ref{thm:decidable}'s polynomial-time constructibility is the principal open problem this subsection leaves to future work. Five independent extensions are needed; a single uniform Composite \texttt{Translate} covering all of them would be a substantive theoretical contribution.
 \end{remark}
 
 \subsection*{C.7 Worked enumeration of CONSTRUCT-MP on the Boltzmann algebra (migrated)}
@@ -3144,6 +2984,10 @@ This work was supported by the National Natural Science Foundation of China (NSF
 \textbf{Jie Liu}: Investigation, Validation.
 \textbf{Shiyu Yan}: Data curation, Visualization.
 \textbf{Xiaohua Yang}: Supervision, Formal analysis, Writing: review \& editing.
+
+\smallskip
+\noindent\textbf{Generative AI disclosure.}
+In line with the ACM Policy on Authorship, large language models appear in this work in two distinct roles. As \emph{instruments of the study}, large language models are part of the evaluated and auditing apparatus: the Set~L baseline MRs were generated by a prompted model (\S\ref{subsec:case-study}); the LRCA second-rater protocol used DeepSeek, ChatGPT, and Anthropic Claude Opus to relabel block assignments (\S\ref{sec:threats-limitations}); and a multi-model vote assisted the mutant-equivalence adjudication. These uses are reported as part of the methodology, and the prompts and raw outputs are released in the replication package. As \emph{authoring assistance}, the authors used a large-language-model assistant for code scaffolding, reference formatting, and language editing. All research design, theorems and proofs, experimental procedures, numerical results, and claims were produced and verified by the authors, who take full responsibility for the entire content; no text or result was incorporated without author review.
 
 \smallskip
 \noindent\textbf{Declaration of competing interest.}

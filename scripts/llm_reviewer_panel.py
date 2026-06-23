@@ -42,7 +42,7 @@ except ImportError:
     sys.exit("ERROR: pip3 install --user openai")
 
 # Cross-vendor reviewer panel (independent vendors maximise reviewer diversity).
-PANEL = ["gpt-5", "claude-opus-4-6", "deepseek-r1", "glm-5.2", "Kimi-K2-Instruct"]
+PANEL = ["gpt-5.5", "claude-opus-4-8", "glm-5.2", "deepseek-v4-pro", "qwen3-max"]
 
 SYSTEM = (
     "You are a senior, highly critical reviewer for ACM Transactions on "

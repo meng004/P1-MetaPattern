@@ -1,0 +1,45 @@
+\section{Per-SUT head-to-head kill counts (migrated from the main body)}
+\label{app:detailed-tables-persut}
+
+This table reports the per-SUT PIT mutation kill counts for the Set~N versus
+GenMorph-evolved Set~G head-to-head, migrated from the main body for length
+conformance. The pooled verdict (Set~N $26$, Set~G $40$, McNemar exact
+two-sided $p = 0.0043$ at the 30-min budget, $n = 62$ mutants) is stated in the
+main-body §6.6 prose; the full per-SUT breakdown is preserved here.
+
+\begin{table}[h]
+\centering
+\caption{Per-SUT PIT mutation kill counts, Set~N versus
+GenMorph-evolved Set~G at GenMorph's published 30-min GAssert budget
+(primary) and at a 1-min GAssert sensitivity rerun, on the 10
+algebra-rich Java SUTs. Set~G is structurally absent on
+\texttt{ComplexSignal.add} (instance-method deserialisation) and
+\texttt{isSequence} (boolean-predicate JOR grammar) under both budgets.
+Set~N's kill vector is held fixed across budgets. Pooled across the
+8 head-to-head SUTs ($n = 62$ mutants), 30-min budget primary: Set~N
+$= 26$, Set~G $= 40$, McNemar exact two-sided $p = 0.0043$. The
+$\Delta$ (30-min) column reports Set~N $-$ Set~G at the 30-min budget;
+note labels are directional descriptors only and do not assert
+per-SUT statistical significance. $n = 62$ is underpowered for a paired
+hypothesis test at $\alpha = 0.05$ in two-sided form.}
+\label{tab:algebra-rich-pooled-s9}
+\small
+\begin{tabular}{lcccccl}
+\toprule
+SUT & mutants & Set N & Set G (30-min) & Set G (1-min) & $\Delta$ (30-min) & note \\
+\midrule
+\texttt{ComplexSignal.add} &  3 & 2 & N/A & N/A &      & instance method (Set~G N/A) \\
+\texttt{midpoint}          &  3 & 3 & 3   & 3   & $0$  & tie \\
+\texttt{exactLog2}         & 10 & 4 & 0   & 0   & $+4$ & directional only \\
+\texttt{isSequence}        &  5 & 0 & N/A & N/A &      & boolean predicate (Set~G N/A) \\
+\texttt{clamp}             &  7 & 5 & 5   & 5   & $0$  & tie \\
+\texttt{signum}            &  6 & 4 & 4   & 4   & $0$  & tie \\
+\texttt{gcdSig}            &  9 & 1 & 6   & 5   & $-5$ & directional only \\
+\texttt{hypotSig}          &  4 & 2 & 4   & 4   & $-2$ & directional only \\
+\texttt{lcmSig}            & 11 & 0 & 8   & 8   & $-8$ & directional only \\
+\texttt{powerSig}          & 12 & 7 & 10  & 10  & $-3$ & directional only ($2$ Set~N MRs ineligible) \\
+\midrule
+\textbf{pooled (head-to-head, n=62)}     &    & \textbf{26} & \textbf{40} & \textbf{39} & $-14$ & McNemar two-sided $p = 0.0043$ (30-min) \\
+\bottomrule
+\end{tabular}
+\end{table}

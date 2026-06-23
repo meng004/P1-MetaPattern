@@ -1,0 +1,47 @@
+{
+  "grok-4.3": {
+    "model": "grok-4.3",
+    "status": "ok",
+    "elapsed_s": 45.2,
+    "usage": {
+      "prompt": 90279,
+      "completion": 5609
+    }
+  },
+  "qwen3-max": {
+    "model": "qwen3-max",
+    "status": "ok",
+    "elapsed_s": 56.3,
+    "usage": {
+      "prompt": 104414,
+      "completion": 1397
+    }
+  },
+  "claude-opus-4-7": {
+    "model": "claude-opus-4-7",
+    "status": "ok",
+    "elapsed_s": 153.4,
+    "usage": {
+      "prompt": 109095,
+      "completion": 4869
+    }
+  },
+  "gpt-5.5": {
+    "model": "gpt-5.5",
+    "status": "ok",
+    "elapsed_s": 187.0,
+    "usage": {
+      "prompt": 102167,
+      "completion": 7572
+    }
+  },
+  "glm-5.1": {
+    "model": "glm-5.1",
+    "status": "ok",
+    "elapsed_s": 334.0,
+    "usage": {
+      "prompt": 102688,
+      "completion": 5774
+    }
+  }
+}

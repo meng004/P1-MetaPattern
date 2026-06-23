@@ -1,0 +1,334 @@
+{
+  "MathClass?gcd?0": {
+    "per_seed": [
+      {
+        "seed": 11,
+        "setN": 13,
+        "setG": 11,
+        "both": 11,
+        "N_only": 2,
+        "G_only": 0,
+        "mcnemar_p": 0.5,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 12,
+        "setN": 6,
+        "setG": 17,
+        "both": 6,
+        "N_only": 0,
+        "G_only": 11,
+        "mcnemar_p": 0.0009765625,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 13,
+        "setN": 11,
+        "setG": 18,
+        "both": 11,
+        "N_only": 0,
+        "G_only": 7,
+        "mcnemar_p": 0.015625,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 21,
+        "setN": 6,
+        "setG": 17,
+        "both": 6,
+        "N_only": 0,
+        "G_only": 11,
+        "mcnemar_p": 0.0009765625,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 22,
+        "setN": 13,
+        "setG": 12,
+        "both": 12,
+        "N_only": 1,
+        "G_only": 0,
+        "mcnemar_p": 1.0,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 23,
+        "setN": 11,
+        "setG": 10,
+        "both": 10,
+        "N_only": 1,
+        "G_only": 0,
+        "mcnemar_p": 1.0,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 31,
+        "setN": 13,
+        "setG": 17,
+        "both": 13,
+        "N_only": 0,
+        "G_only": 4,
+        "mcnemar_p": 0.125,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 32,
+        "setN": 11,
+        "setG": 18,
+        "both": 11,
+        "N_only": 0,
+        "G_only": 7,
+        "mcnemar_p": 0.015625,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 33,
+        "setN": 13,
+        "setG": 18,
+        "both": 13,
+        "N_only": 0,
+        "G_only": 5,
+        "mcnemar_p": 0.0625,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm",
+          "scale"
+        ]
+      },
+      {
+        "seed": 41,
+        "setN": 11,
+        "setG": 18,
+        "both": 11,
+        "N_only": 0,
+        "G_only": 7,
+        "mcnemar_p": 0.015625,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 42,
+        "setN": 11,
+        "setG": 14,
+        "both": 10,
+        "N_only": 1,
+        "G_only": 4,
+        "mcnemar_p": 0.375,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      },
+      {
+        "seed": 43,
+        "setN": 11,
+        "setG": 10,
+        "both": 10,
+        "N_only": 1,
+        "G_only": 0,
+        "mcnemar_p": 1.0,
+        "valid": [
+          "eqref",
+          "mono",
+          "perm"
+        ]
+      }
+    ],
+    "pooled": {
+      "both": 124,
+      "N_only": 6,
+      "G_only": 56,
+      "mcnemar_p": 2.972584851879123e-11
+    }
+  },
+  "MathClass?sin?0": {
+    "per_seed": [
+      {
+        "seed": 11,
+        "setN": 14,
+        "setG": 16,
+        "both": 13,
+        "N_only": 1,
+        "G_only": 3,
+        "mcnemar_p": 0.625,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 12,
+        "setN": 14,
+        "setG": 16,
+        "both": 14,
+        "N_only": 0,
+        "G_only": 2,
+        "mcnemar_p": 0.5,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 13,
+        "setN": 14,
+        "setG": 16,
+        "both": 13,
+        "N_only": 1,
+        "G_only": 3,
+        "mcnemar_p": 0.625,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 21,
+        "setN": 14,
+        "setG": 13,
+        "both": 11,
+        "N_only": 3,
+        "G_only": 2,
+        "mcnemar_p": 1.0,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 22,
+        "setN": 14,
+        "setG": 16,
+        "both": 13,
+        "N_only": 1,
+        "G_only": 3,
+        "mcnemar_p": 0.625,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 23,
+        "setN": 14,
+        "setG": 15,
+        "both": 12,
+        "N_only": 2,
+        "G_only": 3,
+        "mcnemar_p": 1.0,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 32,
+        "setN": 14,
+        "setG": 17,
+        "both": 14,
+        "N_only": 0,
+        "G_only": 3,
+        "mcnemar_p": 0.25,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 33,
+        "setN": 14,
+        "setG": 13,
+        "both": 11,
+        "N_only": 3,
+        "G_only": 2,
+        "mcnemar_p": 1.0,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 41,
+        "setN": 14,
+        "setG": 17,
+        "both": 14,
+        "N_only": 0,
+        "G_only": 3,
+        "mcnemar_p": 0.25,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 42,
+        "setN": 14,
+        "setG": 15,
+        "both": 13,
+        "N_only": 1,
+        "G_only": 2,
+        "mcnemar_p": 1.0,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      },
+      {
+        "seed": 43,
+        "setN": 14,
+        "setG": 17,
+        "both": 14,
+        "N_only": 0,
+        "G_only": 3,
+        "mcnemar_p": 0.25,
+        "valid": [
+          "bound",
+          "oddsym"
+        ]
+      }
+    ],
+    "pooled": {
+      "both": 142,
+      "N_only": 12,
+      "G_only": 29,
+      "mcnemar_p": 0.011507789735333063
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "overall_recommendation": "Major Revision",
+  "reviewer_confidence_1to5": 5,
+  "scores_1to5": {
+    "soundness": 4,
+    "novelty": 5,
+    "significance": 4,
+    "presentation": 4,
+    "reproducibility": 5
+  },
+  "summary": "This paper proposes NOETHER, a rigorous algebraic framework to derive metamorphic relation classes (MetaPatterns) from operator-algebraic structures of program families. It replaces inductive pattern enumeration with a mechanized construction downstream of a curated algebra decomposition into eight operator blocks, with closure and decidability theorems. The approach is instantiated on three distinct domains—Boltzmann reactor physics, equivariant machine learning, and relational query optimizers—and shown to subsume existing inductive taxonomies while exposing previously unclassified pattern classes. A negative result on PWR core diffusion programs demonstrates limits of current “Translate” enumeration and motivates extensions. The framework is evaluated primarily through algebraic coverage, structural re-classification, case study mutation tests, and a comparative head-to-head on Java SUTs with state-of-the-art baselines. The results show rigorously identified MR classes with provable source and boundary, though the experimental evaluation is limited and shows no overall fault-detection superiority over baselines.",
+  "strengths": [
+    "A novel, well-founded algebraic construction for metamorphic relation class identification that answers three foundational questions: origin, closure, and transferability.",
+    "Formalization of the operator-algebraic decomposition into eight blocks with precise semantics, supported by polynomial-time decidability and structural closure theorems.",
+    "Instantiations on three diverse and structurally distinct program families demonstrating non-trivial applicability and cross-domain transfer.",
+    "An insightful negative case on PWR core diffusion reveals the limitations of the current Translate signature, identifying five independent structural obstructions and motivating future work.",
+    "Thorough experimental methodology including a small-scale mutation study, comparative evaluation against GP-based, LLM-based, and mining-based MR baselines, and empirical tests of blocking and coverage hypotheses.",
+    "High-quality reproducibility artifact and detailed documentation of proofs, algorithms, and experimental protocols."
+  ],
+  "publication_blockers": [
+    {
+      "section": "Section 3.5 & Appendix C.6 (Negative instantiation on \\mathcal{A}_{\\mathrm{PWR}})",
+      "issue": "The framework's key claimed absolute completeness theorem (Theorem 1') is falsified by concrete MR examples fully formulable over the operator algebra but unreachable by the current Translate construction.",
+      "why_fatal": "This falsification reveals that the core framework and closure guarantee are valid only within a strictly limited algebra-induced MR subset, undermining claims of completeness and thus the universality of the presented MetaPattern set. Without a constructive extension preserving closure and decidability, the claimed foundational theory is incomplete."
+    }
+  ],
+  "major_weaknesses": [
+    {
+      "section": "Section 3.3, 3.4 (Framework and Translate operator)",
+      "issue": "The upstream step of distilling the operator algebra \\(\\mathcal{A}_P\\) from a program family is manual, empirical, and not automated.",
+      "suggested_fix": "Provide concrete semi-automated tools, static analyses, or LLM-assisted protocols to support or partially automate this step, increasing practical applicability."
+    },
+    {
+      "section": "Section 6 (Empirical evaluation)",
+      "issue": "The empirical evaluation focuses heavily on structural coverage and algebraic justification but has limited demonstration of consistent fault-detection superiority or broader applicability across real-world large systems.",
+      "suggested_fix": "Extend experiments to larger subject sets, realistic real-bug datasets, varied domains, and multi-architecture models to more comprehensively validate practical benefits."
+    },
+    {
+      "section": "Section 5 and throughout",
+      "issue": "Presentation burden is high due to heavy use of formal definitions, hypotheses, and complex domain-specific examples, which may limit accessibility for broader software engineering researchers.",
+      "suggested_fix": "Include more intuitive motivation, graphical summaries, simplified examples earlier, and extract key takeaways to improve readability."
+    }
+  ],
+  "minor_issues": [
+    "The notion of “MetaPattern equivalence class” is subtle and deserves a short glossary or visual illustration early on to orient readers.",
+    "Some domain-specific jargon and acronyms (e.g. PWR, MTC, CRAM) are used heavily in reactor-physics sections without brief clarifications or footnotes.",
+    "References to unpublished works cited as “committed as future work” could be minimized or clarified to better set reader expectations.",
+    "Typographic inconsistencies in equation numbering and cross-references appear occasionally in the appendix.",
+    "Discussion of LLM-based MR generation focuses on GPT-4; incorporating more models or recent advances could strengthen claims.",
+    "Some sections, e.g., Section 4.5, would benefit from an explicit summary or bulleted takeaway sentence.",
+    "Detailed proofs and many worked examples are offloaded to a supplementary archive; integrating a key example fully in the paper would help.",
+    "Some claims about “prediction” of MR classes could emphasize that “prediction” here means algebraic classification rather than discovering fundamentally new phenomena."
+  ],
+  "questions_to_authors": [
+    "Can you clarify the practical steps a tester or practitioner must take to define the operator algebra \\(\\mathcal{A}_P\\) for a new program family? Are there plans for tool support beyond the manual protocol described?",
+    "Regarding the five independent structural obstructions to absolute completeness identified in \\S3.5 and Appendix C.6, do you have candidate designs or partial prototypes for a Composite \\texttt{Translate} operator that addresses any of them?",
+    "For the mutation-based experimental evaluation, do you have plans to scale to larger datasets or real-world bug repositories to assess fault-detection effectiveness beyond construct-validity-controlled cases?",
+    "In the equivariant ML case study, some novel MRs like \\(\\rho_{\\mathrm{adj}}\\) and \\(\\rho_{\\mathrm{train-rev}}\\) have not been catalogued previously; can you clarify how general these invariants are across architectures beyond EGNNs?",
+    "Your comparative evaluation shows that GP-evolved sets outperform NOETHER's MR sets on some mutation strata but your cost analysis favors NOETHER; do you envision hybrid strategies combining algebraic grounding with search-based fine-tuning?",
+    "Could you elaborate on how tolerant the framework is to approximate or probabilistic invariants, especially in ML domains with noisy or stochastic outputs?",
+    "Is the assumption of a single canonical block for each MR limiting? Could some useful MRs arise naturally from multiple interacting blocks in a way that a strictly hierarchical block ordering obscures?",
+    "In the reactor-physics domain, how sensitive is the algebraic decomposition (and consequent MR derivation) to model approximations or solver discretizations? How stable is the MetaPattern set under model refinement?",
+    "You mention that some candidate ninth blocks (e.g., metric-stability, label-consistency) are not yet formalized. How critical do you view these gaps to practical MT deployment?",
+    "How do you envision extending NOETHER to domains without a natural operator algebra, e.g., rule-based systems, RLHF reward models, or distributed consensus?"
+  ]
+}
