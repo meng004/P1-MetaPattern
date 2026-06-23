@@ -4,8 +4,10 @@ A ready-to-deploy kit for an **independent human** inter-rater reliability study
 of the NOETHER MetaPattern / MR-family classification. It replaces the LLM panel
 (whose three raters share pre-training, see `supplementary/S3_case_study/lrca_audit.md`)
 with independent humans, removing that construct-validity caveat. Same 36 Set N
-MRs, same 9 categories, so the human κ is **directly comparable** to the
-LLM-majority-vs-author Cohen κ = 0.931 already reported.
+MRs, classified into the **ten MR families** (Layer 2, a–j) that roll up to the
+**five MetaPatterns** (Layer 1); the human κ is reported at **both layers** and
+compared to the LLM panel at the MetaPattern layer (the LLM block labels roll up
+the same way; the LLM-majority-vs-author Cohen κ = 0.931 is the existing anchor).
 
 > Honest boundary: a model cannot *be* a human rater. This package prepares
 > everything; the actual labelling must be done by real people (see roles below).
@@ -50,7 +52,7 @@ definitions and examples are clear enough to apply.)
 1. **Recruit** ≥ 3 qualified independent raters.
 2. **Brief:** give each rater only `CODEBOOK.md` + `items_to_rate.csv` +
    their own copy of `rating_sheet_TEMPLATE.csv`.
-3. **Calibrate (not scored):** raters first do the 7 worked examples in
+3. **Calibrate (not scored):** raters first do the 11 worked examples in
    CODEBOOK §5 and reconcile understanding (these are NOT the 36 test items).
 4. **Label independently:** each rater fills the `category` column for all 36
    items, saving as `ratings/rater_<name>.csv`. No discussion.
@@ -73,15 +75,21 @@ python3 compute_kappa.py
 python3 compute_kappa.py --selftest
 ```
 
-## Categories (one per item)
+## Categories (one MR family per item)
 
-`G` (symmetry) · `O_le` (order/monotonicity) · `T_star` (self-adjoint/reciprocity)
-· `T_rev` (time-reversal) · `L_star` (limit/convergence) · `D_star` (dynamic
-shape, refinement of `O_le`) · `E_star` (accuracy-order, refinement of `L_star`)
-· `B_rel` (relational/rewrite equivalence) · `orphan` (none of the above).
+Raters assign one **MR family** (Layer 2) or `orphan`; each family rolls up to one
+of the **five MetaPatterns** (Layer 1):
 
-The first five are the MetaPatterns; `D_star`/`E_star`/`B_rel` are the refinements
-and the relational extension; `orphan` catches anything outside the taxonomy.
+| MetaPattern (Layer 1) | MR families (Layer 2) |
+|---|---|
+| `G` symmetry | `a` equivariance, `b` conservation |
+| `T_star` self-adjoint | `c` self-adjoint, `d` adjoint-duality |
+| `T_rev` time-reversal | `e` time-reversal |
+| `O_le` order | `f` static-order, `g` dynamic-shape |
+| `L_star` limit | `h` convergence, `i` accuracy-order, `j` representation-invariance |
+
+`orphan` catches anything outside the taxonomy. The script reports κ at the family
+layer (11 categories) and at the rolled-up MetaPattern layer (6 categories).
 
 ## Pass criterion (per ISSUE-012)
 

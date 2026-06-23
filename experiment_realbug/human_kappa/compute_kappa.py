@@ -1,90 +1,91 @@
 #!/usr/bin/env python3
 """
-Inter-rater kappa for the human MetaPattern/MR-family classification study.
+Inter-rater kappa for the human MR-classification study -- TWO-LAYER scheme.
+
+Raters assign each MR ONE MR family (Layer 2, ten families a-j) or `orphan`.
+Each family rolls up to exactly one MetaPattern (Layer 1, five MetaPatterns), so
+from a single family label we report agreement at BOTH layers:
+
+  Layer 2 (families a-j + orphan):  Fleiss kappa + pairwise Cohen kappa
+  Layer 1 (5 MetaPatterns + orphan): Fleiss kappa + pairwise Cohen kappa
+                                     (families rolled up to MetaPatterns)
+  Human vs author: at the MetaPattern layer (the author key is block-level, which
+  rolls up cleanly to the 5 MetaPatterns; the LLM-panel audit in
+  supplementary/S3_case_study can be re-scored at this layer for comparison).
 
 Reads filled rater sheets from   human_kappa/ratings/rater_<name>.csv
-(each row: item_id,category[,notes]; category in CATEGORIES) and reports:
+(rows: item_id,category[,notes]; category = a family letter a-j, or 'orphan').
 
-  * pairwise Cohen's kappa (every rater pair)
-  * Fleiss' kappa across all raters  (+ 95% bootstrap CI over items)
-  * percent agreement and per-category agreement
-  * the disagreement list (items the raters split on)
-  * OPTIONAL human-vs-author: if _gold_author_labels.csv is present, the
-    human-majority-vs-author Cohen's kappa (directly comparable to the
-    LLM-majority-vs-author kappa = 0.931 reported in
-    supplementary/S3_case_study/lrca_audit.md), plus each rater vs author.
-
-Pure standard library (no numpy / sklearn needed).
-
-USAGE
-  Real run : drop rater_alice.csv, rater_bob.csv, ... into ./ratings/, then
-             python3 compute_kappa.py
-  Self-test: python3 compute_kappa.py --selftest
-             (fabricates 3 SYNTHETIC raters to prove the pipeline; the output
-              is labelled SYNTHETIC and is NOT a human result.)
+Pure standard library. Self-test: python3 compute_kappa.py --selftest
 """
 import csv, glob, os, sys, random, itertools, pathlib
 
 HERE = pathlib.Path(__file__).parent
-CATEGORIES = ["G", "O_le", "T_star", "T_rev", "L_star", "D_star", "E_star", "B_rel", "orphan"]
 
-# ---------- kappa primitives ----------
-def cohen_kappa(a, b):
-    """a, b: dict item->label over the SAME item set."""
-    items = sorted(set(a) & set(b))
-    items = [i for i in items if a[i] and b[i]]
+# ---- Layer 2: the ten MR families (+ orphan) ----
+FAMILIES = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+FAM_CATS = FAMILIES + ["orphan"]
+FAMILY_NAME = {
+    "a": "equivariance", "b": "conservation", "c": "self-adjoint",
+    "d": "adjoint-duality", "e": "time-reversal", "f": "static-order",
+    "g": "dynamic-shape", "h": "convergence", "i": "accuracy-order",
+    "j": "representation-invariance",
+}
+# ---- Layer 1: family -> MetaPattern ----
+FAMILY_TO_MP = {"a": "G", "b": "G", "c": "T_star", "d": "T_star", "e": "T_rev",
+                "f": "O_le", "g": "O_le", "h": "L_star", "i": "L_star", "j": "L_star"}
+METAPATTERNS = ["G", "O_le", "T_star", "T_rev", "L_star"]
+MP_CATS = METAPATTERNS + ["orphan"]
+# ---- author key is block-level -> MetaPattern (refinements/extension fold in) ----
+BLOCK_TO_MP = {"G": "G", "O_le": "O_le", "T_star": "T_star", "T_rev": "T_rev",
+               "L_star": "L_star", "D_star": "O_le", "E_star": "L_star", "B_rel": "L_star"}
+
+def roll(label_map, table):
+    return {k: table.get(v, v) for k, v in label_map.items() if v}
+
+# ---------- kappa primitives (generic over a category list) ----------
+def cohen_kappa(a, b, cats):
+    items = [i for i in (set(a) & set(b)) if a[i] and b[i]]
     n = len(items)
     if n == 0:
         return None, 0
-    agree = sum(1 for i in items if a[i] == b[i])
-    p_o = agree / n
-    ca = {c: sum(1 for i in items if a[i] == c) / n for c in CATEGORIES}
-    cb = {c: sum(1 for i in items if b[i] == c) / n for c in CATEGORIES}
-    p_e = sum(ca[c] * cb[c] for c in CATEGORIES)
-    k = 1.0 if p_e == 1 else (p_o - p_e) / (1 - p_e)
-    return k, n
+    p_o = sum(1 for i in items if a[i] == b[i]) / n
+    ca = {c: sum(1 for i in items if a[i] == c) / n for c in cats}
+    cb = {c: sum(1 for i in items if b[i] == c) / n for c in cats}
+    p_e = sum(ca[c] * cb[c] for c in cats)
+    return (1.0 if p_e == 1 else (p_o - p_e) / (1 - p_e)), n
 
-def fleiss_kappa(raters, items=None):
-    """raters: list of dict item->label. Uses items rated by ALL raters."""
+def fleiss_kappa(raters, cats, items=None):
     if items is None:
-        items = sorted(set.intersection(*[set(r) for r in raters]))
-        items = [i for i in items if all(r.get(i) for r in raters)]
-    n = len(raters)
-    N = len(items)
+        items = [i for i in set.intersection(*[set(r) for r in raters]) if all(r.get(i) for r in raters)]
+    n, N = len(raters), len(items)
     if N == 0 or n < 2:
         return None, N
-    P = []
-    cat_tot = {c: 0 for c in CATEGORIES}
+    P, tot = [], {c: 0 for c in cats}
     for it in items:
-        counts = {c: 0 for c in CATEGORIES}
+        cnt = {c: 0 for c in cats}
         for r in raters:
-            counts[r[it]] += 1
-        for c in CATEGORIES:
-            cat_tot[c] += counts[c]
-        Pi = (sum(v * v for v in counts.values()) - n) / (n * (n - 1))
-        P.append(Pi)
+            cnt[r[it]] += 1
+        for c in cats:
+            tot[c] += cnt[c]
+        P.append((sum(v * v for v in cnt.values()) - n) / (n * (n - 1)))
     P_bar = sum(P) / N
-    p = {c: cat_tot[c] / (N * n) for c in CATEGORIES}
+    p = {c: tot[c] / (N * n) for c in cats}
     P_e = sum(v * v for v in p.values())
-    k = 1.0 if P_e == 1 else (P_bar - P_e) / (1 - P_e)
-    return k, N
+    return (1.0 if P_e == 1 else (P_bar - P_e) / (1 - P_e)), N
 
-def fleiss_ci(raters, B=2000, seed=0):
-    items = sorted(set.intersection(*[set(r) for r in raters]))
-    items = [i for i in items if all(r.get(i) for r in raters)]
+def fleiss_ci(raters, cats, B=2000, seed=0):
+    items = [i for i in set.intersection(*[set(r) for r in raters]) if all(r.get(i) for r in raters)]
     if len(items) < 3:
         return None, None
     rng = random.Random(seed)
     ks = []
     for _ in range(B):
-        samp = [rng.choice(items) for _ in items]
-        k, _n = fleiss_kappa(raters, items=samp)
+        k, _ = fleiss_kappa(raters, cats, items=[rng.choice(items) for _ in items])
         if k is not None:
             ks.append(k)
     ks.sort()
-    lo = ks[int(0.025 * len(ks))]
-    hi = ks[int(0.975 * len(ks)) - 1]
-    return lo, hi
+    return ks[int(0.025 * len(ks))], ks[int(0.975 * len(ks)) - 1]
 
 def band(k):
     if k is None: return "n/a"
@@ -94,111 +95,103 @@ def band(k):
 def majority(raters, items):
     out = {}
     for it in items:
-        votes = [r[it] for r in raters if r.get(it)]
-        if votes:
-            out[it] = max(set(votes), key=votes.count)
+        v = [r[it] for r in raters if r.get(it)]
+        if v:
+            out[it] = max(set(v), key=v.count)
     return out
 
 # ---------- IO ----------
 def load_sheet(path):
     d = {}
-    with open(path, newline="") as f:
-        for row in csv.DictReader(f):
-            iid = (row.get("item_id") or "").strip()
-            cat = (row.get("category") or "").strip()
-            if iid and cat:
-                if cat not in CATEGORIES:
-                    print("  WARNING %s: item %s has unknown category %r (ignored)" %
-                          (os.path.basename(path), iid, cat))
-                    continue
-                d[iid] = cat
+    for row in csv.DictReader(open(path, newline="")):
+        iid, cat = (row.get("item_id") or "").strip(), (row.get("category") or "").strip()
+        if iid and cat:
+            if cat not in FAM_CATS:
+                print("  WARNING %s: %s has unknown family %r (expected a-j or orphan; ignored)"
+                      % (os.path.basename(path), iid, cat)); continue
+            d[iid] = cat
     return d
 
 def load_gold():
     p = HERE / "_gold_author_labels.csv"
-    if not p.exists():
-        return None
-    return {r["item_id"]: r["author_label"] for r in csv.DictReader(open(p))}
+    return {r["item_id"]: r["author_label"] for r in csv.DictReader(open(p))} if p.exists() else None
 
-# ---------- report ----------
-def report(rater_files):
+def kappa_block(title, raters, names, cats):
+    print("\n== %s ==" % title)
+    for i, j in itertools.combinations(range(len(raters)), 2):
+        k, n = cohen_kappa(raters[i], raters[j], cats)
+        print("  %-10s vs %-10s : kappa=%s (n=%d, %s)" %
+              (names[i], names[j], "%.3f" % k if k is not None else "n/a", n, band(k)))
+    k, N = fleiss_kappa(raters, cats)
+    lo, hi = fleiss_ci(raters, cats) if k is not None else (None, None)
+    ci = "" if lo is None else "  95%% CI [%.3f, %.3f]" % (lo, hi)
+    print("  Fleiss kappa=%s (n=%d, r=%d, c=%d, %s)%s" %
+          ("%.3f" % k if k is not None else "n/a", N, len(raters), len(cats), band(k), ci))
+
+def report(files):
     raters, names = [], []
-    for fp in rater_files:
+    for fp in files:
         d = load_sheet(fp)
         if d:
             raters.append(d); names.append(pathlib.Path(fp).stem.replace("rater_", ""))
     if len(raters) < 2:
-        print("Need >=2 rater sheets with filled categories. Found %d." % len(raters))
-        return
-    print("Raters (%d): %s" % (len(raters), ", ".join(names)))
-    common = sorted(set.intersection(*[set(r) for r in raters]))
-    common = [i for i in common if all(r.get(i) for r in raters)]
-    print("Items rated by ALL raters: %d\n" % len(common))
+        print("Need >=2 rater sheets with filled families. Found %d." % len(raters)); return
+    common = [i for i in set.intersection(*[set(r) for r in raters]) if all(r.get(i) for r in raters)]
+    print("Raters (%d): %s\nItems rated by all: %d" % (len(raters), ", ".join(names), len(common)))
 
-    print("== Pairwise Cohen's kappa ==")
-    for (i, j) in itertools.combinations(range(len(raters)), 2):
-        k, n = cohen_kappa(raters[i], raters[j])
-        print("  %-12s vs %-12s : kappa=%s  (n=%d, %s)" %
-              (names[i], names[j], "%.3f" % k if k is not None else "n/a", n, band(k)))
+    kappa_block("Layer 2 -- MR family agreement (a-j + orphan)", raters, names, FAM_CATS)
 
-    print("\n== Fleiss' kappa (all raters) ==")
-    k, N = fleiss_kappa(raters)
-    lo, hi = fleiss_ci(raters) if k is not None else (None, None)
-    ci = "" if lo is None else "  95%% CI [%.3f, %.3f]" % (lo, hi)
-    print("  kappa=%s  (n=%d items, r=%d raters, c=%d categories, %s)%s" %
-          ("%.3f" % k if k is not None else "n/a", N, len(raters), len(CATEGORIES), band(k), ci))
-
-    # percent agreement
-    full = sum(1 for it in common if len({r[it] for r in raters}) == 1)
-    print("  unanimous items: %d/%d = %.1f%%" % (full, len(common), 100 * full / max(1, len(common))))
+    mp_raters = [roll(r, FAMILY_TO_MP) for r in raters]
+    kappa_block("Layer 1 -- MetaPattern agreement (5 MetaPatterns + orphan, rolled up)",
+                mp_raters, names, MP_CATS)
 
     gold = load_gold()
     if gold:
-        print("\n== Human vs author (comparable to LLM-majority-vs-author kappa=0.931) ==")
-        maj = majority(raters, common)
-        k, n = cohen_kappa(maj, gold)
+        gold_mp = roll(gold, BLOCK_TO_MP)
+        maj_mp = majority(mp_raters, common)
+        k, n = cohen_kappa(maj_mp, gold_mp, MP_CATS)
+        print("\n== Human vs author (MetaPattern layer) ==")
         print("  human-majority vs author : kappa=%s (n=%d, %s)" %
               ("%.3f" % k if k is not None else "n/a", n, band(k)))
-        for nm, r in zip(names, raters):
-            k, n = cohen_kappa(r, gold)
-            print("  %-12s vs author : kappa=%s (n=%d, %s)" %
+        for nm, r in zip(names, mp_raters):
+            k, n = cohen_kappa(r, gold_mp, MP_CATS)
+            print("  %-10s vs author : kappa=%s (n=%d, %s)" %
                   (nm, "%.3f" % k if k is not None else "n/a", n, band(k)))
 
-    print("\n== Disagreements (items where raters split) ==")
-    any_d = False
-    for it in common:
+    print("\n== Family-level disagreements ==")
+    found = False
+    for it in sorted(common):
         labs = {nm: r[it] for nm, r in zip(names, raters)}
         if len(set(labs.values())) > 1:
-            any_d = True
-            extra = ""
-            if gold:
-                extra = "  [author=%s]" % gold.get(it, "?")
-            print("  %s: %s%s" % (it, labs, extra))
-    if not any_d:
-        print("  none (unanimous on all common items)")
+            found = True
+            mp = {nm: FAMILY_TO_MP.get(v, v) for nm, v in labs.items()}
+            same_mp = "(same MetaPattern)" if len(set(mp.values())) == 1 else "(DIFFERENT MetaPattern)"
+            extra = "  [author block=%s -> MP=%s]" % (gold.get(it, "?"), BLOCK_TO_MP.get(gold.get(it, ""), "?")) if gold else ""
+            print("  %s: %s %s%s" % (it, labs, same_mp, extra))
+    if not found:
+        print("  none")
 
 def selftest():
     print("=" * 70)
     print("SYNTHETIC SELF-TEST -- fabricated raters, NOT human data. Proves the")
-    print("pipeline runs end-to-end; the kappa below is meaningless as evidence.")
+    print("pipeline runs; the kappa below is meaningless as evidence.")
     print("=" * 70)
     gold = load_gold()
     if not gold:
         print("(_gold_author_labels.csv missing; run make_items.py first.)"); return
+    # plausible family per item from the block key (block -> a representative family)
+    block_fam = {"G": "a", "O_le": "f", "T_star": "c", "T_rev": "e",
+                 "L_star": "h", "D_star": "g", "E_star": "i", "B_rel": "j"}
     rng = random.Random(42)
-    ratings_dir = HERE / "ratings_selftest"
-    ratings_dir.mkdir(exist_ok=True)
-    # 3 synthetic raters: agree with gold ~85% of the time, else random other category
+    d = HERE / "ratings_selftest"; d.mkdir(exist_ok=True)
     files = []
-    for nm, noise in [("synthA", 0.10), ("synthB", 0.15), ("synthC", 0.20)]:
-        fp = ratings_dir / ("rater_%s.csv" % nm)
-        with open(fp, "w", newline="") as f:
-            w = csv.writer(f); w.writerow(["item_id", "category", "notes"])
-            for iid, g in gold.items():
-                if rng.random() < noise:
-                    lab = rng.choice([c for c in CATEGORIES if c != g])
-                else:
-                    lab = g
+    for nm, noise in [("synthA", .12), ("synthB", .18), ("synthC", .22)]:
+        fp = d / ("rater_%s.csv" % nm)
+        with open(fp, "w", newline="") as fh:
+            w = csv.writer(fh); w.writerow(["item_id", "category", "notes"])
+            for iid, blk in gold.items():
+                base = block_fam.get(blk, "a")
+                lab = rng.choice([c for c in FAMILIES if c != base]) if rng.random() < noise else base
                 w.writerow([iid, lab, "SYNTHETIC"])
         files.append(str(fp))
     report(files)
@@ -210,9 +203,9 @@ if __name__ == "__main__":
     else:
         files = sorted(glob.glob(str(HERE / "ratings" / "rater_*.csv")))
         if not files:
-            print("No rater sheets in ./ratings/ . Each rater copies")
-            print("rating_sheet_TEMPLATE.csv to ratings/rater_<name>.csv, fills the")
-            print("'category' column (one of: %s), then run this script." % ", ".join(CATEGORIES))
-            print("\nTo see the pipeline on fabricated data: python3 compute_kappa.py --selftest")
+            print("No rater sheets in ./ratings/. Each rater copies rating_sheet_TEMPLATE.csv")
+            print("to ratings/rater_<name>.csv, fills 'category' with ONE family letter")
+            print("(a,b,c,d,e,f,g,h,i,j) or 'orphan', then run this script.")
+            print("\nPipeline demo on fabricated data: python3 compute_kappa.py --selftest")
         else:
             report(files)
