@@ -1,37 +1,37 @@
-item_id,subject,mr_name,input_relation_JIR,output_relation_JOR
-M01,ComplexSignal?add?0,G_swap_negate,((Math.abs(((double) i_this_real_f) - ((double) i_other_real_s)) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - ((double) i_other_imag_s)) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - ((double) i_this_real_s)) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - ((double) i_this_imag_s)) < 1.0E-4)),((Math.abs(((double) o_return_real_f) - ((double) o_return_real_s)) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - ((double) o_return_imag_s)) < 1.0E-4))
-M02,ComplexSignal?add?0,L_scale,((Math.abs(((double) i_this_real_f) - (2.0 * ((double) i_this_real_s))) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - (2.0 * ((double) i_this_imag_s))) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - (2.0 * ((double) i_other_real_s))) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - (2.0 * ((double) i_other_imag_s))) < 1.0E-4)),((Math.abs(((double) o_return_real_f) - (2.0 * ((double) o_return_real_s))) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - (2.0 * ((double) o_return_imag_s))) < 1.0E-4))
-M03,ComplexSignal?add?0,T_shift_re,((Math.abs(((double) i_this_real_f) - (((double) i_this_real_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - ((double) i_this_imag_s)) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - ((double) i_other_real_s)) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - ((double) i_other_imag_s)) < 1.0E-4)),((Math.abs(((double) o_return_real_f) - (((double) o_return_real_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - ((double) o_return_imag_s)) < 1.0E-4))
-M04,MathSignalClass?clamp?0,G_negate_bound_swap,(Math.abs(((double) i_lo_f) - (-((double) i_hi_s))) < 1.0E-4) && (Math.abs(((double) i_hi_f) - (-((double) i_lo_s))) < 1.0E-4) && (Math.abs(((double) i_x_f) - (-((double) i_x_s))) < 1.0E-4),Math.abs(((double) o_return_f) - (-((double) o_return_s))) < 1.0E-4
-M05,MathSignalClass?clamp?0,L_scale,(Math.abs(i_lo_f - 2.0 * i_lo_s) < 1.0E-4) && (Math.abs(i_hi_f - 2.0 * i_hi_s) < 1.0E-4) && (Math.abs(i_x_f - 2.0 * i_x_s) < 1.0E-4),(Math.abs(o_return_f - 2.0 * o_return_s) < 1.0E-4)
-M06,MathSignalClass?clamp?0,O_le_mono_in_x,(Math.abs(i_lo_s - i_lo_f) < 1.0E-4) && (Math.abs(i_hi_s - i_hi_f) < 1.0E-4) && (i_x_s <= i_x_f),o_return_s <= o_return_f
-M07,MathSignalClass?clamp?0,T_shift,((Math.abs(((double) i_lo_f) - (((double) i_lo_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_hi_f) - (((double) i_hi_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_x_f) - (((double) i_x_s) + 1.0)) < 1.0E-4)),(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)
-M08,MathSignalClass?exactLog2?0,L_idem_at_one,(i_n_f == (2 * i_n_s)),(o_return_f == (o_return_s + 1))
-M09,MathSignalClass?exactLog2?0,O_le_monotone,i_n_s > 0 && (i_n_s & (i_n_s - 1)) == 0 && i_n_f > 0 && (i_n_f & (i_n_f - 1)) == 0 && i_n_s <= i_n_f,o_return_s <= o_return_f
-M10,MathSignalClass?exactLog2?0,T_double,(Math.abs(((double) i_n_f) - (2.0 * ((double) i_n_s))) < 1.0E-4),(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)
-M11,MathSignalClass?gcdSig?0,G_swap_negate,(i_a_f == i_b_s) && (i_b_f == i_a_s),(o_return_f == o_return_s)
-M12,MathSignalClass?gcdSig?0,L_scale,((long) i_a_f) == 2L * ((long) i_a_s) && ((long) i_b_f) == 2L * ((long) i_b_s),((long) o_return_f) == 2L * ((long) o_return_s)
-M13,MathSignalClass?hypotSig?0,G_swap_negate,((Math.abs(((double) i_a_f) - ((double) i_b_s)) < 1.0E-4) && (Math.abs(((double) i_b_f) - ((double) i_a_s)) < 1.0E-4)),(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)
-M14,MathSignalClass?hypotSig?0,L_scale,((Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4)),(Math.abs(((double) o_return_f) - (2.0 * ((double) o_return_s))) < 1.0E-4)
-M15,MathSignalClass?hypotSig?0,O_le_mono_in_abs,(Math.abs(i_a_s) <= Math.abs(i_a_f)) && (Math.abs(i_b_s - i_b_f) < 1.0E-4),o_return_s <= o_return_f
-M16,MathSignalClass?isSequence?0,B_rel_xor_reverse,Math.abs(i_a_f - i_c_s) < 1.0E-4 && Math.abs(i_b_f - i_b_s) < 1.0E-4 && Math.abs(i_c_f - i_a_s) < 1.0E-4,!(o_return_s && o_return_f)
-M17,MathSignalClass?isSequence?0,G_negate_reverse,((Math.abs(((double) i_a_f) - (-((double) i_c_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (-((double) i_b_s))) < 1.0E-4) && (Math.abs(((double) i_c_f) - (-((double) i_a_s))) < 1.0E-4)),(o_return_f == o_return_s)
-M18,MathSignalClass?isSequence?0,L_scale_pos,(Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4) && (Math.abs(((double) i_c_f) - (2.0 * ((double) i_c_s))) < 1.0E-4),(o_return_f == o_return_s)
-M19,MathSignalClass?isSequence?0,O_le_transitivity,(i_a_f <= i_a_s) && (i_b_s <= i_b_f) && (i_c_s <= i_c_f),(!o_return_s) || o_return_f
-M20,MathSignalClass?isSequence?0,T_rev_exclusion,Math.abs(i_a_f - i_c_s) < 1.0E-4 && Math.abs(i_b_f - i_b_s) < 1.0E-4 && Math.abs(i_c_f - i_a_s) < 1.0E-4,!(o_return_s && o_return_f)
-M21,MathSignalClass?isSequence?0,T_shift,(Math.abs((i_a_f - i_a_s) - (i_b_f - i_b_s)) < 1.0E-4) && (Math.abs((i_b_f - i_b_s) - (i_c_f - i_c_s)) < 1.0E-4),(o_return_f == o_return_s)
-M22,MathSignalClass?lcmSig?0,G_swap_negate,((i_a_f == i_b_s) && (i_b_f == i_a_s)),(o_return_f == o_return_s)
-M23,MathSignalClass?lcmSig?0,L_scale,((i_a_f == 2 * i_a_s) && (i_b_f == 2 * i_b_s)),(o_return_f == 2 * o_return_s)
-M24,MathSignalClass?midpoint?0,G_swap_negate,((Math.abs(((double) i_a_f) - ((double) i_b_s)) < 1.0E-4) && (Math.abs(((double) i_b_f) - ((double) i_a_s)) < 1.0E-4)),(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)
-M25,MathSignalClass?midpoint?0,L_scale,((Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4)),(Math.abs(((double) o_return_f) - (2.0 * ((double) o_return_s))) < 1.0E-4)
-M26,MathSignalClass?midpoint?0,O_le_mono_in_a,i_a_s <= i_a_f && Math.abs(i_b_s - i_b_f) < 1.0E-4,o_return_s <= o_return_f
-M27,MathSignalClass?midpoint?0,T_shift,((Math.abs(((double) i_a_f) - (((double) i_a_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_b_f) - (((double) i_b_s) + 1.0)) < 1.0E-4)),(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)
-M28,MathSignalClass?powerSig?0,D_reciprocal_exp,Math.abs(i_base_f - i_base_s) < 1.0E-4 && i_base_s != 0.0 && i_n_f == -i_n_s,Math.abs(o_return_f - (1.0 / o_return_s)) < 1.0E-4
-M29,MathSignalClass?powerSig?0,E_power_of_power,Math.abs(i_base_f - o_return_s) < 1.0E-4,"Math.abs(o_return_f - powerSig(i_base_s, i_n_s * i_n_f)) < 1.0E-4"
-M30,MathSignalClass?powerSig?0,G_odd_negate,(i_n_f == i_n_s) && (Math.abs(((double) i_base_f) - (-((double) i_base_s))) < 1.0E-4),((((int) i_n_s) % 2 == 0) && (Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)) || ((((int) i_n_s) % 2 != 0) && (Math.abs(((double) o_return_f) - (-((double) o_return_s))) < 1.0E-4))
-M31,MathSignalClass?powerSig?0,L_scale_base,(Math.abs(((double) i_base_f) - (3.0 * ((double) i_base_s))) < 1.0E-4) && (i_n_f == i_n_s),"(Math.abs(((double) o_return_f) - (powerSig(3.0, i_n_s) * ((double) o_return_s))) < 1.0E-4)"
-M32,MathSignalClass?powerSig?0,T_exp_step,(((double) i_base_f) == ((double) i_base_s) && (i_n_f == (i_n_s + 1))),(Math.abs(((double) o_return_f) - (((double) o_return_s) * ((double) i_base_s))) < 1.0E-4)
-M33,MathSignalClass?signum?0,D_reciprocal,i_x_s != 0.0 && Math.abs(i_x_f - (1.0 / i_x_s)) < 1.0E-4,o_return_f == o_return_s
-M34,MathSignalClass?signum?0,G_negate,(Math.abs(((double) i_x_f) - (-((double) i_x_s))) < 1.0E-4),(o_return_f == - o_return_s)
-M35,MathSignalClass?signum?0,L_scale_pos,(Math.abs(((double) i_x_f) - (3.0 * ((double) i_x_s))) < 1.0E-4),(o_return_f == o_return_s)
-M36,MathSignalClass?signum?0,O_le_monotone,i_x_s <= i_x_f,o_return_s <= o_return_f
+item_id,subject,mr_name,JIR,JOR
+M01,ComplexSignal.add.0,G_swap_negate,(this.re1 ~= other.re2)  AND  (this.im1 ~= other.im2)  AND  (other.re1 ~= this.re2)  AND  (other.im1 ~= this.im2),(out.re1 ~= out.re2)  AND  (out.im1 ~= out.im2)
+M02,ComplexSignal.add.0,L_scale,(this.re1 ~= 2.0·this.re2)  AND  (this.im1 ~= 2.0·this.im2)  AND  (other.re1 ~= 2.0·other.re2)  AND  (other.im1 ~= 2.0·other.im2),(out.re1 ~= 2.0·out.re2)  AND  (out.im1 ~= 2.0·out.im2)
+M03,ComplexSignal.add.0,T_shift_re,((this.re1 ~= (this.re2 + 1.0)))  AND  (this.im1 ~= this.im2)  AND  (other.re1 ~= other.re2)  AND  (other.im1 ~= other.im2),((out.re1 ~= (out.re2 + 1.0)))  AND  (out.im1 ~= out.im2)
+M04,MathSignalClass.clamp.0,G_negate_bound_swap,((lo1 ~= (-hi2)))  AND  ((hi1 ~= (-lo2)))  AND  ((x1 ~= (-x2))),out1 ~= (-out2)
+M05,MathSignalClass.clamp.0,L_scale,(lo1 ~= 2.0·lo2)  AND  (hi1 ~= 2.0·hi2)  AND  (x1 ~= 2.0·x2),out1 ~= 2.0·out2
+M06,MathSignalClass.clamp.0,O_le_mono_in_x,(lo2 ~= lo1)  AND  (hi2 ~= hi1)  AND  (x2 <= x1),out2 <= out1
+M07,MathSignalClass.clamp.0,T_shift,((lo1 ~= (lo2 + 1.0)))  AND  ((hi1 ~= (hi2 + 1.0)))  AND  ((x1 ~= (x2 + 1.0))),out1 ~= (out2 + 1.0)
+M08,MathSignalClass.exactLog2.0,L_idem_at_one,n1 = 2·n2,out1 = (out2 + 1)
+M09,MathSignalClass.exactLog2.0,O_le_monotone,n2 > 0  AND  (n2 & (n2 - 1)) = 0  AND  n1 > 0  AND  (n1 & (n1 - 1)) = 0  AND  n2 <= n1,out2 <= out1
+M10,MathSignalClass.exactLog2.0,T_double,n1 ~= 2.0·n2,out1 ~= (out2 + 1.0)
+M11,MathSignalClass.gcdSig.0,G_swap_negate,(a1 = b2)  AND  (b1 = a2),out1 = out2
+M12,MathSignalClass.gcdSig.0,L_scale,a1 = 2L·a2  AND  b1 = 2L·b2,out1 = 2L·out2
+M13,MathSignalClass.hypotSig.0,G_swap_negate,(a1 ~= b2)  AND  (b1 ~= a2),out1 ~= out2
+M14,MathSignalClass.hypotSig.0,L_scale,(a1 ~= 2.0·a2)  AND  (b1 ~= 2.0·b2),out1 ~= 2.0·out2
+M15,MathSignalClass.hypotSig.0,O_le_mono_in_abs,(|a2| <= |a1|)  AND  (b2 ~= b1),out2 <= out1
+M16,MathSignalClass.isSequence.0,B_rel_xor_reverse,(a1 ~= c2)  AND  (b1 ~= b2)  AND  (c1 ~= a2),!(out2  AND  out1)
+M17,MathSignalClass.isSequence.0,G_negate_reverse,((a1 ~= (-c2)))  AND  ((b1 ~= (-b2)))  AND  ((c1 ~= (-a2))),out1 = out2
+M18,MathSignalClass.isSequence.0,L_scale_pos,(a1 ~= 2.0·a2)  AND  (b1 ~= 2.0·b2)  AND  (c1 ~= 2.0·c2),out1 = out2
+M19,MathSignalClass.isSequence.0,O_le_transitivity,(a1 <= a2)  AND  (b2 <= b1)  AND  (c2 <= c1),(!out2)  OR  out1
+M20,MathSignalClass.isSequence.0,T_rev_exclusion,(a1 ~= c2)  AND  (b1 ~= b2)  AND  (c1 ~= a2),!(out2  AND  out1)
+M21,MathSignalClass.isSequence.0,T_shift,((|(a1 - a2) - (b1 - b2)| < eps))  AND  ((|(b1 - b2) - (c1 - c2)| < eps)),out1 = out2
+M22,MathSignalClass.lcmSig.0,G_swap_negate,(a1 = b2)  AND  (b1 = a2),out1 = out2
+M23,MathSignalClass.lcmSig.0,L_scale,(a1 = 2·a2)  AND  (b1 = 2·b2),out1 = 2·out2
+M24,MathSignalClass.midpoint.0,G_swap_negate,(a1 ~= b2)  AND  (b1 ~= a2),out1 ~= out2
+M25,MathSignalClass.midpoint.0,L_scale,(a1 ~= 2.0·a2)  AND  (b1 ~= 2.0·b2),out1 ~= 2.0·out2
+M26,MathSignalClass.midpoint.0,O_le_mono_in_a,a2 <= a1  AND  (b2 ~= b1),out2 <= out1
+M27,MathSignalClass.midpoint.0,T_shift,((a1 ~= (a2 + 1.0)))  AND  ((b1 ~= (b2 + 1.0))),out1 ~= (out2 + 1.0)
+M28,MathSignalClass.powerSig.0,D_reciprocal_exp,(base1 ~= base2)  AND  base2 != 0.0  AND  n1 = -n2,out1 ~= (1.0 / out2)
+M29,MathSignalClass.powerSig.0,E_power_of_power,base1 ~= out2,"out1 ~= powerSig(base2, n2·n1)"
+M30,MathSignalClass.powerSig.0,G_odd_negate,(n1 = n2)  AND  ((base1 ~= (-base2))),((n2 % 2 = 0)  AND  (out1 ~= out2))  OR  ((n2 % 2 != 0)  AND  ((out1 ~= (-out2))))
+M31,MathSignalClass.powerSig.0,L_scale_base,(base1 ~= 3.0·base2)  AND  (n1 = n2),"out1 ~= (powerSig(3.0, n2)·out2)"
+M32,MathSignalClass.powerSig.0,T_exp_step,base1 = base2  AND  (n1 = (n2 + 1)),out1 ~= (out2·base2)
+M33,MathSignalClass.signum.0,D_reciprocal,x2 != 0.0  AND  (x1 ~= (1.0 / x2)),out1 = out2
+M34,MathSignalClass.signum.0,G_negate,x1 ~= (-x2),out1 = - out2
+M35,MathSignalClass.signum.0,L_scale_pos,x1 ~= 3.0·x2,out1 = out2
+M36,MathSignalClass.signum.0,O_le_monotone,x2 <= x1,out2 <= out1

@@ -102,13 +102,28 @@ def majority(raters, items):
 
 # ---------- IO ----------
 def load_sheet(path):
+    """Read a rater sheet (.csv or .xlsx); return {item_id: family}."""
+    pairs = []
+    if str(path).endswith(".xlsx"):
+        from openpyxl import load_workbook
+        ws = load_workbook(path, data_only=True).active
+        hdr = [str(c.value).strip() if c.value is not None else "" for c in ws[1]]
+        ii = hdr.index("item_id") if "item_id" in hdr else 0
+        ci = hdr.index("category") if "category" in hdr else len(hdr) - 1
+        for r in ws.iter_rows(min_row=2):
+            iid = r[ii].value if ii < len(r) else None
+            cat = r[ci].value if ci < len(r) else None
+            pairs.append((str(iid).strip() if iid is not None else "",
+                          str(cat).strip() if cat is not None else ""))
+    else:
+        for row in csv.DictReader(open(path, newline="")):
+            pairs.append(((row.get("item_id") or "").strip(), (row.get("category") or "").strip()))
     d = {}
-    for row in csv.DictReader(open(path, newline="")):
-        iid, cat = (row.get("item_id") or "").strip(), (row.get("category") or "").strip()
+    for iid, cat in pairs:
         if iid and cat:
             if cat not in FAM_CATS:
                 print("  WARNING %s: %s has unknown family %r (expected a-j or orphan; ignored)"
-                      % (os.path.basename(path), iid, cat)); continue
+                      % (os.path.basename(str(path)), iid, cat)); continue
             d[iid] = cat
     return d
 
@@ -201,7 +216,8 @@ if __name__ == "__main__":
     if "--selftest" in sys.argv:
         selftest()
     else:
-        files = sorted(glob.glob(str(HERE / "ratings" / "rater_*.csv")))
+        files = sorted(glob.glob(str(HERE / "ratings" / "rater_*.csv")) +
+                       glob.glob(str(HERE / "ratings" / "rater_*.xlsx")))
         if not files:
             print("No rater sheets in ./ratings/. Each rater copies rating_sheet_TEMPLATE.csv")
             print("to ratings/rater_<name>.csv, fills 'category' with ONE family letter")

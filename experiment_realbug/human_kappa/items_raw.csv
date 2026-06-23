@@ -1,0 +1,37 @@
+item_id,JIR_raw,JOR_raw
+M01,((Math.abs(((double) i_this_real_f) - ((double) i_other_real_s)) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - ((double) i_other_imag_s)) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - ((double) i_this_real_s)) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - ((double) i_this_imag_s)) < 1.0E-4)),((Math.abs(((double) o_return_real_f) - ((double) o_return_real_s)) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - ((double) o_return_imag_s)) < 1.0E-4))
+M02,((Math.abs(((double) i_this_real_f) - (2.0 * ((double) i_this_real_s))) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - (2.0 * ((double) i_this_imag_s))) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - (2.0 * ((double) i_other_real_s))) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - (2.0 * ((double) i_other_imag_s))) < 1.0E-4)),((Math.abs(((double) o_return_real_f) - (2.0 * ((double) o_return_real_s))) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - (2.0 * ((double) o_return_imag_s))) < 1.0E-4))
+M03,((Math.abs(((double) i_this_real_f) - (((double) i_this_real_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_this_imag_f) - ((double) i_this_imag_s)) < 1.0E-4) && (Math.abs(((double) i_other_real_f) - ((double) i_other_real_s)) < 1.0E-4) && (Math.abs(((double) i_other_imag_f) - ((double) i_other_imag_s)) < 1.0E-4)),((Math.abs(((double) o_return_real_f) - (((double) o_return_real_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) o_return_imag_f) - ((double) o_return_imag_s)) < 1.0E-4))
+M04,(Math.abs(((double) i_lo_f) - (-((double) i_hi_s))) < 1.0E-4) && (Math.abs(((double) i_hi_f) - (-((double) i_lo_s))) < 1.0E-4) && (Math.abs(((double) i_x_f) - (-((double) i_x_s))) < 1.0E-4),Math.abs(((double) o_return_f) - (-((double) o_return_s))) < 1.0E-4
+M05,(Math.abs(i_lo_f - 2.0 * i_lo_s) < 1.0E-4) && (Math.abs(i_hi_f - 2.0 * i_hi_s) < 1.0E-4) && (Math.abs(i_x_f - 2.0 * i_x_s) < 1.0E-4),(Math.abs(o_return_f - 2.0 * o_return_s) < 1.0E-4)
+M06,(Math.abs(i_lo_s - i_lo_f) < 1.0E-4) && (Math.abs(i_hi_s - i_hi_f) < 1.0E-4) && (i_x_s <= i_x_f),o_return_s <= o_return_f
+M07,((Math.abs(((double) i_lo_f) - (((double) i_lo_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_hi_f) - (((double) i_hi_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_x_f) - (((double) i_x_s) + 1.0)) < 1.0E-4)),(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)
+M08,(i_n_f == (2 * i_n_s)),(o_return_f == (o_return_s + 1))
+M09,i_n_s > 0 && (i_n_s & (i_n_s - 1)) == 0 && i_n_f > 0 && (i_n_f & (i_n_f - 1)) == 0 && i_n_s <= i_n_f,o_return_s <= o_return_f
+M10,(Math.abs(((double) i_n_f) - (2.0 * ((double) i_n_s))) < 1.0E-4),(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)
+M11,(i_a_f == i_b_s) && (i_b_f == i_a_s),(o_return_f == o_return_s)
+M12,((long) i_a_f) == 2L * ((long) i_a_s) && ((long) i_b_f) == 2L * ((long) i_b_s),((long) o_return_f) == 2L * ((long) o_return_s)
+M13,((Math.abs(((double) i_a_f) - ((double) i_b_s)) < 1.0E-4) && (Math.abs(((double) i_b_f) - ((double) i_a_s)) < 1.0E-4)),(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)
+M14,((Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4)),(Math.abs(((double) o_return_f) - (2.0 * ((double) o_return_s))) < 1.0E-4)
+M15,(Math.abs(i_a_s) <= Math.abs(i_a_f)) && (Math.abs(i_b_s - i_b_f) < 1.0E-4),o_return_s <= o_return_f
+M16,Math.abs(i_a_f - i_c_s) < 1.0E-4 && Math.abs(i_b_f - i_b_s) < 1.0E-4 && Math.abs(i_c_f - i_a_s) < 1.0E-4,!(o_return_s && o_return_f)
+M17,((Math.abs(((double) i_a_f) - (-((double) i_c_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (-((double) i_b_s))) < 1.0E-4) && (Math.abs(((double) i_c_f) - (-((double) i_a_s))) < 1.0E-4)),(o_return_f == o_return_s)
+M18,(Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4) && (Math.abs(((double) i_c_f) - (2.0 * ((double) i_c_s))) < 1.0E-4),(o_return_f == o_return_s)
+M19,(i_a_f <= i_a_s) && (i_b_s <= i_b_f) && (i_c_s <= i_c_f),(!o_return_s) || o_return_f
+M20,Math.abs(i_a_f - i_c_s) < 1.0E-4 && Math.abs(i_b_f - i_b_s) < 1.0E-4 && Math.abs(i_c_f - i_a_s) < 1.0E-4,!(o_return_s && o_return_f)
+M21,(Math.abs((i_a_f - i_a_s) - (i_b_f - i_b_s)) < 1.0E-4) && (Math.abs((i_b_f - i_b_s) - (i_c_f - i_c_s)) < 1.0E-4),(o_return_f == o_return_s)
+M22,((i_a_f == i_b_s) && (i_b_f == i_a_s)),(o_return_f == o_return_s)
+M23,((i_a_f == 2 * i_a_s) && (i_b_f == 2 * i_b_s)),(o_return_f == 2 * o_return_s)
+M24,((Math.abs(((double) i_a_f) - ((double) i_b_s)) < 1.0E-4) && (Math.abs(((double) i_b_f) - ((double) i_a_s)) < 1.0E-4)),(Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)
+M25,((Math.abs(((double) i_a_f) - (2.0 * ((double) i_a_s))) < 1.0E-4) && (Math.abs(((double) i_b_f) - (2.0 * ((double) i_b_s))) < 1.0E-4)),(Math.abs(((double) o_return_f) - (2.0 * ((double) o_return_s))) < 1.0E-4)
+M26,i_a_s <= i_a_f && Math.abs(i_b_s - i_b_f) < 1.0E-4,o_return_s <= o_return_f
+M27,((Math.abs(((double) i_a_f) - (((double) i_a_s) + 1.0)) < 1.0E-4) && (Math.abs(((double) i_b_f) - (((double) i_b_s) + 1.0)) < 1.0E-4)),(Math.abs(((double) o_return_f) - (((double) o_return_s) + 1.0)) < 1.0E-4)
+M28,Math.abs(i_base_f - i_base_s) < 1.0E-4 && i_base_s != 0.0 && i_n_f == -i_n_s,Math.abs(o_return_f - (1.0 / o_return_s)) < 1.0E-4
+M29,Math.abs(i_base_f - o_return_s) < 1.0E-4,"Math.abs(o_return_f - powerSig(i_base_s, i_n_s * i_n_f)) < 1.0E-4"
+M30,(i_n_f == i_n_s) && (Math.abs(((double) i_base_f) - (-((double) i_base_s))) < 1.0E-4),((((int) i_n_s) % 2 == 0) && (Math.abs(((double) o_return_f) - ((double) o_return_s)) < 1.0E-4)) || ((((int) i_n_s) % 2 != 0) && (Math.abs(((double) o_return_f) - (-((double) o_return_s))) < 1.0E-4))
+M31,(Math.abs(((double) i_base_f) - (3.0 * ((double) i_base_s))) < 1.0E-4) && (i_n_f == i_n_s),"(Math.abs(((double) o_return_f) - (powerSig(3.0, i_n_s) * ((double) o_return_s))) < 1.0E-4)"
+M32,(((double) i_base_f) == ((double) i_base_s) && (i_n_f == (i_n_s + 1))),(Math.abs(((double) o_return_f) - (((double) o_return_s) * ((double) i_base_s))) < 1.0E-4)
+M33,i_x_s != 0.0 && Math.abs(i_x_f - (1.0 / i_x_s)) < 1.0E-4,o_return_f == o_return_s
+M34,(Math.abs(((double) i_x_f) - (-((double) i_x_s))) < 1.0E-4),(o_return_f == - o_return_s)
+M35,(Math.abs(((double) i_x_f) - (3.0 * ((double) i_x_s))) < 1.0E-4),(o_return_f == o_return_s)
+M36,i_x_s <= i_x_f,o_return_s <= o_return_f

@@ -13,8 +13,9 @@ never leak in.
 import os, zipfile, pathlib
 
 HERE = pathlib.Path(__file__).parent
-RATER_FILES = ["RATER_GUIDE.md", "CODEBOOK.md", "items_to_rate.csv", "rating_sheet_TEMPLATE.csv"]
-FORBIDDEN = {"_gold_author_labels.csv", "compute_kappa.py", "make_items.py", "build_rater_packet.py"}
+RATER_FILES = ["RATER_GUIDE.md", "CODEBOOK.md", "items_to_rate.pdf", "items_to_rate.csv",
+               "items_raw.csv", "rating_sheet_TEMPLATE.xlsx", "rating_sheet_TEMPLATE.csv"]
+FORBIDDEN = {"_gold_author_labels.csv", "compute_kappa.py", "make_rater_materials.py", "build_rater_packet.py"}
 OUT = HERE / "noether_rater_packet.zip"
 
 def main():

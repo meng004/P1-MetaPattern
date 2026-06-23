@@ -23,8 +23,10 @@
 |---|---|
 | `RATER_GUIDE.md`（本文件） | 使用说明 |
 | `CODEBOOK.md` | **评分手册**：10 个族（按 5 元模式分组）的通俗解释、例子、识别线索、判定规则 |
-| `items_to_rate.csv` | **36 条待评 MR**（你要分类的对象） |
-| `rating_sheet_TEMPLATE.csv` | **你的答题表**（复制一份来填） |
+| `rating_sheet_TEMPLATE.xlsx` | **你的答题表（推荐）**：含可读公式 + `category` 列**下拉选择**，另存为 `rater_<名>.xlsx` 填写 |
+| `items_to_rate.csv` | **36 条待评 MR**（已化简为可读公式；与 xlsx 内容一致） |
+| `items_to_rate.pdf` | 同样 36 条，**公式排版更清晰**，便于阅读 |
+| `rating_sheet_TEMPLATE.csv` | 答题表的 CSV 备选（无 Excel 时用） |
 
 > 你**不会**也**不应**拿到任何"答案键"——那会破坏独立性。
 
@@ -41,9 +43,10 @@
 （若多人同评，可在这一步一起对答案、消除误解；**但从第 3 步起必须各自独立。**）
 
 **第 3 步 · 独立评分（约 45–70 分钟）**
-1. 复制 `rating_sheet_TEMPLATE.csv` → 改名为 `rater_<你的名字>.csv`。
-2. 逐条读 `items_to_rate.csv`：看 `input_relation_JIR`（两次**输入**怎么变）和
-   `output_relation_JOR`（两次**输出**该满足什么）。
+1. **推荐**打开 `rating_sheet_TEMPLATE.xlsx`，另存为 `rater_<你的名字>.xlsx`
+   （`category` 列可**下拉选择**，省输入、防错）；无 Excel 用 `rating_sheet_TEMPLATE.csv`。
+2. 逐条看 `JIR`（输入关系）与 `JOR`（输出关系）两列（公式已化简；
+   排版更清晰可对照 `items_to_rate.pdf`）。
 3. 在你的表 `category` 列填**一个族字母**：
    `a b c d e f g h i j`，或 `orphan`（小写；每个族属哪个元模式见手册 §2，
    你只填族字母即可，元模式会自动归并）。

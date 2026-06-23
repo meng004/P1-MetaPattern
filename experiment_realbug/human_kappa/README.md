@@ -31,10 +31,15 @@ definitions and examples are clear enough to apply.)
 | file | purpose |
 |---|---|
 | `CODEBOOK.md` | the rater-facing manual (plain-language, with examples) — give this to raters |
-| `items_to_rate.csv` | the 36 MRs to classify (blind; no answer key) |
-| `rating_sheet_TEMPLATE.csv` | each rater copies this and fills the `category` column |
-| `compute_kappa.py` | computes Cohen + Fleiss κ, 95% CI, per-category, disagreements, human-vs-author |
-| `make_items.py` | regenerates the three CSVs from the source data (reproducible) |
+| `RATER_GUIDE.md` | rater usage guide (purpose → calibrate → rate independently) |
+| `rating_sheet_TEMPLATE.xlsx` | **recommended** answer sheet: readable formulas + a `category` **dropdown** (a–j/orphan) |
+| `rating_sheet_TEMPLATE.csv` | CSV fallback answer sheet (no Excel) |
+| `items_to_rate.csv` | the 36 MRs in **readable** form (blind; no answer key) |
+| `items_to_rate.pdf` | the 36 MRs as cleanly typeset LaTeX formulas |
+| `items_raw.csv` | the original raw Java predicates (traceability) |
+| `compute_kappa.py` | family + MetaPattern κ, 95% CI, per-category, disagreements, human-vs-author; reads `.xlsx` and `.csv` |
+| `make_rater_materials.py` | regenerates all items/sheets/PDF + gold from source (reproducible) |
+| `build_rater_packet.py` | bundles the rater-facing files into `noether_rater_packet.zip` |
 | `_gold_author_labels.csv` | the author's labels — **HIDDEN KEY**, do NOT show raters before they finish |
 
 ## Raters: how many and who
@@ -50,8 +55,9 @@ definitions and examples are clear enough to apply.)
 ## Procedure (turnkey, ~1–2 hours per rater)
 
 1. **Recruit** ≥ 3 qualified independent raters.
-2. **Brief:** give each rater only `CODEBOOK.md` + `items_to_rate.csv` +
-   their own copy of `rating_sheet_TEMPLATE.csv`.
+2. **Brief:** give each rater the `noether_rater_packet.zip` (RATER_GUIDE +
+   CODEBOOK + items + their own copy of `rating_sheet_TEMPLATE.xlsx`, the dropdown
+   sheet; CSV fallback included). Never share `_gold_author_labels.csv`.
 3. **Calibrate (not scored):** raters first do the 11 worked examples in
    CODEBOOK §5 and reconcile understanding (these are NOT the 36 test items).
 4. **Label independently:** each rater fills the `category` column for all 36

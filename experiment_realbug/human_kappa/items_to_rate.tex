@@ -1,0 +1,54 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{amsmath,amssymb,longtable}
+\usepackage[T1]{fontenc}
+\setlength{\parindent}{0pt}
+\begin{document}
+\section*{Items to rate (36 MRs) -- readable form}
+Each MR runs the program twice. JIR = how the two \emph{inputs} relate; JOR = the
+\emph{output} relation that must hold. Subscripts $1,2$ = first/second call;
+\texttt{re/im} = real/imag part; \texttt{this/other} = operands; \texttt{out} =
+return. Classify each into one MR family (a--j) or \texttt{orphan} (see CODEBOOK).
+\medskip
+\begin{longtable}{p{1.2cm}p{3.2cm}p{10.5cm}}
+\hline
+\textbf{ID} & \textbf{subject / mr\_name} & \textbf{JIR / JOR} \\ \hline
+\endhead
+M01 & ComplexSignal.add.0 / G\_swap\_negate & $(\mathrm{this.re}_{1} \approx  \mathrm{other.re}_{2}) \;\wedge\; (\mathrm{this.im}_{1} \approx  \mathrm{other.im}_{2}) \;\wedge\; (\mathrm{other.re}_{1} \approx  \mathrm{this.re}_{2}) \;\wedge\; (\mathrm{other.im}_{1} \approx  \mathrm{this.im}_{2})$ \newline\hspace*{1em}$\Rightarrow\;(\mathrm{out.re}_{1} \approx  \mathrm{out.re}_{2}) \;\wedge\; (\mathrm{out.im}_{1} \approx  \mathrm{out.im}_{2})$ \\[2pt]
+M02 & ComplexSignal.add.0 / L\_scale & $(\mathrm{this.re}_{1} \approx  2.0\cdot \mathrm{this.re}_{2}) \;\wedge\; (\mathrm{this.im}_{1} \approx  2.0\cdot \mathrm{this.im}_{2}) \;\wedge\; (\mathrm{other.re}_{1} \approx  2.0\cdot \mathrm{other.re}_{2}) \;\wedge\; (\mathrm{other.im}_{1} \approx  2.0\cdot \mathrm{other.im}_{2})$ \newline\hspace*{1em}$\Rightarrow\;(\mathrm{out.re}_{1} \approx  2.0\cdot \mathrm{out.re}_{2}) \;\wedge\; (\mathrm{out.im}_{1} \approx  2.0\cdot \mathrm{out.im}_{2})$ \\[2pt]
+M03 & ComplexSignal.add.0 / T\_shift\_re & $((\mathrm{this.re}_{1} \approx  (\mathrm{this.re}_{2} + 1.0))) \;\wedge\; (\mathrm{this.im}_{1} \approx  \mathrm{this.im}_{2}) \;\wedge\; (\mathrm{other.re}_{1} \approx  \mathrm{other.re}_{2}) \;\wedge\; (\mathrm{other.im}_{1} \approx  \mathrm{other.im}_{2})$ \newline\hspace*{1em}$\Rightarrow\;((\mathrm{out.re}_{1} \approx  (\mathrm{out.re}_{2} + 1.0))) \;\wedge\; (\mathrm{out.im}_{1} \approx  \mathrm{out.im}_{2})$ \\[2pt]
+M04 & MathSignalClass.clamp.0 / G\_negate\_bound\_swap & $((lo_{1} \approx  (-hi_{2}))) \;\wedge\; ((hi_{1} \approx  (-lo_{2}))) \;\wedge\; ((x_{1} \approx  (-x_{2})))$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  (-\mathrm{out}_{2})$ \\[2pt]
+M05 & MathSignalClass.clamp.0 / L\_scale & $(lo_{1} \approx  2.0\cdot lo_{2}) \;\wedge\; (hi_{1} \approx  2.0\cdot hi_{2}) \;\wedge\; (x_{1} \approx  2.0\cdot x_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  2.0\cdot \mathrm{out}_{2}$ \\[2pt]
+M06 & MathSignalClass.clamp.0 / O\_le\_mono\_in\_x & $(lo_{2} \approx  lo_{1}) \;\wedge\; (hi_{2} \approx  hi_{1}) \;\wedge\; (x_{2}\leq x_{1})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{2}\leq \mathrm{out}_{1}$ \\[2pt]
+M07 & MathSignalClass.clamp.0 / T\_shift & $((lo_{1} \approx  (lo_{2} + 1.0))) \;\wedge\; ((hi_{1} \approx  (hi_{2} + 1.0))) \;\wedge\; ((x_{1} \approx  (x_{2} + 1.0)))$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  (\mathrm{out}_{2} + 1.0)$ \\[2pt]
+M08 & MathSignalClass.exactLog2.0 / L\_idem\_at\_one & $n_{1} = 2\cdot n_{2}$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = (\mathrm{out}_{2} + 1)$ \\[2pt]
+M09 & MathSignalClass.exactLog2.0 / O\_le\_monotone & $n_{2} > 0 \;\wedge\; (n_{2} & (n_{2} - 1)) = 0 \;\wedge\; n_{1} > 0 \;\wedge\; (n_{1} & (n_{1} - 1)) = 0 \;\wedge\; n_{2}\leq n_{1}$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{2}\leq \mathrm{out}_{1}$ \\[2pt]
+M10 & MathSignalClass.exactLog2.0 / T\_double & $n_{1} \approx  2.0\cdot n_{2}$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  (\mathrm{out}_{2} + 1.0)$ \\[2pt]
+M11 & MathSignalClass.gcdSig.0 / G\_swap\_negate & $(a_{1} = b_{2}) \;\wedge\; (b_{1} = a_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = \mathrm{out}_{2}$ \\[2pt]
+M12 & MathSignalClass.gcdSig.0 / L\_scale & $a_{1} = 2L\cdot a_{2} \;\wedge\; b_{1} = 2L\cdot b_{2}$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = 2L\cdot \mathrm{out}_{2}$ \\[2pt]
+M13 & MathSignalClass.hypotSig.0 / G\_swap\_negate & $(a_{1} \approx  b_{2}) \;\wedge\; (b_{1} \approx  a_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  \mathrm{out}_{2}$ \\[2pt]
+M14 & MathSignalClass.hypotSig.0 / L\_scale & $(a_{1} \approx  2.0\cdot a_{2}) \;\wedge\; (b_{1} \approx  2.0\cdot b_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  2.0\cdot \mathrm{out}_{2}$ \\[2pt]
+M15 & MathSignalClass.hypotSig.0 / O\_le\_mono\_in\_abs & $(|a_{2}|\leq |a_{1}|) \;\wedge\; (b_{2} \approx  b_{1})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{2}\leq \mathrm{out}_{1}$ \\[2pt]
+M16 & MathSignalClass.isSequence.0 / B\_rel\_xor\_reverse & $(a_{1} \approx  c_{2}) \;\wedge\; (b_{1} \approx  b_{2}) \;\wedge\; (c_{1} \approx  a_{2})$ \newline\hspace*{1em}$\Rightarrow\;!(\mathrm{out}_{2} \;\wedge\; \mathrm{out}_{1})$ \\[2pt]
+M17 & MathSignalClass.isSequence.0 / G\_negate\_reverse & $((a_{1} \approx  (-c_{2}))) \;\wedge\; ((b_{1} \approx  (-b_{2}))) \;\wedge\; ((c_{1} \approx  (-a_{2})))$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = \mathrm{out}_{2}$ \\[2pt]
+M18 & MathSignalClass.isSequence.0 / L\_scale\_pos & $(a_{1} \approx  2.0\cdot a_{2}) \;\wedge\; (b_{1} \approx  2.0\cdot b_{2}) \;\wedge\; (c_{1} \approx  2.0\cdot c_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = \mathrm{out}_{2}$ \\[2pt]
+M19 & MathSignalClass.isSequence.0 / O\_le\_transitivity & $(a_{1}\leq a_{2}) \;\wedge\; (b_{2}\leq b_{1}) \;\wedge\; (c_{2}\leq c_{1})$ \newline\hspace*{1em}$\Rightarrow\;(!\mathrm{out}_{2}) \;\vee\; \mathrm{out}_{1}$ \\[2pt]
+M20 & MathSignalClass.isSequence.0 / T\_rev\_exclusion & $(a_{1} \approx  c_{2}) \;\wedge\; (b_{1} \approx  b_{2}) \;\wedge\; (c_{1} \approx  a_{2})$ \newline\hspace*{1em}$\Rightarrow\;!(\mathrm{out}_{2} \;\wedge\; \mathrm{out}_{1})$ \\[2pt]
+M21 & MathSignalClass.isSequence.0 / T\_shift & $((|(a_{1} - a_{2}) - (b_{1} - b_{2})| < \varepsilon)) \;\wedge\; ((|(b_{1} - b_{2}) - (c_{1} - c_{2})| < \varepsilon))$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = \mathrm{out}_{2}$ \\[2pt]
+M22 & MathSignalClass.lcmSig.0 / G\_swap\_negate & $(a_{1} = b_{2}) \;\wedge\; (b_{1} = a_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = \mathrm{out}_{2}$ \\[2pt]
+M23 & MathSignalClass.lcmSig.0 / L\_scale & $(a_{1} = 2\cdot a_{2}) \;\wedge\; (b_{1} = 2\cdot b_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = 2\cdot \mathrm{out}_{2}$ \\[2pt]
+M24 & MathSignalClass.midpoint.0 / G\_swap\_negate & $(a_{1} \approx  b_{2}) \;\wedge\; (b_{1} \approx  a_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  \mathrm{out}_{2}$ \\[2pt]
+M25 & MathSignalClass.midpoint.0 / L\_scale & $(a_{1} \approx  2.0\cdot a_{2}) \;\wedge\; (b_{1} \approx  2.0\cdot b_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  2.0\cdot \mathrm{out}_{2}$ \\[2pt]
+M26 & MathSignalClass.midpoint.0 / O\_le\_mono\_in\_a & $a_{2}\leq a_{1} \;\wedge\; (b_{2} \approx  b_{1})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{2}\leq \mathrm{out}_{1}$ \\[2pt]
+M27 & MathSignalClass.midpoint.0 / T\_shift & $((a_{1} \approx  (a_{2} + 1.0))) \;\wedge\; ((b_{1} \approx  (b_{2} + 1.0)))$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  (\mathrm{out}_{2} + 1.0)$ \\[2pt]
+M28 & MathSignalClass.powerSig.0 / D\_reciprocal\_exp & $(base_{1} \approx  base_{2}) \;\wedge\; base_{2}\neq 0.0 \;\wedge\; n_{1} = -n_{2}$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  (1.0 / \mathrm{out}_{2})$ \\[2pt]
+M29 & MathSignalClass.powerSig.0 / E\_power\_of\_power & $base_{1} \approx  \mathrm{out}_{2}$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  powerSig(base_{2}, n_{2}\cdot n_{1})$ \\[2pt]
+M30 & MathSignalClass.powerSig.0 / G\_odd\_negate & $(n_{1} = n_{2}) \;\wedge\; ((base_{1} \approx  (-base_{2})))$ \newline\hspace*{1em}$\Rightarrow\;((n_{2} % 2 = 0) \;\wedge\; (\mathrm{out}_{1} \approx  \mathrm{out}_{2})) \;\vee\; ((n_{2} % 2\neq 0) \;\wedge\; ((\mathrm{out}_{1} \approx  (-\mathrm{out}_{2}))))$ \\[2pt]
+M31 & MathSignalClass.powerSig.0 / L\_scale\_base & $(base_{1} \approx  3.0\cdot base_{2}) \;\wedge\; (n_{1} = n_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  (powerSig(3.0, n_{2})\cdot \mathrm{out}_{2})$ \\[2pt]
+M32 & MathSignalClass.powerSig.0 / T\_exp\_step & $base_{1} = base_{2} \;\wedge\; (n_{1} = (n_{2} + 1))$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} \approx  (\mathrm{out}_{2}\cdot base_{2})$ \\[2pt]
+M33 & MathSignalClass.signum.0 / D\_reciprocal & $x_{2}\neq 0.0 \;\wedge\; (x_{1} \approx  (1.0 / x_{2}))$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = \mathrm{out}_{2}$ \\[2pt]
+M34 & MathSignalClass.signum.0 / G\_negate & $x_{1} \approx  (-x_{2})$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = - \mathrm{out}_{2}$ \\[2pt]
+M35 & MathSignalClass.signum.0 / L\_scale\_pos & $x_{1} \approx  3.0\cdot x_{2}$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{1} = \mathrm{out}_{2}$ \\[2pt]
+M36 & MathSignalClass.signum.0 / O\_le\_monotone & $x_{2}\leq x_{1}$ \newline\hspace*{1em}$\Rightarrow\;\mathrm{out}_{2}\leq \mathrm{out}_{1}$ \\[2pt]\hline
+\end{longtable}
+\end{document}
