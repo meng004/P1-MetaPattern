@@ -1,0 +1,51 @@
+% ============================================================================
+% Canonical two-layer model (NOETHER / P-series). SINGLE SOURCE OF TRUTH.
+% Canonical location: P1-MetaPattern/shared/two_layer_canon.tex
+% Usage:
+%   \input{shared/two_layer_canon.tex}   % in the PREAMBLE: defines symbol macros
+%                                          % (\providecommand, clash-safe) + \TwoLayerModel
+%   \TwoLayerModel                        % in the BODY: emits the defining paragraph
+% Requires: amsmath, amssymb.
+% Term map: MR = metamorphic relation = 蜕变关系 ; MetaPattern = 元模式 ;
+%           MR family = 蜕变关系族 . Do not introduce synonyms (e.g. "blocks").
+% ============================================================================
+\providecommand{\AP}{\mathcal{A}_{P}}                 % program-induced operator algebra
+\providecommand{\Dec}{\mathcal{D}(\mathcal{A}_{P})}   % structural decomposition
+\providecommand{\MM}{\mathbb{M}(\mathcal{A}_{P})}     % MetaPattern set (L1)
+\providecommand{\MRset}{\mathrm{MR}(\mathcal{A}_{P})} % algebra-induced MR set
+\providecommand{\Grp}{G}                              % group action
+\providecommand{\Ord}{O_{\le}}                        % partial order
+\providecommand{\Sadj}{T^{*}}                         % self-adjoint operator
+\providecommand{\Trev}{\mathcal{T}^{*}_{\mathrm{rev}}}% time-reversal involution
+\providecommand{\Lim}{\mathcal{L}^{*}}                % parametrised limit
+\providecommand{\Dref}{\mathcal{D}^{*}}               % qualitative-dynamics refinement
+\providecommand{\Eref}{\mathcal{E}^{*}}               % method-comparison refinement
+\providecommand{\Brel}{\mathcal{B}^{*}_{\mathrm{rel}}}% relational extension
+\providecommand{\minv}{m_{\mathrm{inv}}}
+\providecommand{\mmono}{m_{\mathrm{mono}}}
+\providecommand{\madj}{m_{\mathrm{adj}}}
+\providecommand{\mrev}{m_{\mathrm{rev}}}
+\providecommand{\mconv}{m_{\mathrm{conv}}}
+\providecommand{\Translate}{\textsc{Translate}}
+
+\providecommand{\TwoLayerModel}{%
+\paragraph{Two-layer model (L1 MetaPatterns, L2 MR families).}
+Let $\AP=(\mathcal{O},\circ,\sim_{\mathcal{F}})$ be the program-induced operator
+algebra and $\Dec$ its structural decomposition.
+\emph{Layer~1 (MetaPattern).} A \emph{MetaPattern} is the equivalence class of
+algebra-induced metamorphic relations that \textsc{Construct-MP} derives, through
+\Translate, from one minimal algebraic structure of $\AP$ (its generating basis).
+The five MetaPatterns $\minv,\mmono,\madj,\mrev,\mconv$ are generated respectively
+by a group action ($\Grp$), a partial order ($\Ord$), a self-adjoint operator
+($\Sadj$), a time-reversal involution ($\Trev$), and a parametrised limit
+($\Lim$); their set is $\MM$.
+\emph{Layer~2 (MR family).} An \emph{MR family} is the set of executable
+metamorphic relations obtained by instantiating one MetaPattern $m\in\MM$ under a
+fixed $\pi$-template and a chosen MR mode (Mode-I input-orbit / Mode-M
+implementation-orbit) through \Translate, i.e.\ $\Translate(\iota,s)$ for a
+component invariant $\iota=(\Phi,\pi)$. The map from $\MM$ to families is
+one-to-many: $\Grp\to\{a,b\}$ (equivariance, conservation),
+$\Sadj\to\{c,d\}$ (self-adjoint, adjoint-duality), $\Trev\to\{e\}$ (time-reversal),
+$\Ord\to\{f,g\}$ (static-order, dynamic-shape), and
+$\Lim\to\{h,i,j\}$ (convergence, accuracy-order, representation-invariance).%
+}
