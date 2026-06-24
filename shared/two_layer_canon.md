@@ -22,21 +22,45 @@
 | $\mathcal{D}(\mathcal{A}_P)$ | 结构分解（8 分量：5 元模式 + 2 refinement $\mathcal{D}^*,\mathcal{E}^*$ + 1 relational extension $\mathcal{B}^*_{\mathrm{rel}}$）|
 | $G,\ O_{\le},\ T^{*},\ \mathcal{T}^{*}_{\mathrm{rev}},\ \mathcal{L}^{*}$ | 5 个生成结构：群作用 / 偏序 / 自伴算子 / 时间反演对合 / 参数化极限 |
 | $m_{\mathrm{inv}},m_{\mathrm{mono}},m_{\mathrm{adj}},m_{\mathrm{rev}},m_{\mathrm{conv}}$ | 5 个元模式（各结构生成的 MR 等价类）|
+| $\mathsf{f}_{\mathrm{父}.\mathrm{子}}$ | L2 蜕变关系族符号（无衬线 $\mathsf{f}$，点号双段下标：点前=父 L1 词干，点后=机制标签）|
 | $\mathbb{M}(\mathcal{A}_P)$ | 元模式集合（L1）|
 | $\iota=(\Phi,\pi)$ | 分量不变量：$\Phi\subseteq s$ 算子集，$\pi$ 为 arity-$k$ 的 π-template |
 | $\textsc{Translate}(\iota,s)$ | 把分量不变量实例化为可执行蜕变关系 |
 | $\mathrm{MR}(\mathcal{A}_P)$ | $\mathcal{A}_P$ 诱导的蜕变关系集合 |
 | MR mode $\in\{\mathrm{I},\mathrm{M}\}$ | Mode-I 输入轨道（固定实现、变输入）；Mode-M 实现轨道（固定输入、变实现）|
 
-## 三、L1 → L2 归属（一对多）
+## 三、命名规范（三层符号 + 中英文名）
 
-| 元模式 (L1) | 蜕变关系族 (L2) |
-|---|---|
-| $G$ ($m_{\mathrm{inv}}$) | a 等变 · b 守恒 |
-| $T^{*}$ ($m_{\mathrm{adj}}$) | c 自伴 · d 伴随对偶 |
-| $\mathcal{T}^{*}_{\mathrm{rev}}$ ($m_{\mathrm{rev}}$) | e 时间反演 |
-| $O_{\le}$ ($m_{\mathrm{mono}}$) | f 静态序 · g 动态形状（$\mathcal{D}^*$ refinement）|
-| $\mathcal{L}^{*}$ ($m_{\mathrm{conv}}$) | h 收敛 · i 精度阶（$\mathcal{E}^*$ refinement）· j 表示不变（$\mathcal{B}^*_{\mathrm{rel}}$ extension）|
+### L1 元模式（5 个，符号沿用 canon，名字锁定）
+
+| 符号 | 英文名 | 中文名 | 生成块 |
+|---|---|---|---|
+| $m_{\mathrm{inv}}$ | Invariance | 不变 | 群作用 $G$ |
+| $m_{\mathrm{mono}}$ | Monotonicity | 单调 | 偏序 $O_{\le}$ |
+| $m_{\mathrm{adj}}$ | Adjoint | 伴随 | 自伴算子 $T^{*}$ |
+| $m_{\mathrm{rev}}$ | Reversal | 反演 | 时间反演对合 $\mathcal{T}^{*}_{\mathrm{rev}}$ |
+| $m_{\mathrm{conv}}$ | Convergence | 收敛 | 参数化极限 $\mathcal{L}^{*}$ |
+
+> $m_{\mathrm{adj}}$ 命名为 **Adjoint/伴随**（属概念），**不叫**"自伴/self-adjoint"——后者是其子族 c，父名若同名则与子撞。
+
+### L2 蜕变关系族（10 个，新增符号，按父分组）
+
+| 父 (L1) | 族符号 | 英文名 | 中文名 |
+|---|---|---|---|
+| $m_{\mathrm{inv}}$ | $\mathsf{f}_{\mathrm{inv}.\mathrm{eqv}}$ (a) | Equivariance | 等变 |
+| $m_{\mathrm{inv}}$ | $\mathsf{f}_{\mathrm{inv}.\mathrm{con}}$ (b) | Conservation | 守恒 |
+| $m_{\mathrm{adj}}$ | $\mathsf{f}_{\mathrm{adj}.\mathrm{self}}$ (c) | Self-adjoint | 自伴对称 |
+| $m_{\mathrm{adj}}$ | $\mathsf{f}_{\mathrm{adj}.\mathrm{dual}}$ (d) | Adjoint duality | 伴随对偶 |
+| $m_{\mathrm{rev}}$ | $\mathsf{f}_{\mathrm{rev}.\mathrm{traj}}$ (e) | Trajectory reversal | 轨迹反演 |
+| $m_{\mathrm{mono}}$ | $\mathsf{f}_{\mathrm{mono}.\mathrm{stat}}$ (f) | Static order | 静态序 |
+| $m_{\mathrm{mono}}$ | $\mathsf{f}_{\mathrm{mono}.\mathrm{shape}}$ (g) | Dynamic shape | 动态形态 |
+| $m_{\mathrm{conv}}$ | $\mathsf{f}_{\mathrm{conv}.\mathrm{lim}}$ (h) | Convergence | 收敛 |
+| $m_{\mathrm{conv}}$ | $\mathsf{f}_{\mathrm{conv}.\mathrm{rate}}$ (i) | Accuracy order | 精度阶 |
+| $m_{\mathrm{conv}}$ | $\mathsf{f}_{\mathrm{conv}.\mathrm{repr}}$ (j) | Representation invariance | 表示不变 |
+
+> 字母 a–j 为原枚举锚点，保留以兼容旧引用（如 S2 语料、lay 文档）。
+> 三层记号：L1 斜体 $m_{\text{词干}}$ · L2 无衬线 $\mathsf{f}_{\text{父}.\text{子}}$ · L3 可执行 MR 希腊 $\rho_{...}$。词干 adj/mono 在三层都出现（"一词三层面"），靠字体 + 族的点号尾区分。
+> 注：更深的 8 分量分解里，g 关联 $\mathcal{D}^*$、i 关联 $\mathcal{E}^*$、j 关联 $\mathcal{B}^*_{\mathrm{rel}}$ 等 refinement/extension 块；在 5-元模式规范模型中它们作为 $m_{\mathrm{mono}}$/$m_{\mathrm{conv}}$ 的子族列出。
 
 ## 四、各论文如何复用
 

@@ -8,6 +8,18 @@
 % Requires: amsmath, amssymb.
 % Term map: MR = metamorphic relation = 蜕变关系 ; MetaPattern = 元模式 ;
 %           MR family = 蜕变关系族 . Do not introduce synonyms (e.g. "blocks").
+% Three-tier symbol convention (each tier glyph- AND position-distinct):
+%   L1 MetaPattern    italic   m_{stem}                 stem in {inv,mono,adj,rev,conv}
+%   L2 MR family      sans     \mathsf{f}_{parent.child} parent = L1 stem, child = mechanism tag
+%   L3 executable MR  Greek    \rho_{...}               (defined in the paper, untouched here)
+% Read the L2 subscript before the dot to recover the parent L1 (1:1). Note the
+% canonical stems adj/mono appear in all three tiers (m_adj, \mathsf{f}_{adj.*},
+% \rho_adj): "one stem, three tier-faces", told apart by base glyph + the family
+% dot-tail. The L2 base glyph must be sans \mathsf{f}, never bare italic f (that
+% denotes the equivariant classifier f(g.x)).
+% L1 names (genus): m_inv=Invariance/不变 ; m_mono=Monotonicity/单调 ;
+%   m_adj=Adjoint/伴随 (NOT self-adjoint/自伴 -- that is child c) ;
+%   m_rev=Reversal/反演 ; m_conv=Convergence/收敛 .
 % ============================================================================
 \providecommand{\AP}{\mathcal{A}_{P}}                 % program-induced operator algebra
 \providecommand{\Dec}{\mathcal{D}(\mathcal{A}_{P})}   % structural decomposition
@@ -26,6 +38,17 @@
 \providecommand{\madj}{m_{\mathrm{adj}}}
 \providecommand{\mrev}{m_{\mathrm{rev}}}
 \providecommand{\mconv}{m_{\mathrm{conv}}}
+%% --- L2 MR-family symbols: sans-serif family glyph, subscript = parent.child ---
+\providecommand{\finveqv}{\mathsf{f}_{\mathrm{inv}.\mathrm{eqv}}}    % a  equivariance         (parent \minv)
+\providecommand{\finvcon}{\mathsf{f}_{\mathrm{inv}.\mathrm{con}}}    % b  conservation         (parent \minv)
+\providecommand{\fadjself}{\mathsf{f}_{\mathrm{adj}.\mathrm{self}}}  % c  self-adjoint         (parent \madj)
+\providecommand{\fadjdual}{\mathsf{f}_{\mathrm{adj}.\mathrm{dual}}}  % d  adjoint-duality      (parent \madj)
+\providecommand{\frevtraj}{\mathsf{f}_{\mathrm{rev}.\mathrm{traj}}}  % e  trajectory-reversal  (parent \mrev)
+\providecommand{\fmonostat}{\mathsf{f}_{\mathrm{mono}.\mathrm{stat}}}  % f  static-order        (parent \mmono)
+\providecommand{\fmonoshape}{\mathsf{f}_{\mathrm{mono}.\mathrm{shape}}}% g  dynamic-shape       (parent \mmono)
+\providecommand{\fconvlim}{\mathsf{f}_{\mathrm{conv}.\mathrm{lim}}}  % h  convergence          (parent \mconv)
+\providecommand{\fconvrate}{\mathsf{f}_{\mathrm{conv}.\mathrm{rate}}}% i  accuracy-order       (parent \mconv)
+\providecommand{\fconvrepr}{\mathsf{f}_{\mathrm{conv}.\mathrm{repr}}}% j  representation-invariance (parent \mconv)
 \providecommand{\Translate}{\textsc{Translate}}
 
 \providecommand{\TwoLayerModel}{%
@@ -35,17 +58,21 @@ algebra and $\Dec$ its structural decomposition.
 \emph{Layer~1 (MetaPattern).} A \emph{MetaPattern} is the equivalence class of
 algebra-induced metamorphic relations that \textsc{Construct-MP} derives, through
 \Translate, from one minimal algebraic structure of $\AP$ (its generating basis).
-The five MetaPatterns $\minv,\mmono,\madj,\mrev,\mconv$ are generated respectively
-by a group action ($\Grp$), a partial order ($\Ord$), a self-adjoint operator
-($\Sadj$), a time-reversal involution ($\Trev$), and a parametrised limit
+The five MetaPatterns---$\minv$ (Invariance), $\mmono$ (Monotonicity),
+$\madj$ (Adjoint), $\mrev$ (Reversal), $\mconv$ (Convergence)---are generated
+respectively by a group action ($\Grp$), a partial order ($\Ord$), a self-adjoint
+operator ($\Sadj$), a time-reversal involution ($\Trev$), and a parametrised limit
 ($\Lim$); their set is $\MM$.
 \emph{Layer~2 (MR family).} An \emph{MR family} is the set of executable
 metamorphic relations obtained by instantiating one MetaPattern $m\in\MM$ under a
 fixed $\pi$-template and a chosen MR mode (Mode-I input-orbit / Mode-M
 implementation-orbit) through \Translate, i.e.\ $\Translate(\iota,s)$ for a
-component invariant $\iota=(\Phi,\pi)$. The map from $\MM$ to families is
-one-to-many: $\Grp\to\{a,b\}$ (equivariance, conservation),
-$\Sadj\to\{c,d\}$ (self-adjoint, adjoint-duality), $\Trev\to\{e\}$ (time-reversal),
-$\Ord\to\{f,g\}$ (static-order, dynamic-shape), and
-$\Lim\to\{h,i,j\}$ (convergence, accuracy-order, representation-invariance).%
+component invariant $\iota=(\Phi,\pi)$. Each family is written
+$\mathsf{f}_{\mathrm{parent}.\mathrm{child}}$ (sans-serif family glyph; the L1
+parent stem precedes the dot). The map from $\MM$ to families is one-to-many:
+$\Grp\to\{\finveqv\ (a,\text{equivariance}),\ \finvcon\ (b,\text{conservation})\}$,
+$\Sadj\to\{\fadjself\ (c,\text{self-adjoint}),\ \fadjdual\ (d,\text{adjoint-duality})\}$,
+$\Trev\to\{\frevtraj\ (e,\text{trajectory-reversal})\}$,
+$\Ord\to\{\fmonostat\ (f,\text{static-order}),\ \fmonoshape\ (g,\text{dynamic-shape})\}$, and
+$\Lim\to\{\fconvlim\ (h,\text{convergence}),\ \fconvrate\ (i,\text{accuracy-order}),\ \fconvrepr\ (j,\text{representation-invariance})\}$.%
 }
