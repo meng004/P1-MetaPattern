@@ -73,6 +73,14 @@ Thumbs.db
 *.tar.gz
 *.zip
 
+# Compiled paper PDFs (build artefacts; regenerate from .tex). These re-stamp on
+# every rebuild and caused recurring binary merge conflicts. Intentionally kept
+# tracked: vendored CTAN guides (submissions/TOSEM/templates/*.pdf), the rater
+# packet PDF (experiment_realbug/human_kappa/items_to_rate.pdf), and frozen
+# snapshots under arxiv/ and archive/.
+manuscript/*.pdf
+submissions/TOSEM/NOETHER_paper_submission.pdf
+
 # Gradle / Java build outputs
 build/
 .gradle/
