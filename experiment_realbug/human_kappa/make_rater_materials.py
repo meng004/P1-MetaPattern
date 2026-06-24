@@ -40,6 +40,21 @@ PROGRAMS = {
     "MathSignalClass.signum.0": "signum(x): sign of x; returns -1, 0, or +1 for x<0, x=0, x>0.",
 }
 
+# Chinese program descriptions for the rater PDF (items_to_rate.pdf). Faithful
+# translations of PROGRAMS; signatures and ASCII math kept verbatim.
+PROGRAMS_ZH = {
+    "ComplexSignal.add.0": "add(other)：复数加法；out = this + other（实部与虚部分别相加）。操作数 this=(this.re, this.im)、other=(other.re, other.im)；结果 out=(out.re, out.im)。",
+    "MathSignalClass.clamp.0": "clamp(lo, hi, x)：将 x 限制到区间 [lo, hi] 内；返回 min(max(x, lo), hi)。",
+    "MathSignalClass.exactLog2.0": "exactLog2(n)：正整数 n 以 2 为底的对数（因此 exactLog2(2*n) = exactLog2(n) + 1）。",
+    "MathSignalClass.gcdSig.0": "gcdSig(a, b)：|a| 与 |b| 的最大公约数（输入先取绝对值，再做欧几里得 gcd）。",
+    "MathSignalClass.hypotSig.0": "hypotSig(a, b)：欧几里得斜边长，sqrt(a^2 + b^2)。",
+    "MathSignalClass.isSequence.0": "isSequence(a, b, c)：当且仅当 a, b, c 构成等差数列（b - a == c - b）时返回 true。",
+    "MathSignalClass.lcmSig.0": "lcmSig(a, b)：|a| 与 |b| 的最小公倍数（输入先取绝对值）。",
+    "MathSignalClass.midpoint.0": "midpoint(a, b)：算术中点 (a + b) / 2。",
+    "MathSignalClass.powerSig.0": "powerSig(base, n)：|base| 的 n 次幂（底数先取绝对值再求幂）。",
+    "MathSignalClass.signum.0": "signum(x)：x 的符号；当 x<0, x=0, x>0 时分别返回 -1, 0, +1。",
+}
+
 SUB = {"f": "1", "s": "2"}
 
 def rename_vars(s):
@@ -198,19 +213,21 @@ def write_xlsx(rows):
     wb.save(HERE / "rating_sheet_TEMPLATE.xlsx")
     print("wrote rating_sheet_TEMPLATE.xlsx (category column F = dropdown a-j/orphan)")
 
-TEX_HEAD = r"""\documentclass[10pt]{article}
+TEX_HEAD = r"""\documentclass[11pt]{article}
 \usepackage[a4paper,margin=1.8cm]{geometry}
 \usepackage{amsmath,amssymb}
-\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\setmainfont{WenQuanYi Zen Hei}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 0.1pt
 \setlength{\parindent}{0pt}
 \sloppy
 \begin{document}
 \small
-\section*{Items to rate (36 MRs) -- readable form}
-Each MR runs the program twice. JIR = how the two \emph{inputs} relate; JOR = the
-\emph{output} relation that must hold. Subscripts $1,2$ = first/second call;
-\texttt{re/im} = real/imag part; \texttt{this/other} = operands; \texttt{out} =
-return. Classify each into one MR family (a--j) or \texttt{orphan} (see CODEBOOK).
+\section*{待分类的蜕变关系（36 条 MR）：可读形式}
+每个条目都是一个\textbf{蜕变关系（MR，metamorphic relation）}：它用两组相互关联的输入分别运行同一个程序，并要求两次运行的输出之间满足某种确定的关系。\textbf{JIR}（输入关系，input relation）描述两次调用的\emph{输入}之间如何关联；\textbf{JOR}（输出关系，output relation）描述两次调用的\emph{输出}之间必须成立的关系。
+\par\medskip
+记号约定：下标 $1,2$ 表示第一次/第二次调用；\texttt{re/im} 为实部/虚部；\texttt{this/other} 为两个操作数；\texttt{out} 为返回值。请阅读每个条目的「程序功能」后，将该蜕变关系归入唯一一个 MR 家族（a--j）；确实无法归入任何家族者记为 \texttt{orphan}（各家族的定义见 CODEBOOK）。
 \bigskip
 
 """
@@ -242,9 +259,9 @@ def write_tex(rows):
     for r in rows:
         body.append(r"\textbf{%s}\quad \texttt{%s / %s}\newline" %
                     (r["item_id"], esc(r["subject"]), esc(r["mr_name"])))
-        body.append(r"\hspace*{1.5em}\emph{Program:} %s\newline" % esc(r["program"]))
-        body.append(r"\hspace*{1.5em}JIR:\ %s\newline" % split_atoms(r["jir"]))
-        body.append(r"\hspace*{1.5em}JOR:\ $\Rightarrow$\ %s\par\medskip" % split_atoms(r["jor"]))
+        body.append(r"\hspace*{1.5em}\emph{程序功能：} %s\newline" % esc(PROGRAMS_ZH.get(r["subject"], r["program"])))
+        body.append(r"\hspace*{1.5em}JIR（输入关系）：\ %s\newline" % split_atoms(r["jir"]))
+        body.append(r"\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ %s\par\medskip" % split_atoms(r["jor"]))
     (HERE / "items_to_rate.tex").write_text(TEX_HEAD + "\n".join(body) + TEX_FOOT)
     print("wrote items_to_rate.tex")
 
@@ -253,9 +270,9 @@ def main():
     if "--verify" in sys.argv:
         verify(rows); return
     write_csvs(rows); write_gold(rows); write_sheet_csv(rows); write_xlsx(rows); write_tex(rows)
-    r = subprocess.run(["pdflatex", "-interaction=nonstopmode", "items_to_rate.tex"],
+    r = subprocess.run(["xelatex", "-interaction=nonstopmode", "items_to_rate.tex"],
                        cwd=HERE, capture_output=True, text=True)
-    print("pdflatex:", "OK" if (HERE / "items_to_rate.pdf").exists() else "FAILED")
+    print("xelatex:", "OK" if (HERE / "items_to_rate.pdf").exists() else "FAILED")
 
 if __name__ == "__main__":
     main()
