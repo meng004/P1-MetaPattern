@@ -1,0 +1,202 @@
+%% ===========================================================================
+%% Standalone fragment: §3.4 The Invariance-Blindness Theorem (IBT).
+%% NOT wired into NOETHER_paper_arxiv.tex yet (no LaTeX toolchain in container;
+%% B2 integration + compile audit per CLAUDE.md §8 to be done in a LaTeX env).
+%% Uses the paper's existing environments: definition, lemma, theorem, remark,
+%% corollary*. Cross-refs are resolved through the main manuscript.
+%% Source of truth: docs/tosem_maturity_2026-06-16/invariance_blindness_theorem_draft.md
+%% ===========================================================================
+
+\subsection{The Invariance-Blindness Theorem}
+\label{subsec:ibt}
+
+Theorem~\ref{thm:closure} guarantees that \texttt{CONSTRUCT-MP} drops no
+\texttt{Translate}-reachable MR; it is, by construction, silent about what the
+derived MRs can \emph{detect}. This subsection supplies that missing content: a
+\emph{limiting} characterization of the faults an algebra-induced MR cannot
+detect. Throughout we work in the linear operator-implementation fault class
+(Definition~\ref{def:fault-class}); scope and assumptions are collected in
+Remark~\ref{rem:ibt-scope}.
+
+\begin{definition}[Linear program and fault class]
+\label{def:fault-class}
+A \emph{linear program} is $P_L:\mathbb{R}^N\to\mathbb{R}^N$, $P_L(x)=Lx$, indexed by an
+operator $L\in\Theta:=\mathbb{R}^{N\times N}$ ($\dim\Theta=N^2<\infty$). The reference
+(correct) program is $P_{L^{*}}$; an \emph{operator-implementation fault} is
+$L=L^{*}+\Delta$ with $\Delta\in\Theta$. (For nonlinear solvers, $\Theta$ is the
+operator's finite parameter vector and $E_s$ below its first-order linearization.)
+\end{definition}
+
+\begin{definition}[Structural defect and detection kernel]
+\label{def:defect-kernel}
+Let block $s\in\mathcal{D}(\mathcal{A}_P)$ carry a structure $T_s$ (for $s=G$, a group
+action $A\in G\le GL(\mathbb{R}^N)$; for $s=T^{*}$, the inner-product adjoint). The
+algebra-induced MR $\rho_{\iota,s}=\texttt{Translate}(\iota,s)$ asserts a structural
+predicate $\Pi_s[P_L]$ over a witness set $W=S_s\times X_0$ ($S_s\subseteq T_s$,
+$X_0\subseteq\mathbb{R}^N$). For $s=G$ the per-witness \emph{defect} is the commutator
+applied to an input,
+\[
+E_G(L;A,x)\;=\;P_L(Ax)-A\,P_L(x)\;=\;[L,A]\,x,
+\]
+linear in $L$; for $s=T^{*}$, $E_{T^{*}}(L)=L-L^{\top}$. The \emph{detection kernel}
+is the set of faults the MR fails to flag,
+\[
+\ker(\rho_{\iota,s})\;:=\;\{\,L\in\Theta : E_s(L;w)=0\ \ \forall w\in W\,\}.
+\]
+If $X_0$ spans $\mathbb{R}^N$ then $\ker(\rho_{\iota,s})=\bigcap_{A\in S_s}\mathcal{C}(A)$
+with $\mathcal{C}(A)=\{L:[L,A]=0\}$ the commutant of $A$.
+\end{definition}
+
+\begin{definition}[Structure-preserving fault]
+\label{def:compatible}
+$L$ is \emph{$T_s$-compatible} iff it satisfies the full structural identity that
+validates $\rho_{\iota,s}$: $E_s(L;w)=0$ for all witnesses $w\in W^{\mathrm{full}}_s$
+(for $s=G$, $[L,A]=0$ for all $A\in T_s$). Write $\mathcal{C}(T_s)$ for the
+$T_s$-compatible set (the commutant of the whole group, i.e.\ the equivariant
+operators).
+\end{definition}
+
+\begin{definition}[Faithfulness]
+\label{def:faithful}
+A finite witness set $W^{\mathrm{test}}_s$ is \emph{faithful} iff
+$\ker(\rho_{\iota,s})=\mathcal{C}(T_s)$; equivalently, since $E_s$ is linear in $L$,
+$\operatorname{rank}J_{\mathrm{test}}=\operatorname{rank}J_{\mathrm{full}}$, where $J$ collects the
+rows $L\mapsto E_s(L;w)$.
+\end{definition}
+
+\begin{lemma}[Reachability of faithfulness]
+\label{lem:reachability}
+If $\Theta$ is finite-dimensional and $E_s$ is linear in $L$, then a finite
+faithful witness set $W^{\mathrm{test}}_s$ exists.
+\end{lemma}
+
+\begin{proof}
+Each witness $w$ contributes a linear functional $a_w:L\mapsto E_s(L;w)\in\Theta^{*}$.
+The span $V_{\mathrm{full}}=\operatorname{span}\{a_w:w\in W^{\mathrm{full}}_s\}\subseteq\Theta^{*}$ is a
+subspace of the finite-dimensional dual, hence finite-dimensional; pick finitely
+many witnesses $W^{\mathrm{test}}_s$ whose functionals span $V_{\mathrm{full}}$. As
+$W^{\mathrm{test}}_s\subseteq W^{\mathrm{full}}_s$ the intercepts agree, so the two systems
+have the same solution set, i.e.\ $\ker(\rho_{\iota,s})=\mathcal{C}(T_s)$.
+\end{proof}
+
+Lemma~\ref{lem:reachability} is the crux: tightness is \emph{not} tautological but
+follows from finite fault-dimensionality, so a finite executable MR can pin the
+exact blind set. We now characterize that set (Figure~\ref{fig:ibt}).
+
+\begin{theorem}[Invariance-Blindness, $G$ and $T^{*}$ blocks]
+\label{thm:ibt}
+Let the fault class be linear (Definition~\ref{def:fault-class}), let $E_s$ be
+linear in $L$ (holds for $s\in\{G,T^{*}\}$), and let the test witnesses be faithful
+(Definition~\ref{def:faithful}). Then
+\[
+\ker(\rho_{\iota,s})\;=\;\mathcal{C}(T_s)\;=\;\{\,L:\ P_L\ \text{preserves}\ T_s\,\}.
+\]
+That is, a linear operator-implementation fault survives the structural MR
+\emph{if and only if} it preserves the structure $T_s$ that the MR exploits.
+\end{theorem}
+
+\begin{proof}
+($\supseteq$) If $L\in\mathcal{C}(T_s)$ then $E_s(L;w)=0$ on $W^{\mathrm{full}}_s\supseteq
+W^{\mathrm{test}}_s$, so $\rho_{\iota,s}$ passes and $L\in\ker$.
+($\subseteq$) If $L\in\ker$ then $E_s(L;w)=0$ on $W^{\mathrm{test}}_s$; by faithfulness
+(Definition~\ref{def:faithful}) $\ker(\rho_{\iota,s})=\mathcal{C}(T_s)$, so
+$L\in\mathcal{C}(T_s)$.
+\end{proof}
+
+\begin{figure}[h]
+\centering
+\adjustbox{max width=\textwidth}{%
+\begin{tikzpicture}[font=\small, arr/.style={-{Latex[length=2mm]}, thick}]
+%% Outer fault space Theta
+\node[draw, rounded corners=3pt, minimum width=86mm, minimum height=40mm, fill=gray!4] (theta) {};
+\node[font=\footnotesize\bfseries, anchor=north west, inner sep=4pt] at (theta.north west) {$\Theta=\mathbb{R}^{N\times N}$: linear operator-implementation faults};
+%% Detection kernel = structure-preserving faults (blind spot)
+\node[draw, ellipse, fill=gray!20, minimum width=42mm, minimum height=21mm, align=center, font=\footnotesize] (ker) at ([xshift=-18mm, yshift=-3mm]theta.center) {$\ker(\rho_{\iota,s})=\mathcal{C}(T_s)$\\structure-preserving\\(equivariant) faults\\\textbf{MR passes (blind)}};
+%% Detected region
+\node[align=center, font=\footnotesize] at ([xshift=24mm, yshift=-3mm]theta.center) {structure-\\violating faults\\\textbf{MR detects}};
+%% Complementary differential oracle
+\node[draw, rounded corners=2pt, fill=white, align=center, font=\footnotesize, below=7mm of ker] (diff) {neutral cross-implementation differential oracle\\(complementary common-mode oracle)};
+\draw[arr, densely dashed] (diff) -- node[right, font=\scriptsize] {covers blind set} (ker);
+\end{tikzpicture}%
+}
+\caption{The Invariance-Blindness Theorem (Theorem~\ref{thm:ibt}) for the
+symmetry ($G$) and self-adjoint ($T^{*}$) blocks. Within the linear
+operator-implementation fault class $\Theta=\mathbb{R}^{N\times N}$, an
+algebra-derived MR's detection kernel equals exactly the structure-preserving
+faults $\mathcal{C}(T_s)$: a fault survives the MR if and only if it preserves
+the structure $T_s$ the MR exploits. The characterisation is faithfulness-tight,
+attained by a finite witness set (Lemma~\ref{lem:reachability}). A neutral
+cross-implementation differential oracle is the complementary common-mode oracle
+that covers part of the structure-preserving blind set.}
+\label{fig:ibt}
+\end{figure}
+
+\begin{remark}[Per-MetaPattern granularity]
+\label{rem:ibt-mp}
+Under Step~3 of \texttt{CONSTRUCT-MP}, each MetaPattern $m_{s,[\iota]}$ corresponds
+to a single $\sim_s$-equivalence class of invariants; the per-invariant statement
+of Theorem~\ref{thm:ibt} therefore applies \emph{directly} to each $m_{s,[\iota]}$
+without aggregation. When the per-instance grouping of
+Remark~\ref{rem:single-class-instances} treats a non-empty block $s$ as a single
+$\sim_s$ class, $m_{s,[\iota]}$ coincides with the block-level MetaPattern reported
+in the empirical sections.
+\end{remark}
+
+\begin{remark}[Worked instance: advection--diffusion, translation block]
+\label{rem:ibt-advdiff}
+On a periodic grid the constant-coefficient operator $c\cdot\nabla+\alpha\nabla^2$
+commutes with every grid translation for \emph{all} constants $(c,\alpha)$; hence
+$E_G(L;\text{shift})\equiv 0$ on the whole constant-coefficient family, so
+$\ker(\rho_{\iota,G})$ contains it, including the advection-speed fault $c\mapsto c'$.
+The translation MR is therefore \emph{blind} to advection-speed errors, matching
+the secondary executability sanity check discussed in
+\S\ref{sec:results-discussion}.
+A spatially inhomogeneous coefficient $c(x)$ breaks translation equivariance, so
+$E_G\neq 0$ and the fault is detected. A faithfulness check (one generator plus an
+input basis is unisolvent) is reported in supplementary S10.
+\end{remark}
+
+%% corollary* is unnumbered (paper preamble: \newtheorem*{corollary*}). For
+%% numbered, \ref-able corollaries, add \newtheorem{corollary}{Corollary} to the
+%% preamble at integration and drop the stars.
+\begin{corollary*}[Single-block incompleteness]
+For any block $s$ with $\mathcal{C}(T_s)\neq\{L^{*}\}$ (a nontrivial structure-
+preserving fault exists, noting $\mathcal{C}(T_s)\supseteq\{L^{*}\}$ always), the
+single-block battery $\{\rho_{\iota,s}\}_\iota$ is
+incomplete: its kernel contains that fault.
+\end{corollary*}
+
+\begin{corollary*}[Completeness requires a trivial joint kernel]
+A family of oracles $\{O_j\}$ detects every nontrivial fault only if
+$\bigcap_j\ker(O_j)=\{L^{*}\}$. Completeness therefore requires oracles whose
+structural kernels intersect trivially, not additional MRs of the same block.
+\end{corollary*}
+
+\begin{corollary*}[Differential oracle is the complementary blind spot]
+The neutral cross-implementation differential oracle $O_{\mathrm{diff}}$, which flags
+a fault when two independent implementations disagree beyond a discretisation-
+calibrated tolerance, has kernel $\ker(O_{\mathrm{diff}})=\{$common-mode faults
+(identical effect on both implementations)$\}$. Since common-mode and
+$T_s$-compatible are distinct conditions, $\ker(\rho_{\iota,s})\cap\ker(O_{\mathrm{diff}})$
+is strictly smaller than either: the MR battery and the differential oracle are
+complementary, and a fault escapes both only if it is simultaneously
+structure-preserving and common-mode.
+\end{corollary*}
+
+\begin{remark}[Scope and assumptions]
+\label{rem:ibt-scope}
+(\textbf{R1}) Theorem~\ref{thm:ibt} is stated for the linear operator-implementation
+fault class (Definition~\ref{def:fault-class}); it does not extend to arbitrary
+nonlinear faults. (\textbf{R2}) Detection is exact-arithmetic; an executable MR with
+tolerance $\tau$ has kernel $\ker_\tau\supseteq\ker$, so faults below $\tau$ are
+false negatives. Theorem~\ref{thm:ibt} is the $\tau\to0$ limit; the finite-$\tau$
+regime is outside the identification claim and is treated as a limitation in
+\S\ref{sec:threats-limitations}.
+(\textbf{R3}) Linearity of $E_s$ holds for $G$ and $T^{*}$ (commutator; symmetric
+part). It fails for $O_\le$ (monotonicity is an inequality, a cone not a subspace),
+for $\mathcal{T}^{*}_{\mathrm{rev}}$ (reversibility $R L R^{-1}-L^{-1}$ involves the inverse), and
+for $\mathcal{L}^{*}$ (Richardson ratio of norms); for these blocks only the sufficient
+direction ($\supseteq$) holds, or a linearized subclass. (\textbf{R4}) The sufficient
+direction is by definition; the content is the $\subseteq$ direction together with
+Lemma~\ref{lem:reachability} and the kernel characterization.
+\end{remark}
