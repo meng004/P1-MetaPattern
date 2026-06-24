@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Build the rater hand-out bundle `noether_rater_packet.zip` from the committed
-source files. The zip is git-ignored (build artifact); regenerate it with:
+source files. The zip is tracked in git (per request); regenerate after changes with:
 
     python3 build_rater_packet.py
 
@@ -13,8 +13,12 @@ never leak in.
 import os, zipfile, pathlib
 
 HERE = pathlib.Path(__file__).parent
-RATER_FILES = ["RATER_GUIDE.md", "CODEBOOK.md", "items_to_rate.pdf", "items_to_rate.csv",
-               "items_raw.csv", "rating_sheet_TEMPLATE.xlsx", "rating_sheet_TEMPLATE.csv"]
+# Minimal set for time-limited raters: read (PDF) + classify (CODEBOOK) + record
+# (xlsx dropdown) + how-to (GUIDE). Redundant duplicates are deliberately excluded
+# from the packet: items_to_rate.csv (same items as the PDF), items_raw.csv
+# (raw-Java traceability, coordinator-only), rating_sheet_TEMPLATE.csv (CSV copy of
+# the xlsx). Those source files stay in the repo for the coordinator.
+RATER_FILES = ["RATER_GUIDE.md", "CODEBOOK.md", "items_to_rate.pdf", "rating_sheet_TEMPLATE.xlsx"]
 FORBIDDEN = {"_gold_author_labels.csv", "compute_kappa.py", "make_rater_materials.py", "build_rater_packet.py"}
 OUT = HERE / "noether_rater_packet.zip"
 
