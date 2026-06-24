@@ -1,0 +1,25 @@
+{
+  "id": "pyg_6037",
+  "repo": "pyg-team/pytorch_geometric",
+  "cat": "out-of-decomposition",
+  "fix_commit": "28140ada",
+  "parent_commit": "83d6f95f",
+  "tolerance": 1e-05,
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": null,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": null,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "notes": "get_mesh_laplacian row-sum != 0 (max|rowsum|=3.0, should ~0). BUT L=L^T symmetric (max|L-L^T|=0) so adjoint intact; rho_adj N/A (unary, not bilinear). Row-sum CONSERVATION is not among NOETHER 5 meta-patterns (SO3/Sn/adj/mono/rev/conv) -> OUT. Agent cat-iii reclassified to out after reproduction.",
+  "domain": "cross-domain (geometric DL: pyg/e3nn) -- supplement, NOT paper SUT domain (reactor_physics/pde_numerical/quantum_chemistry)"
+}

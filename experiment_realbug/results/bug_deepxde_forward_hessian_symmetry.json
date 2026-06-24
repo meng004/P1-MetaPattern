@@ -1,0 +1,59 @@
+{
+  "id": "deepxde_forward_hessian_symmetry",
+  "repo": "lululxvi/deepxde",
+  "domain": "paper SUT domain (pde_sciml: DeepXDE -- THIRD-PARTY PINN library, in-the-wild)",
+  "sut_family": "deepxde.gradients.gradients_forward (forward-mode / JAX autodiff) Jacobian.__call__ + hessian() -- the Hessian of a PINN scalar field as a SELF-ADJOINT operator. Anchored on a smooth scalar field f(x0,x1)=sin(x0)*x1^2+3*x0*x1 (dim_y=1, dim_x=2), forward-mode AD, no training.",
+  "cat": "T* self-adjoint / operator-symmetry (NOETHER T* block: the Hessian of a scalar field is self-adjoint -- H[i,j] == H[j,i], the discrete mixed-partial / Schwarz symmetry; a forward-mode Jacobian-indexing bug breaks that operator symmetry). pde_sciml T* block.",
+  "fix_commit": "46e2c2e8a23087106772ea3ace3e1781131a04ba",
+  "fix_commit_short": "46e2c2e",
+  "fix_title": "Backend jax: Bug fix in forward-mode gradients (#1591)",
+  "pre_commit": "9d9d0b0f7b3384887e36c7811248480d0bcc8aa6",
+  "pre_commit_note": "46e2c2e^ -- the DIRECT immediate parent (git rev-list --count 9d9d0b0..46e2c2e == 1, zero intervening commits anywhere in the repo).",
+  "pre_version": "1.10.1.dev12+g9d9d0b0f7 (git describe 46e2c2e^ = v1.10.0-12-g9d9d0b0; source build at parent commit)",
+  "post_version": "1.10.1.dev13+g46e2c2e8a (fix first released in tag v1.10.1, at v1.10.1~9; source build at fix commit)",
+  "released_window": "Fix 46e2c2e is NOT in v1.10.0, IS in v1.10.1 (git merge-base --is-ancestor confirmed; describe-contains = v1.10.1~9). BUT see reachability_caveat: forward-mode AD is not wired into the public default path at these commits, so reproduction is at the COMMIT level (parent 9d9d0b0 vs fix 46e2c2e) via git worktrees + per-commit installs, not a pip released-to-released default-path pair.",
+  "tolerance": 1e-08,
+  "cpu_status": "OK",
+  "reachability_caveat": "HONESTY CAVEAT: at BOTH pre (9d9d0b0) and post (46e2c2e), deepxde/gradients/__init__.py imports the REVERSE-mode autodiff (`from .gradients_reverse import clear, jacobian, hessian`) and the forward-mode import is COMMENTED OUT (`# from .gradients_forward import jacobian, hessian`). So forward-mode AD was NOT reachable through the public deepxde.grad.jacobian/hessian default path at these commits -- it was a developer module under active construction, reachable only by an explicit `from deepxde.gradients.gradients_forward import jacobian, hessian`. The buggy state never shipped in the user-DEFAULT path of a released tag. This makes the bug WEAKER than the other clean default-path released-to-released DeepXDE positives (Neumann, periodic_point, resample, boundary_float32) and is recorded as such. It is nonetheless a genuine, upstream-fixed operator self-adjointness defect with zero confounders, reproduced via the EXACT buggy code object (byte-identical to the repo source at the commit).",
+  "sut": "f(x0,x1) = sin(x0)*x1^2 + 3*x0*x1 (dim_y=1, dim_x=2; non-zero cross term so a Jacobian-column index swap is detectable). Forward-mode JAX AD with x64 enabled, 3 collocation points [[0.3,0.7],[1.1,-0.4],[-0.6,0.9]]. Two oracles: (1) forward Jacobian column correctness jacobian(i=0,j=k)==df/dx_k; (2) the T* oracle: Hessian self-adjointness H[i,j]==H[j,i] + correctness vs analytic. No net, no training.",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "T* self-adjoint / operator symmetry: the Hessian of a scalar field is a self-adjoint operator, H[i,j] == H[j,i] for all i,j (mixed-partial / Schwarz symmetry). Forward-mode AD must give a SYMMETRIC and CORRECT Hessian, and the forward Jacobian column jacobian(i=0,j=k) must equal df/dx_k. FIRED <=> the forward Jacobian returns the wrong column (every requested column k -> column 0), so the Hessian is wrong/asymmetric and hessian(component=None) crashes (TypeError). HELD <=> Jacobian columns correct (err 0); Hessian symmetric (H[0,1]==H[1,0], gap 0) and correct vs analytic.",
+  "fired_type": "MIXED -- numeric (forward Jacobian col1 wrongly returns col0: max|err|=6.185 vs analytic) AND crash (hessian(component=None) -> TypeError: '<=' not supported between instances of 'int' and 'NoneType'). Deterministic (analytic polynomial/trig field; x64).",
+  "pre_observed": {
+    "commit": "9d9d0b0",
+    "jacobian_col0": [2.56811488, -1.12742462, 3.36852185],
+    "jacobian_col1_computed": [2.56811488, -1.12742462, 3.36852185],
+    "jacobian_col1_analytic": [1.31372829, 2.58703411, -2.81635645],
+    "jacobian_col1_max_err": 6.185,
+    "hessian": "CRASH: TypeError: '<=' not supported between instances of 'int' and 'NoneType'",
+    "verdict": "FIRED"
+  },
+  "post_observed": {
+    "commit": "46e2c2e",
+    "jacobian_col0_max_err": 0.0,
+    "jacobian_col1_max_err": 0.0,
+    "hessian_symmetry_gap": 0.0,
+    "hessian_full_max_err_vs_analytic": 0.0,
+    "hessian_cross_term_H01_eq_H10": [4.337, 2.637, 4.486],
+    "verdict": "HELD"
+  },
+  "confounder_check": "The fix 46e2c2e is the DIRECT CHILD of its parent 9d9d0b0 (git rev-list --count 9d9d0b0..46e2c2e == 1): zero intervening commits anywhere in the repo, zero on the file. The fix is the only functional change to this code path between PRE and POST -> FIRED->HELD attributable to exactly this fix (confounder count = 0). Distinct from the four other DeepXDE positives (4bac5eb Neumann/Robin, 8353540 periodic_point, 4adcde7 resample, 8a644fe boundary_float32). NOTE the separate reachability_caveat (forward mode unwired in the public default path).",
+  "verified": "SELF-RUN source build (commit-level), independently re-run by the orchestrator: PRE 9d9d0b0 FIRED (forward Jacobian col1 returns col0 -> max|err|=6.185; hessian(component=None) -> TypeError) / POST 46e2c2e HELD (Jacobian cols err 0; Hessian symmetry gap 0.0, full max-err vs analytic 0.0). Both via git worktrees (/tmp/dde_wt_pre @ 9d9d0b0, /tmp/dde_wt_post @ 46e2c2e) + per-commit pip --no-deps installs into separate venvs (jax[cpu]==0.4.23, jaxlib 0.4.23, numpy 1.26.4, py3.11, x64, CPU-only); installed files byte-identical to the worktrees (verified by diff). The repro loads the exact gradients_forward.py source at each commit in isolation (stubbing only deepxde.backend symbols) because the module is not wired into the public package at these commits.",
+  "upstream": "DeepXDE git commit 46e2c2e (#1591, author Zongren Zou). Root cause in deepxde/gradients/gradients_forward.py: the forward-mode Jacobian cache self.J is keyed by the INPUT-axis index j (it stores dy/dx_j computed via jax.jvp along basis tangent e_j). The dim_y==1 branch returned self.J[i] (indexed by OUTPUT row i, always 0 for a scalar field), so every requested column k returned column 0; off-diagonal Hessian entries built by composing two forward Jacobians become wrong and ASYMMETRIC. The fix returns self.J[j] (input column). The same commit also defaults hessian(component=None) -> 0 (PRE raised TypeError because the inner jacobian(i=None) hit `0 <= i`).",
+  "repro_script": "results/deepxde_repro/repro_deepxde_forward_hessian_symmetry.py",
+  "env": "git -C /tmp/deepxde_git worktree add /tmp/dde_wt_pre 9d9d0b0 ; worktree add /tmp/dde_wt_post 46e2c2e. python3 -m venv per side; pip install numpy<2 scipy scikit-learn 'scikit-optimize>=0.9.0' matplotlib 'jax[cpu]==0.4.23'; pip install --no-deps <worktree>. Run: <venv>/bin/python repro_deepxde_forward_hessian_symmetry.py <venv>/lib/python3.11/site-packages/deepxde/gradients/gradients_forward.py. py3.11, jax/jaxlib 0.4.23, numpy 1.26.4, CPU-only, x64; CPU milliseconds, no net, no training.",
+  "note": "THIRD-PARTY in-the-wild bug in the most widely used PINN library (DeepXDE), NOT paper-authored, NOT a mutant. Provides the pde_sciml T* (self-adjoint / operator-symmetry) block, which was previously blank for DeepXDE. The MR is the T* prediction that the Hessian of a scalar field is a self-adjoint operator (H[i,j]==H[j,i], mixed-partial symmetry); a forward-mode Jacobian-indexing bug makes off-diagonal Hessian entries wrong and asymmetric, directly violating that self-adjointness. HONEST LEVEL: mixed numeric (Jacobian col1 max|err|=6.185)+crash (hessian component=None TypeError) on pre -> symmetric+correct (gaps 0.0) on post, reproduced via the EXACT buggy code object at the parent vs fix commit. ZERO confounders (direct parent). REACHABILITY CAVEAT (see reachability_caveat field): forward-mode AD is NOT wired into the public default path at these commits (gradients/__init__ imports reverse-mode; forward import commented out), so the buggy state never shipped in the user-default path of a released tag -- this is WEAKER than the four clean default-path DeepXDE positives and is flagged as such rather than disguised. Operator self-adjointness bugs in DeepXDE are SCARCE and concentrated in the JAX forward/Jacobian-indexing code: the reverse-mode (default) Hessian's mixed-partial symmetry is construction-guaranteed by autodiff (no triggerable defect); the older sibling 91af6b7 (JAX grad column slicing, v1.2.0->v1.3.0) is in the public path but has a WORSE confounder (the wrong-axis state was introduced intra-window by 79f0c86 and v1.2.0 itself was already broken differently). 46e2c2e is the cleanest-attributed operator-symmetry fix. 'N' set-slot is the directly-evaluated NOETHER T* MR; 'G' set-key is GenMorph (not_applicable to library bugs). [cpu env: source build commit-level (worktrees + per-commit install); jax[cpu] 0.4.23, numpy 1.26.4, py3.11, x64, CPU-only; forward-mode AD, no net, no training]"
+}

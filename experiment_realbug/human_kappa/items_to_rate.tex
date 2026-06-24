@@ -1,0 +1,162 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1.8cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{fontspec}
+\setmainfont{WenQuanYi Zen Hei}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 0.1pt
+\setlength{\parindent}{0pt}
+\sloppy
+\begin{document}
+\small
+\section*{待分类的蜕变关系（36 条 MR）：可读形式}
+每个条目都是一个\textbf{蜕变关系（MR，metamorphic relation）}：它用两组相互关联的输入分别运行同一个程序，并要求两次运行的输出之间满足某种确定的关系。\textbf{JIR}（输入关系，input relation）描述两次调用的\emph{输入}之间如何关联；\textbf{JOR}（输出关系，output relation）描述两次调用的\emph{输出}之间必须成立的关系。
+\par\medskip
+记号约定：下标 $1,2$ 表示第一次/第二次调用；\texttt{re/im} 为实部/虚部；\texttt{this/other} 为两个操作数；\texttt{out} 为返回值。请阅读每个条目的「程序功能」后，将该蜕变关系归入唯一一个 MR 家族（a--j）；确实无法归入任何家族者记为 \texttt{orphan}（各家族的定义见 CODEBOOK）。
+\bigskip
+
+\textbf{M01}\quad \texttt{ComplexSignal.add.0 / G\_swap\_negate}\newline
+\hspace*{1.5em}\emph{程序功能：} add(other)：复数加法；out = this + other（实部与虚部分别相加）。操作数 this=(this.re, this.im)、other=(other.re, other.im)；结果 out=(out.re, out.im)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(\mathrm{this.re}_{1} \approx  \mathrm{other.re}_{2})$ $\wedge$ $(\mathrm{this.im}_{1} \approx  \mathrm{other.im}_{2})$ $\wedge$ $(\mathrm{other.re}_{1} \approx  \mathrm{this.re}_{2})$ $\wedge$ $(\mathrm{other.im}_{1} \approx  \mathrm{this.im}_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $(\mathrm{out.re}_{1} \approx  \mathrm{out.re}_{2})$ $\wedge$ $(\mathrm{out.im}_{1} \approx  \mathrm{out.im}_{2})$\par\medskip
+\textbf{M02}\quad \texttt{ComplexSignal.add.0 / L\_scale}\newline
+\hspace*{1.5em}\emph{程序功能：} add(other)：复数加法；out = this + other（实部与虚部分别相加）。操作数 this=(this.re, this.im)、other=(other.re, other.im)；结果 out=(out.re, out.im)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(\mathrm{this.re}_{1} \approx  2.0\cdot \mathrm{this.re}_{2})$ $\wedge$ $(\mathrm{this.im}_{1} \approx  2.0\cdot \mathrm{this.im}_{2})$ $\wedge$ $(\mathrm{other.re}_{1} \approx  2.0\cdot \mathrm{other.re}_{2})$ $\wedge$ $(\mathrm{other.im}_{1} \approx  2.0\cdot \mathrm{other.im}_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $(\mathrm{out.re}_{1} \approx  2.0\cdot \mathrm{out.re}_{2})$ $\wedge$ $(\mathrm{out.im}_{1} \approx  2.0\cdot \mathrm{out.im}_{2})$\par\medskip
+\textbf{M03}\quad \texttt{ComplexSignal.add.0 / T\_shift\_re}\newline
+\hspace*{1.5em}\emph{程序功能：} add(other)：复数加法；out = this + other（实部与虚部分别相加）。操作数 this=(this.re, this.im)、other=(other.re, other.im)；结果 out=(out.re, out.im)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $((\mathrm{this.re}_{1} \approx  (\mathrm{this.re}_{2} + 1.0)))$ $\wedge$ $(\mathrm{this.im}_{1} \approx  \mathrm{this.im}_{2})$ $\wedge$ $(\mathrm{other.re}_{1} \approx  \mathrm{other.re}_{2})$ $\wedge$ $(\mathrm{other.im}_{1} \approx  \mathrm{other.im}_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $((\mathrm{out.re}_{1} \approx  (\mathrm{out.re}_{2} + 1.0)))$ $\wedge$ $(\mathrm{out.im}_{1} \approx  \mathrm{out.im}_{2})$\par\medskip
+\textbf{M04}\quad \texttt{MathSignalClass.clamp.0 / G\_negate\_bound\_swap}\newline
+\hspace*{1.5em}\emph{程序功能：} clamp(lo, hi, x)：将 x 限制到区间 [lo, hi] 内；返回 min(max(x, lo), hi)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $((lo_{1} \approx  (-hi_{2})))$ $\wedge$ $((hi_{1} \approx  (-lo_{2})))$ $\wedge$ $((x_{1} \approx  (-x_{2})))$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  (-\mathrm{out}_{2})$\par\medskip
+\textbf{M05}\quad \texttt{MathSignalClass.clamp.0 / L\_scale}\newline
+\hspace*{1.5em}\emph{程序功能：} clamp(lo, hi, x)：将 x 限制到区间 [lo, hi] 内；返回 min(max(x, lo), hi)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(lo_{1} \approx  2.0\cdot lo_{2})$ $\wedge$ $(hi_{1} \approx  2.0\cdot hi_{2})$ $\wedge$ $(x_{1} \approx  2.0\cdot x_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  2.0\cdot \mathrm{out}_{2}$\par\medskip
+\textbf{M06}\quad \texttt{MathSignalClass.clamp.0 / O\_le\_mono\_in\_x}\newline
+\hspace*{1.5em}\emph{程序功能：} clamp(lo, hi, x)：将 x 限制到区间 [lo, hi] 内；返回 min(max(x, lo), hi)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(lo_{2} \approx  lo_{1})$ $\wedge$ $(hi_{2} \approx  hi_{1})$ $\wedge$ $(x_{2}\leq x_{1})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{2}\leq \mathrm{out}_{1}$\par\medskip
+\textbf{M07}\quad \texttt{MathSignalClass.clamp.0 / T\_shift}\newline
+\hspace*{1.5em}\emph{程序功能：} clamp(lo, hi, x)：将 x 限制到区间 [lo, hi] 内；返回 min(max(x, lo), hi)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $((lo_{1} \approx  (lo_{2} + 1.0)))$ $\wedge$ $((hi_{1} \approx  (hi_{2} + 1.0)))$ $\wedge$ $((x_{1} \approx  (x_{2} + 1.0)))$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  (\mathrm{out}_{2} + 1.0)$\par\medskip
+\textbf{M08}\quad \texttt{MathSignalClass.exactLog2.0 / L\_idem\_at\_one}\newline
+\hspace*{1.5em}\emph{程序功能：} exactLog2(n)：正整数 n 以 2 为底的对数（因此 exactLog2(2*n) = exactLog2(n) + 1）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $n_{1} = 2\cdot n_{2}$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = (\mathrm{out}_{2} + 1)$\par\medskip
+\textbf{M09}\quad \texttt{MathSignalClass.exactLog2.0 / O\_le\_monotone}\newline
+\hspace*{1.5em}\emph{程序功能：} exactLog2(n)：正整数 n 以 2 为底的对数（因此 exactLog2(2*n) = exactLog2(n) + 1）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $n_{2} > 0$ $\wedge$ $(n_{2} \mathbin{\&} (n_{2} - 1)) = 0$ $\wedge$ $n_{1} > 0$ $\wedge$ $(n_{1} \mathbin{\&} (n_{1} - 1)) = 0$ $\wedge$ $n_{2}\leq n_{1}$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{2}\leq \mathrm{out}_{1}$\par\medskip
+\textbf{M10}\quad \texttt{MathSignalClass.exactLog2.0 / T\_double}\newline
+\hspace*{1.5em}\emph{程序功能：} exactLog2(n)：正整数 n 以 2 为底的对数（因此 exactLog2(2*n) = exactLog2(n) + 1）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $n_{1} \approx  2.0\cdot n_{2}$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  (\mathrm{out}_{2} + 1.0)$\par\medskip
+\textbf{M11}\quad \texttt{MathSignalClass.gcdSig.0 / G\_swap\_negate}\newline
+\hspace*{1.5em}\emph{程序功能：} gcdSig(a, b)：\textbar{}a\textbar{} 与 \textbar{}b\textbar{} 的最大公约数（输入先取绝对值，再做欧几里得 gcd）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} = b_{2})$ $\wedge$ $(b_{1} = a_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = \mathrm{out}_{2}$\par\medskip
+\textbf{M12}\quad \texttt{MathSignalClass.gcdSig.0 / L\_scale}\newline
+\hspace*{1.5em}\emph{程序功能：} gcdSig(a, b)：\textbar{}a\textbar{} 与 \textbar{}b\textbar{} 的最大公约数（输入先取绝对值，再做欧几里得 gcd）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $a_{1} = 2L\cdot a_{2}$ $\wedge$ $b_{1} = 2L\cdot b_{2}$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = 2L\cdot \mathrm{out}_{2}$\par\medskip
+\textbf{M13}\quad \texttt{MathSignalClass.hypotSig.0 / G\_swap\_negate}\newline
+\hspace*{1.5em}\emph{程序功能：} hypotSig(a, b)：欧几里得斜边长，sqrt(a\textasciicircum{}2 + b\textasciicircum{}2)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} \approx  b_{2})$ $\wedge$ $(b_{1} \approx  a_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  \mathrm{out}_{2}$\par\medskip
+\textbf{M14}\quad \texttt{MathSignalClass.hypotSig.0 / L\_scale}\newline
+\hspace*{1.5em}\emph{程序功能：} hypotSig(a, b)：欧几里得斜边长，sqrt(a\textasciicircum{}2 + b\textasciicircum{}2)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} \approx  2.0\cdot a_{2})$ $\wedge$ $(b_{1} \approx  2.0\cdot b_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  2.0\cdot \mathrm{out}_{2}$\par\medskip
+\textbf{M15}\quad \texttt{MathSignalClass.hypotSig.0 / O\_le\_mono\_in\_abs}\newline
+\hspace*{1.5em}\emph{程序功能：} hypotSig(a, b)：欧几里得斜边长，sqrt(a\textasciicircum{}2 + b\textasciicircum{}2)。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(|a_{2}|\leq |a_{1}|)$ $\wedge$ $(b_{2} \approx  b_{1})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{2}\leq \mathrm{out}_{1}$\par\medskip
+\textbf{M16}\quad \texttt{MathSignalClass.isSequence.0 / B\_rel\_xor\_reverse}\newline
+\hspace*{1.5em}\emph{程序功能：} isSequence(a, b, c)：当且仅当 a, b, c 构成等差数列（b - a == c - b）时返回 true。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} \approx  c_{2})$ $\wedge$ $(b_{1} \approx  b_{2})$ $\wedge$ $(c_{1} \approx  a_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $!(\mathrm{out}_{2}$ $\wedge$ $\mathrm{out}_{1})$\par\medskip
+\textbf{M17}\quad \texttt{MathSignalClass.isSequence.0 / G\_negate\_reverse}\newline
+\hspace*{1.5em}\emph{程序功能：} isSequence(a, b, c)：当且仅当 a, b, c 构成等差数列（b - a == c - b）时返回 true。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $((a_{1} \approx  (-c_{2})))$ $\wedge$ $((b_{1} \approx  (-b_{2})))$ $\wedge$ $((c_{1} \approx  (-a_{2})))$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = \mathrm{out}_{2}$\par\medskip
+\textbf{M18}\quad \texttt{MathSignalClass.isSequence.0 / L\_scale\_pos}\newline
+\hspace*{1.5em}\emph{程序功能：} isSequence(a, b, c)：当且仅当 a, b, c 构成等差数列（b - a == c - b）时返回 true。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} \approx  2.0\cdot a_{2})$ $\wedge$ $(b_{1} \approx  2.0\cdot b_{2})$ $\wedge$ $(c_{1} \approx  2.0\cdot c_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = \mathrm{out}_{2}$\par\medskip
+\textbf{M19}\quad \texttt{MathSignalClass.isSequence.0 / O\_le\_transitivity}\newline
+\hspace*{1.5em}\emph{程序功能：} isSequence(a, b, c)：当且仅当 a, b, c 构成等差数列（b - a == c - b）时返回 true。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1}\leq a_{2})$ $\wedge$ $(b_{2}\leq b_{1})$ $\wedge$ $(c_{2}\leq c_{1})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $(!\mathrm{out}_{2})$ $\vee$ $\mathrm{out}_{1}$\par\medskip
+\textbf{M20}\quad \texttt{MathSignalClass.isSequence.0 / T\_rev\_exclusion}\newline
+\hspace*{1.5em}\emph{程序功能：} isSequence(a, b, c)：当且仅当 a, b, c 构成等差数列（b - a == c - b）时返回 true。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} \approx  c_{2})$ $\wedge$ $(b_{1} \approx  b_{2})$ $\wedge$ $(c_{1} \approx  a_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $!(\mathrm{out}_{2}$ $\wedge$ $\mathrm{out}_{1})$\par\medskip
+\textbf{M21}\quad \texttt{MathSignalClass.isSequence.0 / T\_shift}\newline
+\hspace*{1.5em}\emph{程序功能：} isSequence(a, b, c)：当且仅当 a, b, c 构成等差数列（b - a == c - b）时返回 true。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $((|(a_{1} - a_{2}) - (b_{1} - b_{2})| < \varepsilon))$ $\wedge$ $((|(b_{1} - b_{2}) - (c_{1} - c_{2})| < \varepsilon))$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = \mathrm{out}_{2}$\par\medskip
+\textbf{M22}\quad \texttt{MathSignalClass.lcmSig.0 / G\_swap\_negate}\newline
+\hspace*{1.5em}\emph{程序功能：} lcmSig(a, b)：\textbar{}a\textbar{} 与 \textbar{}b\textbar{} 的最小公倍数（输入先取绝对值）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} = b_{2})$ $\wedge$ $(b_{1} = a_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = \mathrm{out}_{2}$\par\medskip
+\textbf{M23}\quad \texttt{MathSignalClass.lcmSig.0 / L\_scale}\newline
+\hspace*{1.5em}\emph{程序功能：} lcmSig(a, b)：\textbar{}a\textbar{} 与 \textbar{}b\textbar{} 的最小公倍数（输入先取绝对值）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} = 2\cdot a_{2})$ $\wedge$ $(b_{1} = 2\cdot b_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = 2\cdot \mathrm{out}_{2}$\par\medskip
+\textbf{M24}\quad \texttt{MathSignalClass.midpoint.0 / G\_swap\_negate}\newline
+\hspace*{1.5em}\emph{程序功能：} midpoint(a, b)：算术中点 (a + b) / 2。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} \approx  b_{2})$ $\wedge$ $(b_{1} \approx  a_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  \mathrm{out}_{2}$\par\medskip
+\textbf{M25}\quad \texttt{MathSignalClass.midpoint.0 / L\_scale}\newline
+\hspace*{1.5em}\emph{程序功能：} midpoint(a, b)：算术中点 (a + b) / 2。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(a_{1} \approx  2.0\cdot a_{2})$ $\wedge$ $(b_{1} \approx  2.0\cdot b_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  2.0\cdot \mathrm{out}_{2}$\par\medskip
+\textbf{M26}\quad \texttt{MathSignalClass.midpoint.0 / O\_le\_mono\_in\_a}\newline
+\hspace*{1.5em}\emph{程序功能：} midpoint(a, b)：算术中点 (a + b) / 2。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $a_{2}\leq a_{1}$ $\wedge$ $(b_{2} \approx  b_{1})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{2}\leq \mathrm{out}_{1}$\par\medskip
+\textbf{M27}\quad \texttt{MathSignalClass.midpoint.0 / T\_shift}\newline
+\hspace*{1.5em}\emph{程序功能：} midpoint(a, b)：算术中点 (a + b) / 2。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $((a_{1} \approx  (a_{2} + 1.0)))$ $\wedge$ $((b_{1} \approx  (b_{2} + 1.0)))$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  (\mathrm{out}_{2} + 1.0)$\par\medskip
+\textbf{M28}\quad \texttt{MathSignalClass.powerSig.0 / D\_reciprocal\_exp}\newline
+\hspace*{1.5em}\emph{程序功能：} powerSig(base, n)：\textbar{}base\textbar{} 的 n 次幂（底数先取绝对值再求幂）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(base_{1} \approx  base_{2})$ $\wedge$ $base_{2}\neq 0.0$ $\wedge$ $n_{1} = -n_{2}$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  (1.0 / \mathrm{out}_{2})$\par\medskip
+\textbf{M29}\quad \texttt{MathSignalClass.powerSig.0 / E\_power\_of\_power}\newline
+\hspace*{1.5em}\emph{程序功能：} powerSig(base, n)：\textbar{}base\textbar{} 的 n 次幂（底数先取绝对值再求幂）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $base_{1} \approx  \mathrm{out}_{2}$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  powerSig(base_{2}, n_{2}\cdot n_{1})$\par\medskip
+\textbf{M30}\quad \texttt{MathSignalClass.powerSig.0 / G\_odd\_negate}\newline
+\hspace*{1.5em}\emph{程序功能：} powerSig(base, n)：\textbar{}base\textbar{} 的 n 次幂（底数先取绝对值再求幂）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(n_{1} = n_{2})$ $\wedge$ $((base_{1} \approx  (-base_{2})))$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $((n_{2} \bmod  2 = 0)$ $\wedge$ $(\mathrm{out}_{1} \approx  \mathrm{out}_{2}))$ $\vee$ $((n_{2} \bmod  2\neq 0)$ $\wedge$ $((\mathrm{out}_{1} \approx  (-\mathrm{out}_{2}))))$\par\medskip
+\textbf{M31}\quad \texttt{MathSignalClass.powerSig.0 / L\_scale\_base}\newline
+\hspace*{1.5em}\emph{程序功能：} powerSig(base, n)：\textbar{}base\textbar{} 的 n 次幂（底数先取绝对值再求幂）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $(base_{1} \approx  3.0\cdot base_{2})$ $\wedge$ $(n_{1} = n_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  (powerSig(3.0, n_{2})\cdot \mathrm{out}_{2})$\par\medskip
+\textbf{M32}\quad \texttt{MathSignalClass.powerSig.0 / T\_exp\_step}\newline
+\hspace*{1.5em}\emph{程序功能：} powerSig(base, n)：\textbar{}base\textbar{} 的 n 次幂（底数先取绝对值再求幂）。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $base_{1} = base_{2}$ $\wedge$ $(n_{1} = (n_{2} + 1))$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} \approx  (\mathrm{out}_{2}\cdot base_{2})$\par\medskip
+\textbf{M33}\quad \texttt{MathSignalClass.signum.0 / D\_reciprocal}\newline
+\hspace*{1.5em}\emph{程序功能：} signum(x)：x 的符号；当 x\textless{}0, x=0, x\textgreater{}0 时分别返回 -1, 0, +1。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $x_{2}\neq 0.0$ $\wedge$ $(x_{1} \approx  (1.0 / x_{2}))$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = \mathrm{out}_{2}$\par\medskip
+\textbf{M34}\quad \texttt{MathSignalClass.signum.0 / G\_negate}\newline
+\hspace*{1.5em}\emph{程序功能：} signum(x)：x 的符号；当 x\textless{}0, x=0, x\textgreater{}0 时分别返回 -1, 0, +1。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $x_{1} \approx  (-x_{2})$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = - \mathrm{out}_{2}$\par\medskip
+\textbf{M35}\quad \texttt{MathSignalClass.signum.0 / L\_scale\_pos}\newline
+\hspace*{1.5em}\emph{程序功能：} signum(x)：x 的符号；当 x\textless{}0, x=0, x\textgreater{}0 时分别返回 -1, 0, +1。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $x_{1} \approx  3.0\cdot x_{2}$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = \mathrm{out}_{2}$\par\medskip
+\textbf{M36}\quad \texttt{MathSignalClass.signum.0 / O\_le\_monotone}\newline
+\hspace*{1.5em}\emph{程序功能：} signum(x)：x 的符号；当 x\textless{}0, x=0, x\textgreater{}0 时分别返回 -1, 0, +1。\newline
+\hspace*{1.5em}JIR（输入关系）：\ $x_{2}\leq x_{1}$\newline
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{2}\leq \mathrm{out}_{1}$\par\medskip
+\end{document}

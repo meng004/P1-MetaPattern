@@ -1,0 +1,59 @@
+{
+  "id": "diffrax_srk_backward_reversibility",
+  "repo": "patrick-kidger/diffrax",
+  "domain": "additional structure-present library beyond the four SUT domains (sde_numerical / differential-equation solvers in JAX) -- reversible/stochastic Runge-Kutta integrators; witnesses family e (Trev*), which is structurally absent from the four SUT domains",
+  "sut_family": "diffrax SRK family (AbstractSRK: ShARK / GeneralShARK / SlowRK / SPaRK / SRA1 / SEA) -- stochastic Runge-Kutta propagators using a space-time Levy area; aligns with the paper reversible-propagator / time-stepping integrator primitives",
+  "cat": "Trev* time-reversal symmetry (family e; Mode I; reversible-propagator round-trip Phi_t(Theta Phi_t x) = Theta x must return the initial state). Closes the previously-empty family-e in-the-wild cell: the pre-fix SRK step uses the space-time Levy area H without accounting for integration DIRECTION, so a BACKWARD (t0>t1) solve gets the wrong Levy-area sign and the forward->backward round trip does NOT return to the initial state; the fix carries a signed step and direction-corrected H so the round trip returns to tolerance.",
+  "fix_commit": "12efb5bf75b16f22ff4a40c989dc8d8bb40e6efa",
+  "fix_commit_short": "12efb5b",
+  "fix_title": "fix backwards-in-time solve for srk's",
+  "pre_fix_parent_commit": "56d78e1acbdc9c1493caef17a34777931430f3bf",
+  "pre_version": "0.7.2",
+  "post_version": "unreleased (post-v0.7.2 main; fix 12efb5b 2026-04-20, NOT in any release tag as of v0.7.2 2026-02-18)",
+  "tolerance": 1e-3,
+  "cpu_status": "OK (jax CPU, float64)",
+  "sut": "Additive-noise SDE dy = (-0.5 y + 0.2 cos(0.7 t)) dt + g dW with g constant (ShARK/SRA1) or mildly state-dependent (GeneralShARK/SlowRK/SPaRK), 1 Brownian motion, SpaceTimeLevyArea. y0=[1.0,-0.5], t0=0, T=2, FIXED Brownian path (VirtualBrownianTree key=42, tol=1e-4) so the solve is DETERMINISTIC. Round-trip: integrate forward 0->T (n equal steps) to get y(T), then integrate the SAME equation backward T->0 over the SAME path; the Trev* observable is max|y_back - y0|, swept over n in {50,200,800,3200}.",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "Trev* (family e, Mode I): for a reversible propagator Phi_t the round trip returns the initial state, Phi_t(Theta Phi_t x) = Theta x, where Theta reverses the time direction (here t-flip realised by diffrax solving with t0>t1, the same fixed Brownian sample path driving both legs). Operationally: forward-solve 0->T to y(T), then backward-solve T->0 over the same path; a CORRECT solver returns to y0 with an error that -> 0 as dt -> 0 (the pathwise strong solution is the same continuous trajectory traversed in reverse). The discriminating refinement test: a genuine reversibility defect leaves a SYSTEMATIC O(1) round-trip error that does NOT shrink under dt -> 0 (it is a sign error in the space-time Levy area, not a discretisation error), whereas a reversible solver's round-trip error decreases monotonically with n. Mode I (a single propagator round-trips on itself), distinct from Mode M (two implementations compared).",
+  "fired_type": "NUMERIC (wrong backward solution, no crash). PRE 0.7.2: round-trip max|y_back - y0| ~= 0.6705 for ALL four SRK solvers (ShARK/GeneralShARK/SlowRK/SPaRK) and is FLAT under refinement (n=50: 6.702e-01 -> n=3200: 6.705e-01), i.e. the backward leg is systematically wrong because the space-time Levy area H is added with the forward sign on a backward step. POST (fix 12efb5b): round-trip error -> 0 as dt -> 0 (ShARK n=50: 2.87e-06 -> n=3200: 1.10e-11; the other three converge to 1e-7..1e-9), i.e. reversibility restored. Deterministic: identical numbers across re-runs (fixed VirtualBrownianTree key=42; ShARK n=3200 err = 6.7048737761e-01 on two independent PRE runs).",
+  "pre_observed": {
+    "diffrax": "0.7.2 (installed wheel; srk.py byte-identical to parent commit 56d78e1, verified by diff)",
+    "roundtrip_max_abs_err_by_n": {
+      "ShARK":        {"50": 6.702485e-01, "200": 6.704073e-01, "800": 6.705103e-01, "3200": 6.704874e-01},
+      "GeneralShARK": {"50": 6.702485e-01, "200": 6.704073e-01, "800": 6.705103e-01, "3200": 6.704874e-01},
+      "SlowRK":       {"50": 6.702518e-01, "200": 6.704076e-01, "800": 6.705104e-01, "3200": 6.704874e-01},
+      "SPaRK":        {"50": 6.702595e-01, "200": 6.704080e-01, "800": 6.705104e-01, "3200": 6.704874e-01}
+    },
+    "refinement_behaviour": "FLAT (error does not shrink as n grows 50->3200) -- signature of a systematic reversibility/Levy-area-sign defect, not discretisation error",
+    "verdict": "FIRED (round-trip error ~0.67 >> tol 1e-3 and non-decreasing under refinement; backward solve is systematically wrong)"
+  },
+  "post_observed": {
+    "diffrax": "0.7.2 wheel with diffrax/_solver/srk.py replaced by the fix-commit (12efb5b) version (verbatim git checkout); only srk.py changed between v0.7.2 and the fix, so this isolates the fix",
+    "roundtrip_max_abs_err_by_n": {
+      "ShARK":        {"50": 2.869737e-06, "200": 4.483483e-08, "800": 7.006791e-10, "3200": 1.095091e-11},
+      "GeneralShARK": {"50": 2.462185e-05, "200": 3.910988e-06, "800": 5.232306e-07, "3200": 1.110584e-07},
+      "SlowRK":       {"50": 4.045667e-06, "200": 2.990102e-06, "800": 1.182748e-08, "3200": 4.383281e-09},
+      "SPaRK":        {"50": 3.430550e-06, "200": 7.386357e-07, "800": 6.101763e-07, "3200": 9.784825e-08}
+    },
+    "refinement_behaviour": "DECREASING toward 0 as n grows (ShARK reaches 1.1e-11 at n=3200) -- reversibility restored, residual is ordinary strong discretisation error",
+    "verdict": "HELD (round-trip error -> 0 as dt -> 0; below tol 1e-3 at every refinement level)"
+  },
+  "verified": "SELF-RUN, source-isolated (PRE wheel vs PRE+fix-srk.py). PRE = released diffrax 0.7.2; its diffrax/_solver/srk.py was diff-verified BYTE-IDENTICAL to the pre-fix parent commit 56d78e1 (git log confirms the fix 12efb5b is the ONLY commit touching srk.py between v0.7.2 and the fix), so the released 0.7.2 IS the pre-fix state for this code path. POST = the same wheel with srk.py swapped to the exact 12efb5b version (saved verbatim as results/diffrax_repro/srk_POST_12efb5b.py). Both run in the SAME venv (jax 0.10.2 CPU, equinox 0.13.8, py3.11.15, float64), so the ONLY difference is the 5-hunk srk.py fix. THIS IS FAMILY e (Trev*), NOT a generic accuracy bug: the defect is a TIME-DIRECTION (reversibility) error -- the forward solve is correct in BOTH versions; only the BACKWARD leg differs, because the pre-fix step adds the space-time Levy area H with the forward sign regardless of direction while _term.py blanket-multiplies the control by direction=sign(t1-t0). The round-trip refinement test discriminates a reversibility defect (PRE error flat at 0.67 under dt->0) from discretisation noise (POST error ->0). The fix SHA exists upstream: `git show 12efb5b --stat` in a full clone of github.com/patrick-kidger/diffrax confirms the diff (diffrax/_solver/srk.py | 18 +-, test/helpers.py, test/test_sde1.py adds direction=('forwards','backwards') parametrisation). Determinism: fixed VirtualBrownianTree key=42; ShARK n=3200 PRE err = 6.7048737761e-01 reproduced bit-identically on repeated runs.",
+  "mode": "I (intra-propagator round-trip): a single reversible propagator must return to its initial state after forward-then-reversed integration over the same driving path. Distinct from family i (accuracy-order, Mode M comparing two implementations) and family h (mere convergence): here the relation is the EXACT time-reversal involution, and the failure is direction-dependent (forward correct, backward wrong).",
+  "upstream": "diffrax commit 12efb5b 'fix backwards-in-time solve for srk's' (author sammccallum, 2026-04-20); parent 56d78e1 'Use dependency groups, uv, and local pre-commit hooks'. Fix file diffrax/_solver/srk.py introduces signed_h = drift.contr(t0,t1), direction = sign(signed_h), multiplies bm_inc.H by direction in the space-time Levy-area paths, and passes signed_h to drift.vf_prod, preserving H(h)=H(-h).",
+  "repro_script": "results/diffrax_repro/repro_diffrax_srk_backward_revers.py",
+  "note": "Fills the previously-EMPTY family-e (Trev*) IN-THE-WILD cell. Prior family-e records were all structural NEGATIVES (NEGATIVE_scipy_dstar/COVERAGE_SUMMARY S3, NEGATIVE_openmc_trev, NEGATIVE_pyscf_trev, NEGATIVE_deepxde_trev) -- those libraries either have no reversible propagator (deepxde PINN, scipy, openmc) or only a construction-reversible velocity-Verlet (pyscf BOMD) with no fire-able bug. Diffrax is the missing substrate: it ships explicit reversible/stochastic RK propagators, and 12efb5b is a real maintainer fix to a TIME-DIRECTION (reversibility) defect in exactly that propagator family. The bug: in diffrax/_solver/srk.py the space-time Levy area H (lines `levy_areas.append(bm_inc.H)`, `diffusion.prod(g0, bm_inc.H)`, `bm_inc.W - 2.0*bm_inc.H`) and the drift step size h were used with the FORWARD sign even when integrating backward (t0>t1); since _term.py already multiplies the control output by direction=sign(t1-t0), the Levy-area term ended up with the wrong sign on backward steps, making the backward solution systematically wrong (round-trip error ~0.67, flat under refinement). The fix adds signed_h=drift.contr(t0,t1), direction=sign(signed_h), multiplies H by direction (preserving H(h)=H(-h)), and feeds signed_h to drift.vf_prod -- restoring the round trip to ->0 as dt->0. HONESTY CAVEAT (documented, not hidden): the fix is NOT yet in a PyPI release (latest tag v0.7.2 = 2026-02-18; fix = 2026-04-20), so this is a released(PRE)-to-source(POST) bracket, NOT released-to-released. It is still a clean isolation because (a) the PRE wheel's srk.py is diff-verified identical to the pre-fix parent, and (b) only srk.py changed between v0.7.2 and the fix, swapped verbatim for POST in the same venv. The accompanying upstream test change (test/test_sde1.py) adds a direction=('forwards','backwards') parametrisation to test_sde_strong_order_new / test_sde_strong_limit, confirming the maintainer's own regression target is backward-in-time correctness. [schema: fired keys are MR-sets {N,M,G,L,B}; NOETHER MR is set N; cat carries the Trev*/family-e block name; tolerance=1e-3 is the round-trip-return threshold.] [env: python 3.11.15, jax 0.10.2 (CPU), diffrax 0.7.2 wheel (+ srk.py swap for POST), equinox 0.13.8, float64.]"
+}

@@ -1,0 +1,55 @@
+{
+  "id": "scipy_simpson_even_order",
+  "repo": "scipy/scipy",
+  "domain": "paper SUT domain (pde_numerical / E1: SciPy)",
+  "sut_family": "integrate.simpson (composite Simpson quadrature) -- aligns with paper numerical-integration / quadrature primitives",
+  "cat": "L*.acc accuracy-order (family i; Mode M; E*: higher-order method must be >= as accurate / observed order == claimed). Composite Simpson is documented as globally 4th order; with an EVEN number of samples (ODD number of intervals) the pre-fix 'avg' boundary blend uses a trapezoidal rule on the odd interval, dropping the GLOBAL observed order from 4 to 3 (order reduction). The fixed 'simpson' method (Cartwright parabolic correction) restores observed order 4.",
+  "fix_commit": "572a373aac2bf14ee6a0c164aac9734b54594b8f",
+  "fix_commit_short": "572a373aa",
+  "fix_title": "ENH: integrate.simpson: improve accuracy for even number of points (#18209)",
+  "pre_fix_parent_commit": "95d5b38e3d6e20fd3971cfd2b68769a668d8f324",
+  "pre_version": "1.10.1",
+  "post_version": "1.11.0",
+  "tolerance": 3.6,
+  "cpu_status": "OK",
+  "sut": "integral of f(x)=exp(sin x) on [0,2] by composite Simpson over an ODD-interval (EVEN #points) refinement nint in {3,7,15,31,63,127,255}; observed order = slope of log|err| vs log h.",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "L*.acc accuracy-order (family i, E*, Mode M). Composite Simpson is claimed globally 4th order. (1) observed order p_obs (slope of log||err|| vs log h over an even-#points / odd-#intervals refinement) must match the claimed order 4 (operationalised as p_obs >= 3.6); equivalently (2) the higher-order method must be at least as accurate as the lower-order one at matched work: ||err(simpson)|| <= ||err(avg)|| at every refinement level. Mode M: the two methods compared are two implementations of the SAME Simpson integral on the SAME nodes -- the pre-fix default even='avg' (trapezoidal boundary blend) vs the post-fix default even='simpson' (Cartwright parabolic correction). Source = high-accuracy quad reference; follow-up = simpson at the version default.",
+  "fired_type": "NUMERIC (order reduction, no crash). PRE 1.10.1: asymptotic observed order p_tail=3.018 (least-squares over fine half p_fit=3.041) -- one order below the claimed 4 (claimed 4, achieved ~3). POST 1.11.0: p_tail=3.987 (p_fit=3.965) -- matches the claimed 4. E* accuracy form also holds: POST abs_err <= PRE abs_err at every level (e.g. nint=255: 6.51e-10 <= 1.68e-8). Deterministic: identical numbers across re-runs (pure numpy linspace + simpson).",
+  "pre_observed": {
+    "scipy": "1.10.1",
+    "default_even": "avg (trapezoidal blend on the odd boundary interval)",
+    "abs_err_by_nint": {"3": 1.989842e-02, "7": 1.163072e-03, "15": 9.918986e-05, "31": 1.022439e-05, "63": 1.159906e-06, "127": 1.381005e-07, "255": 1.684676e-08},
+    "p_obs_consecutive": [3.351, 3.230, 3.130, 3.069, 3.036, 3.018],
+    "p_tail": 3.018,
+    "p_fit_fine_half": 3.041,
+    "verdict": "FIRED (observed order ~3.0 < 3.6; one-order reduction from claimed 4)"
+  },
+  "post_observed": {
+    "scipy": "1.11.0",
+    "default_even": "simpson (Cartwright 3-point parabolic correction on the odd boundary interval)",
+    "abs_err_by_nint": {"3": 1.607961e-02, "7": 5.656750e-04, "15": 4.433666e-05, "31": 2.762869e-06, "63": 1.696865e-07, "127": 1.047993e-08, "255": 6.506475e-10},
+    "p_obs_consecutive": [3.951, 3.341, 3.823, 3.934, 3.972, 3.987],
+    "p_tail": 3.987,
+    "p_fit_fine_half": 3.965,
+    "verdict": "HELD (observed order ~4.0 >= 3.6; matches claimed 4)"
+  },
+  "verified": "SELF-RUN uv-pip released-to-released: pre scipy 1.10.1 FIRED (observed order p_tail=3.018, achieves ~3 vs claimed 4) / post scipy 1.11.0 HELD (p_tail=3.987, matches claimed 4). Python 3.11.15, numpy 1.26.4 in BOTH venvs (numpy held fixed so the only change is the scipy Simpson method). Re-run is bit-identical (deterministic). THIS IS FAMILY i (E*), NOT FAMILY h: the quadrature CONVERGES in both versions (abs_err -> 0 monotonically as h -> 0, so the L*.conv / family-h relation HOLDS on both sides); the defect is purely in the accuracy ORDER / RATE -- pre achieves error ~ h^3 where the method is documented to be ~ h^4, an ORDER REDUCTION caused by the trapezoidal boundary term on the odd interval. The fix restores the h^4 rate. Mode M is explicit: the MR compares two implementations of the SAME Simpson integral on the SAME nodes (even='avg' boundary-blend method vs even='simpson' parabolic-correction method); the released default flipped from the faulty 'avg' to the correct 'simpson' at 1.10.1 -> 1.11.0, and that version bracket localises the lower-order side.",
+  "mode": "M (inter-implementation): same Simpson integral, two methods (avg-blend vs simpson parabolic correction). Distinct from family h (mere convergence, both versions converge) and family j (exact representation-invariance / zero-tolerance equality); here the relation is an APPROXIMATE accuracy-ORDER partial order, not exact equality.",
+  "upstream": "gh-18209 (PR); gh-12012 / Cartwright even-points accuracy",
+  "repro_script": "results/scipy_repro/repro_simpson_even_order.py",
+  "note": "Fills the previously-GAP scipy x i (L*.acc / E* accuracy-order) cell in the UNIFIED_BLOCK_MODEL coverage matrix. The bug: scipy/integrate/_quadrature.py simpson() with an EVEN number of samples (ODD #intervals) handled the leftover interval with a TRAPEZOIDAL rule (lines val += 0.5*last_dx*(y[slice1]+y[slice2]) in the pre-fix even='avg'/'first'/'last' branches), injecting an O(h^3) boundary error into the otherwise O(h^4) composite sum and dropping the GLOBAL observed convergence order to 3. Commit 572a373aa added the Cartwright degree-matched 3-point parabolic correction (new even='simpson', made the default at 1.11.0), restoring observed order 4. HONESTY CAVEAT (documented, not hidden): the fix does NOT make Simpson exact on cubics with even #points (e.g. integral of x^3 on [0,9]: exact 1640.25; pre even='avg' npts=4 gives 1701.0, post even='simpson' npts=4 gives 1660.5 -- improved but still not exact), so this entry is framed strictly as an OBSERVED-CONVERGENCE-ORDER / accuracy-rate defect (h^3 vs h^4), NOT as a degree-of-exactness restoration. The clean, reproducible E* signal is the observed-order drop 4->3 and the matched-work error ordering POST<=PRE. numpy pinned to 1.26.4 in both venvs to isolate the scipy method change. [schema: fired keys are MR-sets {N,M,G,L,B}; NOETHER MR is set N; cat field carries the L*.acc / family-i block name; tolerance=3.6 is the observed-order threshold for 'matches claimed order 4'.] [env: uv venv python 3.11.15, scipy 1.10.1 (pre) / 1.11.0 (post), numpy 1.26.4 both.]"
+}

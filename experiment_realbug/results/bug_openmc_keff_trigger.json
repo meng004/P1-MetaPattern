@@ -1,0 +1,58 @@
+{
+  "id": "openmc_trigger_convergence_criterion",
+  "repo": "openmc-dev/openmc",
+  "domain": "paper SUT domain (reactor_physics/pde_sciml: OpenMC -- eigenvalue source-iteration convergence trigger / score binding)",
+  "sut_family": "openmc tally trigger (settings.trigger_active + openmc.Trigger) as the Monte-Carlo eigenvalue CONVERGENCE CRITERION -- the active-batch source-iteration loop runs additional batches (trigger_batch_interval, up to trigger_max_batches) until the tallied score's statistical uncertainty falls below threshold. Anchored on a bare U235 metal sphere (Godiva-like fast assembly), continuous-energy ENDF/B-VIII.0, eigenvalue mode. Bug site: src/tallies/tally.cpp Tally::init_triggers (trigger<->score index binding).",
+  "cat": "L* convergence / limit operator (NOETHER L* block: a tally trigger is the discrete statement of an L* convergence criterion on the eigenvalue source iteration -- iterate active batches until rel_err(score) < threshold, a converged limit bounded by trigger_max_batches; binding the trigger to its score is the precondition for that limit operator to exist). reactor_physics 4th block.",
+  "fix_commit": "b54de4d76176c43ebb2edee3ddbc78e709b3c910",
+  "fix_commit_short": "b54de4d76",
+  "fix_title": "Fix check for trigger score name (#3155)",
+  "pre_commit": "1645e3bb8719e299a574bf4bac268691abab2f10",
+  "pre_commit_note": "b54de4d76^ (parent of the fix); informational only -- the reproduction uses RELEASED conda binaries (0.15.0 pre / 0.15.3 post), not the parent commit.",
+  "pre_version": "0.15.0 (conda omc_pre)",
+  "post_version": "0.15.3 (conda omc)",
+  "released_window": "The fix b54de4d76 is v0.15.1~121: NOT in v0.15.0, present in v0.15.1, v0.15.2 AND v0.15.3 (confirmed git merge-base --is-ancestor). So pre/post is a clean RELEASED conda pair: PRE=0.15.0 (FIRED), POST=0.15.3 (HELD). Intermediate released 0.15.2 (omc_152) also HELD -- the fix is stable across the entire released post-window.",
+  "tolerance": 0.0,
+  "cpu_status": "OK",
+  "sut": "bare U235 sphere r=8 cm, rho=18 g/cm3 (Godiva-like fast metal), eigenvalue mode, particles=300, batches=15 (minimum), inactive=5, seed=1, trigger_active=True, trigger_batch_interval=5, trigger_max_batches=40 (affected-score case) / 80 (control fission case), continuous-energy ENDF/B-VIII.0 U235. A tally on score 'He3-production' carries a Trigger(rel_err, threshold) on that same score -- the trigger->score binding is the buggy path.",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "L* convergence: a tally trigger is the discrete L* convergence criterion on the eigenvalue source iteration -- with trigger_active=True the active-batch loop must ITERATE (add batches in trigger_batch_interval steps) until rel_err(score) < threshold (a converged limit), bounded by trigger_max_batches. Binding the trigger to its tally score is the precondition for the limit operator to be formed. FIRED <=> declaring a trigger on a particle-production score (He3/H3/H1/He4-production) makes init_triggers abort (fatal_error 'Could not find the score ...'), so the convergence criterion is unenforceable (no L* limit operator). HELD <=> the trigger binds and the active-batch convergence loop runs.",
+  "fired_type": "CRASH (RuntimeError/fatal_error: 'Could not find the score \"He3-production\" in tally 1 but it was listed in a trigger on that tally') -- raised at run setup (init_triggers XML parse) BEFORE any transport, so the eigenvalue convergence criterion cannot be set up at all. Deterministic (reproduced identically on two PRE reruns). NOTE: a CONTROL trigger on 'fission' binds and converges in BOTH 0.15.0 and 0.15.3 (15->35/40 batches until fission rel_err < 0.01), isolating the defect to the score-name round-trip of the special production score codes, not to triggers in general.",
+  "pre_observed": {
+    "affected_score": "He3-production",
+    "verdict": "FIRED",
+    "crash": "RuntimeError: Could not find the score \"He3-production\" in tally 1 but it was listed in a trigger on that tally",
+    "control_fission_trigger_batches": 35,
+    "control_fission_rel_err": 0.00948,
+    "control_note": "fission trigger binds and converges (15->35 batches, rel_err 0.00948 < 0.01) even on 0.15.0 -- only the *-production trigger binding is broken",
+    "deterministic": true
+  },
+  "post_observed": {
+    "affected_score": "He3-production",
+    "verdict": "HELD",
+    "he3_trigger_batches": 40,
+    "he3_trigger_rel_err": 0.20581,
+    "he3_note": "He3-production rate is ~0 for U235 so the rel_err target is never met -> loop runs to trigger_max_batches=40; that is CORRECT convergence-loop behavior (the limit operator now exists), not a crash",
+    "control_fission_trigger_batches": 40,
+    "control_fission_rel_err": 0.00983
+  },
+  "confounder_check": "Between v0.15.0 and the fix b54de4d76, the init_triggers score-matching block in src/tallies/tally.cpp is touched by EXACTLY ONE commit: b54de4d76 itself (git log v0.15.0..b54de4d76 -- src/tallies/tally.cpp = single entry). The other commits in the v0.15.0..v0.15.1 window touch unrelated code (D1S decay photons #3235, gsl-lite removal #3225, non-elastic MT #3285, IndependentSource statistical weights #3195). -> FIRED->HELD attributable to exactly this fix (confounder count = 1).",
+  "verified": "SELF-RUN conda released-to-released: PRE openmc 0.15.0 (omc_pre) FIRED (He3-production trigger -> fatal_error 'Could not find the score', reproduced on 2 reruns) / POST openmc 0.15.3 (omc) HELD (He3-production trigger binds, convergence loop runs 40 batches). Intermediate released 0.15.2 (omc_152) also HELD. Eigenvalue MG-mode probe additionally confirmed the crash is the trigger-binding path (not the MG score restriction, which is a different error). Control fission trigger converges (15->N batches) in both versions, isolating the defect.",
+  "upstream": "gh-3155 (PR 'Fix check for trigger score name'). Root cause in src/tallies/tally.cpp Tally::init_triggers: PRE matched the user's trigger score string with reaction_name(this->scores_[i_score]) == score_str, but scores_[i_score] is an integer score CODE; for the production scores the code is a special SCORE constant (N_X3HE/N_XT/N_XP/N_XA) that reaction_name(int) maps to 'MT=<code>', NOT back to 'He3-production', so the round-trip never matches and the loop falls through to fatal_error even though the score IS on the tally. POST compares the integer codes directly: this->scores_[i_score] == reaction_type(score_str) (reaction_type('He3-production')==N_X3HE), so the trigger binds.",
+  "repro_script": "results/openmc_repro/repro_keff_trigger_convergence.py",
+  "data_helper": "results/openmc_repro/build_u235_ce_data.py (the same U235.h5 + cross_sections.xml ENDF/B-VIII.0 CE library built for the IFP repro; CE data is needed because the affected scores are particle-production reaction rates that are rejected in multi-group mode before reaching the trigger-binding code, so the bug only surfaces under continuous-energy nuclear data).",
+  "note": "THIRD-PARTY in-the-wild bug in OpenMC's tally-trigger (eigenvalue convergence-criterion) machinery; fills the reactor_physics L* convergence block (previously 'unexplored' in the coverage matrix), complementing reactor_physics's existing G-symmetry (normalize, rotperiodic), conservation (no_reduce), and T* (IFP adjoint) blocks. The L* MR is exactly the eigenvalue solver's convergence criterion in testable form: a trigger makes the active-batch source iteration converge to a target precision (an L* limit operator); a defect that prevents the trigger from binding makes that limit operator un-formable. HONEST LEVEL: crash-type (the convergence criterion cannot be set up in 0.15.0 for production-score triggers -> fatal_error at setup), reproduced via the EXACT buggy call path (Tally::init_triggers) on RELEASED conda binaries 0.15.0 (pre) vs 0.15.3 (post). The POST side additionally demonstrates the limit operator working: a tight fission-rate trigger iterates the active-batch loop from the 15-batch minimum to ~40 batches until rel_err < 0.01. KEY ISOLATION: the control fission trigger binds and converges in BOTH versions (so triggers in general are fine on 0.15.0); only the *-production score binding is broken, pinning the defect to the score-name round-trip. KEY ENV FINDING: needs continuous-energy data (U235 ENDF/B-VIII.0, reused from the IFP repro) because production scores are rejected in multi-group mode before the trigger-binding code runs; eigenvalue run, CPU seconds per case. 'N' set-slot is the directly-evaluated NOETHER L* MR (same convention as the other entries); 'G' set-key is GenMorph (not_applicable to library bugs), distinct from the semantic G-symmetry block name. [cpu env: conda released-to-released (omc_pre 0.15.0 / omc 0.15.3); continuous-energy ENDF/B-VIII.0 U235; eigenvalue run, CPU seconds]"
+}

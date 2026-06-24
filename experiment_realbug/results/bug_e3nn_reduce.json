@@ -1,0 +1,27 @@
+{
+  "id": "e3nn_reduce_antisym",
+  "repo": "e3nn/e3nn",
+  "cat": "m^eq_adj-family (role-swap duality, antisymmetric parity variant)",
+  "fix_commit": "f7f35fb",
+  "parent_commit": "3ddce1f",
+  "tolerance": 0.0001,
+  "cpu_status": "OK",
+  "env_class": "C (py3.9 + torch1.8.1 + e3nn0.2.7)",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "role-swap antisymmetry: tp(x,y)+tp(y,x)=0 for ReducedTensorProducts('ij=-ji')",
+  "notes": "git-history method (test-backed): parent 3ddce1f buggy -> fix f7f35fb fixed. PRE |tp(x,y)+tp(y,x)|=2.70 FIRED; POST=1.2e-7 HELD (FP-gate pass). Also |Q+Q^T|: PRE 1.0 -> POST ~0. The invariant is argument-swap antisymmetry of a bilinear tensor map = m^eq_adj's role-swap duality with parity -1. HONEST: paper rho_adj (L826-843) states the SYMMETRIC self-adjoint role-swap; this is its antisymmetric (parity-(-1)) sibling of the SAME duality concept, recorded as in-scope m^eq_adj-family, not the verbatim symmetric form. KEY ENV FINDING: env-class-C correct stack is torch1.8.1 (NOT 1.10/1.9); e3nn0.2.7 fx codegen needs torch1.8.x fx API (1.9 -> PythonCode.replace AttributeError; 1.10 -> multiple-tracers). This also resolves the earlier #296 'multiple tracers' INFEASIBLE: it was a torch-version mismatch, fixable with torch1.8.1.",
+  "domain": "cross-domain (geometric DL: pyg/e3nn) -- supplement, NOT paper SUT domain (reactor_physics/pde_numerical/quantum_chemistry)"
+}

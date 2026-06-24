@@ -1,0 +1,9 @@
+# Build artefacts — not version controlled (data/results/scripts are)
+harness/target/
+*.class
+
+# Bulky raw PIT reports (whole-class, ~8.6M; mostly off-target helper mutations).
+# The compact target-method-only mutations are committed in pit_reports_filtered/,
+# and results/kill_matrix.csv is the canonical parsed kill matrix. Regenerate the
+# full reports with: python3 run_pit.py
+pit_reports/

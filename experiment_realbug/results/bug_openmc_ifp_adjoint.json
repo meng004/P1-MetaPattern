@@ -1,0 +1,57 @@
+{
+  "id": "openmc_ifp_adjoint_kinetics",
+  "repo": "openmc-dev/openmc",
+  "domain": "paper SUT domain (reactor_physics/pde_sciml: OpenMC -- Iterated Fission Probability adjoint-weighted kinetics)",
+  "sut_family": "openmc Iterated Fission Probability (IFP) adjoint-weighted kinetics parameters (ifp-beta-numerator / ifp-time-numerator / ifp-denominator tally scores; settings.ifp_n_generation) -- anchored on the upstream IFP regression model (bare U235 metal sphere, continuous-energy)",
+  "cat": "T* self-adjoint / adjoint-weighting duality (NOETHER T* block: IFP estimates the ADJOINT(importance)-weighted kinetics parameters beta_eff = <phi-dagger, chi_d nu_d Sigma_f phi> / <phi-dagger, chi nu Sigma_f phi>; the iterated fission probability realises the adjoint weight phi-dagger; the forward<->adjoint duality is the structural symmetry and beta_eff/Lambda are the conserved bilinear forms in testable form)",
+  "fix_commit": "767db7e6a090b88a594be72b4971d71e3c2be243",
+  "fix_commit_short": "767db7e6a",
+  "fix_title": "Fix IFP implementation (#3580)",
+  "pre_commit": "66e7d8634cbace480e3f6ccf58ca959ecfbf614e",
+  "pre_commit_note": "767db7e6a^ (parent of the fix); has the full IFP feature with the delayed-group bug",
+  "pre_version": "0.15.3-dev117 (source build of 66e7d863 = 767db7e6a^)",
+  "post_version": "0.15.3-dev118 (source build of 767db7e6a)",
+  "released_window": "The ENTIRE IFP kinetics feature lives inside the v0.15.2 -> v0.15.3 window: feature #3133 = v0.15.3~151 (NOT in v0.15.2), fix #3580 = v0.15.3~42 (IN v0.15.3). No RELEASED pre version contains IFP, so the pre/post pair MUST be the fix commit and its parent, both compiled from source (per the 'source-build if unreleased' protocol). Released v0.15.3 reproduces the post value exactly (beta_eff=498.7 pcm, ifp-beta-numerator=4.933333e-3) via conda omc=0.15.3.",
+  "tolerance": 0.001,
+  "cpu_status": "OK",
+  "sut": "bare U235 sphere r=10 cm, rho=16 g/cm3 (Godiva-like fast metal), eigenvalue mode, particles=1000, batches=20, inactive=5, ifp_n_generation=5, continuous-energy ENDF/B-VIII.0 U235 (6 delayed precursor groups), default seed -- EXACT upstream tests/regression_tests/ifp/test.py model",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "T* adjoint-weighting duality: the IFP adjoint-weighted delayed fraction must be sourced from the ORIGINATING neutron's delayed character propagated through the IFP generations (forward<->adjoint duality of the kinetics estimator), so ifp-beta-numerator (hence beta_eff) is invariant to the buggy substitution of the new daughter fission site's delayed group for the parent neutron's delayed group. FIRED <=> ifp-beta-numerator/beta_eff mis-weighted (daughter site); HELD <=> uses parent neutron (correct duality).",
+  "fired_type": "NUMERIC (pre: ifp-beta-numerator=6.800000e-3, beta_eff=687.4 pcm; post: ifp-beta-numerator=4.933333e-3, beta_eff=498.7 pcm; rel diff 0.378 = ~38% off). ifp-time-numerator (6.394767e-9) and ifp-denominator (9.892667e-1) are BYTE-IDENTICAL pre/post -- only the delayed-group (beta) adjoint-weight changes, isolating the defect to the adjoint duality of the delayed channel. Deterministic (fixed seed): both pre reruns give 687.4 pcm.",
+  "pre_observed": {
+    "ifp_time_numerator": 6.394767e-09,
+    "ifp_beta_numerator": 0.0068,
+    "ifp_denominator": 0.9892667,
+    "beta_eff_pcm": 687.4,
+    "lambda_s": 6.464149e-09,
+    "verdict": "FIRED"
+  },
+  "post_observed": {
+    "ifp_time_numerator": 6.394767e-09,
+    "ifp_beta_numerator": 0.004933333,
+    "ifp_denominator": 0.9892667,
+    "beta_eff_pcm": 498.7,
+    "lambda_s": 6.464149e-09,
+    "rel_diff_vs_post_ref": 6.757e-08,
+    "verdict": "HELD"
+  },
+  "confounder_check": "ZERO commits touched src/ifp.cpp or include/openmc/ifp.h between the IFP feature introduction (47ca2916a, 2025-04-14, v0.15.3~151) and the pre-fix parent (66e7d863, 2025-09-24); the fix 767db7e6a (2025-09-25) is the ONLY modification to the IFP delayed-group logic -> FIRED->HELD attributable to exactly this fix. Pre = parent commit 66e7d863, post = fix commit 767db7e6a, so the delta is the 5-line C++ change and nothing else.",
+  "verified": "SELF-RUN source-build vs source-build (incremental ninja, omc_src toolchain): pre 66e7d863 FIRED (ifp-beta-numerator=6.800000e-3, beta_eff=687.4 pcm) / post 767db7e6a HELD (ifp-beta-numerator=4.933333e-3, beta_eff=498.7 pcm, matches released conda omc=0.15.3 to 7e-8). Same direction and signature as the upstream regression delta in results_true.dat (beta-numerator pre 6.50e-2 > post 5.20e-2 under the CI ENDF/B-VII.1 library; here 6.80e-3 > 4.93e-3 under ENDF/B-VIII.0 -- different magnitude, same parent>fix direction).",
+  "upstream": "gh-3580 (PR 'Fix IFP implementation'). Root cause in src/ifp.cpp function ifp(): PRE used _ifp(site.delayed_group, delayed_groups) (delayed group of the NEW daughter fission site) for the beta numerator; POST uses _ifp(p.delayed_group(), delayed_groups) (delayed group of the PARENT neutron p causing fission). The fix also propagates the parent's delayed group from the source bank (Particle::from_source: delayed_group()=src->delayed_group) and removes the stray p.delayed_group()=site.delayed_group write in physics.cpp create_fission_sites. The generation-time (Lambda) path already used the parent's lifetime p.lifetime() in BOTH versions, so only the delayed-group (beta) adjoint weighting was wrong.",
+  "repro_script": "results/openmc_repro/repro_ifp_adjoint.py",
+  "data_helper": "results/openmc_repro/build_u235_ce_data.py (builds U235.h5 + cross_sections.xml from ENDF/B-VIII.0 n_9228_92-U-235.dat via NJOY; required because IFP-beta needs delayed-neutron precursor data and multi-group IFP did not exist until v0.15.3 #3425, so the existing build_two_group_mgxs MG helper cannot drive the pre/post comparison)",
+  "note": "THIRD-PARTY in-the-wild bug in OpenMC's IFP adjoint-weighted kinetics; gives reactor_physics its T* (self-adjoint / adjoint-weighting duality) block in addition to its existing G-symmetry (normalize, rotperiodic) and conservation (no_reduce) blocks. The T* block is exactly the adjoint<->forward duality the paper's reactor algebra A_Boltz lists (m_adj = adjoint reciprocity); IFP is the canonical Monte-Carlo realisation of the adjoint weight phi-dagger, so a defect in its delayed-group sourcing is a true T*-block adjoint-weighting violation, not a crash. HONEST LEVEL: numeric (beta_eff off ~38%), reproduced via the EXACT buggy C++ path by compiling the fix commit and its parent from source -- required because the whole IFP feature is unreleased relative to v0.15.2 (the only released pre) and multi-group IFP (which the existing MG infra could drive) postdates the bug. KEY ENV FINDING: continuous-energy U235 with delayed-neutron data was generated on-box from ENDF/B-VIII.0 via NJOY (49 MB U235.h5, 6 precursor groups); single temperature (293.6 K) keeps NJOY to ~6 min; the pre/post C++ builds are incremental ninja rebuilds in the existing omc_src worktrees (the fix is C++ only -- no .py touched -- so the Python tally API is identical pre/post and only the binary differs). 'N' set-slot is the directly-evaluated NOETHER T* MR (same convention as the other entries); 'G' set-key is GenMorph (not_applicable to library bugs), distinct from the semantic G-symmetry block name. [cpu env: source-build vs source-build, incremental ninja, continuous-energy ENDF/B-VIII.0 U235 via NJOY; eigenvalue run, CPU seconds] [VERIFY-NOTE: source-built pre/post kernels were cleaned to free disk (3.0G); post is numerically consistent with released conda 0.15.3 to 7e-8 (i.e. post==released), pre source-built with confounder=0 (no commit touches ifp.cpp between IFP-feature #3133 and fix #3580). Agent-verified via NJOY U235 CE data; not independently re-run after kernel cleanup.]"
+}

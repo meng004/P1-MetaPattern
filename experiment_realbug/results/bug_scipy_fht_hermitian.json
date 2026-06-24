@@ -1,0 +1,37 @@
+{
+  "id": "scipy_fht_hermitian_oddn",
+  "repo": "scipy/scipy",
+  "domain": "paper SUT domain (pde_numerical / E1: SciPy)",
+  "sut_family": "scipy.fft.fht (fast Hankel transform) -- the rfft -> multiply-by-coefficients -> irfft real-FFT pipeline underlying scipy.fft's real-transform / Hermitian-symmetry surface",
+  "cat": "G symmetry (Hermitian-symmetry preservation of the real-FFT (rfft/irfft) round-trip)",
+  "fix_commit": "170f9e69a",
+  "fix_commit_full": "170f9e69a5abf65a7c46d35626c4a3a64132246b",
+  "parent_commit": "846d79e83481769a0802236d34f21908844ed4fe",
+  "bug_introduced_commit": "36ae01b16d (ENH: fast Hankel transform #13084, born in v1.7.0)",
+  "pre_version": "1.14.1",
+  "post_version": "1.15.0",
+  "pre_version_range_fired": "v1.7.0 through v1.14.1 inclusive (buggy line present in all)",
+  "tolerance": "7.28e16 (scipy's own maintainer-chosen pass threshold for regression test test_gh_21661; the signature is far-tail-underflow-dominated, see honesty_caveat)",
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "f(r)=r^(mu+1)*exp(-r^2/2) is a SELF-DUAL Hankel pair: its order-mu Hankel transform equals f evaluated on the conjugate grid k=exp(offset)/flip(r). A correct fast Hankel transform (implemented as out=irfft(rfft(a)*u, n)) must reproduce f(k) for ANY transform length n; this holds iff the coefficient array u respects the rfft Hermitian-conjugate layout. The last rfft bin (index n//2) is the self-conjugate Nyquist bin -- hence real -- ONLY when n is EVEN; for ODD n that index is an ordinary non-self-conjugate coefficient whose imaginary part carries information. EVEN n is a control (output bit-identical pre/post); ODD n is the trigger.",
+  "fired_type": "NUMERIC (silent wrong transform for odd length). fhtcoeff() unconditionally executed `u.imag[-1] = 0`, zeroing the imaginary part of a NON-Nyquist rfft coefficient for odd n and breaking Hermitian-symmetry consistency. PRE odd n=129: max rel-err vs analytic f(k) = 7.288256e+16 (>= scipy threshold 7.28e16 -> regression test FAILS). NOT a crash. EVEN n=128 control: 1.140775e+11, bit-identical pre/post.",
+  "verified": "PIP RELEASED-TO-RELEASED self-run (uv venv py3.11, numpy 2.0.2): PRE scipy==1.14.1 FIRED -- fhtcoeff has unconditional `u.imag[-1]=0`; odd n=129 rel-err 7.288256e+16 >= 7.28e16. POST scipy==1.15.0 HELD -- fhtcoeff guards with `if n % 2 == 0: u.imag[-1]=0`; odd n=129 rel-err 7.225484e+16 < 7.28e16. Even n=128 identical (1.140775e+11) in both, confirming the fix touches only odd-length transforms.",
+  "array_api_gated": "NO. fhtcoeff is pure numpy (np.linspace / np.empty(dtype=complex) / np.exp / scipy.special.loggamma / the literal numpy `u.imag[-1]` assignment); in fht/ifht it is computed first and only afterwards converted via xp.asarray(...). No is_array_api_strict / array_namespace dispatch guards the buggy line. The bug shipped in v1.7.0 (2021), ~5 releases BEFORE scipy.fft gained array-API support (v1.12.0), so it is the opposite of an array-API dev-regression -- it satisfies the 'non-SCIPY_ARRAY_API, plain-numpy backend' requirement.",
+  "upstream": "gh-21661 (PR #21668)",
+  "honesty_caveat": "The observable signature is EDGE-DOMINATED and numerically MARGINAL, not a clean order-of-magnitude blow-up. The maximum relative error sits at a single far-tail conjugate-grid point where f(k) underflows, so the pre/post separation occurs at an enormous magnitude (~7.2e16) and the scipy maintainers used a deliberately loose pass threshold (7.28e16); the repro uses that exact threshold as the FIRED/HELD boundary. On smooth, well-conditioned inputs (e.g. pure power laws r^gamma, scipy's test_fht_exact n in {64,63}) the corrupted top coefficient carries negligible energy and BOTH parities pass pre-fix (rel-err ~1e-14), i.e. the bug does NOT fire there. This is the cleanest non-array-API released-to-released scipy.fft Hermitian-symmetry bug found, but the previously-recorded 'scipy G scarce' caveat remains substantively true: scipy has no clean numpy-backend rfft/irfft/hfft symmetry bug that fires with a large margin on natural inputs; this one fires only via scipy's own contrived self-dual construction at a single underflow edge point.",
+  "rejected_candidates": "Audited and rejected (full trail): 4cca348df (fft real-input fix -- array-API-gated, inside `if hasattr(xp,'fft')`); f07e96cdf/77060bc96 (array-like dispatch, not symmetry); 299df543d (DST ortho normalization, not Hermitian); 81697624f (R2R overwrite_x crash, not symmetry); b890b8f50/c7038c0c8/9b4a7c540/14bcde64c (byte-order/alignment/kwarg, no symmetry); 5681835ec firwin2 (input validation, not non-symmetric impulse response); 7a50bbfe2 sqrtm (dtype/precision, not symmetric-in->symmetric-out); 84d4bd912/ff99a9b90/5e986a24f/c23157002 expm (general correctness in post-1.14 C rewrite, not symmetry-preservation); 017a0acf5/50951d25c inv/solve complex-symmetric (symmetry-adjacent but outside fft/expm/sqrtm target families and already covered by the existing scipy_complexsym T* entry); eb2f1eb20 (feature add of Hermitian transforms, not a bugfix)."
+}

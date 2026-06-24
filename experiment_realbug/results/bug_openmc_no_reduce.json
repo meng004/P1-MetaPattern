@@ -1,0 +1,31 @@
+{
+  "id": "openmc_no_reduce_tally",
+  "repo": "openmc-dev/openmc",
+  "domain": "paper SUT domain (reactor_physics: OpenMC)",
+  "sut_family": "openmc tally normalization (no_reduce) -- MG fixed-source transport, MPI 2-rank",
+  "cat": "L*.rep representation/method-invariance (family j; Mode M: same fixed-source problem, MPI tally reduction must not change the normalized tally)",
+  "fix_commit": "bd76fc056",
+  "pre_version": "0.15.2",
+  "post_version": "0.15.3",
+  "tolerance": 1e-06,
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "flux(no_reduce=True, mpi=2) == flux(no_reduce=False, mpi=2): an MPI tally-reduction bookkeeping option must not change the normalized physical tally (L*.rep representation/method-invariance, family j, Mode M)",
+  "fired_type": "NUMERIC (pre: no_reduce flux=0.5004 vs reduce=1.0007, OFF BY EXACTLY 1/n_ranks=0.5; post rel_diff=2e-16) -- TRUE conservation violation, not crash",
+  "verified": "SELF-RUN conda MPI: pre 0.15.2 FIRED (rel_diff 0.5 = 1/2 ranks) / post 0.15.3 HELD (2.2e-16)",
+  "upstream": "gh-3619",
+  "note": "Bug: tally norm used total_source/(n_particles*gen) always; with no_reduce must use contributing_particles=work_per_rank. Under MPI n_ranks=2, no_reduce flux normalized by full n_particles instead of per-rank work -> off by exactly 1/n_ranks. Single-rank shows no diff (the Mode-M control that localizes the fault to the multi-rank reduction path). Family j (L*.rep representation/method-invariance, reactor_physics), MPI-reproduced (needs mpi build: omc_152m=openmc0.15.2 mpi_openmpi). Operator-level transport tally (not just API), anchored on MG fixed-source. [cpu env: conda micromamba, MPI 2-rank, multi-group XS]"
+}

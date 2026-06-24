@@ -1,0 +1,30 @@
+{
+  "id": "scipy_banded_jac",
+  "repo": "scipy/scipy",
+  "domain": "paper SUT domain (pde_numerical / E1: SciPy)",
+  "sut_family": "integrate.ode (LSODA, stiff Robertson) -- aligns with paper stiff ODE solvers",
+  "cat": "L*.rep representation/method-invariance (family j; Mode M: the SAME Jacobian in full vs banded storage must give the SAME stiff trajectory -- y_banded==y_full)",
+  "fix_commit": "cb0538877",
+  "pre_version": "1.15.3",
+  "post_version": "1.16.3",
+  "tolerance": 1e-06,
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "y_banded(t) == y_full(t) : the SAME Jacobian in full vs banded storage must give the SAME stiff trajectory (L*.rep representation/method-invariance, family j, Mode M)",
+  "fired_type": "crash (ValueError: 0-th dimension must be fixed to 5 but got 4) -- banded Jacobian not row-padded for LSODA; POST gives |y_banded-y_full|=0.0 positive evidence",
+  "verified": "SELF-RUN pip: pre 1.15.3 FIRED (raises) / post 1.16.3 HELD (|y_banded-y_full|=0.000e+00)",
+  "upstream": "gh-22283"
+}

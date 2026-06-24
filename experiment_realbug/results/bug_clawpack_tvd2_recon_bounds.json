@@ -1,0 +1,63 @@
+{
+  "id": "clawpack_tvd2_recon_bounds",
+  "repo": "clawpack/clawpack (pyclaw / sharpclaw)",
+  "domain": "additional structure-present library beyond the four SUT domains (hyperbolic conservation-law / finite-volume advection) -- the TVD/flux-limiter substrate absent from SciPy; witnesses family g (D*)",
+  "sut_family": "clawpack.pyclaw SharpClawSolver1D, 2nd-order TVD reconstruction tvd2() in src/pyclaw/sharpclaw/reconstruct.f90 (lim_type=1, component-wise char_decomp=0), advecting a scalar with the advection_1D Riemann solver; anchored on a 1-D constant-velocity linear advection of a monotone step (no extra physics).",
+  "cat": "D*.dyn dynamic shape (family g; Mode I; O<=.dyn): a shape-preserving / TVD advection scheme must not let a MONOTONE input acquire spurious extrema -- Z(Phi x) <= Z(x), Z = number of local extrema / sign-changes (no spurious oscillation, no overshoot, total-variation non-increasing). The pre-fix tvd2 leaves the inflow-boundary cell's reconstructed interface state UNINITIALISED, so a monotone step gains a NEW boundary extremum (Z_out=1 > Z_in=0); the fix initialises it and the no-spurious-extrema invariant holds.",
+  "fix_commit": "1cb1e0c7088be94ebfa756c6048e237c3bdf0a6d",
+  "fix_commit_short": "1cb1e0c",
+  "fix_title": "Fix loop bounds that didn't include enough ghost cells. (PR #407, ketch/fix_tvd_recon_loop_bounds)",
+  "fix_merge_commit": "e6075963ba85775fffb835a50c139dd4a00e7fec",
+  "pre_fix_parent_commit": "5ff3e514bcb81d92423480fe10fb600f33e32b87",
+  "sut": "1-D constant-velocity linear advection of a monotone non-increasing step (x<0.15 -> 1 else 0) by SharpClawSolver1D (Fortran kernel, lim_type=1 2nd-order TVD reconstruction tvd2, char_decomp=0, num_ghost=2, BC=extrap, nx=100) for one transit (tfinal=0.9); invariant = interior local-extrema count Z(Phi x) <= Z(x).",
+  "pre_version": "v5.1.0 (released-bracket PRE; reproduced source-compiled as clawpack 5.11.0 with the literal pre-fix tvd2 loop `do i=3,mx2-2`)",
+  "post_version": "v5.2.0 (released-bracket POST; reproduced source-compiled as clawpack 5.11.0 with the literal post-fix tvd2 loop `do i=2,mx2-1`)",
+  "tolerance": 0,
+  "cpu_status": "OK",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "Family g (D*, O<=.dyn dynamic shape), Mode I (no spurious extrema / no overshoot / bounded variation). For a TVD / shape-preserving advection scheme Phi applied to a MONOTONE (or shock / monotone-data) input x, the output must not gain new oscillations: Z(Phi x) <= Z(x), where Z counts interior local extrema (equivalently sign changes of the first difference). Operationalised: advect a monotone non-increasing step (Z_in = 0 interior extrema) one transit; the limited 2nd-order reconstruction must keep Z_out <= Z_in (no spurious extremum, no overshoot beyond the data range [0,1], min >= 0). Mode I (intra-trace shape), distinct from family i accuracy-order and family f static pointwise positivity: here the relation is the dynamic Z(.) total-variation / extrema-count partial order on a single evolved trace, the classic TVD-monotonicity guarantee of a flux-/slope-limiter scheme.",
+  "fired_type": "NUMERIC (spurious extremum from an uninitialised boundary reconstruction, no crash). PRE (tvd2 loop `do i=num_ghost+1,mx2-num_ghost` == `do i=3,mx2-2` with num_ghost=2): a monotone step gains a NEW local extremum -- Z_out=1 > Z_in=0 -- because the inflow boundary-adjacent cell's reconstructed interface state ql/qr is intent(out) and assigned ONLY inside the bounded loop, so the skipped cell collapses to ~1.474e-38 (should be 1.0), injecting a spurious minimum at the inflow boundary; identical FIRED across all three TVD limiters (vanleer/superbee/minmod). POST (tvd2 loop `do i=2,mx2-1`, commit 1cb1e0c): Z_out=0 = Z_in=0 (HELD), boundary cell correctly 1.0, monotone step preserved, all three limiters. Deterministic: bit-identical numbers across re-runs (pure Fortran kernel + numpy step IC).",
+  "pre_observed": {
+    "clawpack": "5.11.0 source-compiled with literal pre-fix tvd2 loop `do i=3,mx2-2` (== released v5.1.0 behaviour)",
+    "tvd2_loop_bound": "do i=num_ghost+1,mx2-num_ghost  (num_ghost=2 -> do i=3,mx2-2)",
+    "config": "SharpClawSolver1D, kernel=Fortran, lim_type=1, char_decomp=0, num_ghost=2, BC=extrap, nx=100, monotone step (x<0.15 ->1 else 0), tfinal=0.9",
+    "Z_in_extrema": 0,
+    "Z_out_extrema_by_limiter": {"vanleer": 1, "superbee": 1, "minmod": 1},
+    "min_out": 1.474e-38,
+    "max_out": 1.0,
+    "overshoot_above_1": 0.0,
+    "inflow_boundary_cell_q0": 1.474e-38,
+    "verdict": "FIRED (Z_out=1 > Z_in=0; monotone step acquires a spurious boundary extremum; boundary cell collapses from 1.0 to ~1.5e-38)"
+  },
+  "post_observed": {
+    "clawpack": "5.11.0 source-compiled with literal post-fix tvd2 loop `do i=2,mx2-1` (commit 1cb1e0c; == released v5.2.0 behaviour)",
+    "tvd2_loop_bound": "do i=2,mx2-1",
+    "config": "identical to PRE (only the one Fortran loop-bound line differs)",
+    "Z_in_extrema": 0,
+    "Z_out_extrema_by_limiter": {"vanleer": 0, "superbee": 0, "minmod": 0},
+    "min_out_by_limiter": {"vanleer": 0.96807, "superbee": 0.98936, "minmod": 0.89394},
+    "max_out": 1.0,
+    "overshoot_above_1": 0.0,
+    "inflow_boundary_cell_q0": 1.0,
+    "verdict": "HELD (Z_out=0 = Z_in=0; monotone step preserved with no spurious extrema; boundary cell correct at 1.0)"
+  },
+  "verified": "SOURCE-COMPILED pre/post (openmc-style), clawpack 5.11.0 built from sdist TWICE differing by EXACTLY the inverse of the real one-line fix 1cb1e0c (`do i=num_ghost+1,mx2-num_ghost` -> `do i=2,mx2-1`) in src/pyclaw/sharpclaw/reconstruct.f90 subroutine tvd2; everything else (gfortran 13.3, numpy 2.4.6, BC=extrap, monotone-step IC, time stepping) held fixed. PRE FIRED (a monotone step Z_in=0 gains a spurious extremum Z_out=1 on all three TVD limiters; inflow boundary cell collapses to 1.474e-38) / POST HELD (Z_out=0, boundary cell 1.0). Re-run is bit-identical (deterministic). THE BUG MECHANISM: ql,qr (left/right reconstructed interface states) are Fortran intent(out) assigned ONLY inside the difference/limiter loop (qr(m,i)=q(m,i)+0.5*qlimitr*dqm ; ql(m,i)=q(m,i)-0.5*qlimitr*dqm); the pre-fix bounds skip the boundary-adjacent cell, leaving its reconstruction uninitialised, which with num_ghost=2 feeds the physical update and corrupts the boundary cell, breaking the no-spurious-extrema (TVD-monotonicity) invariant. THIS IS FAMILY g (D*), NOT family f: the violation is the DYNAMIC shape of the evolved trace (Z(Phi x) > Z(x) on a monotone input), the classic TVD-limiter no-oscillation guarantee, in a genuine hyperbolic finite-volume substrate -- the substrate the scipy NEGATIVE_scipy_dstar.md documented as ABSENT in SciPy.",
+  "honesty_caveat": "The historical RELEASED bracket v5.1.0 (PRE) / v5.2.0 (POST), 2014, ships a Python-2 setup.py (`print \"...\"` SyntaxError) and builds via the removed numpy.distutils, so it CANNOT be pip-installed under the mandated Python-3.11 released-to-released protocol (the same cp311-wall that blocks SciPy's pre-3.11 PCHIP candidates per NEGATIVE_scipy_dstar.md). The fix is therefore reproduced SOURCE-COMPILED pre/post on modern clawpack 5.11.0, whose tvd2() routine and whose fix-line are IDENTICAL to the 2014 code (the routine still exists and is still called for lim_type=1, char_decomp=0). The defect bites at num_ghost=2 (the historical tvd2 ghost count and a supported setting); with the modern default num_ghost=3 the skipped cell falls strictly inside the ghost halo and the bug is masked. This entry is honestly tagged source-compiled (like bug_openmc_cram_clip.json and the RotationalPeriodicBC / IFP-adjoint openmc entries), NOT released-to-released pip, and the manifestation is a boundary-reconstruction dropout that injects a spurious extremum (a genuine Z(Phi x) > Z(x) family-g violation), not classic interior Gibbs overshoot.",
+  "mode": "I (intra-trace dynamic shape): the no-spurious-extrema / bounded-variation relation Z(Phi x) <= Z(x) on a single evolved monotone trace. Distinct from family i (accuracy-ORDER, Mode M inter-implementation), family f (static pointwise positivity/monotonicity at nodes), and family j (exact representation-invariance).",
+  "upstream": "gh PR #407 (clawpack/pyclaw, ketch/fix_tvd_recon_loop_bounds); commit 1cb1e0c; merge e607596; released v5.2.0",
+  "repro_script": "results/clawpack_repro/repro_pyclaw_tvd2_boundary_recon.py",
+  "note": "Fills the previously-EMPTY family g (D*, O<=.dyn dynamic-shape) cell -- the cell NEGATIVE_scipy_dstar.md left open because SciPy/PCHIP is monotone-by-construction and SciPy has no TVD/WENO/flux-limiter substrate. Clawpack/PyClaw IS that substrate: SharpClaw's 2nd-order TVD reconstruction (tvd2) enforces Z(Phi x) <= Z(x), and the in-the-wild maintainer fix 1cb1e0c ('Fix loop bounds that didn't include enough ghost cells', PR #407) is a genuine right-direction shape-guarantee restoration -- pre-fix an under-covered reconstruction loop leaves the boundary cell uninitialised and a monotone step gains a spurious extremum (FIRED), post-fix the loop covers it and the monotone step is preserved (HELD). REAL SHAs verified with `git show`: fix 1cb1e0c (parent 5ff3e51, merge e607596 / PR#407), released v5.1.0 -> v5.2.0. Reproduced source-compiled (the released bracket is Python-2-unbuildable on py3.11; see honesty_caveat) by toggling the EXACT one Fortran line on modern clawpack 5.11.0; PRE FIRED / POST HELD deterministically on all three TVD limiters (vanleer, superbee, minmod). [schema: fired keys are MR-sets {N,M,G,L,B}; NOETHER MR is set N; cat carries the D*/family-g block name; tolerance=0 -- the invariant is the integer extrema-count partial order Z_out <= Z_in.] [env: uv venv python 3.11.15, clawpack 5.11.0 source-compiled (gfortran 13.3.0), numpy 2.4.6, two builds differing by one tvd2 loop-bound line.]"
+}

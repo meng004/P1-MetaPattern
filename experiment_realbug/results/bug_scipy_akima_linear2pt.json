@@ -1,0 +1,49 @@
+{
+  "id": "scipy_akima_linear2pt",
+  "repo": "scipy/scipy",
+  "domain": "paper SUT domain (pde_numerical: SciPy shape-preserving interpolation)",
+  "sut_family": "interpolate.Akima1DInterpolator (shape-preserving cubic Hermite interpolant)",
+  "cat": "O<= (monotone / linear shape-preservation: monotone data must give a monotone interpolant; two points must give the linear chord)",
+  "fix_commit": "ef7437afc38b3b4f9d2263dc4394dcc2b4fb08c4",
+  "fix_commit_short": "ef7437afc",
+  "fix_title": "BUG: Fix `Akima1DInterpolator` by returning linear interpolant for `y.shape[0] == 2` (#22278)",
+  "pre_fix_parent_commit": "0a5c486dee64cbb4d56830885965636ed6752876",
+  "pre_version": "1.15.2",
+  "post_version": "1.16.0",
+  "tolerance": 1e-09,
+  "cpu_status": "OK",
+  "sut": "two strictly-increasing points x=[0,1], y=[0,2]; the unique shape-preserving (linear) interpolant is the chord y=2x",
+  "fired_pre": {
+    "N": true,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "fired_post": {
+    "N": false,
+    "M": null,
+    "G": null,
+    "L": null,
+    "B": null
+  },
+  "mr_used": "O<= shape-preservation: a shape-preserving 1-D interpolant of monotone data must be monotone, and through exactly two points the unique shape-preserving (linear) interpolant is the straight line. Operationally for two increasing points: (a) I((x0+x1)/2) == (y0+y1)/2 (on the chord) and max|I - chord| == 0 on the interior; (b) the sampled sequence is non-decreasing and stays within [y0,y1]. Source = the exact linear chord; follow-up = Akima1DInterpolator(x,y) on the interior grid.",
+  "fired_type": "NUMERIC / CRASH (flaky manifestation, stable FIRED verdict). Pre 1.15.2: with only 2 points the slope scratch array m=empty(x.size+3)=empty(5) is filled only at m[2:3]; the ghost-slope formulas m[1]=2*m[2]-m[3], m[0]=2*m[1]-m[2], m[-2]=2*m[-3]-m[-4] READ UNINITIALISED np.empty entries, so the breakpoint slope is garbage. Depending on the np.empty buffer the construction either (i) raises ValueError('`dydx` must contain only finite values.') from non-finite slopes, or (ii) succeeds but returns a non-linear interpolant, e.g. I(0.5)=1.25 vs the chord value 1.0 (off by 0.25). Either way the O<= linear/monotone shape-preservation relation is violated. NOT an overflow-boundary case -- the two inputs are tiny finite numbers.",
+  "pre_observed": {
+    "n_repeat": 6,
+    "fired_count": 6,
+    "manifestations": "5/6 ValueError(non-finite dydx, crash-type), 1/6 finite-but-wrong I(0.5)=1.25 vs chord 1.0 (dev 0.25)",
+    "verdict": "FIRED (stable across all 6 repeats; manifestation flaky due to uninitialised np.empty buffer)"
+  },
+  "post_observed": {
+    "I_mid": 1.0,
+    "max_dev_from_chord": 0.0,
+    "monotone": true,
+    "verdict": "HELD"
+  },
+  "verified": "SELF-RUN pip released-to-released: pre 1.15.2 FIRED (6/6 repeats: 5 crash on non-finite slope, 1 returns I(0.5)=1.25 != chord 1.0) / post 1.16.0 HELD (I(0.5)=1.0 == chord, max|I-chord|=0). Python 3.11, numpy 2.4.6.",
+  "upstream": "gh-22278 (PR)",
+  "repro_script": "results/scipy_repro/repro_akima_linear2pt.py",
+  "flaky_note": "Pre-fix manifestation is non-deterministic (uninitialised np.empty buffer -> sometimes non-finite/crash, sometimes finite-but-wrong), but the FIRED verdict is stable across >= 6 repeats: in every run the two-point Akima fails to be the linear/monotone interpolant.",
+  "note": "UPGRADES scipy O<= from the previously-EXCLUDED boundary entry (bug_scipy_akima_overflow.json: 9930630d6, overflow-robustness near float_max, O<= mapping weak) to a CLEAN in-the-wild O<= shape-preservation bug. This is a different commit (ef7437afc, gh-22278) on tiny finite inputs where monotone/linear shape-preservation -- not overflow -- is the violated property. Fills the previously-scarce scipy x O<= cell with a modern pip released-to-released (1.15.2 -> 1.16.0) reproduction. isotonic_regression remains ENH-only (no bug); the modern shape-preserving in-the-wild O<= bug is this Akima two-point one. [schema: fired keys are MR-sets {N,M,G,L,B}; NOETHER MR is set N, cat field carries the O<= block name]"
+}
