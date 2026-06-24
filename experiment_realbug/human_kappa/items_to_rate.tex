@@ -49,7 +49,7 @@
 \hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{1} = (\mathrm{out}_{2} + 1)$\par\medskip
 \textbf{M09}\quad \texttt{MathSignalClass.exactLog2.0 / O\_le\_monotone}\newline
 \hspace*{1.5em}\emph{程序功能：} exactLog2(n)：正整数 n 以 2 为底的对数（因此 exactLog2(2*n) = exactLog2(n) + 1）。\newline
-\hspace*{1.5em}JIR（输入关系）：\ $n_{2} > 0$ $\wedge$ $(n_{2} & (n_{2} - 1)) = 0$ $\wedge$ $n_{1} > 0$ $\wedge$ $(n_{1} & (n_{1} - 1)) = 0$ $\wedge$ $n_{2}\leq n_{1}$\newline
+\hspace*{1.5em}JIR（输入关系）：\ $n_{2} > 0$ $\wedge$ $(n_{2} \mathbin{\&} (n_{2} - 1)) = 0$ $\wedge$ $n_{1} > 0$ $\wedge$ $(n_{1} \mathbin{\&} (n_{1} - 1)) = 0$ $\wedge$ $n_{2}\leq n_{1}$\newline
 \hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $\mathrm{out}_{2}\leq \mathrm{out}_{1}$\par\medskip
 \textbf{M10}\quad \texttt{MathSignalClass.exactLog2.0 / T\_double}\newline
 \hspace*{1.5em}\emph{程序功能：} exactLog2(n)：正整数 n 以 2 为底的对数（因此 exactLog2(2*n) = exactLog2(n) + 1）。\newline
@@ -134,7 +134,7 @@
 \textbf{M30}\quad \texttt{MathSignalClass.powerSig.0 / G\_odd\_negate}\newline
 \hspace*{1.5em}\emph{程序功能：} powerSig(base, n)：\textbar{}base\textbar{} 的 n 次幂（底数先取绝对值再求幂）。\newline
 \hspace*{1.5em}JIR（输入关系）：\ $(n_{1} = n_{2})$ $\wedge$ $((base_{1} \approx  (-base_{2})))$\newline
-\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $((n_{2} % 2 = 0)$ $\wedge$ $(\mathrm{out}_{1} \approx  \mathrm{out}_{2}))$ $\vee$ $((n_{2} % 2\neq 0)$ $\wedge$ $((\mathrm{out}_{1} \approx  (-\mathrm{out}_{2}))))$\par\medskip
+\hspace*{1.5em}JOR（输出关系）：\ $\Rightarrow$\ $((n_{2} \bmod  2 = 0)$ $\wedge$ $(\mathrm{out}_{1} \approx  \mathrm{out}_{2}))$ $\vee$ $((n_{2} \bmod  2\neq 0)$ $\wedge$ $((\mathrm{out}_{1} \approx  (-\mathrm{out}_{2}))))$\par\medskip
 \textbf{M31}\quad \texttt{MathSignalClass.powerSig.0 / L\_scale\_base}\newline
 \hspace*{1.5em}\emph{程序功能：} powerSig(base, n)：\textbar{}base\textbar{} 的 n 次幂（底数先取绝对值再求幂）。\newline
 \hspace*{1.5em}JIR（输入关系）：\ $(base_{1} \approx  3.0\cdot base_{2})$ $\wedge$ $(n_{1} = n_{2})$\newline

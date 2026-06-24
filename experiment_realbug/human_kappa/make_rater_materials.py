@@ -135,6 +135,7 @@ def to_latex(readable):
     s = s.replace("~=", r"\approx ").replace(" AND ", r"\;\wedge\;").replace(" OR ", r"\;\vee\;")
     s = s.replace(" != ", r"\neq ").replace(" <= ", r"\leq ").replace(" >= ", r"\geq ")
     s = s.replace("·", r"\cdot ").replace("eps", r"\varepsilon")
+    s = s.replace("&", r"\mathbin{\&}").replace("%", r"\bmod ")   # raw Java bitwise-AND / modulo -> math
     s = re.sub(r'\b(this|other|out|base|hi|lo)\.(re|im)([12])',
                r'\\mathrm{\1.\2}_{\3}', s)
     s = re.sub(r'\b(this|other|out)([12])\b', r'\\mathrm{\1}_{\2}', s)
