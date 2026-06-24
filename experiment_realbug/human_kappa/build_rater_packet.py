@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Build the rater hand-out bundle `noether_rater_packet.zip` from the committed
-source files. The zip is tracked in git (per request); regenerate after changes with:
+source files. The zip is git-ignored (build artifact); regenerate it with:
 
     python3 build_rater_packet.py
 

@@ -72,8 +72,6 @@ Thumbs.db
 # ============================================================================
 *.tar.gz
 *.zip
-# Exception: the rater hand-out packet is version-controlled (per request)
-!experiment_realbug/human_kappa/noether_rater_packet.zip
 
 # Gradle / Java build outputs
 build/
