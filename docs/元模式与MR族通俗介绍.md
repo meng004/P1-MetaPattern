@@ -149,7 +149,7 @@ canonical 文档给出的 L1→L2 映射（10 个族）：
 
  G          → m_inv           → 𝗳_inv.eqv 等变, 𝗳_inv.con 守恒        → Bur-Phy-05, ...
  O_≤        → m_mono          → 𝗳_mono.stat 静态序, 𝗳_mono.shape 动态形态 → Dif-Phy-01, ...
- T*         → m_adj           → 𝗳_adj.self 自伴, 𝗳_adj.dual 伴随对偶    → Dif-Phy-14, ...
+ T*         → m_adj           → 𝗳_adj.self 自伴对称, 𝗳_adj.dual 伴随对偶 → Dif-Phy-14, ...
  T*_rev     → m_rev           → 𝗳_rev.traj 轨迹反演                   → (PWR 预言)
  L*         → m_conv          → 𝗳_conv.lim 收敛, 𝗳_conv.rate 精度阶, 𝗳_conv.repr 表示不变 → Bol-Alg-03, ...
 ```
@@ -280,7 +280,7 @@ assert all_increasing(rho_series[trough_idx:])          # 谷之后递增
 
 ---
 
-### 3.5 m_adj (L1) → 自伴 `𝗳_adj.self` (L2-c) — Dif-Phy-14 扩散方程自伴随互易性
+### 3.5 m_adj (L1) → 自伴对称 `𝗳_adj.self` (L2-c) — Dif-Phy-14 扩散方程自伴随互易性
 
 **程序介绍。** 扩散方程求解器（同 §3.3），但同时支持解**前向通量** $\phi$ 与**伴随通量** $\phi^{\dagger}$（adjoint flux）。伴随通量是反应堆物理中表示"中子重要性"的物理量。
 
