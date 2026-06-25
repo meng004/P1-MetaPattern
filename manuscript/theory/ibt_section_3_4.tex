@@ -29,7 +29,7 @@ operator's finite parameter vector and $E_s$ below its first-order linearization
 
 \begin{definition}[Structural defect and detection kernel]
 \label{def:defect-kernel}
-Let block $s\in\mathcal{D}(\mathcal{A}_P)$ carry a structure $T_s$ (for $s=G$, a group
+Let structural component $s\in\mathcal{D}(\mathcal{A}_P)$ carry a structure $T_s$ (for $s=G$, a group
 action $A\in G\le GL(\mathbb{R}^N)$; for $s=T^{*}$, the inner-product adjoint). The
 algebra-induced MR $\rho_{\iota,s}=\texttt{Translate}(\iota,s)$ asserts a structural
 predicate $\Pi_s[P_L]$ over a witness set $W=S_s\times X_0$ ($S_s\subseteq T_s$,
@@ -83,7 +83,7 @@ Lemma~\ref{lem:reachability} is the crux: tightness is \emph{not} tautological b
 follows from finite fault-dimensionality, so a finite executable MR can pin the
 exact blind set. We now characterize that set (Figure~\ref{fig:ibt}).
 
-\begin{theorem}[Invariance-Blindness, $G$ and $T^{*}$ blocks]
+\begin{theorem}[Invariance-Blindness, $G$ and $T^{*}$ MetaPatterns]
 \label{thm:ibt}
 Let the fault class be linear (Definition~\ref{def:fault-class}), let $E_s$ be
 linear in $L$ (holds for $s\in\{G,T^{*}\}$), and let the test witnesses be faithful
@@ -120,14 +120,12 @@ $L\in\mathcal{C}(T_s)$.
 \end{tikzpicture}%
 }
 \caption{The Invariance-Blindness Theorem (Theorem~\ref{thm:ibt}) for the
-symmetry ($G$) and self-adjoint ($T^{*}$) blocks. Within the linear
-operator-implementation fault class $\Theta=\mathbb{R}^{N\times N}$, an
-algebra-derived MR's detection kernel equals exactly the structure-preserving
-faults $\mathcal{C}(T_s)$: a fault survives the MR if and only if it preserves
-the structure $T_s$ the MR exploits. The characterisation is faithfulness-tight,
-attained by a finite witness set (Lemma~\ref{lem:reachability}). A neutral
-cross-implementation differential oracle is the complementary common-mode oracle
-that covers part of the structure-preserving blind set.}
+$G$ and $T^{*}$ MetaPatterns: within the linear
+fault class $\Theta=\mathbb{R}^{N\times N}$ an algebra-derived MR's detection
+kernel equals exactly the structure-preserving faults $\mathcal{C}(T_s)$
+(faithfulness-tight, Lemma~\ref{lem:reachability}), with a neutral
+cross-implementation differential oracle as the complementary common-mode
+oracle covering the blind set.}
 \label{fig:ibt}
 \end{figure}
 
@@ -137,12 +135,12 @@ Under Step~3 of \texttt{CONSTRUCT-MP}, each MetaPattern $m_{s,[\iota]}$ correspo
 to a single $\sim_s$-equivalence class of invariants; the per-invariant statement
 of Theorem~\ref{thm:ibt} therefore applies \emph{directly} to each $m_{s,[\iota]}$
 without aggregation. When the per-instance grouping of
-Remark~\ref{rem:single-class-instances} treats a non-empty block $s$ as a single
-$\sim_s$ class, $m_{s,[\iota]}$ coincides with the block-level MetaPattern reported
+Remark~\ref{rem:single-class-instances} treats a non-empty structural component $s$ as a single
+$\sim_s$ class, $m_{s,[\iota]}$ coincides with the MetaPattern reported
 in the empirical sections.
 \end{remark}
 
-\begin{remark}[Worked instance: advection--diffusion, translation block]
+\begin{remark}[Worked instance: advection--diffusion, translation sub-class]
 \label{rem:ibt-advdiff}
 On a periodic grid the constant-coefficient operator $c\cdot\nabla+\alpha\nabla^2$
 commutes with every grid translation for \emph{all} constants $(c,\alpha)$; hence
@@ -159,17 +157,17 @@ input basis is unisolvent) is reported in supplementary S10.
 %% corollary* is unnumbered (paper preamble: \newtheorem*{corollary*}). For
 %% numbered, \ref-able corollaries, add \newtheorem{corollary}{Corollary} to the
 %% preamble at integration and drop the stars.
-\begin{corollary*}[Single-block incompleteness]
-For any block $s$ with $\mathcal{C}(T_s)\neq\{L^{*}\}$ (a nontrivial structure-
+\begin{corollary*}[Single-MetaPattern incompleteness]
+For any structural component $s$ with $\mathcal{C}(T_s)\neq\{L^{*}\}$ (a nontrivial structure-
 preserving fault exists, noting $\mathcal{C}(T_s)\supseteq\{L^{*}\}$ always), the
-single-block battery $\{\rho_{\iota,s}\}_\iota$ is
+single-MetaPattern battery $\{\rho_{\iota,s}\}_\iota$ is
 incomplete: its kernel contains that fault.
 \end{corollary*}
 
 \begin{corollary*}[Completeness requires a trivial joint kernel]
 A family of oracles $\{O_j\}$ detects every nontrivial fault only if
 $\bigcap_j\ker(O_j)=\{L^{*}\}$. Completeness therefore requires oracles whose
-structural kernels intersect trivially, not additional MRs of the same block.
+structural kernels intersect trivially, not additional MRs of the same MetaPattern.
 \end{corollary*}
 
 \begin{corollary*}[Differential oracle is the complementary blind spot]
@@ -195,7 +193,7 @@ regime is outside the identification claim and is treated as a limitation in
 (\textbf{R3}) Linearity of $E_s$ holds for $G$ and $T^{*}$ (commutator; symmetric
 part). It fails for $O_\le$ (monotonicity is an inequality, a cone not a subspace),
 for $\mathcal{T}^{*}_{\mathrm{rev}}$ (reversibility $R L R^{-1}-L^{-1}$ involves the inverse), and
-for $\mathcal{L}^{*}$ (Richardson ratio of norms); for these blocks only the sufficient
+for $\mathcal{L}^{*}$ (Richardson ratio of norms); for these MetaPatterns only the sufficient
 direction ($\supseteq$) holds, or a linearized subclass. (\textbf{R4}) The sufficient
 direction is by definition; the content is the $\subseteq$ direction together with
 Lemma~\ref{lem:reachability} and the kernel characterization.
