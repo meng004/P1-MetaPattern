@@ -1,0 +1,74 @@
+\documentclass[acmsmall,screen,anonymous,review]{acmart}
+
+\acmJournal{TOSEM}
+\acmYear{2026}
+\acmVolume{0}
+\acmNumber{0}
+\acmArticle{0}
+\acmMonth{0}
+\acmDOI{XXXXXXX.XXXXXXX}
+\setcopyright{none}
+\settopmatter{printacmref=true, printccs=false, printfolios=true}
+\sloppy
+\setlength{\emergencystretch}{3em}
+
+\title{NOETHER: Data and Artifact Availability Statement}
+\author{Anonymous Author(s)}
+
+\begin{document}
+\maketitle
+
+\section*{Data and Artifact Availability}
+
+To support independent verification, the supplementary code and data are archived
+on Zenodo under DOI
+\url{https://doi.org/10.5281/zenodo.20250634}.
+For double-blind review, the same materials can be supplied through the
+submission system as an anonymised archive with the same file manifest and
+content hash.
+
+\paragraph{Review-stage anonymised archive.} The following supplementary
+materials are submitted alongside the manuscript and are available through the
+submission system (or an anonymised Zenodo deposit) under SHA-256 content hash.
+The hash is computed over the concatenated tar-archive of the listed items and
+reported in the final manuscript at acceptance.
+\begin{itemize}
+    \item \textbf{S1} Python reference implementation of CONSTRUCT-MP described
+    in supplementary~S9, including the Boltzmann and equivariant-ML
+    instantiations.
+    \item \textbf{S2} The full PWR-MR corpus, with each MR annotated by canonical
+    structural component, NOETHER MetaPattern, and source equation.
+    \item \textbf{S3} The SE(3)-equivariant point-cloud testing harness,
+    including the mutation generators and MR sets used in the case-study
+    comparison.
+    \item \textbf{S4} A reproducibility manifest documenting the random seeds,
+    model checkpoints, and dataset versions referenced in the case study.
+    \item \textbf{S5} GenMorph/PIT pilot material, head-to-head summaries,
+    parsed mutation results, and statistical scripts for the secondary
+    executability and complementarity analyses.
+    \item \textbf{S6} Query-optimiser pilot material for the
+    relational-equivalence extension, including sampled Calcite/QED plan pairs
+    and oracle scripts.
+    \item \textbf{S7} Defects4J algebra-rich substrate material,
+    pre-registration records, SUT-selection criteria, and
+    $\mathcal{L}^{*}$-blindness evidence.
+    \item \textbf{S8} METRIC+ comparison material, Sun et al. subject
+    re-implementations, scope analysis, and head-to-head protocol/results files.
+    \item \textbf{S9} Appendices and detailed empirical tables migrated out of
+    the Fast Impact main body for length conformance.
+    \item \textbf{S10} Home-field generation-to-detection checks,
+    rank/faithfulness scripts, and additional Invariance-Blindness sanity
+    checks.
+    \item \textbf{S11} Industrial N5 coverage classification inputs and results.
+    \item \textbf{S12} Cross-domain N5 numerical-library and signal-processing
+    derivation checks and outputs.
+\end{itemize}
+
+\paragraph{Public archival release.} The public archival package is deposited on
+Zenodo under DOI
+\url{https://doi.org/10.5281/zenodo.20250634}. The
+camera-ready version will additionally record the final SHA-256 hash of the
+submission archive. We aim for the \emph{Available} and \emph{Functional}
+artefact-evaluation badges.
+
+\end{document}

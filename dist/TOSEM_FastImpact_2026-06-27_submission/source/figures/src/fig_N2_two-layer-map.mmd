@@ -1,0 +1,35 @@
+%%{init: {'theme':'neutral', 'flowchart': {'curve':'basis'}}}%%
+flowchart LR
+    subgraph L1["Layer 1 &mdash; five MetaPatterns"]
+        direction TB
+        G["<b>m_inv &mdash; Invariance</b><br/><span style='font-size:10px'>from group action G</span>"]
+        O["<b>m_mono &mdash; Monotonicity</b><br/><span style='font-size:10px'>from partial order O&le;</span>"]
+        T["<b>m_adj &mdash; Adjoint</b><br/><span style='font-size:10px'>from self-adjoint operator T*</span>"]
+        R["<b>m_rev &mdash; Reversal</b><br/><span style='font-size:10px'>from time-reversal involution T*rev</span>"]
+        L["<b>m_conv &mdash; Convergence</b><br/><span style='font-size:10px'>from parametrised limit L*</span>"]
+    end
+    subgraph L2["Layer 2 &mdash; ten MR families"]
+        direction TB
+        a["<b>𝗳_inv.eqv</b> Equivariance (a) &middot; I"]
+        b["<b>𝗳_inv.con</b> Conservation (b) &middot; I"]
+        f["<b>𝗳_mono.stat</b> Static order (f) &middot; I"]
+        g["<b>𝗳_mono.shape</b> Dynamic shape (g) &middot; I<br/><span style='font-size:10px'>refinement D*</span>"]
+        c["<b>𝗳_adj.self</b> Self-adjoint (c) &middot; I/M"]
+        d["<b>𝗳_adj.dual</b> Adjoint duality (d) &middot; M"]
+        e["<b>𝗳_rev.traj</b> Trajectory reversal (e) &middot; I"]
+        h["<b>𝗳_conv.lim</b> Convergence (h) &middot; I"]
+        i["<b>𝗳_conv.rate</b> Accuracy order (i) &middot; M<br/><span style='font-size:10px'>refinement E*</span>"]
+        j["<b>𝗳_conv.repr</b> Representation invariance (j) &middot; M<br/><span style='font-size:10px'>exact idempotent-semiring case: B*rel</span>"]
+    end
+    G --> a
+    G --> b
+    O --> f
+    O --> g
+    T --> c
+    T --> d
+    R --> e
+    L --> h
+    L --> i
+    L --> j
+    classDef ref fill:#e8e8e8,stroke:#888,stroke-dasharray:3 2;
+    class g,i,j ref;

@@ -185,3 +185,52 @@
 3. **track**:推荐 **Fast Impact**(成熟+限定 scope,与本文契合,180 天周转);45pp 按硬限执行。待最终确认。
 
 > 区别速记:Fast Impact = ≤45pp 硬限 + 180 天;Regular = 不限页 + 6–12 月。45pp 目标 ⇒ Fast Impact。
+
+---
+
+## 8. 完成记录(2026-06-26 · commit `637e74f`)
+
+**结果:正文 §1–§8 从 ~75pp 压到 45pp(−30pp,−40%),命中 TOSEM Fast Impact ≤45pp。** 全程 xelatex 编译干净。
+
+### 最终页面布局(acmsmall,= 45pp 限制所依格式)
+
+| 区块 | 页 | 计入 45pp? |
+|---|---|---|
+| §1–§8 主体 | p2–46(45 内容页;含标题 p1 则 46) | ✅ |
+| §9 Data & Artifact | p47–48 | ✅ |
+| 附录(operator-defs / noether-deriv / detailed-tables / proofs;online-DL-only) | p49–60 | ❌ |
+| References | p61–63 | ❌(不含 bib) |
+| **总** | **63pp** | — |
+
+### 执行清单(全部已落地)
+
+| 杠杆 | 动作 | 去向 |
+|---|---|---|
+| L1 | §5.3.7 head-to-head 15→4pp | 详证→S5/S9 |
+| L2 | §5.2 case study + DeepCrime pilot 压缩 + 删 Boundary 盒 | 协议/threats→S3 |
+| §5.4 | Relationship with METRIC 185→12 行 | →S8 |
+| L5/§5.6 | §5.3 corroborating+witnesses、§5.6 IBT-empirical 压缩 | →S7/S10 |
+| L6 | §3.1.9 out-of-scope remarks → Table N2 指针 | — |
+| §6 | 四个 validity 墙文压缩(保 836-mutant 37.4% 正面证据 + LRCA κ=0.931) | 细节→S3/S5 |
+| §7/§8 | deployment guidance 合并、Established/Open 盒压缩 | — |
+| 贡献 | C1–C5 收紧 | — |
+| §2 | comparators 段压缩 + **删 reviewer-process 泄漏(C1/C2)** | — |
+| §3.2 | 复杂度表/prose/brel-remarks 压缩 | →S1 |
+| §3.7 | 删 7 段冗长物理/工程描述(保 2 命题 + 障碍表) | →附录 C.6 |
+| §3.4 | provenance/note/audit/summary 压缩 | — |
+| §5.5 | PMCM 三案例压缩(保 coverage 公式) | — |
+| §3.5/3.6 | cross-corroboration、Position 段压缩(保全部 \cite) | — |
+| **下放附录** | §3.1 八条算子代数形式定义→`app:operator-defs`;§3.4 Noether-style m_adj 推导→`app:noether-deriv` | online-DL |
+| 版面 | Fig N1/N2 缩小(height 0.82→0.55/0.6 \textheight) | — |
+
+### 红线(全保)
+三定理(closure/complexity/IBT)· 两层模型 + Table 2 · 三域实例化结论 · 负实例两命题 + 障碍表 · EQ1–EQ3 主证据 · L\*-blindness 中心结果 · 7 图全保。
+
+### 合规附带修复
+- 4 处 reviewer-speak 泄漏(含误称 "conference submission")→ 中性化(§15.3 审计 0 命中)。
+- 元模式 / MR family 命名全文统一(canon SSOT);`m_dyn/m_cmp→f_•`、`m_rel→B*rel`、`block→MetaPattern`。
+
+### 投稿前剩余动作(见下文双盲审计)
+1. documentclass 切 `[acmsmall,screen,anonymous,review]`。
+2. 双盲匿名化:作者块由 `anonymous` 自动隐;正文自指("the present authors' prior catalogue" 等)需手动中性化;.bbl 自引核查。
+3. cover letter 标 Fast Impact + 附录 online-only 说明。
