@@ -2,11 +2,11 @@
 %% from Operator Algebras
 %%
 %% Target venue: ACM Transactions on Software Engineering and Methodology (TOSEM)
-%% Document class: acmart v2.18 (ACM Reference Format)
+%% Document class: acmart (ACM Reference Format)
 %% Compile with:
 %%   TEXINPUTS=./acmart-v2.18//: pdflatex + bibtex + pdflatex + pdflatex
 
-\documentclass[acmsmall,screen,anonymous,review]{acmart}
+\documentclass[acmsmall,screen,review]{acmart}
 
 \makeatletter
 \@ifundefined{ifnoethermainonly}{\newif\ifnoethermainonly\noethermainonlyfalse}{}
@@ -22,13 +22,12 @@
 \received{XX Month 2026}
 \received[revised]{XX Month 2026}
 \received[accepted]{XX Month 2026}
-\setcopyright{none}    %% Anonymised for review
+\setcopyright{none}    %% Review submission
 \settopmatter{printacmref=true, printccs=true, printfolios=true}
 
 %% Numeric citations in order of appearance (overrides acmart default author-year)
 \setcitestyle{numbers,sort&compress,square}
 
-%% Anonymised for double-blind review
 \acmConference[Manuscript]{Manuscript under review for ACM TOSEM}{}{}
 
 %% -- Packages --
@@ -132,6 +131,11 @@
 \email{mlemon@usc.edu.cn}
 \threeaffil
 
+\author{Xiaohua Yang}
+\orcid{0000-0002-2977-1787}
+\email{xiaohua1963@foxmail.com}
+\threeaffil
+
 \author{Jie Liu}
 \orcid{0009-0008-1970-8347}
 \email{jieliu@usc.edu.cn}
@@ -142,14 +146,9 @@
 \email{yanshiyu@usc.edu.cn}
 \threeaffil
 
-\author{Xiaohua Yang}
-\orcid{0000-0002-2977-1787}
-\email{xiaohua1963@foxmail.com}
-\threeaffil
-
 %% -- Abstract --
 \begin{abstract}
-Metamorphic Testing relies on metamorphic relations (MRs), but MR identification remains experience- or search-driven. This paper studies MR identification for operator-algebraic program families rather than fault-detection superiority. We introduce \textbf{NOETHER}, a two-level framework for equation-governed or relational-semantics families whose behaviour admits an operator algebra. The upstream layer curates the family algebra and its structural components: symmetry, order, self-adjointness, time reversal, limits, qualitative dynamics, method comparison, and relational equivalence. The downstream \texttt{CONSTRUCT-MP} procedure derives five MetaPatterns and ten MR families from these components and checks whether a program interface can instantiate executable MRs. The construction is closed under its derivation operator, giving a well-formedness guarantee over the algebra-induced MR space. For the $G$ and $T^{*}$ MetaPatterns, an \emph{Invariance-Blindness Theorem} characterises which implementation faults algebra-derived MRs can and cannot detect within the stated fault class. We evaluate NOETHER through four research questions covering canonical coverage, origin and boundary explanation, cross-domain and real-fault recurrence, and secondary executability and blind-spot checks. The evidence includes expert/search-derived MR corpora, three algebra instantiations, 21 in-scope real faults, and a 20-mutant equivariant-ML study. NOETHER identifies structural coverage not explicit in expert or search-generated MR sets, maps real faults to 8 of 10 MR families, detects 7/20 equivariant-ML mutations versus 2/20 for a large-language-model (LLM)-prompted set and 0/20 for a literature set, and identifies reactor-physics counterexamples plus five obstructions that bound the current \texttt{Translate} signature. The evidence characterises NOETHER as an auditable, bounded MR-identification framework, not as a general-purpose or average-superiority claim.
+Metamorphic testing helps test programs when direct test oracles are unavailable, but identifying metamorphic relations (MRs) remains largely experience- or search-driven. We study MR identification, not average fault-detection superiority, for operator-algebraic program families. We introduce \textbf{NOETHER}, a two-level framework that curates a program-family operator algebra, decomposes it into recurrent structural components, and mechanically derives MR classes / MetaPatterns through \texttt{CONSTRUCT-MP}. The construction makes MR origin and applicability boundaries explicit, proves closure of the downstream derivation, and gives an \emph{Invariance-Blindness Theorem} characterising detectable and undetectable faults for the symmetry and self-adjoint MetaPatterns within the stated fault class. Across expert/search-derived MR corpora, three algebra instantiations, 21 in-scope real faults, and a 20-mutant equivariant-ML study, NOETHER maps real faults to 8 of 10 MR families, detects 7/20 mutants versus 2/20 for a large-language-model-prompted set and 0/20 for a literature set, and identifies five obstructions bounding the current \texttt{Translate} signature. The replication package releases supplementary material, prompts, raw outputs, mappings, and scripts.
 \end{abstract}
 
 %% CCS Concepts
@@ -185,11 +184,11 @@ Metamorphic Testing relies on metamorphic relations (MRs), but MR identification
 \section{Introduction}
 \label{sec:intro}
 
-Noether's first theorem is useful here only as a methodological analogy: a catalogue of observed invariants can sometimes be replaced by a derivation grounded in structure.\footnote{The theorem appeared in Noether's 1918 paper \emph{Invariante Variationsprobleme}, addressing a question Hilbert and Klein had raised about energy conservation in general relativity. We do not invoke it as a theorem about programs: program semantics and metamorphic relations do not provide an action functional. The analogy is methodological only.} The replacement does not eliminate empirical work; it lifts the empirical step from per-instance enumeration to per-domain structural identification, one cycle of induction per stable domain rather than per program.
+Metamorphic Testing (MT), introduced by Chen et~al.\ in 1998~\cite{Chen1998}, was admitted into the IEEE/ISO/IEC software-testing standards in 2022~\cite{ISO29119} and is now used for testing artificial intelligence (AI) and machine-learning (ML) systems~\cite{Segura2016, LiTOSEM2025}. Its central artefact is the \emph{metamorphic relation} (MR): a property that constrains how a program's outputs must covary across multiple executions, thereby substituting for an explicit oracle in domains where one cannot exist. Despite MT's maturity, MR identification, the task of deciding \emph{which} properties hold for a program under test, remains its binding constraint. Practitioners report three recurring difficulties: high dependence on tester domain knowledge, mutually incompatible MR formulations for the same program, and low reuse of MR sets across teams or projects~\cite{Segura2016, LiTOSEM2025}. Recent work has responded at the application layer, by mining MRs for particular domains, and at the integration layer, by automating search through evolutionary, mining-based, or large-language-model (LLM)-assisted pipelines~\cite{MRScout2024, GenMorph2024, Shin2024}. The foundational layer has not advanced at the same pace.
 
-Software testing faces a related problem. Metamorphic Testing (MT), introduced by Chen et~al.\ in 1998~\cite{Chen1998}, was admitted into the IEEE/ISO/IEC software-testing standards in 2022~\cite{ISO29119} and is now used for testing artificial intelligence (AI) and machine-learning (ML) systems~\cite{Segura2016, LiTOSEM2025}. Its central artefact is the \emph{metamorphic relation} (MR): a property that constrains how a program's outputs must covary across multiple executions, thereby substituting for an explicit oracle in domains where one cannot exist. Despite MT's maturity, MR identification, the task of deciding \emph{which} properties hold for a program under test, remains its binding constraint. Practitioners report three recurring difficulties: high dependence on tester domain knowledge, mutually incompatible MR formulations for the same program, and low reuse of MR sets across teams or projects~\cite{Segura2016, LiTOSEM2025}. Recent work has responded at the application layer, by mining MRs for particular domains, and at the integration layer, by automating search through evolutionary, mining-based, or large-language-model (LLM)-assisted pipelines~\cite{MRScout2024, GenMorph2024, Shin2024}. The foundational layer has not advanced at the same pace.
+The principal artefact at that foundational layer is the \emph{MetaPattern} (MP): an equivalence class over MRs that captures a recurrent structural strategy a tester invokes when reasoning about program properties. MetaPatterns organise the otherwise unbounded MR design space into a small, interpretable scaffold; methods that exploit them, including the structured MR identification approaches METRIC~\cite{ChenMETRIC2016} and METRIC+~\cite{SunMETRICplus2021}, and the recent wave of LLM-prompted MR generators, depend on the scaffold's quality. Yet across the literature, MetaPattern catalogues are still grounded mainly in induction over observed examples. A typical proposal lists $k$ patterns drawn from cluster analysis or expert codification, demonstrates that the patterns ``cover'' some corpus of MRs to a target threshold, and stops. This leaves a foundational \emph{origin--closure--transferability gap}: without a structural source, there is no clear boundary on what the pattern space contains; without a transfer rule, a relation written for one program rarely moves cleanly to another, even when both programs share a deep structural template.
 
-The principal artefact at that foundational layer is the \emph{MetaPattern} (MP): an equivalence class over MRs that captures a recurrent structural strategy a tester invokes when reasoning about program properties. MetaPatterns organise the otherwise unbounded MR design space into a small, interpretable scaffold; methods that exploit them, including the structured MR identification approaches METRIC~\cite{ChenMETRIC2016} and METRIC+~\cite{SunMETRICplus2021}, and the recent wave of LLM-prompted MR generators, depend on the scaffold's quality. Yet across the literature, MetaPattern catalogues continue to be assembled in the same way conservation laws were assembled before 1918: by induction over observed examples. A typical proposal lists $k$ patterns drawn from cluster analysis or expert codification, demonstrates that the patterns ``cover'' some corpus of MRs to a target threshold, and stops. None of the existing MP proposals, including prior work on five reactor-physics patterns, answers the three questions that any structural account of MetaPatterns should answer:
+None of the existing MP proposals, including prior work on five reactor-physics patterns, answers the three questions that any structural account of MetaPatterns should answer:
 
 \begin{enumerate}
   \item \textbf{Origin.} \emph{Why} exactly these MetaPatterns and not others? What is the structural source of an MP, as distinct from an empirical regularity in the corpus on which it was induced?
@@ -197,9 +196,9 @@ The principal artefact at that foundational layer is the \emph{MetaPattern} (MP)
   \item \textbf{Transferability.} When the program family changes (from reactor physics to natural-language inference, from numerical libraries to recommender systems), how does the MetaPattern set change, and can the new set be obtained without re-running the entire empirical induction in the new domain?
 \end{enumerate}
 
-We call this the \emph{origin--closure--transferability gap}. The gap explains why MR sets continue to grow as one-off artefacts. Without a structural source, there is no clear boundary on what the pattern space contains. Without a transfer rule, a relation written for one program rarely moves cleanly to another, even when both programs share a deep structural template. These limitations follow from grounding MetaPatterns in observed examples rather than in the structure that makes the relations hold.
+This paper proposes such a structural source for a deliberately bounded class of systems: operator-algebraic program families, i.e., equation-governed or relational-semantics families whose behaviour can be represented through operators, invariants, and equivalence-preserving transformations. We introduce \textbf{NOETHER}, a constructive framework that derives MetaPatterns from the operator-algebraic structure of the program family under test. The framework extracts MetaPatterns from invariants of an operator algebra $\mathcal{A}_P$ (formally defined in Section~\ref{sec:prelim}) that captures the program family's mathematical scaffolding. Given $\mathcal{A}_P$, NOETHER produces a MetaPattern set $\mathbb{M}(\mathcal{A}_P)$ (constructed by the algorithm of Section~\ref{sec:framework}) together with a closure guarantee over the algebra-induced MR space. Given a different program family with a different algebra $\mathcal{A}_{P'}$, the same construction produces $\mathbb{M}(\mathcal{A}_{P'})$ without re-running empirical induction over observed MRs.
 
-This paper proposes such a structural source for a deliberately bounded class of systems: operator-algebraic program families, i.e., equation-governed or relational-semantics families whose behaviour can be represented through operators, invariants, and equivalence-preserving transformations. We introduce \textbf{NOETHER}, a constructive framework that derives MetaPatterns from the operator-algebraic structure of the program family under test. The framework extracts MetaPatterns from invariants of an operator algebra $\mathcal{A}_P$ (formally defined in Section~\ref{sec:prelim}) that captures the program family's mathematical scaffolding. Given $\mathcal{A}_P$, NOETHER produces a MetaPattern set $\mathbb{M}(\mathcal{A}_P)$ (constructed by the algorithm of Section~\ref{sec:framework}) together with a closure guarantee over the algebra-induced MR space. Given a different program family with a different algebra $\mathcal{A}_{P'}$, the same construction produces $\mathbb{M}(\mathcal{A}_{P'})$ without re-running empirical induction over observed MRs. The framework does not abolish induction: domain experts must still distil $\mathcal{A}_P$ from program semantics, and Section~\ref{sec:threats-limitations} states this limitation explicitly. What becomes algebraic is the downstream step from $\mathcal{A}_P$ to the MetaPattern set. Figure~\ref{fig:noether-arch} summarises the architecture.
+The name is deliberate but limited. Noether's first theorem is useful here only as a methodological analogy: a catalogue of observed invariants can sometimes be replaced by a derivation grounded in structure.\footnote{The theorem appeared in Noether's 1918 paper \emph{Invariante Variationsprobleme}, addressing a question Hilbert and Klein had raised about energy conservation in general relativity. We do not invoke it as a theorem about programs: program semantics and metamorphic relations do not provide an action functional. The analogy is methodological only.} The replacement does not eliminate empirical work; it lifts the empirical step from per-instance enumeration to per-domain structural identification, one cycle of induction per stable domain rather than per program. In NOETHER, domain experts must still distil $\mathcal{A}_P$ from program semantics, and Section~\ref{sec:threats-limitations} states this limitation explicitly. What becomes algebraic is the downstream step from $\mathcal{A}_P$ to the MetaPattern set. Figure~\ref{fig:noether-arch} summarises the architecture.
 
 \begin{figure}[h]
 \centering
@@ -217,21 +216,22 @@ This paper proposes such a structural source for a deliberately bounded class of
 \node[stage, below=2mm of uplabel.south west, anchor=north west] (prog) {Program family\\$P:\mathcal{X}\to\mathcal{Y}$};
 \node[stage, right=of prog] (alg) {Operator algebra\\$\mathcal{A}_P$};
 \node[stage, right=of alg, minimum width=45mm] (decomp) {Structural decomposition\\$\mathcal{D}(\mathcal{A}_P)$};
-
-\node[font=\scriptsize, align=center, below=1.5mm of decomp] (decompnote)
+\node[font=\scriptsize, align=center, above=1mm of decomp] (decompnote)
   {five MetaPatterns plus two refinements\\and one relational extension};
 
 \draw[arr] (prog) -- node[above, font=\scriptsize, align=center] {domain\\modelling} (alg);
 \draw[arr] (alg) -- node[above, font=\scriptsize] {Hyp.~\ref{hyp:seven-blocks}} (decomp);
 
-\node[font=\footnotesize\bfseries, anchor=west, below=17mm of prog.south west] (downlabel) {Downstream mechanical derivation};
-\node[output, below=2mm of downlabel.south west, anchor=north west] (mset) {MetaPatterns\\$\mathbb{M}(\mathcal{A}_P)$};
+\node[output, below=25mm of prog.south west, anchor=north west] (mset) {MetaPatterns\\$\mathbb{M}(\mathcal{A}_P)$};
+\node[font=\footnotesize\bfseries, anchor=west] (downlabel) at ([xshift=3mm,yshift=4mm]mset.north) {Downstream mechanical derivation};
 \node[output, right=of mset] (mrset) {MR space\\$\mathrm{MR}(\mathcal{A}_P)$};
 \node[inst, right=of mrset, yshift=7mm] (inst1) {Boltzmann / reactor};
 \node[inst, below=2mm of inst1] (inst2) {equivariant ML};
 \node[inst, below=2mm of inst2] (inst3) {relational optimisers};
 
-\draw[arr] (decomp.south) -- ++(0,-5mm) -| node[above, near start, font=\scriptsize, fill=white, inner sep=1pt] {\texttt{CONSTRUCT-MP}} (mset.north);
+\coordinate (constructmid) at ($(decomp.south)!0.5!(decomp.south |- mset.north)$);
+\coordinate (constructturn) at (mset.north |- constructmid);
+\draw[arr] (decomp.south) -- (constructmid) -- node[above, midway, font=\scriptsize, fill=white, inner sep=1pt] {\texttt{CONSTRUCT-MP}} (constructturn) -- (mset.north);
 \draw[arr] (mset) -- node[above, font=\scriptsize] {\texttt{Translate}} (mrset);
 \draw[arr, densely dashed] (mrset.east) -- ++(5mm,0) |- (inst1.west);
 \draw[arr, densely dashed] (mrset.east) -- ++(5mm,0) |- (inst2.west);
@@ -263,7 +263,7 @@ We make five MR-identification contributions. The load-bearing theoretical resul
   \item \textbf{C2 (theory).} We give a three-part theory for the algebra-induced MR space. Theorem~1 proves a \emph{no-drop closure invariant}: every \texttt{Translate}-reachable MR over $\mathrm{MR}(\mathcal{A}_{P})$ is assigned to a canonical structural component and MetaPattern class. Theorem~2 gives polynomial-time constructibility under a finite generating set. The negative result refutes absolute completeness on $\mathcal{A}_{\mathrm{PWR}}$ with two safety-analysis MRs and five pairwise-independent obstructions in \texttt{Translate}'s signature (\S\ref{subsec:negative-pwr}, Appendix~\ref{app:negative-proofs}); these obstructions are part of the contribution because they identify MR classes the current construction should not claim to reach. The Invariance-Blindness Theorem (\S\ref{subsec:ibt}) characterises exactly which implementation faults the $G$ and $T^{*}$ MetaPatterns can and cannot detect within the stated linear fault class.
   \item \textbf{C3 (canonical symbol system).} Instantiating NOETHER on a real program family maps a literature-derived PWR MR corpus onto one canonical vocabulary: five MetaPatterns, two family-layer refinements, one relational extension, and the ten MR-family symbols of Table~\ref{tab:mr-families}. The same symbols are used throughout the theory, figures, evidence tables, and discussion, including the deflationary comparison to Murphy et al.'s six ML classes~\cite{Murphy2008} (\S\ref{subsec:pmcm-worked}).
   \item \textbf{C4 (transferability).} We demonstrate \emph{structural} transferability, not empirical superiority, by instantiating NOETHER on three structurally distinct algebras: Boltzmann reactor physics (\S\ref{sec:reactor}), equivariant ML (\S\ref{sec:cross-domain}), and relational query optimisers (\S\ref{subsec:third-domain}), the last exercising the relational extension beyond the Lie-group / self-adjoint / time-reversal core.
-  \item \textbf{C5 (evidence protocol).} We define an MR-identification evidence protocol around RQ1--RQ4: canonical coverage, origin/boundary explanation, cross-domain and real-fault recurrence, and secondary executability/blind-spot checks. The empirical evidence includes expert/search-derived MR corpora, 21 real scientific-computing faults mapped to 8 of 10 MR families, and an equivariant-ML mutation study in which the NOETHER-derived set detects 7/20 mutants versus 2/20 for an LLM-prompted set and 0/20 for a literature set. These results are used as executability, complementarity, and blind-spot evidence, not average-superiority evidence.
+  \item \textbf{C5 (evidence protocol).} We define an MR-identification evidence protocol around RQ1--RQ4: canonical coverage, origin/boundary explanation, cross-domain and real-fault recurrence, and secondary executability/blind-spot checks. The empirical evidence includes expert/search-derived MR corpora, 21 real scientific-computing faults mapped to 8 of 10 MR families, and an equivariant-ML mutation study in which the NOETHER-derived set detects 7/20 mutants versus 2/20 for an LLM-prompted set and 0/20 for a literature set. These results are used as executability, complementarity, and blind-spot evidence, not average-superiority evidence. A replication package releases the supplementary material, prompts, raw outputs, mapping files, and scripts needed to inspect or rerun the reported checks.
 \end{itemize}
 
 \paragraph{Scope and adoption value.} This paper evaluates \emph{MR identification} for operator-algebraic program families: whether a method can derive structurally justified MR classes from a program family's governing equations or relational semantics. It does not evaluate MR \emph{effectiveness} in the sense of average fault-detection rate, mutation score, or general defect-revealing superiority. The five MetaPatterns (with two refinements and a relational extension) are curated by inspecting mathematical structures that recur across the program families we have studied; they are not derived from an algebraic axiom. The framework therefore has two layers: an \emph{upstream layer} (curating $\mathcal{A}_P$ and its structural decomposition) that remains empirical and human, and a \emph{downstream layer} (mechanically deriving $\mathbb{M}(\mathcal{A}_P)$ from $\mathcal{A}_P$) that is algorithmic and provable. NOETHER's intended practical value is not to replace search-based MR generators in every setting, but to give high-structure domains an auditable source for MR families, a transferable symbol system, predictable blind spots, and a structural prior that can complement search, mining, or LLM-prompted generation.
@@ -1508,11 +1508,10 @@ The authors declare no conflict of interest.
 
 To support independent verification, the supplementary code and data are archived
 on Zenodo under DOI \href{https://doi.org/10.5281/zenodo.20250634}{10.5281/zenodo.20250634}.
-For double-blind review, the same materials can be supplied through the
-submission system as an anonymised archive with the same file manifest and
-content hash.
+The same materials are supplied through the submission system with the same
+file manifest and content hash.
 
-\paragraph{Review-stage anonymised archive.} The following supplementary materials are submitted alongside the manuscript and are available through the submission system (or an anonymised Zenodo deposit) under SHA-256 content hash. The hash is computed over the concatenated tar-archive of the listed items and reported in the final manuscript at acceptance.
+\paragraph{Review-stage supplementary archive.} The following supplementary materials are submitted alongside the manuscript and are available through the submission system under SHA-256 content hash. The hash is computed over the concatenated tar-archive of the listed items and reported in the final manuscript at acceptance.
 \begin{itemize}
     \item \textbf{S1} Python reference implementation of CONSTRUCT-MP described in supplementary~S9 (Appendix~D), including the Boltzmann and equivariant-ML instantiations.
     \item \textbf{S2} The full PWR-MR corpus underlying Section~\ref{subsec:reactor-mapping}, with each MR annotated by canonical structural component, NOETHER MetaPattern, source equation, and a representative subset used for the main-text placement discussion.
@@ -1600,6 +1599,7 @@ Compiler-internal optimisations & Refinement on operational semantics & n/a & n/
 \caption{Representative PWR MRs are placed under canonical NOETHER symbols.}
 \label{tab:elementwise}
 \footnotesize
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{llll}
 \toprule
 \textbf{MR ID} & \textbf{Plain-text MR} & \textbf{Canonical symbol} & \textbf{Canonical class} \\
@@ -1613,6 +1613,7 @@ Adj-Phy-01 & Adjoint reciprocity & $T^{*}$ & $\mathsf{f}_{\mathrm{adj}.\mathrm{d
 Rev-Phy-01 & Collisionless reversibility & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $\mathsf{f}_{\mathrm{rev}.\mathrm{traj}}$ \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 \begin{table}[h]

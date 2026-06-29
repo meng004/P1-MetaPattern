@@ -1,4 +1,4 @@
-\documentclass[acmsmall,screen,anonymous,review]{acmart}
+\documentclass[acmsmall,screen,review]{acmart}
 
 \acmJournal{TOSEM}
 \acmYear{2026}
@@ -13,7 +13,48 @@
 \setlength{\emergencystretch}{3em}
 
 \title{NOETHER: Data and Artifact Availability Statement}
-\author{Anonymous Author(s)}
+
+\newcommand{\threeaffil}{%
+  \affiliation{%
+    \institution{School of Computing, University of South China}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
+  \affiliation{%
+    \institution{Hunan Engineering Research Center of Software Evaluation and Testing for Intellectual Equipment}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
+  \affiliation{%
+    \institution{CNNC Key Laboratory on High Trusted Computing}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
+}
+
+\author{Meng Li}
+\authornote{Corresponding author.}
+\orcid{0000-0002-1074-1502}
+\email{mlemon@usc.edu.cn}
+\threeaffil
+
+\author{Xiaohua Yang}
+\orcid{0000-0002-2977-1787}
+\email{xiaohua1963@foxmail.com}
+\threeaffil
+
+\author{Jie Liu}
+\orcid{0009-0008-1970-8347}
+\email{jieliu@usc.edu.cn}
+\threeaffil
+
+\author{Shiyu Yan}
+\orcid{0000-0001-7626-5185}
+\email{yanshiyu@usc.edu.cn}
+\threeaffil
 
 \begin{document}
 \maketitle
@@ -23,13 +64,12 @@
 To support independent verification, the supplementary code and data are archived
 on Zenodo under DOI
 \url{https://doi.org/10.5281/zenodo.20250634}.
-For double-blind review, the same materials can be supplied through the
-submission system as an anonymised archive with the same file manifest and
-content hash.
+The same materials are supplied through the submission system with the same file
+manifest and content hash.
 
-\paragraph{Review-stage anonymised archive.} The following supplementary
+\paragraph{Review-stage supplementary archive.} The following supplementary
 materials are submitted alongside the manuscript and are available through the
-submission system (or an anonymised Zenodo deposit) under SHA-256 content hash.
+submission system under SHA-256 content hash.
 The hash is computed over the concatenated tar-archive of the listed items and
 reported in the final manuscript at acceptance.
 \begin{itemize}

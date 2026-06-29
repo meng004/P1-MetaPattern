@@ -7,10 +7,9 @@
 %%   (or: tectonic NOETHER_paper.tex)
 
 \PassOptionsToPackage{expansion=false}{microtype}
-%% TOSEM double-anonymous submission (acmsmall + review + anonymous).
-%% The anonymous option auto-hides \author/\affiliation/\orcid/\email/\authornote
-%% and the \begin{acks} block (funding, CRediT, GenAI disclosure, COI).
-\documentclass[acmsmall,screen,anonymous,review]{acmart}
+%% TOSEM is single-blind: reviewers see author names and affiliations.
+%% Do not pass the acmart anonymous option.
+\documentclass[acmsmall,screen,review]{acmart}
 
 \acmJournal{TOSEM}
 \acmYear{2026}
@@ -18,8 +17,7 @@
 \acmNumber{0}
 \acmArticle{0}
 \acmMonth{0}
-%% arXiv DOI withheld during double-anonymous review (restored at camera-ready).
-\setcopyright{none}    %% Anonymised for review
+\setcopyright{none}    %% Review submission
 \settopmatter{printacmref=true, printccs=true, printfolios=true}
 
 %% Numeric citations in order of appearance (overrides acmart default author-year)
@@ -104,6 +102,11 @@
 \email{mlemon@usc.edu.cn}
 \threeaffil
 
+\author{Xiaohua Yang}
+\orcid{0000-0002-2977-1787}
+\email{xiaohua1963@foxmail.com}
+\threeaffil
+
 \author{Jie Liu}
 \orcid{0009-0008-1970-8347}
 \email{jieliu@usc.edu.cn}
@@ -114,22 +117,9 @@
 \email{yanshiyu@usc.edu.cn}
 \threeaffil
 
-\author{Xiaohua Yang}
-\orcid{0000-0002-2977-1787}
-\email{xiaohua1963@foxmail.com}
-\threeaffil
-
 %% ---- Abstract ----
 \begin{abstract}
-\textbf{Context.} Metamorphic Testing depends on metamorphic relations (MRs), yet MR identification remains largely experience-driven or search-driven. Expert MR sets often encode useful but implicit domain intuition, while generated candidates can be difficult to interpret, deduplicate, and maintain without an explanation of where the relation comes from and where it stops applying.
-
-\textbf{Objective.} This paper studies MR identification rather than MR fault-revealing effectiveness. We ask whether a structured, operator-algebraic method can derive a broader and more explainable MR class / MetaPattern design space than expert MR sets and search-based MR generation, by making the algebraic origin and applicability boundary of MRs explicit from program-family governing equations.
-
-\textbf{Method.} We introduce \textbf{NOETHER}, a two-level framework for equation-governed program families. The upstream layer curates a program-family operator algebra and decomposes it into recurrent structural components, including symmetry, order, self-adjointness, time reversal, limits, qualitative dynamics, method comparison, and relational equivalence. The downstream layer, \texttt{CONSTRUCT-MP}, derives MR classes / MetaPatterns from those structural components and then checks whether a specific program interface exposes the inputs and observations needed to instantiate an executable MR. The downstream derivation is provable: \texttt{CONSTRUCT-MP} is closed under the derivation operator, a well-formedness guarantee, and for the symmetry and self-adjoint MetaPatterns an \emph{Invariance-Blindness Theorem} characterises exactly which implementation faults an algebra-derived MR can and cannot detect, converting that closure into a falsifiable, non-tautological prediction.
-
-\textbf{Evidence.} We evaluate NOETHER as an MR-identification method along three axes. First, we compare expert MR sets and NOETHER using binary structural-component coverage. Second, we compare NOETHER with search-based MR generation on origin explanation, boundary explanation, redundancy, readability, and maintenance. Third, we trace cross-domain derivations showing that the same structural component can explain MR classes across different program families and solvers. A head-to-head comparison further shows that the algebra-derived set surfaces MR classes that baseline catalogues miss, an MR-identification advantage; mutation results are retained as secondary executability checks.
-
-\textbf{Conclusion.} NOETHER contributes a theory-guided MR-identification framework: it derives MR classes from governing-equation operator algebra, makes their origin and boundary auditable, and exposes structural MR design-space coverage that is not explicit in expert MR sets or search-generated candidates alone. A held-out evaluation confirms the Invariance-Blindness prediction, and a negative instance on a reactor-physics algebra bounds the method's completeness and localises where the derivation must be extended.
+Metamorphic testing helps test programs when direct test oracles are unavailable, but identifying metamorphic relations (MRs) remains largely experience- or search-driven. We study MR identification, not average fault-detection superiority, for operator-algebraic program families. We introduce \textbf{NOETHER}, a two-level framework that curates a program-family operator algebra, decomposes it into recurrent structural components, and mechanically derives MR classes / MetaPatterns through \texttt{CONSTRUCT-MP}. The construction makes MR origin and applicability boundaries explicit, proves closure of the downstream derivation, and gives an \emph{Invariance-Blindness Theorem} characterising detectable and undetectable faults for the symmetry and self-adjoint MetaPatterns within the stated fault class. Across expert/search-derived MR corpora, three algebra instantiations, 21 in-scope real faults, and a 20-mutant equivariant-ML study, NOETHER maps real faults to 8 of 10 MR families, detects 7/20 mutants versus 2/20 for a large-language-model-prompted set and 0/20 for a literature set, and identifies five obstructions bounding the current \texttt{Translate} signature. The replication package releases supplementary material, prompts, raw outputs, mappings, and scripts.
 \end{abstract}
 
 %% CCS Concepts
@@ -805,6 +795,7 @@ We must also acknowledge an interpretive caveat about what this ``prediction'' i
 \caption{Seven representative MRs from the prior PWR corpus (one canonical MR per non-empty structural component plus two predicted MetaPatterns), with NOETHER placement; the full enumeration of 12 MRs with per-structural-component sub-category coverage is in supplementary~S2 (\texttt{elementwise\_12.md}).}
 \label{tab:elementwise}
 \footnotesize
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{llcll}
 \toprule
 \textbf{MR ID} & \textbf{Plain-text MR} & \textbf{P\#} & \textbf{Structural component} & \textbf{NOETHER class} \\
@@ -818,6 +809,7 @@ Bur-Alg-04 & CRAM no-worse-than TTA & P5 & $\mathcal{E}^{*}$ & $m_{\mathrm{cmp}}
 \textit{(predicted)} & Collisionless reversibility & --- & $\mathcal{T}^{*}_{\mathrm{rev}}$ & $m_{\mathrm{rev}}$ \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 \subsubsection{A Noether-style derivation of \texorpdfstring{$m_{\mathrm{adj}}$}{m\_adj}}
@@ -2636,13 +2628,9 @@ operator algebra and identifying five pairwise-independent extensions of
 \label{subsec:artefact}
 
 To support reviewer verification, the supplementary code and data are archived
-in a public repository whose DOI is withheld here for double-anonymous review
-(supplied to the editor, and to reviewers in anonymised form).
-For double-blind review, the same materials can be supplied through the
-submission system as an anonymised archive with the same file manifest and
-content hash.
+in a public repository and supplied to reviewers through the submission system.
 
-\paragraph{Review-stage anonymised archive.} The following supplementary materials are submitted alongside the manuscript and are available to reviewers through the conference submission system (or, equivalently, an anonymised OpenReview / Zenodo deposit) under SHA-256 content hash. The hash is computed over the concatenated tar-archive of the listed items and reported in the final manuscript at acceptance.
+\paragraph{Review-stage supplementary archive.} The following supplementary materials are submitted alongside the manuscript and are available to reviewers through the journal submission system under SHA-256 content hash. The hash is computed over the concatenated tar-archive of the listed items and reported in the final manuscript at acceptance.
 \begin{itemize}
     \item \textbf{S1} Python reference implementation of CONSTRUCT-MP described in supplementary~S9 (Appendix~D), including the Boltzmann and equivariant-ML instantiations.
     \item \textbf{S2} The full PWR-MR corpus underlying Section~\ref{subsec:reactor-mapping}, with each MR annotated by canonical structural component, NOETHER MetaPattern, and source equation. Table~\ref{tab:elementwise} corresponds to a subset of 12 MRs selected by the protocol stated there.
@@ -2651,9 +2639,7 @@ content hash.
 \end{itemize}
 
 \paragraph{Public archival release.} The public archival package is deposited
-in a public archival repository whose DOI is withheld here for
-double-anonymous review and restored at camera-ready. The
-camera-ready version will additionally record the final SHA-256 hash of the
+in a public archival repository. The camera-ready version will additionally record the final SHA-256 hash of the
 submission archive. We aim for the \emph{Available} and \emph{Functional}
 artefact-evaluation badges.
 
@@ -3020,7 +3006,7 @@ ISSUE-009: $5$ MRs on Apache Commons Math), the Set~G GenMorph rerun
 output, the LLM-ensemble Set~L harvest with token-cost logs, the
 PIT $1.7.4$ mutation traces, and the per-MetaPattern + D1/D2 aggregation
 pipeline, is archived in a public repository whose DOI is withheld here for
-double-anonymous review and restored at camera-ready.
+review-stage metadata finalisation and restored at camera-ready.
 Reproduction scripts (\texttt{setup.sh}, \texttt{run\_all.sh},
 \texttt{tests/run.sh}) and the experiment-side \texttt{CLAUDE.md}
 collaboration record are bundled. The camera-ready version will record any

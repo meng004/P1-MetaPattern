@@ -1,0 +1,9 @@
+%%{init: {'theme':'neutral'}}%%
+flowchart TB
+    IN(["<b>Input</b>: structural decomposition D(A_P)<br/><span style='font-size:11px'>five MetaPatterns G, O&le;, T*, T*rev, L* + two refinements D*, E* + relational extension B*rel</span>"])
+    A["<b>Step 1 &mdash; Invariant extraction</b><br/><span style='font-size:11px'>for each structural component s, compute the invariant set I_s of A_P</span>"]
+    B["<b>Step 2 &mdash; MR derivation</b><br/><span style='font-size:11px'>map each invariant to an MR via the Translate operator</span>"]
+    C["<b>Step 3 &mdash; Quotient</b><br/><span style='font-size:11px'>form MetaPattern m(s,[&iota;]) per ~_s equivalence class</span>"]
+    D["<b>Step 4 &mdash; Aggregation</b><br/><span style='font-size:11px'>collect MetaPatterns over all structural components</span>"]
+    OUT(["<b>Output</b>: MetaPattern set M(A_P)<br/><span style='font-size:11px'>closed under Translate (Theorem 1) &middot; poly-time under a finite generating set (Theorem 2)</span>"])
+    IN --> A --> B --> C --> D --> OUT

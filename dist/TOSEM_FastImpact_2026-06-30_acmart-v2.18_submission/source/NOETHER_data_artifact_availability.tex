@@ -1,0 +1,114 @@
+\documentclass[acmsmall,screen,review]{acmart}
+
+\acmJournal{TOSEM}
+\acmYear{2026}
+\acmVolume{0}
+\acmNumber{0}
+\acmArticle{0}
+\acmMonth{0}
+\acmDOI{XXXXXXX.XXXXXXX}
+\setcopyright{none}
+\settopmatter{printacmref=true, printccs=false, printfolios=true}
+\sloppy
+\setlength{\emergencystretch}{3em}
+
+\title{NOETHER: Data and Artifact Availability Statement}
+
+\newcommand{\threeaffil}{%
+  \affiliation{%
+    \institution{School of Computing, University of South China}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
+  \affiliation{%
+    \institution{Hunan Engineering Research Center of Software Evaluation and Testing for Intellectual Equipment}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
+  \affiliation{%
+    \institution{CNNC Key Laboratory on High Trusted Computing}
+    \city{Hengyang}
+    \postcode{421001}
+    \country{China}
+  }%
+}
+
+\author{Meng Li}
+\authornote{Corresponding author.}
+\orcid{0000-0002-1074-1502}
+\email{mlemon@usc.edu.cn}
+\threeaffil
+
+\author{Xiaohua Yang}
+\orcid{0000-0002-2977-1787}
+\email{xiaohua1963@foxmail.com}
+\threeaffil
+
+\author{Jie Liu}
+\orcid{0009-0008-1970-8347}
+\email{jieliu@usc.edu.cn}
+\threeaffil
+
+\author{Shiyu Yan}
+\orcid{0000-0001-7626-5185}
+\email{yanshiyu@usc.edu.cn}
+\threeaffil
+
+\begin{document}
+\maketitle
+
+\section*{Data and Artifact Availability}
+
+To support independent verification, the supplementary code and data are archived
+on Zenodo under DOI
+\url{https://doi.org/10.5281/zenodo.20250634}.
+The same materials are supplied through the submission system with the same file
+manifest and content hash.
+
+\paragraph{Review-stage supplementary archive.} The following supplementary
+materials are submitted alongside the manuscript and are available through the
+submission system under SHA-256 content hash.
+The hash is computed over the concatenated tar-archive of the listed items and
+reported in the final manuscript at acceptance.
+\begin{itemize}
+    \item \textbf{S1} Python reference implementation of CONSTRUCT-MP described
+    in supplementary~S9, including the Boltzmann and equivariant-ML
+    instantiations.
+    \item \textbf{S2} The full PWR-MR corpus, with each MR annotated by canonical
+    structural component, NOETHER MetaPattern, and source equation.
+    \item \textbf{S3} The SE(3)-equivariant point-cloud testing harness,
+    including the mutation generators and MR sets used in the case-study
+    comparison.
+    \item \textbf{S4} A reproducibility manifest documenting the random seeds,
+    model checkpoints, and dataset versions referenced in the case study.
+    \item \textbf{S5} GenMorph/PIT pilot material, head-to-head summaries,
+    parsed mutation results, and statistical scripts for the secondary
+    executability and complementarity analyses.
+    \item \textbf{S6} Query-optimiser pilot material for the
+    relational-equivalence extension, including sampled Calcite/QED plan pairs
+    and oracle scripts.
+    \item \textbf{S7} Defects4J algebra-rich substrate material,
+    pre-registration records, SUT-selection criteria, and
+    $\mathcal{L}^{*}$-blindness evidence.
+    \item \textbf{S8} METRIC+ comparison material, Sun et al. subject
+    re-implementations, scope analysis, and head-to-head protocol/results files.
+    \item \textbf{S9} Appendices and detailed empirical tables migrated out of
+    the Fast Impact main body for length conformance.
+    \item \textbf{S10} Home-field generation-to-detection checks,
+    rank/faithfulness scripts, and additional Invariance-Blindness sanity
+    checks.
+    \item \textbf{S11} Industrial N5 coverage classification inputs and results.
+    \item \textbf{S12} Cross-domain N5 numerical-library and signal-processing
+    derivation checks and outputs.
+\end{itemize}
+
+\paragraph{Public archival release.} The public archival package is deposited on
+Zenodo under DOI
+\url{https://doi.org/10.5281/zenodo.20250634}. The
+camera-ready version will additionally record the final SHA-256 hash of the
+submission archive. We aim for the \emph{Available} and \emph{Functional}
+artefact-evaluation badges.
+
+\end{document}

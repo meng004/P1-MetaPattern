@@ -1,19 +1,19 @@
-# NOETHER — arXiv Submission Metadata
+# NOETHER — arXiv v2 Submission Metadata
 
 Ready-to-paste fields for the arXiv submission form (https://arxiv.org/submit).
 
 ## 1. Title
 
 ```
-NOETHER: A Constructive Framework for Metamorphic Pattern Discovery from Operator Algebras
+NOETHER: Constructive Metamorphic Pattern Identification from Operator Algebras and a Falsifiable Invariance-Blindness Theorem
 ```
 
-Length: 91 chars. arXiv limit: 240 chars. ✓
+Length: 126 chars. arXiv limit: 240 chars. ✓
 
 ## 2. Authors
 
 ```
-Meng Li (1,2,3), Xiaohua Yang (1,2,3), Jie Liu (1,2,3), Shiyu Yan (1,2,3)
+Meng Li (1,2,3), Jie Liu (1,2,3), Shiyu Yan (1,2,3), Xiaohua Yang (1,2,3)
 ```
 
 Three shared affiliations (numbered for arXiv):
@@ -23,26 +23,18 @@ Three shared affiliations (numbered for arXiv):
 
 Corresponding author: Meng Li (mlemon@usc.edu.cn)
 
-## 3. Abstract (condensed for arXiv, ≤ 1920 chars)
+## 3. Abstract (latest manuscript abstract for arXiv, ≤ 1920 chars)
 
-**Char count: 1898 (within limit, structured Context/Objective/Method/Results/Conclusion preserved)**
+**Char count: 1575 (within limit)**
 
 ```
-Context. Metamorphic Testing is recognised in IEEE/ISO software-testing standards and increasingly recommended for AI systems, but its progress is bottlenecked by metamorphic relation (MR) identification: existing approaches (structured frameworks, mining and evolutionary pipelines, LLM-assisted methods, MetaPattern catalogues) share an inductive grounding that leaves three foundational questions open: origin, closure, and transferability.
-
-Objective. We propose a framework whose downstream step from program-induced operator algebra to MetaPattern set is mechanical and provable, while the upstream curation of the algebra is a stated empirical hypothesis with explicit scope precondition.
-
-Method. NOETHER is a two-layer framework. The upstream layer is an eight-block decomposition over recurrent mathematical structures (symmetry, order, self-adjoint, time-reversal, limit, qualitative-dynamics, method-comparison, relational equivalence). The downstream CONSTRUCT-MP algorithm produces a MetaPattern set with algebraic-closure (Theorem 1) and polynomial-time decidability (Theorem 2) guarantees. We test the framework on three operator-algebraic domains.
-
-Results. On Boltzmann reactor physics NOETHER systematises a prior inductive catalogue; on equivariant ML it derives executable MRs for rotation invariance, adjoint duality, and training-trajectory reversibility; on relational query optimisers it exercises the relational-equivalence block. The central falsifiable prediction (L*-blindness on homogeneity-preserving mutators) holds on the in-scope substrate. The absolute-completeness conjecture (Theorem 1') is falsified on PWR core diffusion via two pairwise-independent counterexamples that identify five Translate-extension dimensions.
-
-Conclusion. Induction is relocated from per-program MR sampling to a per-domain algebraic layer; the downstream step is deductive and mechanical.
+Metamorphic Testing relies on metamorphic relations (MRs), yet MR identification remains experience- or search-driven. We study MR identification for operator-algebraic program families, not fault-detection superiority. We introduce NOETHER, a two-level framework for equation-governed or relational-semantics families whose behaviour admits an operator algebra. The upstream layer curates the family algebra and structural components: symmetry, order, self-adjointness, time reversal, limits, qualitative dynamics, method comparison, and relational equivalence. The downstream CONSTRUCT-MP procedure derives five MetaPatterns and ten MR families and checks whether program interfaces can instantiate executable MRs. The construction is closed under its derivation operator, giving a well-formedness guarantee over the algebra-induced MR space. For the G and T* MetaPatterns, an Invariance-Blindness Theorem characterises detectable and undetectable implementation faults within the stated fault class. Evaluation covers canonical coverage, origin/boundary explanation, cross-domain and real-fault recurrence, and executability/blind-spot checks. Across expert/search-derived MR corpora, three algebra instantiations, 21 in-scope real faults, and a 20-mutant equivariant-ML study, NOETHER maps real faults to 8 of 10 MR families, detects 7/20 mutants versus 2/20 for a large-language-model (LLM)-prompted set and 0/20 for a literature set, and identifies five obstructions bounding the current Translate signature. The evidence characterises NOETHER as auditable and bounded.
 ```
 
 ## 4. Comments
 
 ```
-71 pages, 18 tables, 1 figure. Under review at ACM Transactions on Software Engineering and Methodology. Supplementary materials (algorithm reference implementation, 84-MR PWR corpus, SE(3) case study harness, three-tier METRIC+ replication) at https://github.com/meng004/P1-MetaPattern (replace placeholder with real URL once published).
+60 pages, 15 tables, 6 figures. Under review at ACM Transactions on Software Engineering and Methodology. Supplementary materials (algorithm reference implementation, 84-MR PWR corpus, SE(3) case study harness, three-tier METRIC+ replication) at https://github.com/meng004/P1-MetaPattern.
 ```
 
 ## 5. Categories
@@ -71,12 +63,19 @@ Build with:
 
 ```bash
 cd arxiv/
-./build_arxiv.sh                                  # produces NOETHER_paper_arxiv.pdf + .bbl
-tar czf noether_arxiv_v1.tar.gz \
+pdflatex -interaction=nonstopmode NOETHER_paper_arxiv.tex
+bibtex NOETHER_paper_arxiv
+pdflatex -interaction=nonstopmode NOETHER_paper_arxiv.tex
+pdflatex -interaction=nonstopmode NOETHER_paper_arxiv.tex
+tar czf noether_arxiv_v2.tar.gz \
     NOETHER_paper_arxiv.tex \
     NOETHER_paper.bib \
     NOETHER_paper_arxiv.bbl \
-    ../texmf-dist/                                # custom sty files (e.g. hyperxmp)
+    acmart.cls \
+    ACM-Reference-Format.bst \
+    hyperxmp.sty \
+    figures/ \
+    theory/
 ```
 
 arXiv expects: one main `.tex` file + `.bbl` (so bibtex is not re-run) + all custom `.sty` files. Figures should be relative-pathed and bundled.
@@ -90,7 +89,7 @@ arXiv expects: one main `.tex` file + `.bbl` (so bibtex is not re-run) + all cus
 | 3 | Submit at https://arxiv.org/submit → "New Submission" | **User** |
 | 4 | Paste title, authors, abstract from §1-§3 above | **User** |
 | 5 | Choose categories per §5 above | **User** |
-| 6 | Upload `noether_arxiv_v1.tar.gz` from §8 | **User** |
+| 6 | Upload `noether_arxiv_v2.tar.gz` from §8 | **User** |
 | 7 | Preview generated PDF; verify renders match local build | **User** |
 | 8 | Submit; arXiv assigns ID (e.g. `arXiv:2605.NNNNN`) within 24h moderation | **User** |
 | 9 | Once live: anchor arXiv ID in `CITATION.cff` + `pyproject.toml` + `README.md` + `NOETHER_paper.tex` artefact statement; commit + re-build PDF | **Assistant (after user provides ID)** |
@@ -108,12 +107,12 @@ cd arxiv/ && ./build_arxiv.sh
 
 ## 11. Compliance verification
 
-- [x] Abstract ≤ 1920 chars (1898) ✓
-- [x] Title ≤ 240 chars (91) ✓
+- [x] Abstract ≤ 1920 chars (1575) ✓
+- [x] Title ≤ 240 chars (126) ✓
 - [x] Author block named (Meng Li, USC, mlemon@usc.edu.cn) ✓
 - [x] Source compiles clean (`./build_arxiv.sh` exits 0) ✓
 - [x] 0 em-dash, 0 undef refs, 0 undef cites ✓
 - [x] Bibliography `.bbl` included in source tarball ✓
 - [x] `\acmConference` placeholder set to "Manuscript under review for ACM TOSEM" ✓
-- [ ] Sensitive-info scan (`grep -lE "sk-|/Users/"`) → 0 hits ⚠ user verification needed
+- [ ] Sensitive-info scan for API keys and absolute local paths → 0 hits
 - [ ] User endorsement obtained for `cs.SE` first-time submission ⚠ user action

@@ -1,37 +1,101 @@
-# Cover Letter — ACM TOSEM submission
+# Cover Letter — Submission to ACM TOSEM (Fast Impact track)
 
-**To:** Prof. Mauro Pezzè, Editor-in-Chief, *ACM Transactions on Software Engineering and Methodology (TOSEM)*
+**Date:** 30 June 2026
 
-**Manuscript:** *NOETHER: Constructive Metamorphic Pattern Identification from Operator Algebras and a Falsifiable Invariance-Blindness Theorem*
+**To:** Prof. Mauro Pezzè, Editor-in-Chief
+ACM Transactions on Software Engineering and Methodology (TOSEM)
 
-**Submission track:** Regular paper.
+Dear Professor Pezzè,
 
-**Authors:** Meng Li (corresponding, mlemon@usc.edu.cn), Jie Liu, Shiyu Yan, Xiaohua Yang — School of Computing, University of South China; Hunan Engineering Research Center of Software Evaluation and Testing for Intellectual Equipment; CNNC Key Laboratory on High Trusted Computing. Hengyang 421001, China.
+We are pleased to submit our manuscript **"NOETHER: Constructive Metamorphic Pattern
+Identification from Operator Algebras and a Falsifiable Invariance-Blindness Theorem"**
+for consideration in ACM TOSEM under the **Fast Impact** track.
 
----
+## Scope, novelty, and contribution
 
-Dear Professor Pezzè and the editorial board,
+The paper targets a software-testing problem that directly concerns the TOSEM readership:
+metamorphic testing is valuable when test oracles are unavailable, but metamorphic-relation
+(MR) identification remains largely experience- or search-driven. Existing approaches offer
+limited structural explanation of *where* MR patterns (MetaPatterns) come from, *when* a
+pattern catalogue is closed, or *how* it transfers across program families. NOETHER addresses
+this origin–closure–transferability gap by turning MR identification into an auditable
+construction over a program family's operator-algebraic structure.
 
-We submit *NOETHER* for consideration as a regular paper in TOSEM. The manuscript addresses the long-standing **metamorphic-relation (MR) identification bottleneck** in metamorphic testing: MR sets are still assembled by induction over observed examples, with no account of *where a relation comes from*, *where it stops applying*, or *whether the catalogue is complete*. NOETHER reframes MR identification as a derivation from a program family's governing-equation operator algebra, and makes the origin and applicability boundary of each MR class auditable.
+The manuscript makes five contributions to software-engineering methods and foundations:
 
-**Principal contributions.**
+1. **A layered, constructive framework (NOETHER).** MetaPatterns are derived from the
+   operator-algebraic structure of a program family by a mechanical algorithm
+   (CONSTRUCT-MP), separating an empirical upstream layer (curating the algebra) from a
+   provable downstream layer.
+2. **Positive theory.** A no-drop closure invariant (Theorem 1) and polynomial-time
+   constructibility under a finite generating set (Theorem 2) over the algebra-induced MR
+   space.
+3. **A falsifiable Invariance-Blindness Theorem.** For the symmetry and self-adjoint
+   MetaPatterns, an algebra-derived MR's detection kernel equals *exactly* the
+   structure-preserving faults: a non-tautological, testable characterisation of what such
+   MRs can and cannot detect, confirmed on a held-out evaluation.
+4. **A negative instantiation.** Absolute completeness is proved *false* on a PWR
+   reactor-physics algebra via two counterexamples from the standard safety-analysis
+   literature, identifying five independent obstructions and delimiting the theory's reach.
+5. **Structural transferability and an evidence protocol.** The construction is instantiated on
+   three structurally distinct operator-algebraic domains (Boltzmann reactor physics,
+   equivariant machine learning, and relational query optimisers), under an MR-identification
+   evidence protocol that treats mutation/head-to-head results as secondary executability
+   checks rather than average-superiority claims.
 
-1. A two-layer framework: an upstream, empirically curated structural decomposition of a program-induced operator algebra, and a downstream constructive algorithm (`CONSTRUCT-MP`) that mechanically derives MR classes / MetaPatterns from it.
-2. A positive theory (closure invariant; polynomial-time constructibility under a finite generating set) and, in the same paper, a **negative result**: the strictly stronger absolute-completeness conjecture is *falsified* on a PWR core-diffusion algebra by two relations from the safety-analysis literature — bounding the method's reach rather than overclaiming it.
-3. An **Invariance-Blindness Theorem** that characterises exactly which implementation faults an algebra-derived MR can and cannot detect, converting the closure result into a falsifiable, non-tautological prediction, confirmed on a held-out instance.
-4. Instantiation across three structurally distinct domains (Boltzmann reactor-physics transport, equivariant ML, relational query optimisers), demonstrating structural transferability at the algebra-skeleton level.
+## Validation and reproducibility
 
-**Scope, stated plainly.** The paper evaluates MR *identification*, not average fault-detection *effectiveness*; mutation/head-to-head results are reported as secondary executability checks. We have tried to be explicit about every boundary, including a documented out-of-scope catalogue and a falsified completeness conjecture.
+The evidence combines analytical and experimental validation paradigms. The closure and
+constructibility claims are supported by formal derivations; the blindness theorem is stated as
+a falsifiable prediction about detectable and undetectable fault classes; the PWR instantiation
+deliberately reports a negative result to delimit the theory; and the three-domain protocol
+checks whether the construction transfers beyond a single case.
 
-**Length.** At its current length the paper carries the formal development (definitions, theorems, proofs), three-domain instantiation, and the empirical protocol together, because the contribution is precisely the *link* between the algebraic derivation and the resulting MR classes; separating them would break the argument. We submit under the regular track, which has no hard page limit, and are happy to migrate self-contained material to the online appendix per the journal's appendix policy.
+The submitted data and artifact availability statement identifies the replication package,
+supplementary material (S1–S12), prompts, raw outputs, mapping files, and scripts needed to
+inspect or rerun the reported checks.
 
-**Prior dissemination (ACM policy disclosure).** A preprint of this manuscript is posted on arXiv (arXiv:2605.17390). No part of this work has been published in or is under review at any peer-reviewed venue.
+## Submission track and length
 
-**Relationship to a companion submission (salami disclosure).** A separate manuscript by an overlapping author group studies the *complementary* problem of selecting a minimum detecting MR subset (under review at *IEEE TSE*). The two papers share the two-layer MetaPattern / MR-family vocabulary (a single canonical definition is reused by citation) but make disjoint contributions: the present paper is about *deriving and bounding* the MR design space; the companion is about *selecting* within a given set. Neither paper's results depend on the other's.
+We request the **Fast Impact** track. The manuscript has been shortened so that the
+main paper body fits the TOSEM Fast Impact 45-page limit in the official
+`acmsmall,screen,review` format; references and online-only appendix / supplementary material
+are kept outside the main-body count. Self-contained implementation details, detailed
+derivation traces, and secondary tables have been migrated to appendices and supplementary
+material.
 
-**Generative-AI use.** Disclosed in full in the manuscript per the ACM Policy on Authorship: large language models appear both as instruments of the study (an evaluated baseline; a second-rater labelling protocol; mutant-equivalence adjudication) and as authoring assistance (code scaffolding, reference formatting, language editing). All research design, theorems, proofs, procedures, numerical results, and claims were produced and verified by the authors, who take full responsibility for the content.
+## arXiv disclosure
 
-We believe NOETHER fits TOSEM's interest in the methodological foundations of software testing, and we thank you for considering it.
+A preprint of this work is available on arXiv (**arXiv:2605.17390**,
+<https://arxiv.org/abs/2605.17390>). TOSEM is a single-blind journal, so the submitted
+manuscript lists all authors and affiliations on the first page; this cover letter discloses
+the related preprint for editorial transparency.
+
+## Related / companion work (overlap disclosure)
+
+A separate line of work by a subset of the authors addresses the **orthogonal** problem of
+*selecting* a minimum complete subset from a *given* MR pool. That work takes an MR set as input
+and minimises its cardinality under a fixed fault model; the present paper concerns the upstream
+question of where MRs and MetaPatterns *come from*: their constructive derivation from a
+program-induced operator algebra and algebraic closure under the `Translate` operator. The two
+share no theorem or empirical claim.
+
+## Generative-AI disclosure
+
+In line with ACM's Policy on Authorship, large language models appear in this work in two roles.
+As instruments of the study, they are part of the reported LLM baseline, LRCA second-rater
+protocol, and mutant-equivalence adjudication; the prompts and raw outputs are released with the
+replication package. As authoring assistance, the authors used a large-language-model assistant
+for code scaffolding, reference formatting, and language editing. All research design, theorems,
+proofs, experimental procedures, numerical results, and claims were produced and verified by the
+authors, who take full responsibility for the manuscript.
+
+## Competing interests
+
+The authors declare no competing interests.
 
 Sincerely,
-Meng Li, on behalf of all authors
+
+**Meng Li** (corresponding author), on behalf of Xiaohua Yang, Jie Liu, and Shiyu Yan
+School of Computing, University of South China, Hengyang 421001, China
+mlemon@usc.edu.cn
